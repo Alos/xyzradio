@@ -83,21 +83,22 @@
 
 //plays the next song
 -(void)nextSong{
-	var totalSongs = [theUserList getSongListSize];
-	var index = [theUserList getSongIndex: currentlyPlayingSong];
+	var totalSongs = [djList getSongListSize];
+	var index = [djList getSongIndex: currentlyPlayingSong];
 	index++;
 	if(totalSongs < index)
 		index=0;
-	[self playSong:index source:"mylist"];
+	[self playSong:[djList getSongByIndex:index]];	
 }
 
 //plays the previous song
 -(void)previousSong{
-    var totalSongs = [theUserList getSongListSize];
-	var index = [theUserList getSongIndex: currentlyPlayingSong];
+    var totalSongs = [djList getSongListSize];
+	var index = [djList getSongIndex: currentlyPlayingSong];
 	index--;
 	if(index >= 0)
-		[self playSong:index source:"mylist"];	
+	 index = totalSongs;
+	[self playSong:[djList getSongByIndex:index]];	
 }
 
 //Stops the currently playing song
