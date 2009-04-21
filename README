@@ -1,0 +1,30 @@
+README
+
+Introduction
+
+This is an attempt at writing an IP-radio application based on Cappuccino(http://cappuccino.org/) and the SoundManager API (http://schillmania.com/projects/sundmanager2/). The Download containes the front end to test this app.
+
+The images, songs ans SoundManager.js code can be found on de resourses directory.
+
+Getting help
+
+If you need help with XYZRadio, you can get help from the following sources:
+
+	-FAQ 
+	-Wiki: http://github.com/Alos/xyzradio/wikis
+
+If you discover any bugs, please file a ticket on github.
+
+License
+
+    XYZRadio is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License.
+
+    XYZRadio is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
