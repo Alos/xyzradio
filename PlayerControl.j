@@ -3,7 +3,21 @@
 //  XYZRadio
 //
 //  Created by Alos on 11/19/08.
-//
+/*
+This file is part of XYZRadio.
+
+    XYZRadio is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License.
+
+    XYZRadio is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 @import <Foundation/CPObject.j>
 @import "PlayerWindow.j"
@@ -86,8 +100,10 @@
 	var totalSongs = [djList getSongListSize];
 	var index = [djList getSongIndex: currentlyPlayingSong];
 	index++;
-	if(totalSongs < index)
+	if(totalSongs <= index)
 		index=0;
+	console.log(index);
+	[djList setSelectionIndexes:index];
 	[self playSong:[djList getSongByIndex:index]];	
 }
 
@@ -98,6 +114,8 @@
 	index--;
 	if(index >= 0)
 	 index = totalSongs;
+	console.log(index);
+	[djList setSelectionIndexes:index]; 
 	[self playSong:[djList getSongByIndex:index]];	
 }
 
