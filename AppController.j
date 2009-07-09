@@ -20,6 +20,7 @@ This file is part of XYZRadio.
 @import "PreferencesWindow.j"
 @import "XYZSong.j"
 
+
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
     AddSongToolbarItemIdentifier = "AddSongToolbarItemIdentifier",
@@ -73,7 +74,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [demoList addObject:song7];
 	var song8 = [[XYZSong alloc] initWithSongTitle:@"Rewrite" setArtist:@"Asian Kung Fu Generation" setID:8 time:"3:47" pathToSong:"Resources/LocalMusic/Rewrite.mp3"];	
     [demoList addObject:song8];
-	var song9 = [[XYZSong alloc] initWithSongTitle:@"o.O" setArtist:@"someone" setID:9 time:"??:??" pathToSong:"Resources/LocalMusic/1hz-10khz-sweep.mp3"];	
+	var song9 = [[XYZSong alloc] initWithSongTitle:@"In the dark but not alone" setArtist:@"radiotimes" setID:9 time:"3:37" pathToSong:"Resources/LocalMusic/InTheDark.mp3"];	
     [demoList addObject:song9];
     [self addSongList: demoList];
     //brings the window to the front
@@ -92,7 +93,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 - (void)addSongList:(CPArray)songs
 {    
     if(!musicBrowser){
-        musicBrowser = [[MainBrowser alloc] initWithSource:songs];
+        musicBrowser = [[MainBrowser alloc] initWithSource:songs rectangle:CGRectMake(0, 60, 600, 500)];
     }
     else{
         [musicBrowser addList:songs];
@@ -130,25 +131,24 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 -(void)openMyList{
     if(!djList)
         djList = [[DJList alloc] initWithSource:librarySongs];
-    if([[djList window] isVisible]){
-        [[djList window] setFrameOrigin:(CPPointMake(900, 60))];
-        [[djList window] orderOut:self];
+    if([djList isVisible]){
+        [djList setFrameOrigin:(CPPointMake(900, 60))];
+        [djList close];
     }
     else    
-    [[djList window] orderFront:self];
+    [djList orderFront:self];
 }
 /*Abre la ventana de canciones*/
 -(void)openBrowser{
     if(!musicBrowser){
-        console.log("Intentando crear nueva ventana...");
-        musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs];
+        musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 60, 600, 500)];
     }
-    if([[musicBrowser window] isVisible]){
-        [[musicBrowser window] setFrameOrigin:(CPPointMake(0, 60))];
-        [[musicBrowser window] orderOut:self];
+    if([musicBrowser isVisible]){
+        [musicBrowser setFrameOrigin:(CPPointMake(0, 60))];
+        [musicBrowser close];
     }
     else    
-        [[musicBrowser window] orderFront:self];
+        [musicBrowser orderFront:self];
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar

@@ -55,6 +55,7 @@ This file is part of XYZRadio.
 	//first we find out where to play the song from
 	//right now we just play from the DJLIST
 	var song = [djList getSelectedSong];
+	console.log("Se selecciono, %s", [song songTitle]);
 	[self playSong:song];
 }
 
@@ -102,9 +103,17 @@ This file is part of XYZRadio.
 	index++;
 	if(totalSongs <= index)
 		index=0;
-	console.log(index);
 	[djList setSelectionIndexes:index];
-	[self playSong:[djList getSongByIndex:index]];	
+	if(!paused){
+		console.log("Is playing switching to the new song");
+		[self stopSong];
+		[self playSong:[djList getSongByIndex:index]];
+	}else{
+		console.log("Not playing just selecting the song");
+		[self stopSong];
+		paused = NO;
+		playing = NO;
+	}
 }
 
 //plays the previous song
@@ -112,16 +121,28 @@ This file is part of XYZRadio.
     var totalSongs = [djList getSongListSize];
 	var index = [djList getSongIndex: currentlyPlayingSong];
 	index--;
-	if(index >= 0)
-	 index = totalSongs;
-	console.log(index);
-	[djList setSelectionIndexes:index]; 
-	[self playSong:[djList getSongByIndex:index]];	
+	if(index < 0)
+	 index = totalSongs-1;
+	console.log("Index: %s",index);
+	[djList setSelectionIndexes:index];
+	if(!paused){
+		console.log("Is playing switching to the new song");
+		[self stopSong];
+		[self playSong:[djList getSongByIndex:index]];	
+	}else{
+		console.log("Not playing just selecting the song");
+		[self stopSong];
+		paused = NO;
+		playing = NO;
+	}
+	
 }
 
 //Stops the currently playing song
 -(void)stopSong{
+	[theSoundManager stopSound];
 	[player stopSong];
+	playing = NO;
 }
 
 

@@ -28,28 +28,26 @@ This file is part of XYZRadio.
 }
 
 /*Una bonita contructora*/
-- (id)initWithSource:(CPArray)list{
+- (id)initWithSource:(CPArray)list rectangle:(CGRect)aRectangle{
     //Initializing a window
-    self = [super initWithContentRect:CGRectMake(0, 60, 800, 500)];
+    self = [super initWithContentRect:aRectangle];
     if (self)//pa ver si no somos null :P
     {
         //le ponemos titulo al HUD lo centramos
-        [win setTitle:@"Music Browser"];
-        [win setFloatingPanel:YES];
-        [win setDelegate:self];  
-        var contentView = [win contentView];
+        [self setTitle:@"Music Browser"];
+        var contentView = [self contentView];
         var bounds = [contentView bounds];
         //para los titulos
         var cmArray = [[CPArray alloc] init]; 
-        var titleLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 0, 248, 31) title:"Name" color:NULL];
-        var artistLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(250, 0, 248, 31) title:"Artist" color: NULL];
-        var timeLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(500, 0, 48, 31) title:"Time" color: NULL];
-        var ratingLable =[[XYZColumnModel alloc] initWithFrame:CGRectMake(550, 0, 48, 31) title:"Rating" color: NULL];
+        var titleLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 248, 31) title:"Name" color:NULL];
+        var artistLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(250, 7, 248, 31) title:"Artist" color: NULL];
+        var timeLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(500, 7, 48, 31) title:"Time" color: NULL];
+        var ratingLable =[[XYZColumnModel alloc] initWithFrame:CGRectMake(550, 7, 48, 31) title:"Rating" color: NULL];
         [cmArray addObject: titleLabel]; 
         [cmArray addObject: artistLabel];
         [cmArray addObject: timeLabel];
         [cmArray addObject: ratingLable];
-        //a table
+       
         theTable = [[XYZTable alloc] initWithColumnModel:cmArray model:list frame: bounds];
         
         [contentView addSubview: theTable];    

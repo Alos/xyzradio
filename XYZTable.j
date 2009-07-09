@@ -39,7 +39,7 @@ SongsDragType = @"SongsDragType";
     self = [super initWithFrame:bounds];
     [self setModel:aModel];
     //para nuestro grid
-    collectionView = [[CPCollectionView alloc] initWithFrame: CGRectMake(0, 30,  CGRectGetWidth(bounds), CGRectGetHeight(bounds))];
+    collectionView = [[CPCollectionView alloc] initWithFrame: CGRectMake(0, 0,  CGRectGetWidth(bounds), CGRectGetHeight(bounds))];
     pos=0;
     //los scrolls por si son muchos
     var scrollView = [[CPScrollView alloc] initWithFrame: CGRectMake(0, 30, CGRectGetWidth(bounds), CGRectGetHeight(bounds))];
@@ -61,27 +61,25 @@ SongsDragType = @"SongsDragType";
     [self addSubview:scrollView];
     
     
-    //DELEGATE?
     [collectionView setDelegate: self];
         
-    //la q esta arriba del Collectionview
-    var borderArriba = [[CPView alloc] initWithFrame:CGRectMake(0, 30 , CGRectGetWidth(bounds), 1)];    
-        [borderArriba setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
-        [self addSubview: borderArriba];
-    //la de arriba    
-    var borderTop = [[CPView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(bounds), 1)];    
+	//la de arriba    
+    var borderTop = [[CPView alloc] initWithFrame:CGRectMake(0, 5, CGRectGetWidth(bounds)-2, 1)];    
         [borderTop setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
         [self addSubview: borderTop];
 
+    //la q esta arriba del Collectionview
+    var borderArriba = [[CPView alloc] initWithFrame:CGRectMake(0, 25 , CGRectGetWidth(bounds)-2, 1)];    
+        [borderArriba setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
+        [self addSubview: borderArriba];
+   
     [self setColumnModel:aColumnModel];
     
     [self registerForDraggedTypes:[SongsDragType]];
     
     return self;
 }
-//DELEGATE METHODS
 -(void)collectionView:(CPCollectionView)collectionView didDoubleClickOnItemAtIndex:(int)index{
-	console.log("Le dieron click a %d",index);
 	var info = [CPDictionary dictionaryWithObject:index forKey:"index"];
 	[[CPNotificationCenter defaultCenter] postNotificationName:"songDoubleClicked" object:self userInfo:info]; 
 }
@@ -111,16 +109,15 @@ SongsDragType = @"SongsDragType";
 			
     }
 }
-//END OF DELEGATE METHODS
+
 -(void)setColumnModel:(CPArray)aColumnModel{
-    console.log("Setting the column model...");
     columnModel = aColumnModel;
     for(var i=0; i<[columnModel count];i++){
         var thisColumn = [columnModel objectAtIndex:i];
         [self addSubview: thisColumn];
         if(i>0 && i<[columnModel count]){
-            pos= pos+CGRectGetWidth([[columnModel objectAtIndex: i-1] bounds])+1;
-            var border = [[CPView alloc] initWithFrame:CGRectMake(pos, 0, 1, CGRectGetHeight([self bounds]))];    
+            pos = pos+CGRectGetWidth([[columnModel objectAtIndex: i-1] bounds])+1;
+            var border = [[CPView alloc] initWithFrame:CGRectMake(pos, 5, 1, CGRectGetHeight([self bounds])-7)];    
             console.log("Setting line at: %d",pos);
             [border setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
             [self addSubview: border];

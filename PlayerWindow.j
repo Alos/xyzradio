@@ -156,6 +156,15 @@ Pauses the song
 -(void)pauseSong{
 	[playerControl pauseSong];
 }
+
+/**
+Stops the playing song
+*/
+-(void)stopSong{
+	var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/playButton.png" size:CPSizeMake(70, 70)];
+	[playButton setImage:playImage];
+}
+
 /**
 Plays the next song
 */

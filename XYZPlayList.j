@@ -23,16 +23,14 @@ This file is part of XYZRadio.
 @import <AppKit/CPWindowController.j>
 @import "XYZSong.j"
 
-@implementation XYZPlayList : CPWindowController
+@implementation XYZPlayList : CPWindow
 {
 XYZTable theTable;
 CPArray theList;
-CPPanel win;
 }
 
 - (id)initWithContentRect:(CGRect)aRectangle{
-	win = [[CPPanel alloc] initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
-    self = [super initWithWindow:win];
+	self = [super initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
     if (self){
 	 theList = [[CPArray alloc] init];
     }
