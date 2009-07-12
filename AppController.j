@@ -38,13 +38,14 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     PreferencesWindow preferencesWindow;
     CPImage bgImage;
     CPWindow theWindow;
+	CPView contentView;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
     CPLog.trace("Inicio de ventana");
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
-    var contentView = [theWindow contentView];
+	contentView = [theWindow contentView];
     //bg
     bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/theGoldenAgeOf60.jpg" size:CPSizeMake(30, 25)];
     [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
@@ -81,28 +82,32 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [theWindow orderFront:self];
 	CPLog.trace("Window ready!");
     [self openBrowser];
-	[self openMyList];
+	[self openDJList];
 	//control init
 	playerControl=[[PlayerControl alloc] init: djList];
 }
+
 -(void)addSong:(XYZSong)aSong 
 {   if(!musicBrowser)
          musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs];
     [musicBrowser addItem: aSong];
 }
+
 - (void)addSongList:(CPArray)songs
 {    
     if(!musicBrowser){
-        musicBrowser = [[MainBrowser alloc] initWithSource:songs rectangle:CGRectMake(0, 60, 600, 500)];
+        musicBrowser = [[MainBrowser alloc] initWithSource:songs rectangle:CGRectMake(60, 100, 600, 500)];
     }
     else{
         [musicBrowser addList:songs];
     }
 }
+
 -(void)removeSong{
     if(djList)
         [djList removeSelectedItems];
 }
+
 - (void)connection:(CPJSONPConnection)aConnection didReceiveData:(CPString)data
 {
     [self addSongList: data.songs];
@@ -117,34 +122,39 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 -(void)togglePlayerWindow{
 	[playerControl togglePlayerWindow];
 }
+
 -(void)openPreferences{
     if(!preferencesWindow)
-        preferencesWindow = [[Preferences alloc] initWithParentWindow:theWindow];
-    if([[preferencesWindow window] isVisible]){
-        [[preferencesWindow window] setFrameOrigin:(CPPointMake(500, 50))];
-        [[preferencesWindow window] orderOut:self];
+        preferencesWindow = [[PreferencesWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask];
+    if([preferencesWindow isVisible]){
+        [preferencesWindow setFrameOrigin:(CPPointMake(500, 50))];
+        [preferencesWindow close];
     }
     else    
-    [[preferencesWindow window] orderFront:self];
+    [preferencesWindow orderFront:self];
 }
+
 /*Abre la lista de canciones del usuario*/
--(void)openMyList{
-    if(!djList)
-        djList = [[DJList alloc] initWithSource:librarySongs];
+-(void)openDJList{
+    if(!djList){
+        djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
+	}
     if([djList isVisible]){
-        [djList setFrameOrigin:(CPPointMake(900, 60))];
+        [djList setFrameOrigin:(CPPointMake(700, 100))];
         [djList close];
     }
     else    
     [djList orderFront:self];
 }
+
 /*Abre la ventana de canciones*/
 -(void)openBrowser{
     if(!musicBrowser){
-        musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 60, 600, 500)];
+        musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+		[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
     }
     if([musicBrowser isVisible]){
-        [musicBrowser setFrameOrigin:(CPPointMake(0, 60))];
+        [musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
         [musicBrowser close];
     }
     else    
@@ -193,7 +203,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 		[toolbarItem setAlternateImage: highlighted];
 		
         [toolbarItem setTarget:self];
-        [toolbarItem setAction:@selector(openMyList)]; 
+        [toolbarItem setAction:@selector(openDJList)]; 
 		[toolbarItem setLabel:"DJList"];
 
         [toolbarItem setMinSize:CGSizeMake(32, 32)];

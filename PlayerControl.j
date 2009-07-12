@@ -197,12 +197,12 @@ Changes milis to regular time
 
 -(void)togglePlayerWindow{
     if(!player)
-		player = [[PlayerWindow alloc] initWithAcontrol:self];
-    if([[player window] isVisible]){
-        [[player window] setFrameOrigin:(CPPointMake(500, 560))];
-        [[player window] orderOut:self];
+		player = [[PlayerWindow alloc] initWithAcontrol:self contentRect:CGRectMake(500, 560, 400, 200)];
+    if([player isVisible]){
+        [player setFrameOrigin:(CPPointMake(500, 560))];
+        [player close];
     }
     else    
-    [[player window] orderFront:self];//we open it
+		[player orderFront:self];//we open it
 }
 @end

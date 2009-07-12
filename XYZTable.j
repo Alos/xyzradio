@@ -20,7 +20,7 @@ This file is part of XYZRadio.
 */
 @import <Foundation/CPObject.j>
 @import "XYZSong.j"
-
+@import "StarRatingView.j"
 SongsDragType = @"SongsDragType";
 @implementation XYZTable : CPView
 {
@@ -225,6 +225,7 @@ var ratingViewSize;
     CPTextField time;
     CPView highlightView;
     XYZSong theSong;
+	StarRatingView rater;
 }
 
 
@@ -291,9 +292,19 @@ var ratingViewSize;
         [time setTextColor: [CPColor colorWithHexString:"33FF00"]];
         [self addSubview: time];
     }
+	
     [time setStringValue: [anObject time]];
     [time sizeToFit];
     [time setFrameOrigin: CGPointMake(timeViewSize,0.0)]; 
+	
+	if(!rater){
+		  var rater = [[StarRatingView alloc] initWithFrame:CGRectMake(0,0,300,25)];
+		  [rater setFrameOrigin:CGPointMake(ratingViewSize,0.0)];
+		  [self addSubview: rater];
+	}
+	
+	
+	
 }
 
 - (void)setSelected:(BOOL)flag

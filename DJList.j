@@ -26,8 +26,8 @@ This file is part of XYZRadio.
 }
 
 /*Una bonita contructora*/
-- (id)initWithSource:(CPArray)list{
-    self = [super initWithContentRect:CGRectMake(900, 60, 500, 500)];
+- (id)initWithSource:(CPArray)list contentRect:(CGRect)aRect{
+    self = [super initWithContentRect:aRect];
     if (self)//pa ver si no somos null :P
     {
 	   //le ponemos titulo al HUD lo centramos
@@ -36,10 +36,10 @@ This file is part of XYZRadio.
         var bounds = [contentView bounds];
         //para los titulos
         var cmArray =[[CPArray alloc] init]; 
-        var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 248, 31) title:"Name" color:nil];
-        var artistColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(250, 7, 248, 31) title:"Artist" color: nil];
-        var timeColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(500, 7, 48, 31) title:"Time" color: nil];
-        var ratingColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(550, 7, 48, 31) title:"Rating" color: nil];
+        var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 228, 31) title:"Name" color:nil];
+        var artistColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(230, 7, 190, 31) title:"Artist" color: nil];
+        var timeColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(422, 7, 48, 31) title:"Time" color: nil];
+        var ratingColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(470, 7, 48, 31) title:"Rating" color: nil];
 		
 		var fullModel = [CPDictionary dictionaryWithObjects:[titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["title", "artist", "time", "rating"]];
 		//a table

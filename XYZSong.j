@@ -23,7 +23,8 @@ This file is part of XYZRadio.
     CPString songTitle;
     CPString artist;
     CPString time;
-    CPString genre
+    CPString genre;
+	CPString rating @accessors;
     int ID;
     BOOL isLocal;
 	CPString pathToSong;

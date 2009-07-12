@@ -24,7 +24,7 @@ This file is part of XYZRadio.
 @import "XYZSong.j"
 @import "PlayerControl.j"
 
-@implementation PlayerWindow : CPWindowController
+@implementation PlayerWindow : CPWindow
 {
     CPButton backButton;
     CPButton playButton;
@@ -40,19 +40,17 @@ This file is part of XYZRadio.
 }
 
 /*Una bonita contructora*/
-- (id)initWithAcontrol:(PlayerControl)aPlayerControl{
+- (id)initWithAcontrol:(PlayerControl)aPlayerControl contentRect:(CGRect)aRectangle{
     console.log("Inicializanso la ventana con un control");
-    var win = [[CPPanel alloc] initWithContentRect:CGRectMake(500, 560, 400, 200) styleMask:CPHUDBackgroundWindowMask|CPBorderlessWindowMask];
-    self = [super initWithWindow:win];
+	self = [super initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPBorderlessWindowMask];
+    
 	//set local variables
 	playerControl=aPlayerControl;
     if (self)//pa ver si no somos null :P
     {
         //le ponemos titulo al HUD lo centramos
-        [win setTitle:@"Player"];
-        [win setFloatingPanel:YES];
-        [win setDelegate:self];  
-        var contentView = [win contentView];
+        [self setTitle:@"Player"];
+        var contentView = [self contentView];
         var bounds = [contentView bounds];  
         var center= CGRectGetWidth(bounds)/2.0 -35;
         

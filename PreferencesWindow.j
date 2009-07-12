@@ -19,7 +19,7 @@ This file is part of XYZRadio.
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@implementation Preferences : CPWindowController
+@implementation PreferencesWindow : CPWindow
 {
     CPButton backButton;
     CPButton playButton;
@@ -27,22 +27,18 @@ This file is part of XYZRadio.
     CPTextField currentlyPlaying;
     CPString currentlyPlayingString;
     CPButton botonOk;
-    CPWindow bridgeWindow;
     CPPopUpButton wallpaperMenus;
 }
 
 /*Una bonita contructora*/
-- (id)initWithParentWindow:(CPWindow)parentWindow{
-    var win = [[CPPanel alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask];
-    self = [super initWithWindow:win];
+- (id)initWithContentRect:aRectangle styleMask:aStyleMask{
+    self = [super initWithContentRect:aRectangle styleMask: aStyleMask];
     if (self)//pa ver si no somos null :P
     {
-        bridgeWindow = parentWindow;
         //le ponemos titulo al HUD lo centramos
-        [win setTitle:@"Preferences"];
-        [win setFloatingPanel:YES];
-        [win setDelegate:self];  
-        var contentView = [win contentView];
+        [self setTitle:@"Preferences"];
+        
+        var contentView = [self contentView];
         var bounds = [contentView bounds];  
         var center= CGRectGetWidth(bounds)/2.0;
         
