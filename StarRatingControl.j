@@ -95,7 +95,7 @@ var starEmpty  = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/e
     [self setIntValue:activeValue];
     activeValue = 0;
     [super mouseDown:anEvent]; 
-    [self setNeedsDisplay:YES]; // this is no more needed if using git head.
+    //[self setNeedsDisplay:YES]; // this is no more needed if using git head.
 }
  
 - (void)sizeToFit

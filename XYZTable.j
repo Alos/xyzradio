@@ -222,10 +222,10 @@ var ratingViewSize;
 {
     CPTextField titleView;
     CPTextField authorView;
-    CPTextField time;
+    CPTextField timeView;
     CPView highlightView;
     XYZSong theSong;
-	StarRatingView rater;
+	StarRatingView raterView;
 }
 
 
@@ -285,23 +285,26 @@ var ratingViewSize;
     [authorView sizeToFit];
     [authorView setFrameOrigin: CGPointMake(authorViewSize,0.0)];   
     
-    if(!time)
+    if(!timeView)
     {
-        time = [[CPTextField alloc] initWithFrame:CGRectInset([self bounds], 4, 4)];
-        [time setFont: [CPFont systemFontOfSize: 12.0]];
-        [time setTextColor: [CPColor colorWithHexString:"33FF00"]];
-        [self addSubview: time];
+        timeView = [[CPTextField alloc] initWithFrame:CGRectInset([self bounds], 4, 4)];
+        [timeView setFont: [CPFont systemFontOfSize: 12.0]];
+        [timeView setTextColor: [CPColor colorWithHexString:"33FF00"]];
+        [self addSubview: timeView];
     }
 	
-    [time setStringValue: [anObject time]];
-    [time sizeToFit];
-    [time setFrameOrigin: CGPointMake(timeViewSize,0.0)]; 
+    [timeView setStringValue: [anObject time]];
+    [timeView sizeToFit];
+    [timeView setFrameOrigin: CGPointMake(timeViewSize,0.0)]; 
 	
-	if(!rater){
-		  var rater = [[StarRatingView alloc] initWithFrame:CGRectMake(0,0,300,25)];
-		  [rater setFrameOrigin:CGPointMake(ratingViewSize,0.0)];
-		  [self addSubview: rater];
+	if(!raterView){
+		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
+		  [raterView setFrameOrigin:CGPointMake(ratingViewSize, 0.0)];
+		  [self addSubview: raterView];
 	}
+	var control = [raterView rater];
+	console.log("El rating: %s", [anObject rating]);
+	[control setIntValue: [anObject rating]];
 	
 	
 	
@@ -320,14 +323,14 @@ var ratingViewSize;
         [self addSubview:highlightView positioned:CPWindowBelow relativeTo: titleView];
         [titleView setTextColor: [CPColor blackColor]];            
         [authorView setTextColor: [CPColor blackColor]];
-        [time setTextColor: [CPColor blackColor]];     
+        [timeView setTextColor: [CPColor blackColor]];     
     }
     else
     {
         [highlightView removeFromSuperview];
         [titleView setTextColor: [CPColor colorWithHexString:"33FF00"]];
         [authorView setTextColor: [CPColor colorWithHexString:"33FF00"]];
-        [time setTextColor: [CPColor colorWithHexString:"33FF00"]];
+        [timeView setTextColor: [CPColor colorWithHexString:"33FF00"]];
     }
 
 }

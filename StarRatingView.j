@@ -23,7 +23,7 @@ var values = [ @"No selection",
     if (self = [super initWithFrame:aFrame])
     {
       rater  = [[StarRatingControl alloc] initWithFrame:CGRectMakeZero()];
-      [rater setNumberOfStars:6];
+      [rater setNumberOfStars:5];
       [rater sizeToFit];
       [rater setTarget:self];
       [rater setAction:@selector(starClick:)];
@@ -39,7 +39,7 @@ var values = [ @"No selection",
       [indicator setFrameSize:size];
       [indicator setAutoresizingMask: CPViewWidthSizable];
       [self addSubview:rater];
-      [self addSubview:indicator];
+      //[self addSubview:indicator];
     }
     return self;
 }

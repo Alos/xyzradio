@@ -24,7 +24,7 @@ This file is part of XYZRadio.
     CPString artist;
     CPString time;
     CPString genre;
-	CPString rating @accessors;
+	CPString rating;
     int ID;
     BOOL isLocal;
 	CPString pathToSong;
@@ -32,16 +32,25 @@ This file is part of XYZRadio.
     CPView superview;
 }
 
--(id)initWithSongTitle:(CPString)aSongTitle setArtist:(CPString)anArtist setID:(int)anID time:(CPString)aTime pathToSong:(CPString)aPath{
+-(id)initWithSongTitle:(CPString)aSongTitle setArtist:(CPString)anArtist setID:(int)anID time:(CPString)aTime pathToSong:(CPString)aPath rating:(CPString)aRating{
     if(self = [super init]){
         songTitle = aSongTitle;
         artist = anArtist;
         ID = anID;
         isLocal = false;
-        time=aTime;
-		pathToSong=aPath;
+        time = aTime;
+		pathToSong = aPath;
+		rating = aRating;
     }
     return self;
+}
+
+-(void)setRating:(CPString)aValue{
+	rating = aValue;
+}
+
+-(CPString)rating{
+	return rating;
 }
 
 - (void) setSongTitle:(CPString) aSong{
@@ -110,6 +119,7 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
     [aCoder encodeObject:isLocal forKey:@"isLocal"];
     [aCoder encodeObject:time forKey:@"time"];
 	[aCoder encodeObject:pathToSong forKey:@"pathToSong"];
+	[aCoder encodeObject:rating forKey:@"rating"];
 }
 
 - (id)initWithCoder:(CPCoder)aCoder{
@@ -122,6 +132,7 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
         isLocal = [aCoder decodeObjectForKey:@"isLocal"];
         time = [aCoder decodeObjectForKey:@"time"];
 		pathToSong = [aCoder decodeObjectForKey:@"pathToSong"];
+		rating = [aCoder decodeObjectForKey:@"rating"];
     }
     return self;
 }

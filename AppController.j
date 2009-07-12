@@ -59,23 +59,23 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
      
     //testing...
     var demoList = [[CPArray alloc] init]; 
-    var song1 = [[XYZSong alloc] initWithSongTitle:@"I just can live a lie" setArtist:@"Carrie Underwood" setID:1 time:"4:00" pathToSong:NULL];
+    var song1 = [[XYZSong alloc] initWithSongTitle:@"I just can live a lie" setArtist:@"Carrie Underwood" setID:1 time:"4:00" pathToSong:"" rating:"4"];
     [demoList addObject:song1];
-    var song2 = [[XYZSong alloc] initWithSongTitle:@"Last night" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:NULL];
+    var song2 = [[XYZSong alloc] initWithSongTitle:@"Last night" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:"" rating:"2"];
     [demoList addObject:song2];
-    var song3 = [[XYZSong alloc] initWithSongTitle:@"My Last Breath (Live version)" setArtist:@"Evanescence" setID:3 time:"3:59" pathToSong:NULL];
+    var song3 = [[XYZSong alloc] initWithSongTitle:@"My Last Breath (Live version)" setArtist:@"Evanescence" setID:3 time:"3:59" pathToSong:"" rating:"3"];
     [demoList addObject:song3];
-    var song4 = [[XYZSong alloc] initWithSongTitle:@"Heaven Knows" setArtist:@"Faith Evans" setID:4 time:"5:43" pathToSong:NULL];
+    var song4 = [[XYZSong alloc] initWithSongTitle:@"Heaven Knows" setArtist:@"Faith Evans" setID:4 time:"5:43" pathToSong:"" rating:"1"];
     [demoList addObject:song4];
-    var song5 = [[XYZSong alloc] initWithSongTitle:@"Trouble" setArtist:@"Pink" setID:5 time:"3:12" pathToSong:NULL];
+    var song5 = [[XYZSong alloc] initWithSongTitle:@"Trouble" setArtist:@"Pink" setID:5 time:"3:12" pathToSong:"" rating:"2"];
     [demoList addObject:song5];
-    var song6 = [[XYZSong alloc] initWithSongTitle:@"Jaded" setArtist:@"Aerosmith" setID:6 time:"3:27" pathToSong:NULL];
+    var song6 = [[XYZSong alloc] initWithSongTitle:@"Jaded" setArtist:@"Aerosmith" setID:6 time:"3:27" pathToSong:"" rating:"1"];
     [demoList addObject:song6];
-    var song7 = [[XYZSong alloc] initWithSongTitle:@"Who Knew" setArtist:@"Pink" setID:7 time:"3:21" pathToSong:NULL];
+    var song7 = [[XYZSong alloc] initWithSongTitle:@"Who Knew" setArtist:@"Pink" setID:7 time:"3:21" pathToSong:"" rating:"2"];
     [demoList addObject:song7];
-	var song8 = [[XYZSong alloc] initWithSongTitle:@"Rewrite" setArtist:@"Asian Kung Fu Generation" setID:8 time:"3:47" pathToSong:"Resources/LocalMusic/Rewrite.mp3"];	
+	var song8 = [[XYZSong alloc] initWithSongTitle:@"Rewrite" setArtist:@"Asian Kung Fu Generation" setID:8 time:"3:47" pathToSong:"Resources/LocalMusic/Rewrite.mp3" rating:"5"];	
     [demoList addObject:song8];
-	var song9 = [[XYZSong alloc] initWithSongTitle:@"In the dark but not alone" setArtist:@"radiotimes" setID:9 time:"3:37" pathToSong:"Resources/LocalMusic/InTheDark.mp3"];	
+	var song9 = [[XYZSong alloc] initWithSongTitle:@"In the dark but not alone" setArtist:@"radiotimes" setID:9 time:"3:37" pathToSong:"Resources/LocalMusic/InTheDark.mp3" rating:"2"];	
     [demoList addObject:song9];
     [self addSongList: demoList];
     //brings the window to the front
