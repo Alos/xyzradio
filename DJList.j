@@ -36,16 +36,14 @@ This file is part of XYZRadio.
         var bounds = [contentView bounds];
         //para los titulos
         var cmArray =[[CPArray alloc] init]; 
-        var titleLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 248, 31) title:"Name" color:NULL];
-        var artistLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(250, 7, 248, 31) title:"Artist" color: NULL];
-        var timeLabel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(500, 7, 48, 31) title:"Time" color: NULL];
-        var ratingLable =[[XYZColumnModel alloc] initWithFrame:CGRectMake(550, 7, 48, 31) title:"Rating" color: NULL];
-        [cmArray addObject: titleLabel]; 
-        [cmArray addObject: artistLabel];
-        [cmArray addObject: timeLabel];
-        [cmArray addObject: ratingLable];
-        //a table
-        theTable = [[XYZTable alloc] initWithColumnModel: cmArray model:list frame: bounds];
+        var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 248, 31) title:"Name" color:nil];
+        var artistColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(250, 7, 248, 31) title:"Artist" color: nil];
+        var timeColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(500, 7, 48, 31) title:"Time" color: nil];
+        var ratingColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(550, 7, 48, 31) title:"Rating" color: nil];
+		
+		var fullModel = [CPDictionary dictionaryWithObjects:[titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["title", "artist", "time", "rating"]];
+		//a table
+        theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: bounds];
         
         [contentView addSubview: theTable];    
 	}    

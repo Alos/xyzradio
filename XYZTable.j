@@ -22,23 +22,27 @@ This file is part of XYZRadio.
 @import "XYZSong.j"
 
 SongsDragType = @"SongsDragType";
-
 @implementation XYZTable : CPView
 {
-    /*Para las tablas*/
+    /*The collection view for the table*/
     CPCollectionView collectionView;
     CPArray model;
-    /*Cosas para los titulos*/
-    CPArray columnModel
-    /*Cosas para las celdas*/
+    /*The model for the table*/
+    CPDictionary columnModel;
+    /*cells*/
     XYZCell celdas;
     var pos; 
 }
 
--(void) initWithColumnModel:(CPArray)aColumnModel model:(CPArray)aModel frame:(CGRect)bounds{
+-(void) initWithColumnModel:(CPDictionary)aColumnModel model:(CPArray)aModel frame:(CGRect)bounds{
     self = [super initWithFrame:bounds];
     [self setModel:aModel];
-    //para nuestro grid
+		
+    //the cells
+	celdas = [[XYZCell alloc] initWithFrame:CGRectMakeZero()];
+	[celdas setModel: aColumnModel];
+	
+	//para nuestro grid
     collectionView = [[CPCollectionView alloc] initWithFrame: CGRectMake(0, 0,  CGRectGetWidth(bounds), CGRectGetHeight(bounds))];
     pos=0;
     //los scrolls por si son muchos
@@ -50,7 +54,6 @@ SongsDragType = @"SongsDragType";
     [scrollView setAutoresizesSubviews:YES];
     //los items q representan los renglones
     var listItem = [[CPCollectionViewItem alloc] init];
-    celdas = [[XYZCell alloc] initWithFrame:CGRectMakeZero()];
     [listItem setView: celdas];  
     
     [collectionView setItemPrototype: listItem];  
@@ -110,15 +113,16 @@ SongsDragType = @"SongsDragType";
     }
 }
 
--(void)setColumnModel:(CPArray)aColumnModel{
-    columnModel = aColumnModel;
-    for(var i=0; i<[columnModel count];i++){
-        var thisColumn = [columnModel objectAtIndex:i];
-        [self addSubview: thisColumn];
+-(void)setColumnModel:(CPDictionary)aColumnModel{
+    
+	columnModel = [aColumnModel allValues];
+    
+	for(var i=0; i<[columnModel count];i++){
+        var thisColumnModel = [columnModel objectAtIndex:i];
+        [self addSubview: thisColumnModel];
         if(i>0 && i<[columnModel count]){
             pos = pos+CGRectGetWidth([[columnModel objectAtIndex: i-1] bounds])+1;
             var border = [[CPView alloc] initWithFrame:CGRectMake(pos, 5, 1, CGRectGetHeight([self bounds])-7)];    
-            console.log("Setting line at: %d",pos);
             [border setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
             [self addSubview: border];
         }
@@ -208,14 +212,49 @@ Gets the total of songs in the list
 
 @end
 
+
+var authorViewSize;
+var titleViewSize;
+var timeViewSize;
+var ratingViewSize;
+
 @implementation XYZCell : CPView
 {
-    CPTextField     titleView;
-    CPTextField     authorView;
-    CPTextField     time;
-    CPView          highlightView;
+    CPTextField titleView;
+    CPTextField authorView;
+    CPTextField time;
+    CPView highlightView;
     XYZSong theSong;
-    CPPasteboard aPasteboard;
+}
+
+
+- (void)setModel:(CPDictionary)aModel{
+	console.log("Setting the model: %s", aModel);
+	if(aModel){
+		var titleColumn = [aModel objectForKey:"title"];
+		if(titleColumn){
+			var titleColumnWidth = [titleColumn frame].origin.x;
+			titleViewSize = titleColumnWidth;
+		}
+		
+		var artistColumn = [aModel objectForKey:"artist"];
+		if(artistColumn){
+			var artistColumnWidth = [artistColumn frame].origin.x;
+			authorViewSize = artistColumnWidth;
+		}
+		
+		var timeColumn = [aModel objectForKey:"time"];
+		if(timeColumn){
+			var timeColumnWidth = [timeColumn frame].origin.x;
+			timeViewSize = timeColumnWidth;
+		}
+		
+		var ratingColumn = [aModel objectForKey:"rating"];
+		if(ratingColumn){
+			var ratingColumnWidth = [ratingColumn frame].origin.x;
+			ratingViewSize = ratingColumnWidth;
+		}
+	}
 }
 
 - (void)setRepresentedObject:(JSObject)anObject
@@ -240,9 +279,10 @@ Gets the total of songs in the list
         [authorView setTextColor: [CPColor colorWithHexString:"33FF00"]];
         [self addSubview: authorView];
     }
+	
     [authorView setStringValue: [anObject artist]];
     [authorView sizeToFit];
-    [authorView setFrameOrigin: CGPointMake(251,0.0)];   
+    [authorView setFrameOrigin: CGPointMake(authorViewSize,0.0)];   
     
     if(!time)
     {
@@ -253,7 +293,7 @@ Gets the total of songs in the list
     }
     [time setStringValue: [anObject time]];
     [time sizeToFit];
-    [time setFrameOrigin: CGPointMake(500,0.0)]; 
+    [time setFrameOrigin: CGPointMake(timeViewSize,0.0)]; 
 }
 
 - (void)setSelected:(BOOL)flag
