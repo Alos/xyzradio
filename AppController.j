@@ -19,13 +19,14 @@ This file is part of XYZRadio.
 @import "PlayerControl.j"
 @import "PreferencesWindow.j"
 @import "XYZSong.j"
-
+@import "UsersWindow.j";
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
     AddSongToolbarItemIdentifier = "AddSongToolbarItemIdentifier",
-    RemoveSongToolbarItemIdentifier = "RemoveSongToolbarItemIdentifier"
-    preferencesItemIdentifier = "preferencesItemIdentifier";
+    RemoveSongToolbarItemIdentifier = "RemoveSongToolbarItemIdentifier",
+    preferencesItemIdentifier = "preferencesItemIdentifier",
+    usersItemIdentifier = "usresItemIdentifier";	
 
 
 @implementation AppController : CPObject
@@ -38,7 +39,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     PreferencesWindow preferencesWindow;
     CPImage bgImage;
     CPWindow theWindow;
-	CPView contentView;
+    CPView contentView;
+    UsersWindow usersWindow;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -161,14 +163,27 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [musicBrowser orderFront:self];
 }
 
+//abre la ventana de usuarios
+-(void)openUsers{
+   if(!usersWindow){
+	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(0,0,400,500) styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
+	[usersWindow setFrameOrigin:(CPPointMake(60, 100))];
+   }	
+   if([usersWindow isVisible]){
+	[usersWindow close];
+   }
+   else
+   	[usersWindow orderFront:self];
+}
+
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,preferencesItemIdentifier];
+   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,usersItemIdentifier,RemoveSongToolbarItemIdentifier,preferencesItemIdentifier];
 }
 
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,preferencesItemIdentifier];
+   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,usersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,preferencesItemIdentifier];
 }
 
 - (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)anItemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag
@@ -239,6 +254,22 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }
+    //ventana de usuarios	
+    else if(anItemIdentifier == usersItemIdentifier){
+	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSong.png" size:CPSizeMake(30, 25)],
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSongOff.png" size:CPSizeMake(30, 25)];
+            
+        [toolbarItem setImage: image];
+        [toolbarItem setAlternateImage: highlighted];
+
+        [toolbarItem setTarget: self];
+        [toolbarItem setAction: @selector(openUsers)];
+        [toolbarItem setLabel: "Users"];
+        
+        [toolbarItem setMinSize:CGSizeMake(32, 32)];
+        [toolbarItem setMaxSize:CGSizeMake(32, 32)];
+
+    } 	
     else if (anItemIdentifier == preferencesItemIdentifier)
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
@@ -252,8 +283,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setAction:@selector(openPreferences)]; 
         [toolbarItem setLabel:"Prefrences"];
 		
-        [toolbarItem setMinSize:CGSizeMake(180, 32)];
-        [toolbarItem setMaxSize:CGSizeMake(180, 32)];
+        [toolbarItem setMinSize:CGSizeMake(32, 32)];
+        [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }
 
         
