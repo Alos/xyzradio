@@ -38,12 +38,13 @@ This file is part of XYZRadio.
         var contentView = [self contentView];
         var bounds = [contentView bounds];
         //para los titulos
-		var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 228, 31) title:"Name" color:nil];
+		var playingColumnModel = [[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 26, 31) title:" " color:nil];
+		var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(27, 7, 202, 31) title:"Name" color:nil];
         var artistColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(230, 7, 190, 31) title:"Artist" color: nil];
         var timeColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(422, 7, 48, 31) title:"Time" color: nil];
         var ratingColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(470, 7, 48, 31) title:"Rating" color: nil];
 		
-		var fullModel = [CPDictionary dictionaryWithObjects:[titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["title", "artist", "time", "rating"]];
+		var fullModel = [CPDictionary dictionaryWithObjects:[playingColumnModel, titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["playing", "title", "artist", "time", "rating"]];
 		
        
         theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: bounds];

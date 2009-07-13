@@ -235,25 +235,25 @@ var ratingViewSize;
 		var titleColumn = [aModel objectForKey:"title"];
 		if(titleColumn){
 			var titleColumnWidth = [titleColumn frame].origin.x;
-			titleViewSize = titleColumnWidth;
+			titleViewSize = titleColumnWidth+2;
 		}
 		
 		var artistColumn = [aModel objectForKey:"artist"];
 		if(artistColumn){
 			var artistColumnWidth = [artistColumn frame].origin.x;
-			authorViewSize = artistColumnWidth;
+			authorViewSize = artistColumnWidth+2;
 		}
 		
 		var timeColumn = [aModel objectForKey:"time"];
 		if(timeColumn){
 			var timeColumnWidth = [timeColumn frame].origin.x;
-			timeViewSize = timeColumnWidth;
+			timeViewSize = timeColumnWidth + 2;
 		}
 		
 		var ratingColumn = [aModel objectForKey:"rating"];
 		if(ratingColumn){
 			var ratingColumnWidth = [ratingColumn frame].origin.x;
-			ratingViewSize = ratingColumnWidth;
+			ratingViewSize = ratingColumnWidth+2;
 		}
 	}
 }
@@ -271,7 +271,7 @@ var ratingViewSize;
 
     [titleView setStringValue: [anObject songTitle]];
     [titleView sizeToFit];
-    [titleView setFrameOrigin: CGPointMake(5,0.0)];
+    [titleView setFrameOrigin: CGPointMake(titleViewSize,0.0)];
     
     if(!authorView)
     {

@@ -86,13 +86,17 @@ This file is part of XYZRadio.
         [volumeSlider setValue:100];        
         [contentView addSubview:volumeSlider];
         //Ponemos las labeles al rededor del slider
-        var volumeStartLabel = [self labelWithTitle:"0%"],
-        volumeEndLabel = [self labelWithTitle:"100%"];
-        [volumeStartLabel setFrameOrigin:CGPointMake(CGRectGetWidth(bounds)/2.0 - CGRectGetWidth([volumeStartLabel frame]) - 100 , 95)];
-        [volumeEndLabel setFrameOrigin:CGPointMake(CGRectGetMaxX([volumeSlider frame]), 95)];
-        //Las agregamos a la vista
-        [contentView addSubview:volumeStartLabel];
-        [contentView addSubview:volumeEndLabel];  
+		var volumeDownImage = [[CPImage alloc] initWithContentsOfFile:"Resources/volumeDown.png" size:CPSizeMake(26, 25)];
+		var volumeDownImageView = [[CPImageView alloc] initWithFrame:CGRectMake(75, 95, 26, 25)];
+		[volumeDownImageView setImage: volumeDownImage];
+			
+		var volumeUpImage = [[CPImage alloc] initWithContentsOfFile:"Resources/volumeUp.png" size:CPSizeMake(26, 25)];
+		var volumeUpImageView = [[CPImageView alloc] initWithFrame:CGRectMake(300, 95, 26, 25)];
+		[volumeUpImageView setImage: volumeUpImage];	
+			
+		[contentView addSubview:volumeDownImageView];
+		[contentView addSubview:volumeUpImageView];
+				
 		[volumeSlider setTarget:self];
         [volumeSlider setAction:@selector(setVolume:)]; 
 		 

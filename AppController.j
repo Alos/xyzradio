@@ -180,7 +180,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
 		
 		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/biblioteca.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/listaGeneralHightlighted.png" size:CPSizeMake(30, 25)];
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/bibliotecaOff.png" size:CPSizeMake(30, 25)];
 			
 		[toolbarItem setImage: image];
 		[toolbarItem setAlternateImage: highlighted];
@@ -196,8 +196,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
 		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/djWindow.png" size:CPSizeMake(30, 25)],
-		highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/iListIconHightlighted.png" size:CPSizeMake(30, 25)];
+		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/dj.png" size:CPSizeMake(30, 25)],
+		highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/djOff.png" size:CPSizeMake(30, 25)];
 		
 		[toolbarItem setImage: image];
 		[toolbarItem setAlternateImage: highlighted];
@@ -212,7 +212,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     else if (anItemIdentifier == AddSongToolbarItemIdentifier)
     {
         var image = [[CPImage alloc] initWithContentsOfFile:"Resources/addSong.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/addHighlighted.png" size:CPSizeMake(30, 25)];
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/addSongOff.png" size:CPSizeMake(30, 25)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
@@ -227,7 +227,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     else if (anItemIdentifier == RemoveSongToolbarItemIdentifier)
     {        
         var image = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSong.png" size:CPSizeMake(30, 25)],
-        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeHighlighted.png" size:CPSizeMake(30, 25)];
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSongOff.png" size:CPSizeMake(30, 25)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];

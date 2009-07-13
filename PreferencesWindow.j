@@ -31,7 +31,7 @@ This file is part of XYZRadio.
 }
 
 /*Una bonita contructora*/
-- (id)initWithContentRect:aRectangle styleMask:aStyleMask{
+- (id)initWithContentRect:aRectangle styleMask:aStyleMask bridgeWindow:(CPView)aBridgeWindow{
     self = [super initWithContentRect:aRectangle styleMask: aStyleMask];
     if (self)//pa ver si no somos null :P
     {
