@@ -46,6 +46,8 @@ var values = [ @"No selection",
 
 - (void)starClick:(id)sender
 {
-  [indicator setStringValue:values[[sender intValue]]];
+  var info = [CPDictionary dictionaryWithObject:[sender intValue] forKey:"rating"];   
+  [[CPNotificationCenter defaultCenter] postNotificationName:"StarRatingForSongChanged" object:self userInfo:info]; 	
+  //[indicator setStringValue:values[[sender intValue]]];
 }
 @end

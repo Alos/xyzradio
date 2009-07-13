@@ -136,4 +136,21 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
     }
     return self;
 }
+
+-(void)starRatingForSongChanged:(CPNotification)aNotification{
+	console.log("notified!!");
+	var info = [aNotification userInfo];
+	var aux = [info objectForKey:"rating"];
+	[self setRating: aux];
+	console.log([self rating]);
+}
+
+/**
+Sets the rater of the song, this makes it easy to update the value of the rating in this song.
+**/	
+-(void)setStarRater:(StarRatingView)aRater{
+		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(starRatingForSongChanged:) name:"StarRatingForSongChanged" object:aRater];
+}
+
+}
 @end

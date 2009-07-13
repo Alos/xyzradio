@@ -300,10 +300,11 @@ var ratingViewSize;
 	if(!raterView){
 		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
 		  [raterView setFrameOrigin:CGPointMake(ratingViewSize, 0.0)];
+		  console.log("Setting rater for %s width %s", [anObject songTitle], raterView);
+		  [anObject setStarRater: raterView];		  
 		  [self addSubview: raterView];
 	}
 	var control = [raterView rater];
-	console.log("El rating: %s", [anObject rating]);
 	[control setIntValue: [anObject rating]];
 	
 	
