@@ -125,7 +125,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 -(void)openPreferences{
     if(!preferencesWindow)
-        preferencesWindow = [[PreferencesWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask];
+        preferencesWindow = [[PreferencesWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
     if([preferencesWindow isVisible]){
         [preferencesWindow setFrameOrigin:(CPPointMake(500, 50))];
         [preferencesWindow close];
