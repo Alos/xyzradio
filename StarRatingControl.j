@@ -9,9 +9,9 @@
 @import <AppKit/CPControl.j>
 @import <AppKit/CPImage.j>
  
-var starEmpty  = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/empty.gif" size: CPSizeMake(25, 25)],
-    starSet    = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/set.gif" size: CPSizeMake(25, 25)],
-    starActive = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/active.gif" size: CPSizeMake(25, 25)];
+var starEmpty  = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/empty.png" size: CPSizeMake(25, 25)],
+    starSet    = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/set.png" size: CPSizeMake(25, 25)],
+    starActive = [[CPImage alloc] initWithContentsOfFile: "Resources/StarRater/active.png" size: CPSizeMake(25, 25)];
  
 @implementation StarRatingControl : CPControl
 {

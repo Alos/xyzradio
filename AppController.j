@@ -179,7 +179,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
 		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/listaGeneralIcon.png" size:CPSizeMake(30, 25)],
+		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/biblioteca.png" size:CPSizeMake(30, 25)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/listaGeneralHightlighted.png" size:CPSizeMake(30, 25)];
 			
 		[toolbarItem setImage: image];
@@ -196,7 +196,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
 		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/iListIcon.png" size:CPSizeMake(30, 25)],
+		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/djWindow.png" size:CPSizeMake(30, 25)],
 		highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/iListIconHightlighted.png" size:CPSizeMake(30, 25)];
 		
 		[toolbarItem setImage: image];
@@ -211,7 +211,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     else if (anItemIdentifier == AddSongToolbarItemIdentifier)
     {
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/add.png" size:CPSizeMake(30, 25)],
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/addSong.png" size:CPSizeMake(30, 25)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/addHighlighted.png" size:CPSizeMake(30, 25)];
             
         [toolbarItem setImage: image];
@@ -226,7 +226,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     else if (anItemIdentifier == RemoveSongToolbarItemIdentifier)
     {        
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/remove.png" size:CPSizeMake(30, 25)],
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSong.png" size:CPSizeMake(30, 25)],
         highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeHighlighted.png" size:CPSizeMake(30, 25)];
             
         [toolbarItem setImage: image];
