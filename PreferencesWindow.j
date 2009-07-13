@@ -28,13 +28,15 @@ This file is part of XYZRadio.
     CPString currentlyPlayingString;
     CPButton botonOk;
     CPPopUpButton wallpaperMenus;
+    CPView contentViewOfWindow;	
 }
 
 /*Una bonita contructora*/
-- (id)initWithContentRect:aRectangle styleMask:aStyleMask bridgeWindow:(CPView)aBridgeWindow{
+- (id)initWithContentRect:aRectangle styleMask:aStyleMask contentViewOfWindow:(CPView)aContentView{
     self = [super initWithContentRect:aRectangle styleMask: aStyleMask];
     if (self)//pa ver si no somos null :P
     {
+	contentViewOfWindow = aContentView;
         //le ponemos titulo al HUD lo centramos
         [self setTitle:@"Preferences"];
         
@@ -83,9 +85,9 @@ This file is part of XYZRadio.
 }
 
 -(void)savePreferences{
-    var contentView = [bridgeWindow contentView];
+    //var contentView = [bridgeWindow contentView];
     bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/"+[wallpaperMenus titleOfSelectedItem]+".jpg" size:CPSizeMake(30, 25)];
-    [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
+    [contentViewOfWindow setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
 }
 
 @end
