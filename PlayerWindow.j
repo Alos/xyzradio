@@ -87,11 +87,11 @@ This file is part of XYZRadio.
         [contentView addSubview:volumeSlider];
         //Ponemos las labeles al rededor del slider
 		var volumeDownImage = [[CPImage alloc] initWithContentsOfFile:"Resources/volumeDown.png" size:CPSizeMake(26, 25)];
-		var volumeDownImageView = [[CPImageView alloc] initWithFrame:CGRectMake(75, 95, 26, 25)];
+		var volumeDownImageView = [[CPImageView alloc] initWithFrame:CGRectMake(70, 95, 26, 25)];
 		[volumeDownImageView setImage: volumeDownImage];
 			
 		var volumeUpImage = [[CPImage alloc] initWithContentsOfFile:"Resources/volumeUp.png" size:CPSizeMake(26, 25)];
-		var volumeUpImageView = [[CPImageView alloc] initWithFrame:CGRectMake(300, 95, 26, 25)];
+		var volumeUpImageView = [[CPImageView alloc] initWithFrame:CGRectMake(305, 95, 26, 25)];
 		[volumeUpImageView setImage: volumeUpImage];	
 			
 		[contentView addSubview:volumeDownImageView];

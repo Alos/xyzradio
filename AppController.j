@@ -242,8 +242,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     else if (anItemIdentifier == preferencesItemIdentifier)
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/prefrencesIcon.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/prefrencesIconHightlighted.png" size:CPSizeMake(30, 25)];
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/setup.png" size:CPSizeMake(30, 25)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/setupOff.png" size:CPSizeMake(30, 25)];
 		
 		[toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
