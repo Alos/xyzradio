@@ -49,8 +49,9 @@ This file is part of XYZRadio.
         
         var arr =[[CPArray alloc] init];
         [arr addObject:"theGoldenAgeOf60"];
-        [arr addObject:"Organ-ism"];  
-        wallpaperMenus =[[CPPopUpButton alloc] initWithFrame:CGRectMake(125, 50, 170, 18)];
+        [arr addObject:"Organ-ism"];
+	[arr addObject:"Retro_Music"];  
+        wallpaperMenus =[[CPPopUpButton alloc] initWithFrame:CGRectMake(125, 50, 170, 24)];
         [wallpaperMenus addItemsWithTitles:arr];
         
         
@@ -59,21 +60,19 @@ This file is part of XYZRadio.
         [serverIPLabel setTextColor: [CPColor colorWithHexString:"33FF00"]];
         [serverIPLabel setBackgroundColor:NULL];
         
-        var serverIP = [[CPTextField alloc] initWithFrame: CGRectMake(125, 90, 170, 18)];
+        var serverIP = [[CPTextField alloc] initWithFrame: CGRectMake(125, 90, 170, 30)];
         [serverIP setEditable:YES];
         [serverIP setBezeled:YES];
-        [serverIP setTextColor: [CPColor colorWithHexString:"33FF00"]];
-        [serverIP setBackgroundColor:[CPColor colorWithHexString:"003300"]];
+        [serverIP setBackgroundColor:[CPColor colorWithHexString:"33FF00"]];        
         
-        
-        botonOK = [[CPButton alloc] initWithFrame:CGRectMake(300, 400, 50, 18)];
+        botonOK = [[CPButton alloc] initWithFrame:CGRectMake(330, 450, 50, 18)];
+	[botonOK setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
         [botonOk setBezelStyle:CPHUDBezelStyle];
-        [botonOK setTitle:@"Ok"];
-        
+        [botonOK setTitle:@"Ok"];	        
         [botonOK setTarget:self];
         [botonOK setAction:@selector(savePreferences)];                
               
-        [contentView addSubview:botonOK];
+        [contentView addSubview: botonOK];
         [contentView addSubview: wallpaperLabel]; 
         [contentView addSubview: wallpaperMenus]; 
         [contentView addSubview: serverIPLabel];  
@@ -82,9 +81,11 @@ This file is part of XYZRadio.
     }
     return self;
 }
+
 -(void)savePreferences{
     var contentView = [bridgeWindow contentView];
     bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/"+[wallpaperMenus titleOfSelectedItem]+".jpg" size:CPSizeMake(30, 25)];
     [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
 }
+
 @end
