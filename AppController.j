@@ -256,8 +256,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     //ventana de usuarios	
     else if(anItemIdentifier == usersItemIdentifier){
-	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios.png" size:CPSizeMake(30, 25)],
-        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSongOff.png" size:CPSizeMake(30, 25)];
+	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/usuario.png" size:CPSizeMake(30, 25)],
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/usuariosOff.png" size:CPSizeMake(30, 25)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];

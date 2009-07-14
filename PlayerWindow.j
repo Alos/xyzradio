@@ -30,7 +30,7 @@ This file is part of XYZRadio.
     CPButton playButton;
     CPButton forwardButton;
 	CPSlider volumeSlider;
-    CPTextField currentlyPlaying;
+    CPTextField currentlyPlayingTextField;
 	BOOL local;
 	
 	//the control
@@ -101,10 +101,6 @@ This file is part of XYZRadio.
         [volumeSlider setAction:@selector(setVolume:)]; 
 		 
 		//Currenlyplaying bar 
-      	
-		//var currentlyPlayingBarBG = [[CPView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 130, 371, 67)];    
-        //[currentlyPlayingBarBG setBackgroundColor: [CPColor colorWithHexString:"003300"]];
-        //[contentView addSubview: currentlyPlayingBarBG];
 
 		var grillBG = [[CPImage alloc] initWithContentsOfFile:"Resources/player/fondotrans.png" size:CPSizeMake(371, 67)];
 		var grillBGImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 130, 371, 67)];
@@ -119,11 +115,19 @@ This file is part of XYZRadio.
 		[contentView addSubview: timebarImageView];
 				
 		var currentlyPlayingString="Nothing...";
-        currentlyPlaying= [[CPTextField alloc] initWithFrame: CGRectMake(20, 150, 350, 18)];
-        [currentlyPlaying setStringValue:currentlyPlayingString];//currentlyPlayingString
-        [currentlyPlaying setTextColor: [CPColor colorWithHexString:"33FF00"]];
-        [currentlyPlaying setAlignment:CPCenterTextAlignment];
-		[contentView addSubview: currentlyPlaying];
+        currentlyPlayingTextField= [[CPTextField alloc] initWithFrame: CGRectMake(20, 150, 350, 18)];
+        [currentlyPlayingTextField setStringValue:currentlyPlayingString];//currentlyPlayingString
+        [currentlyPlayingTextField setTextColor: [CPColor colorWithHexString:"33FF00"]];
+        [currentlyPlayingTextField setAlignment:CPCenterTextAlignment];
+		[contentView addSubview: currentlyPlayingTextField];
+		
+		var currentlyPlayingString="0:00";
+        currentlyPlayingTextField= [[CPTextField alloc] initWithFrame: CGRectMake(20, 150, 350, 18)];
+        [currentlyPlayingTextField setStringValue:currentlyPlayingString];//currentlyPlayingString
+        [currentlyPlayingTextField setTextColor: [CPColor colorWithHexString:"33FF00"]];
+        [currentlyPlayingTextField setAlignment:CPCenterTextAlignment];
+		[contentView addSubview: currentlyPlayingTextField];
+
 		
 		var glassImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/transparencia-cristal.png" size:CPSizeMake(371, 34)];
 		var glassImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 128, 371, 34)];
@@ -209,13 +213,13 @@ Plays the previous song
 Sets the timer of the current song
 */
 -(void)setTime:(CPString)aTime{
-	[currentlyPlaying setStringValue:values];
+	//[ setStringValue:values];
 }
 
 /*Sets the curently playing song*/
 -(void)setCurrentlyPlayingSong:(CPString)aSongTitle{
 	console.log("Segun esta tocando: %s",aSongTitle);
-	currentlyPlaying=aSongTitle;
+	[currentlyPlayingTextField setStringValue:aSongTitle];
 }
 
 - (CPTextField)labelWithTitle:(CPString)aTitle
