@@ -101,16 +101,41 @@ This file is part of XYZRadio.
         [volumeSlider setAction:@selector(setVolume:)]; 
 		 
 		//Currenlyplaying bar 
-        var currentlyPlayingString="Nothing...";
-        currentlyPlaying= [[CPTextField alloc] initWithFrame: CGRectMake(20, 130, 350, 18)];
+      	
+		//var currentlyPlayingBarBG = [[CPView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 130, 371, 67)];    
+        //[currentlyPlayingBarBG setBackgroundColor: [CPColor colorWithHexString:"003300"]];
+        //[contentView addSubview: currentlyPlayingBarBG];
+
+		var grillBG = [[CPImage alloc] initWithContentsOfFile:"Resources/player/fondotrans.png" size:CPSizeMake(371, 67)];
+		var grillBGImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 130, 371, 67)];
+		[grillBGImageView setImage: grillBG];
+		[grillBGImageView setAlphaValue:0.6];
+		[contentView addSubview: grillBGImageView];
+		
+		
+		var timebar = [[CPImage alloc] initWithContentsOfFile:"Resources/player/timeline.png" size:CPSizeMake(371, 5)];
+		var timebarImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 175, 371, 5)];
+		[timebarImageView setImage: timebar];
+		[contentView addSubview: timebarImageView];
+				
+		var currentlyPlayingString="Nothing...";
+        currentlyPlaying= [[CPTextField alloc] initWithFrame: CGRectMake(20, 150, 350, 18)];
         [currentlyPlaying setStringValue:currentlyPlayingString];//currentlyPlayingString
         [currentlyPlaying setTextColor: [CPColor colorWithHexString:"33FF00"]];
-        [currentlyPlaying setBackgroundColor:[CPColor colorWithHexString:"003300"]];
         [currentlyPlaying setAlignment:CPCenterTextAlignment];
-        [contentView addSubview: backButton];
+		[contentView addSubview: currentlyPlaying];
+		
+		var glassImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/transparencia-cristal.png" size:CPSizeMake(371, 34)];
+		var glassImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 128, 371, 34)];
+		[glassImageView setImage: glassImage];
+		[glassImageView setAlphaValue:.3];
+		[contentView addSubview: glassImageView];
+
+        
+		[contentView addSubview: backButton];
         [contentView addSubview: playButton];
         [contentView addSubview: forwardButton];
-        [contentView addSubview: currentlyPlaying];
+       
 		
 		playing = NO;
 		paused = NO;
@@ -189,6 +214,7 @@ Sets the timer of the current song
 
 /*Sets the curently playing song*/
 -(void)setCurrentlyPlayingSong:(CPString)aSongTitle{
+	console.log("Segun esta tocando: %s",aSongTitle);
 	currentlyPlaying=aSongTitle;
 }
 

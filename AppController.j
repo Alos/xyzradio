@@ -61,7 +61,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
      
     //testing...
     var demoList = [[CPArray alloc] init]; 
-    var song1 = [[XYZSong alloc] initWithSongTitle:@"I just can live a lie" setArtist:@"Carrie Underwood" setID:1 time:"4:00" pathToSong:"" rating:"4"];
+    var song1 = [[XYZSong alloc] initWithSongTitle:@"do it over" setArtist:@"amélie" setID:1 time:"3:04" pathToSong:"http://files.me.com/alos/h4w1s0.mp3" rating:"4"];
     [demoList addObject:song1];
     var song2 = [[XYZSong alloc] initWithSongTitle:@"Last night" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:"" rating:"2"];
     [demoList addObject:song2];
@@ -256,7 +256,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     //ventana de usuarios	
     else if(anItemIdentifier == usersItemIdentifier){
-	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSong.png" size:CPSizeMake(30, 25)],
+	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios.png" size:CPSizeMake(30, 25)],
         highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSongOff.png" size:CPSizeMake(30, 25)];
             
         [toolbarItem setImage: image];
