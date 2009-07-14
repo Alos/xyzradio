@@ -69,8 +69,9 @@ This file is part of XYZRadio.
 				else{
 					console.log("Playing: %s", [aSong pathToSong]);
 					currentlyPlayingSong=aSong;
-					var currentlyPlayingString= [aSong songTitle]+" by "+[aSong artist]+" Time: "+[aSong time];
-					[player setCurrentlyPlayingSong:currentlyPlayingString];
+					var currentlyPlayingString= [aSong songTitle]+" by "+[aSong artist];
+					[player setCurrentlyPlayingSong:currentlyPlayingString time:[aSong time]];
+					[player setTime:[aSong time]];
 					[theSoundManager playSound:[aSong pathToSong]];
 					[player setPausedIcon];
 					playing = YES;
@@ -152,11 +153,10 @@ Moves the timer on the player GUI
 -(void)setTime:(CPNotification)aNotification{
 	var info = [aNotification userInfo];
 	var aux = [info objectForKey:"time"];
-	time = [self getTime: aux];
+	time = aux;
 	if(time==NULL)
 		return;
-	var values = [currentlyPlayingSong songTitle]+" by "+[currentlyPlayingSong artist]+" Time: "+time;
-	[player setTime:values];
+	[player setTime:time];
 }
 
 /**
@@ -164,12 +164,7 @@ Notification that gets called when the currently playing song finished
 */
 - (void)songDidFinishPlaying:(CPNotification)aNotification{
 	console.log("Song finished playing");
-	var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/playButtonPressed.png" size:CPSizeMake(70, 70)];
-	var playImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/playButton.png" size:CPSizeMake(70, 70)];
-	[playButton setImage: playImage];
-	[playButton setAlternateImage: playImagePressed];
-	var currentlyPlayingString="Nothing...";
-	[currentlyPlaying setStringValue:currentlyPlayingString];
+	[player songDidFinishPlaying];
 	paused=NO;
 	playing=NO;
 }
@@ -179,20 +174,6 @@ Sets the song volume
 */
 -(void)setVolume:(double)aVolume{
 	[theSoundManager setVolume:aVolume];
-}
-
-/**
-Changes milis to regular time
-*/
--(CPString)getTime:(int)timeInMilis{
-	var nSec = Math.floor(timeInMilis/1000);
-    var min = Math.floor(nSec/60);
-    var sec = nSec-(min*60);
-    if (min == 0 && sec == 0) return null; // return 0:00 as null
-	if(sec>=10)
-		return min+":"+sec;
-	else
-		return min+":0"+sec;
 }
 
 -(void)togglePlayerWindow{
