@@ -1,6 +1,6 @@
-i;8;CPView.ji;12;CPClipView.ji;12;CPScroller.jc;24786;
+i;8;CPView.ji;12;CPClipView.ji;12;CPScroller.jc;21285;
 {var the_class = objj_allocateClassPair(CPView, "CPScrollView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentView"), new objj_ivar("_headerClipView"), new objj_ivar("_hasVerticalScroller"), new objj_ivar("_hasHorizontalScroller"), new objj_ivar("_autohidesScrollers"), new objj_ivar("_verticalScroller"), new objj_ivar("_horizontalScroller"), new objj_ivar("_recursionCount"), new objj_ivar("_verticalLineScroll"), new objj_ivar("_verticalPageScroll"), new objj_ivar("_horizontalLineScroll"), new objj_ivar("_horizontalPageScroll")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentView"), new objj_ivar("_hasVerticalScroller"), new objj_ivar("_hasHorizontalScroller"), new objj_ivar("_autohidesScrollers"), new objj_ivar("_verticalScroller"), new objj_ivar("_horizontalScroller"), new objj_ivar("_recursionCount"), new objj_ivar("_verticalLineScroll"), new objj_ivar("_verticalPageScroll"), new objj_ivar("_horizontalLineScroll"), new objj_ivar("_horizontalPageScroll")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $CPScrollView__initWithFrame_(self, _cmd, aFrame)
@@ -15,8 +15,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         _horizontalPageScroll = 10.0;
         _contentView = objj_msgSend(objj_msgSend(CPClipView, "alloc"), "initWithFrame:", objj_msgSend(self, "bounds"));
         objj_msgSend(self, "addSubview:", _contentView);
-        _headerClipView = objj_msgSend(objj_msgSend(CPClipView, "alloc"), "init");
-        objj_msgSend(self, "addSubview:", _headerClipView);
         objj_msgSend(self, "setHasVerticalScroller:", YES);
         objj_msgSend(self, "setHasHorizontalScroller:", YES);
     }
@@ -41,10 +39,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (documentView)
         objj_msgSend(documentView, "removeFromSuperview");
     objj_msgSend(_contentView, "removeFromSuperview");
+    var size = objj_msgSend(self, "contentSize");
     _contentView = aContentView;
+    objj_msgSend(_contentView, "setFrame:", CGRectMake(0.0, 0.0, size.width, size.height));
     objj_msgSend(_contentView, "setDocumentView:", documentView);
     objj_msgSend(self, "addSubview:", _contentView);
-    objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
 }), new objj_method(sel_getUid("contentView"), function $CPScrollView__contentView(self, _cmd)
 { with(self)
@@ -54,12 +53,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 }), new objj_method(sel_getUid("setDocumentView:"), function $CPScrollView__setDocumentView_(self, _cmd, aView)
 { with(self)
 {
-    objj_msgSend(_contentView, "setDocumentView:", aView);
-    objj_msgSend(_headerClipView, "setDocumentView:", objj_msgSend(self, "_headerView"));
-    var cornerView = objj_msgSend(self, "_cornerView");
-    if (cornerView)
-        objj_msgSend(self, "addSubview:", cornerView);
-    objj_msgSend(self, "reflectScrolledClipView:", _contentView);
+   objj_msgSend(_contentView, "setDocumentView:", aView);
+   objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
 }), new objj_method(sel_getUid("reflectScrolledClipView:"), function $CPScrollView__reflectScrolledClipView_(self, _cmd, aClipView)
 { with(self)
@@ -81,75 +76,52 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         {
         }
         objj_msgSend(_contentView, "setFrame:", objj_msgSend(self, "bounds"));
-        objj_msgSend(_headerClipView, "setFrame:", { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } });
         --_recursionCount;
         return;
     }
     var documentFrame = objj_msgSend(documentView, "frame"),
-        contentFrame = objj_msgSend(self, "bounds"),
-        headerClipViewFrame = objj_msgSend(self, "headerClipViewFrame"),
-        headerClipViewHeight = (headerClipViewFrame.size.height);
-    contentFrame.origin.y += headerClipViewHeight;
-    contentFrame.size.height -= headerClipViewHeight;
-    var difference = { width:(documentFrame.size.width) - (contentFrame.size.width), height:(documentFrame.size.height) - (contentFrame.size.height) },
-        verticalScrollerWidth = (objj_msgSend(_verticalScroller, "frame").size.width),
-        horizontalScrollerHeight = (objj_msgSend(_horizontalScroller, "frame").size.height),
-        hasVerticalScroll = difference.height > 0.0,
-        hasHorizontalScroll = difference.width > 0.0,
-        shouldShowVerticalScroller = _hasVerticalScroller && (!_autohidesScrollers || hasVerticalScroll),
-        shouldShowHorizontalScroller = _hasHorizontalScroller && (!_autohidesScrollers || hasHorizontalScroll);
+        contentViewFrame = objj_msgSend(self, "bounds"),
+        scrollPoint = objj_msgSend(_contentView, "bounds").origin,
+        difference = { width:CPRectGetWidth(documentFrame) - CPRectGetWidth(contentViewFrame), height:CPRectGetHeight(documentFrame) - CPRectGetHeight(contentViewFrame) },
+        shouldShowVerticalScroller = (!_autohidesScrollers || difference.height > 0.0) && _hasVerticalScroller,
+        shouldShowHorizontalScroller = (!_autohidesScrollers || difference.width > 0.0) && _hasHorizontalScroller,
+        wasShowingVerticalScroller = !objj_msgSend(_verticalScroller, "isHidden"),
+        wasShowingHorizontalScroller = !objj_msgSend(_horizontalScroller, "isHidden"),
+        verticalScrollerWidth = (objj_msgSend(_verticalScroller, "frame").size.width);
+        horizontalScrollerHeight = (objj_msgSend(_horizontalScroller, "frame").size.height);
+    if (_autohidesScrollers)
+    {
+        if (shouldShowVerticalScroller)
+            shouldShowHorizontalScroller = (!_autohidesScrollers || difference.width > -verticalScrollerWidth) && _hasHorizontalScroller;
+        if (shouldShowHorizontalScroller)
+            shouldShowVerticalScroller = (!_autohidesScrollers || difference.height > -horizontalScrollerHeight) && _hasVerticalScroller;
+    }
+    objj_msgSend(_verticalScroller, "setHidden:", !shouldShowVerticalScroller);
+    objj_msgSend(_verticalScroller, "setEnabled:", difference.height > 0.0);
+    objj_msgSend(_horizontalScroller, "setHidden:", !shouldShowHorizontalScroller);
+    objj_msgSend(_horizontalScroller, "setEnabled:", difference.width > 0.0);
     if (shouldShowVerticalScroller)
     {
+        var verticalScrollerHeight = CPRectGetHeight(contentViewFrame);
+        if (shouldShowHorizontalScroller)
+            verticalScrollerHeight -= horizontalScrollerHeight;
         difference.width += verticalScrollerWidth;
-        hasHorizontalScroll = difference.width > 0.0;
-        shouldShowHorizontalScroller = _hasHorizontalScroller && (!_autohidesScrollers || hasHorizontalScroll);
+        contentViewFrame.size.width -= verticalScrollerWidth;
+        objj_msgSend(_verticalScroller, "setFloatValue:knobProportion:", (difference.height <= 0.0) ? 0.0 : scrollPoint.y / difference.height, CPRectGetHeight(contentViewFrame) / CPRectGetHeight(documentFrame));
+        objj_msgSend(_verticalScroller, "setFrame:", CPRectMake(CPRectGetMaxX(contentViewFrame), 0.0, verticalScrollerWidth, verticalScrollerHeight));
     }
+    else if (wasShowingVerticalScroller)
+        objj_msgSend(_verticalScroller, "setFloatValue:knobProportion:", 0.0, 1.0);
     if (shouldShowHorizontalScroller)
     {
         difference.height += horizontalScrollerHeight;
-        hasVerticalScroll = difference.height > 0.0;
-        shouldShowVerticalScroller = _hasVerticalScroller && (!_autohidesScrollers || hasVerticalScroll);
-    }
-    objj_msgSend(_verticalScroller, "setHidden:", !shouldShowVerticalScroller);
-    objj_msgSend(_verticalScroller, "setEnabled:", hasVerticalScroll);
-    objj_msgSend(_horizontalScroller, "setHidden:", !shouldShowHorizontalScroller);
-    objj_msgSend(_horizontalScroller, "setEnabled:", hasHorizontalScroll);
-    if (shouldShowVerticalScroller)
-        contentFrame.size.width -= verticalScrollerWidth;
-    if (shouldShowHorizontalScroller)
-        contentFrame.size.height -= horizontalScrollerHeight;
-    var scrollPoint = objj_msgSend(_contentView, "bounds").origin,
-        wasShowingVerticalScroller = !objj_msgSend(_verticalScroller, "isHidden"),
-        wasShowingHorizontalScroller = !objj_msgSend(_horizontalScroller, "isHidden");
-    if (shouldShowVerticalScroller)
-    {
-        var verticalScrollerY = MAX((objj_msgSend(self, "cornerViewFrame").size.height), headerClipViewHeight),
-            verticalScrollerHeight = (objj_msgSend(self, "bounds").size.height) - verticalScrollerY;
-        if (shouldShowHorizontalScroller)
-            verticalScrollerHeight -= horizontalScrollerHeight;
-        objj_msgSend(_verticalScroller, "setFloatValue:", (difference.height <= 0.0) ? 0.0 : scrollPoint.y / difference.height);
-        objj_msgSend(_verticalScroller, "setKnobProportion:", (contentFrame.size.height) / (documentFrame.size.height));
-        objj_msgSend(_verticalScroller, "setFrame:", { origin: { x:(contentFrame.origin.x + contentFrame.size.width), y:verticalScrollerY }, size: { width:verticalScrollerWidth, height:verticalScrollerHeight } });
-    }
-    else if (wasShowingVerticalScroller)
-    {
-        objj_msgSend(_verticalScroller, "setFloatValue:", 0.0);
-        objj_msgSend(_verticalScroller, "setKnobProportion:", 1.0);
-    }
-    if (shouldShowHorizontalScroller)
-    {
-        objj_msgSend(_horizontalScroller, "setFloatValue:", (difference.width <= 0.0) ? 0.0 : scrollPoint.x / difference.width);
-        objj_msgSend(_horizontalScroller, "setKnobProportion:", (contentFrame.size.width) / (documentFrame.size.width));
-        objj_msgSend(_horizontalScroller, "setFrame:", { origin: { x:0.0, y:(contentFrame.origin.y + contentFrame.size.height) }, size: { width:(contentFrame.size.width), height:horizontalScrollerHeight } });
+        contentViewFrame.size.height -= horizontalScrollerHeight;
+        objj_msgSend(_horizontalScroller, "setFloatValue:knobProportion:", (difference.width <= 0.0) ? 0.0 : scrollPoint.x / difference.width, CPRectGetWidth(contentViewFrame) / CPRectGetWidth(documentFrame));
+        objj_msgSend(_horizontalScroller, "setFrame:", CPRectMake(0.0, CPRectGetMaxY(contentViewFrame), CPRectGetWidth(contentViewFrame), horizontalScrollerHeight));
     }
     else if (wasShowingHorizontalScroller)
-    {
-        objj_msgSend(_horizontalScroller, "setFloatValue:", 0.0);
-        objj_msgSend(_horizontalScroller, "setKnobProportion:", 1.0);
-    }
-    objj_msgSend(_contentView, "setFrame:", contentFrame);
-    objj_msgSend(_headerClipView, "setFrame:", headerClipViewFrame);
-    objj_msgSend(objj_msgSend(self, "_cornerView"), "setFrame:", objj_msgSend(self, "cornerViewFrame"));
+        objj_msgSend(_horizontalScroller, "setFloatValue:knobProportion:", 0.0, 1.0);
+    objj_msgSend(_contentView, "setFrame:", contentViewFrame);
     --_recursionCount;
 }
 }), new objj_method(sel_getUid("setHorizontalScroller:"), function $CPScrollView__setHorizontalScroller_(self, _cmd, aScroller)
@@ -178,7 +150,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return;
     _hasHorizontalScroller = shouldHaveHorizontalScroller;
     if (_hasHorizontalScroller && !_horizontalScroller)
-        objj_msgSend(self, "setHorizontalScroller:", objj_msgSend(objj_msgSend(CPScroller, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, (objj_msgSend(self, "bounds").size.width), objj_msgSend(CPScroller, "scrollerWidth"))));
+        objj_msgSend(self, "setHorizontalScroller:", objj_msgSend(objj_msgSend(CPScroller, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, CPRectGetWidth(objj_msgSend(self, "bounds")), objj_msgSend(CPScroller, "scrollerWidth"))));
     else if (!_hasHorizontalScroller && _horizontalScroller)
     {
         objj_msgSend(_horizontalScroller, "setHidden:", YES);
@@ -216,7 +188,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return;
     _hasVerticalScroller = shouldHaveVerticalScroller;
     if (_hasVerticalScroller && !_verticalScroller)
-        objj_msgSend(self, "setVerticalScroller:", objj_msgSend(objj_msgSend(CPScroller, "alloc"), "initWithFrame:", { origin: { x:0.0, y:0.0 }, size: { width:objj_msgSend(CPScroller, "scrollerWidth"), height:(objj_msgSend(self, "bounds").size.height) } }));
+        objj_msgSend(self, "setVerticalScroller:", objj_msgSend(objj_msgSend(CPScroller, "alloc"), "initWithFrame:", CPRectMake(0.0, 0.0, objj_msgSend(CPScroller, "scrollerWidth"), CPRectGetHeight(objj_msgSend(self, "bounds")))));
     else if (!_hasVerticalScroller && _verticalScroller)
     {
         objj_msgSend(_verticalScroller, "setHidden:", YES);
@@ -240,46 +212,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 { with(self)
 {
     return _autohidesScrollers;
-}
-}), new objj_method(sel_getUid("_headerView"), function $CPScrollView___headerView(self, _cmd)
-{ with(self)
-{
-    var documentView = objj_msgSend(self, "documentView");
-    if (objj_msgSend(documentView, "respondsToSelector:", sel_getUid("headerView")))
-        return objj_msgSend(documentView, "headerView");
-    return nil;
-}
-}), new objj_method(sel_getUid("_cornerView"), function $CPScrollView___cornerView(self, _cmd)
-{ with(self)
-{
-    var documentView = objj_msgSend(self, "documentView");
-    if (objj_msgSend(documentView, "respondsToSelector:", sel_getUid("cornerView")))
-        return objj_msgSend(documentView, "cornerView");
-}
-}), new objj_method(sel_getUid("cornerViewFrame"), function $CPScrollView__cornerViewFrame(self, _cmd)
-{ with(self)
-{
-    var cornerView = objj_msgSend(self, "_cornerView"),
-        cornerBounds = objj_msgSend(cornerView, "bounds"),
-        bounds = objj_msgSend(self, "bounds");
-    if (!cornerView)
-        return { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } };
-    cornerBounds.origin.x = CGRectGetMaxX(bounds) - CGRectGetWidth(cornerBounds);
-    cornerBounds.origin.y = 0;
-    return cornerBounds;
-}
-}), new objj_method(sel_getUid("headerClipViewFrame"), function $CPScrollView__headerClipViewFrame(self, _cmd)
-{ with(self)
-{
-    var headerView = objj_msgSend(self, "_headerView"),
-        cornerView = objj_msgSend(self, "_cornerView"),
-        bounds = objj_msgSend(self, "bounds");
-    if (!headerView)
-        return { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } };
-    bounds.size.height = objj_msgSend(headerView, "bounds").size.height;
-    if (cornerView)
-        bounds.size.width -= CGRectGetWidth(objj_msgSend(cornerView, "bounds"));
-    return bounds;
 }
 }), new objj_method(sel_getUid("_verticalScrollerDidScroll:"), function $CPScrollView___verticalScrollerDidScroll_(self, _cmd, aScroller)
 { with(self)
@@ -324,7 +256,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         default: contentBounds.origin.x = value * ((documentFrame.size.width) - (contentBounds.size.width));
     }
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
-    objj_msgSend(_headerClipView, "scrollToPoint:", CGPointMake(contentBounds.origin.x, 0.0));
 }
 }), new objj_method(sel_getUid("tile"), function $CPScrollView__tile(self, _cmd)
 { with(self)
@@ -405,7 +336,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     contentBounds.origin.x += objj_msgSend(anEvent, "deltaX") * _horizontalLineScroll;
     contentBounds.origin.y += objj_msgSend(anEvent, "deltaY") * _verticalLineScroll;
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
-    objj_msgSend(_headerClipView, "scrollToPoint:", CGPointMake(contentBounds.origin.x, 0.0));
 }
 }), new objj_method(sel_getUid("keyDown:"), function $CPScrollView__keyDown_(self, _cmd, anEvent)
 { with(self)
@@ -436,7 +366,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         default: return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "keyDown:", anEvent);
     }
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
-    objj_msgSend(_headerClipView, "scrollToPoint:", CGPointMake(contentBounds.origin, 0));
 }
 })]);
 }

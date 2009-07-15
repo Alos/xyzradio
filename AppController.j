@@ -19,7 +19,10 @@ This file is part of XYZRadio.
 @import "PlayerControl.j"
 @import "PreferencesWindow.j"
 @import "XYZSong.j"
-@import "UsersWindow.j";
+@import "UsersWindow.j"
+@import "CPSound.j"
+@import "XYZAddSongView.j"
+@import "DCFormController.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -59,6 +62,16 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [theWindow setToolbar: toolbar]; 
     [toolbar setDelegate:self];
      
+	/*console.log("Opening sound!"); 
+	var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
+	[sound setDelegate:self];
+	[sound play];
+	console.log("playing...");*/
+	
+	var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(100,100,100,100)]];
+	[addFolloweeFormController startForm];
+	
+	
     //testing...
     var demoList = [[CPArray alloc] init]; 
     var song1 = [[XYZSong alloc] initWithSongTitle:@"do it over" setArtist:@"amélie" setID:1 time:"3:04" pathToSong:"http://files.me.com/alos/h4w1s0.mp3" rating:"4"];
@@ -87,6 +100,14 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	[self openDJList];
 	//control init
 	playerControl=[[PlayerControl alloc] init: djList];
+}
+
+-(void)sound:(CPSound)aSound didFinishPlaying:(BOOL)aBoolean{
+	console.log("Sound did finish playing");
+}
+
+-(void)theWindow{
+	return theWindow;
 }
 
 -(void)addSong:(XYZSong)aSong 

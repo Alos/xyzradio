@@ -19,6 +19,7 @@
 	</array>
 	<key>CPBundleReplacedFiles</key>
 	<array>
+		<string>_CPAudioSound.j</string>
 		<string>_CPBorderlessBridgeWindowView.j</string>
 		<string>_CPBorderlessWindowView.j</string>
 		<string>_CPCibClassSwapper.j</string>
@@ -32,6 +33,7 @@
 		<string>_CPCornerView.j</string>
 		<string>_CPHUDWindowView.j</string>
 		<string>_CPImageAndTextView.j</string>
+		<string>_CPQuickTimeSound.j</string>
 		<string>_CPStandardWindowView.j</string>
 		<string>_CPWindowView.j</string>
 		<string>AppKit.j</string>
@@ -99,6 +101,7 @@
 		<string>CPShadowView.j</string>
 		<string>CPSlider.j</string>
 		<string>CPSliderColorPicker.j</string>
+		<string>CPSound.j</string>
 		<string>CPSplitView.j</string>
 		<string>CPStringDrawing.j</string>
 		<string>CPTableColumn.j</string>

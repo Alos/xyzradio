@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;20516;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;20532;
 CPLineBreakByWordWrapping=0;
 CPLineBreakByCharWrapping=1;
 CPLineBreakByClipping=2;
@@ -322,7 +322,7 @@ objj_msgSend(_57,"_updatePlaceholderState");
 }),new objj_method(sel_getUid("_updatePlaceholderState"),function(_5a,_5b){
 with(_5a){
 var _5c=objj_msgSend(_5a,"stringValue");
-if((!_5c||_5c.length===0)&&!objj_msgSend(_5a,"hasThemeState:",CPThemeStateEditing)){
+if((!_5c||objj_msgSend(_5c,"length")===0)&&!objj_msgSend(_5a,"hasThemeState:",CPThemeStateEditing)){
 objj_msgSend(_5a,"setThemeState:",CPTextFieldStatePlaceholder);
 }else{
 objj_msgSend(_5a,"unsetThemeState:",CPTextFieldStatePlaceholder);

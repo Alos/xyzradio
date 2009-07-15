@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;21737;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;21754;
 CPLineBreakByWordWrapping = 0;
 CPLineBreakByCharWrapping = 1;
 CPLineBreakByClipping = 2;
@@ -184,7 +184,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 { with(self)
 {
     var string = objj_msgSend(self, "stringValue");
-    if ((!string || string.length === 0) && !objj_msgSend(self, "hasThemeState:", CPThemeStateEditing))
+    if ((!string || objj_msgSend(string, "length") === 0) && !objj_msgSend(self, "hasThemeState:", CPThemeStateEditing))
         objj_msgSend(self, "setThemeState:", CPTextFieldStatePlaceholder);
     else
         objj_msgSend(self, "unsetThemeState:", CPTextFieldStatePlaceholder);
