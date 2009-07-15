@@ -258,7 +258,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setAlternateImage: highlighted];
         
         [toolbarItem setTarget: self];
-        [toolbarItem setAction: @selector(addSong:)];
+        [toolbarItem setAction: @selector(openAddSongForm)];
         [toolbarItem setLabel: "Add a song"];
 
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
