@@ -5,7 +5,9 @@
  * Copyright 2008 __MyCompanyName__. All rights reserved.
  */
 
+
 @import <Foundation/CPObject.j>
+@import "DCTextField.j"
 
 DCFormControlTypeTextField = "DCFormControlTypeTextField";
 DCFormControlTypeTextFieldShort = "DCFormControlTypeTextFieldShort";
@@ -146,6 +148,7 @@ DCFormControlTypeHidden = "DCFormControlTypeHidden";
 			width = width / 2;
 		}
 		control = [[DCTextField alloc] initWithFrame:CGRectMake(paddingLeft + labelWidth + columnSpacing, currentYOffset, width, fieldHeight)];
+		//control = [[CPTextField alloc] initWithFrame:CGRectMake(paddingLeft + labelWidth + columnSpacing, currentYOffset, width, fieldHeight)]; 
 		[control setAutoresizingMask:CPViewWidthSizable | CPViewMaxYMargin];
 		[control setDelegate:self];
 		[self addSubview:control];
