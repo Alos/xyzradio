@@ -68,8 +68,6 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	[sound play];
 	console.log("playing...");*/
 	
-	var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(100,100,100,100)]];
-	[addFolloweeFormController startForm];
 	
 	
     //testing...
@@ -155,6 +153,11 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     else    
     [preferencesWindow orderFront:self];
+}
+
+//abre el formulario para subir una cancion
+-(void)openAddSongForm{
+  var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(100,100,100,100)]][addFolloweeFormController startForm];
 }
 
 /*Abre la lista de canciones del usuario*/
