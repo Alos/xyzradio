@@ -21,15 +21,24 @@
 @import "DCFormView.j"
 
 @implementation XYZAddSongView : DCFormView
-	{
-	}
+{
+   DCTextField field;
+}
 	
 	/*Una bonita contructora*/
 	- (id) initWithFrame:(CGRect)aRect{
 		self = [super initWithFrame:aRect];
 		if(self){
-			
+		  //field = [self addFieldRowWithTitle:@"" name:@"URL" controlType:DCFormControlTypeHidden required:NO];
+		  field = [self addFieldRowWithTitle:@"URL:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];	
+		  [headerLabel setStringValue:@"Add the url of song"];
+		  [self setSubmitButtonTitle:@"Save song"]
 		}
 		return self;
 	}
-	@end
+
+-(void){
+   
+}
+
+@end
