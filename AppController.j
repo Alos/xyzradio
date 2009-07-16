@@ -23,6 +23,7 @@ This file is part of XYZRadio.
 @import "CPSound.j"
 @import "XYZAddSongView.j"
 @import "DCFormController.j"
+@import "UserCell.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -44,6 +45,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     CPWindow theWindow;
     CPView contentView;
     UsersWindow usersWindow;
+    CPCollectionView listCollectionView;
+    CPWindow contentUsers;
+    CGRect bounds;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -55,7 +59,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/theGoldenAgeOf60.jpg" size:CPSizeMake(30, 25)];
     [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
     //sizes
-    var bounds = [contentView bounds];
+    bounds = [contentView bounds];
     librarySongs = [[CPArray alloc] init];    
     //el rectangulo de los controles
     toolbar= [[CPToolbar alloc] initWithIdentifier:@"main-toolbar"];
@@ -66,9 +70,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
 	[sound setDelegate:self];
 	[sound play];
-	console.log("playing...");*/
-	
-	
+	console.log("playing...");*/		
 	
     //testing...
     var demoList = [[CPArray alloc] init]; 
@@ -98,6 +100,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	[self openDJList];
 	//control init
 	playerControl=[[PlayerControl alloc] init: djList];
+   //testing users
+   [self openUsers];
+
 }
 
 -(void)sound:(CPSound)aSound didFinishPlaying:(BOOL)aBoolean{
@@ -144,6 +149,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	[playerControl togglePlayerWindow];
 }
 
+//abre la ventana de preferencias
 -(void)openPreferences{
     if(!preferencesWindow)
         preferencesWindow = [[PreferencesWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
@@ -191,8 +197,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 //abre la ventana de usuarios
 -(void)openUsers{
    if(!usersWindow){
-	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(0,0,400,500) styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
-	[usersWindow setFrameOrigin:(CPPointMake(60, 100))];
+	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(0,60,200,CGRectGetHeight(bounds)-60) styleMask:CPHUDBackgroundWindowMask];
+	[usersWindow setFrameOrigin:(CPPointMake(0, 60))];
    }	
    if([usersWindow isVisible]){
 	[usersWindow close];
