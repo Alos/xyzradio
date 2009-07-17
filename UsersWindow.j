@@ -37,7 +37,6 @@ This file is part of XYZRadio.
          var contentView = [self contentView];
          var bounds = [contentView bounds];
         
-	 //[contentUsers setHasShadow:YES];
 	 [self setBackgroundColor:nil];
          //scrollView
 	 var listScrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0, 0, 200 , CGRectGetHeight(bounds))];
