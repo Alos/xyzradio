@@ -268,7 +268,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setLabel: "Add a song"];
 
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
-        [toolbarItem setMaxSize:CGSizeMake(32, 32)];
+        [toolbarItem setMaxSize:CGSizeMake(32, 32)]; 
     }
     else if (anItemIdentifier == RemoveSongToolbarItemIdentifier)
     {        
