@@ -18,9 +18,8 @@ This file is part of XYZRadio.
     You should have received a copy of the GNU Lesser General Public License
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
-@import "XYZUser.j"
 @import "UserCell.j"
-
+@import "XYZUser.j"
 @implementation UsersWindow:CPWindow {
    CPArray list;
    CPCollectionView listCollectionView;
