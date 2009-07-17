@@ -197,8 +197,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 //abre la ventana de usuarios
 -(void)openUsers{
    if(!usersWindow){
-	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(0,60,200,CGRectGetHeight(bounds)-60) styleMask:CPHUDBackgroundWindowMask];
-	[usersWindow setFrameOrigin:(CPPointMake(0, 60))];
+	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,200,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
+	[usersWindow setFrameOrigin:(CPPointMake(5, 60))];
    }	
    if([usersWindow isVisible]){
 	[usersWindow close];
