@@ -2,7 +2,7 @@
 //  XYZAddSongView.j
 //  XYZRadio
 //
-//  Created by Alos on 10/2/08.
+//  Created by oswa on 15/07/09
 /*
  This file is part of XYZRadio.
  
@@ -23,22 +23,48 @@
 @implementation XYZAddSongView : DCFormView
 {
    DCTextField field;
+   id HTMLElement @accessors;
+   CPTextField link;
+   CPPopUpButton menu;
 }
 	
 	/*Una bonita contructora*/
 	- (id) initWithFrame:(CGRect)aRect{
 		self = [super initWithFrame:aRect];
 		if(self){
-		  //field = [self addFieldRowWithTitle:@"" name:@"URL" controlType:DCFormControlTypeHidden required:NO];
+		  menu=[[CPPopUpButton alloc] initWithFrame:CGRectMake(135,85,110,25)];
+		  //[menu setTitle:"add song"];
+		  [menu setPullsDown:YES];
+		  [menu setTitle:@"add song"];
+		  [menu addItemWithTitle:@"local"];
+		  [menu addItemWithTitle:@"url"];
+		  [menu setTarget:self];
+		  [menu setAction:@selector(menuDidChangeItem)];      
+		  [self	addSubview:menu]; 	     
+		  //var space = [self addFieldRowWithTitle:@" " name:@" " controlType:DCFormControlTypeHidden required:NO];
 		  field = [self addFieldRowWithTitle:@"URL:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];	
-		  [headerLabel setStringValue:@"Add the url of song"];
-		  [self setSubmitButtonTitle:@"Save song"]
+		  [headerLabel setStringValue:@"Should see the terms of use"];
+		  [self setSubmitButtonTitle:@"Save song"];
 		}
 		return self;
 	}
 
--(void){
-   
+//se manda llamar a este metodo cuando se cambia un 
+//item del popUpButton 
+-(void)menuDidChangeItem{
+   if([[menu selectedItem] title] == "local")
+      console.log("local");
+   if([[menu selectedItem] title] == "url")
+      console.log("url");
+}
+
+-(void)submitAction:(id)sender{
+   console.log([field objectValue]);
+}
+
+-(CPString)thankYouMessage {
+	//return @"Thanks for adding!  They'll show up in the feed soon.";
+	return @"";
 }
 
 @end
