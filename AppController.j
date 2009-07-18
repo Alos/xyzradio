@@ -181,7 +181,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
-  var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,380,200)]];
+  var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,380,250)]];
   [addFolloweeFormController startForm];
 }
 

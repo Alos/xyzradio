@@ -136,7 +136,7 @@ DCFormControlTypeHidden = "DCFormControlTypeHidden";
 - (CPControl)addFieldRowWithTitle:(CPString)theTitle name:(CPString)name controlType:(CPString)theControlType required:(bool)required {
 	// add the label
 	if (theControlType != DCFormControlTypeCheckBox) {
-		[self labelWithTitle:theTitle originY:currentYOffset + 4];
+		[self labelWithTitle:theTitle originY:currentYOffset + 54];
 	}
 
 	var control;
@@ -147,7 +147,7 @@ DCFormControlTypeHidden = "DCFormControlTypeHidden";
 		if (theControlType == DCFormControlTypeTextFieldShort) {
 			width = width / 2;
 		}
-		control = [[DCTextField alloc] initWithFrame:CGRectMake(paddingLeft + labelWidth + columnSpacing, currentYOffset, width, fieldHeight)];
+		control = [[DCTextField alloc] initWithFrame:CGRectMake(paddingLeft + labelWidth + columnSpacing, currentYOffset+50, width, fieldHeight)];
 		//control = [[CPTextField alloc] initWithFrame:CGRectMake(paddingLeft + labelWidth + columnSpacing, currentYOffset, width, fieldHeight)]; 
 		[control setAutoresizingMask:CPViewWidthSizable | CPViewMaxYMargin];
 		[control setDelegate:self];
