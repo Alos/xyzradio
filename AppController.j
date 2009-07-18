@@ -24,6 +24,7 @@ This file is part of XYZRadio.
 @import "XYZAddSongView.j"
 @import "DCFormController.j"
 @import "UserCell.j"
+@import "LoginWindow.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -48,6 +49,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     CPCollectionView listCollectionView;
     CPWindow contentUsers;
     CGRect bounds;
+	CPURLConnection xyzradioConnectionForLogin;
+	CPString serverIP;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -66,6 +69,13 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [theWindow setToolbar: toolbar]; 
     [toolbar setDelegate:self];
      
+	serverIP = "http://localhost:8080"; 
+	var url = serverIP + "/LoginVerify";
+	var request = [CPURLRequest requestWithURL: url];
+	console.log("Connecting to: %s",url);
+	xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
+	  
+	 
 	/*console.log("Opening sound!"); 
 	var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
 	[sound setDelegate:self];
@@ -103,6 +113,14 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
    //testing users
    [self openUsers];
 
+}
+
+-(void)setServerIP:(CPString)aURL{
+	serverIP = aURL;
+}
+
+-(CPString)serverIP{
+	return serverIP;
 }
 
 -(void)sound:(CPSound)aSound didFinishPlaying:(BOOL)aBoolean{
@@ -321,6 +339,46 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         
     return toolbarItem;
 }
+
+/*Delegate methods*/
+
+//for the connections delegate
+- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
+{
+	console.log(data);
+	if(data != null && data != "")
+		var response = JSON.parse(data);
+	else
+		var response = new Object();
+	
+	if(response.error){
+		//we need to have the user login
+		console.log("error: " + response.error);
+		var xpos = (CGRectGetWidth([contentView bounds]) - 300) / 2.0;
+		var ypos = (CGRectGetHeight([contentView bounds]) - 300) / 2.0;
+		var loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(xpos, ypos, 500, 200) styleMask:CPTitledWindowMask url:serverIP + response.error];
+		
+	}else{
+		//wellcome the user by its ID
+		console.log(response);
+	}
+}
+
+-(void)connectionDidFinishLoading:(CPURLConnection)connection{
+	//nothing
+}
+
+- (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error
+{
+}
+
+- (void)clearConnection:(CPURLConnection)connection
+{
+    //we no longer need to hold on to a reference to this connection
+    if (connection == louhiConnection)
+        louhiConnection = nil;
+}
+
 
 @end
 
