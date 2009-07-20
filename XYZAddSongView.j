@@ -74,19 +74,3 @@
 }
 
 @end
-   if([[menu selectedItem] title] == "local")
-
-   if([[menu selectedItem] title] == "url")
-      
-}
-
--(void)submitAction:(id)sender{
-   CPLog.trace([field objectValue]);
-}
-
--(CPString)thankYouMessage {
-	//return @"Thanks for adding!  They'll show up in the feed soon.";
-	return @"";
-}
-
-@end
