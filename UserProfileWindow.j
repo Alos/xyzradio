@@ -18,11 +18,7 @@
     along with Louhi.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "CPLightbox.j"
-@import "DCLinkTextField.j"
-
-
-@implementation LoginWindow : CPWindow
+@implementation UserProfileWindow : CPWindow
 {
 	CPButton loginButton;
 	CPTextField userid;
@@ -85,16 +81,8 @@
 		[contentView addSubview: poweredByGoogleImageView];
 		
 		[self makeFirstResponder:userid];
-		
-		var helpLink = [[DCLinkTextField alloc] initWithFrame:CGRectMake(20, 750, 100, 30)];
-		[helpLink setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-		[helpLink HTMLElement].style.color = "#EEEEEE";
-		[helpLink HTMLElement].style.fontSize = "12px";
-		[helpLink HTMLElement].style.fontFamily = "Helvetica, Sans-Serif";
-		[helpLink HTMLElement].style.lineHeight = "1.5em";
-		[helpLink setHTML: @"<a href=\"xyzradioHelp.html\">Help</a>"];
-		[contentView addSubview: helpLink];
-		
+
+                    
     }
     return self;
 }

@@ -26,6 +26,7 @@ This file is part of XYZRadio.
 @import "UserCell.j"
 @import "GoogleAuthentification.j"
 @import "LoginWindow.j"
+@import "UserProfileWindow.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -53,6 +54,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	CPURLConnection xyzradioConnectionForLogin;
 	CPString serverIP;
 	LoginWindow loginWindow;
+	UserProfileWindow userProfileWindow;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -76,7 +78,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	   
 	serverIP = "http://localhost:8080"; 
 	
-    //[self openLoginWindow];
+   
 	 
 	/*console.log("Opening sound!"); 
 	var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
@@ -96,13 +98,15 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     //brings the window to the front
     [theWindow orderFront:self];
 	CPLog.trace("Window ready!");
-    [self openBrowser];
-	[self openDJList];
+    //[self openBrowser];
+	musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+	//[self openDJList];
+	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
 	//control init
-	playerControl=[[PlayerControl alloc] init: djList];
-   //testing users
-   [self openUsers];
-   
+	playerControl=[[PlayerControl alloc] init: djList];	
+    //testing users
+    //[self openUsers];
+    [self openLoginWindow];
 
 }
 
@@ -169,6 +173,20 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     else    
     [preferencesWindow orderFront:self];
 }
+
+
+//abre la ventana de preferencias
+-(void)openUserProfileWindow{
+    if(!userProfileWindow)
+        userProfileWindow = [[UserProfileWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
+    if([userProfileWindow isVisible]){
+        [userProfileWindow setFrameOrigin:(CPPointMake(500, 50))];
+        [userProfileWindow close];
+    }
+    else    
+    [userProfileWindow orderFront:self];
+}
+
 
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
@@ -332,7 +350,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 }
 
 -(void)openLoginWindow{
-		loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(500, 100, 300, 160) styleMask: CPHUDBackgroundWindowMask];
+		loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(0, 0, 1000, 800) styleMask: CPHUDBackgroundWindowMask | CPBorderlessWindowMask];
+		[loginWindow setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
 		[CPLightbox setBackgroundColor:[CPColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.6]];
 		[CPLightbox runModalForWindow:loginWindow];
 }
