@@ -31,6 +31,7 @@
    id HTMLElement @accessors;
    CPTextField link;
    CPPopUpButton menu;
+   BOOL menuURL=NO; 
 }
 	
 	/*Una bonita contructora*/
@@ -57,22 +58,25 @@
 //se manda llamar a este metodo cuando se cambia un 
 //item del popUpButton 
 -(void)menuDidChangeItem{
+   var items = [self subviews];
+ 
    if([[menu selectedItem] title] == "LOCAL"){
       //console.log("local");
    }
 
    if([[menu selectedItem] title] == "URL"){
-      //console.log("url");
       //contruimos el formulario
-      titleField = [self addFieldRowWithTitle:@"title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
-      artistField = [self addFieldRowWithTitle:@"artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
-      genreField = [self addFieldRowWithTitle:@"genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
-      timeField = [self addFieldRowWithTitle:@"time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
-      pathAlbumArtField = [self addFieldRowWithTitle:@"URL album art:" name:@"pathAlbumArt" controlType:DCFormControlTypeTextField required:NO];
-      urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
-      
-      [[menu selectedItem] setEnabled:NO];
+      if([items count]==5){
+	titleField = [self addFieldRowWithTitle:@"title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
+	artistField = [self addFieldRowWithTitle:@"artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
+	genreField = [self addFieldRowWithTitle:@"genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
+	timeField = [self addFieldRowWithTitle:@"time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
+	pathAlbumArtField = [self addFieldRowWithTitle:@"URL album art:" name:@"pathAlbumArt" controlType:DCFormControlTypeTextField required:NO];
+	urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
+      }
    }
+
+   [[menu selectedItem] setEnabled:NO]; 
 }
 
 -(void)submitAction:(id)sender{
