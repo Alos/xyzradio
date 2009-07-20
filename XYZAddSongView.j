@@ -67,10 +67,10 @@
    if([[menu selectedItem] title] == "URL"){
       //contruimos el formulario
       if([items count]==5){
-	titleField = [self addFieldRowWithTitle:@"title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
-	artistField = [self addFieldRowWithTitle:@"artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
-	genreField = [self addFieldRowWithTitle:@"genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
-	timeField = [self addFieldRowWithTitle:@"time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
+	titleField = [self addFieldRowWithTitle:@"Title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
+	artistField = [self addFieldRowWithTitle:@"Artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
+	genreField = [self addFieldRowWithTitle:@"Genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
+	timeField = [self addFieldRowWithTitle:@"Time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
 	pathAlbumArtField = [self addFieldRowWithTitle:@"URL album art:" name:@"pathAlbumArt" controlType:DCFormControlTypeTextField required:NO];
 	urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
       }
