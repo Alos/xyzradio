@@ -138,11 +138,11 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
 }
 
 -(void)starRatingForSongChanged:(CPNotification)aNotification{
-	console.log("notified!!");
+	CPLog.trace("notified!!");
 	var info = [aNotification userInfo];
 	var aux = [info objectForKey:"rating"];
 	[self setRating: aux];
-	console.log([self rating]);
+	CPLog.trace([self rating]);
 }
 
 /**

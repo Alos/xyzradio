@@ -24,6 +24,8 @@ This file is part of XYZRadio.
 @import "XYZAddSongView.j"
 @import "DCFormController.j"
 @import "UserCell.j"
+@import "GoogleAuthentification.j"
+@import "LoginWindow.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -48,6 +50,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     CPCollectionView listCollectionView;
     CPWindow contentUsers;
     CGRect bounds;
+	CPURLConnection xyzradioConnectionForLogin;
+	CPString serverIP;
+	LoginWindow loginWindow;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -65,7 +70,14 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     toolbar= [[CPToolbar alloc] initWithIdentifier:@"main-toolbar"];
     [theWindow setToolbar: toolbar]; 
     [toolbar setDelegate:self];
-     
+    
+	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
+ 
+	   
+	serverIP = "http://localhost:8080"; 
+	
+    //[self openLoginWindow];
+	 
 	/*console.log("Opening sound!"); 
 	var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
 	[sound setDelegate:self];
@@ -76,23 +88,11 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     var demoList = [[CPArray alloc] init]; 
     var song1 = [[XYZSong alloc] initWithSongTitle:@"do it over" setArtist:@"amélie" setID:1 time:"3:04" pathToSong:"http://files.me.com/alos/h4w1s0.mp3" rating:"4"];
     [demoList addObject:song1];
-    var song2 = [[XYZSong alloc] initWithSongTitle:@"Last night" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:"" rating:"2"];
+    var song2 = [[XYZSong alloc] initWithSongTitle:@"Broken Stereo (Acoustic Version)" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:"Resources/LocalMusic/Broken Stereo (Acoustic Version).mp3" rating:"2"];
     [demoList addObject:song2];
     var song3 = [[XYZSong alloc] initWithSongTitle:@"My Last Breath (Live version)" setArtist:@"Evanescence" setID:3 time:"3:59" pathToSong:"" rating:"3"];
     [demoList addObject:song3];
-    var song4 = [[XYZSong alloc] initWithSongTitle:@"Heaven Knows" setArtist:@"Faith Evans" setID:4 time:"5:43" pathToSong:"" rating:"1"];
-    [demoList addObject:song4];
-    var song5 = [[XYZSong alloc] initWithSongTitle:@"Trouble" setArtist:@"Pink" setID:5 time:"3:12" pathToSong:"" rating:"2"];
-    [demoList addObject:song5];
-    var song6 = [[XYZSong alloc] initWithSongTitle:@"Jaded" setArtist:@"Aerosmith" setID:6 time:"3:27" pathToSong:"" rating:"1"];
-    [demoList addObject:song6];
-    var song7 = [[XYZSong alloc] initWithSongTitle:@"Who Knew" setArtist:@"Pink" setID:7 time:"3:21" pathToSong:"" rating:"2"];
-    [demoList addObject:song7];
-	var song8 = [[XYZSong alloc] initWithSongTitle:@"Rewrite" setArtist:@"Asian Kung Fu Generation" setID:8 time:"3:47" pathToSong:"Resources/LocalMusic/Rewrite.mp3" rating:"5"];	
-    [demoList addObject:song8];
-	var song9 = [[XYZSong alloc] initWithSongTitle:@"In the dark but not alone" setArtist:@"radiotimes" setID:9 time:"3:37" pathToSong:"Resources/LocalMusic/InTheDark.mp3" rating:"2"];	
-    [demoList addObject:song9];
-    [self addSongList: demoList];
+	[self addSongList: demoList];
     //brings the window to the front
     [theWindow orderFront:self];
 	CPLog.trace("Window ready!");
@@ -102,11 +102,20 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	playerControl=[[PlayerControl alloc] init: djList];
    //testing users
    [self openUsers];
+   
 
 }
 
+-(void)setServerIP:(CPString)aURL{
+	serverIP = aURL;
+}
+
+-(CPString)serverIP{
+	return serverIP;
+}
+
 -(void)sound:(CPSound)aSound didFinishPlaying:(BOOL)aBoolean{
-	console.log("Sound did finish playing");
+	CPLog.trace("Sound did finish playing");
 }
 
 -(void)theWindow{
@@ -320,6 +329,17 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
         
     return toolbarItem;
+}
+
+-(void)openLoginWindow{
+		loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(500, 100, 300, 160) styleMask: CPHUDBackgroundWindowMask];
+		[CPLightbox setBackgroundColor:[CPColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.6]];
+		[CPLightbox runModalForWindow:loginWindow];
+}
+
+-(void)closeLoginWindow:(CPNotification)aNotification{
+	[CPLightbox stopModal];
+	[loginWindow close];
 }
 
 @end

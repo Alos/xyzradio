@@ -41,7 +41,7 @@ This file is part of XYZRadio.
 	self = [super init];
 	if(self){
 		djList=aDJList;
-		console.log("Player initialized!");
+		CPLog.trace("Player initialized!");
 		[self togglePlayerWindow];
 		theSoundManager = [[SMSoundManager alloc] init];
 		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setTime:) name:"pos" object:theSoundManager];
@@ -54,20 +54,22 @@ This file is part of XYZRadio.
 -(void)play{
 	//first we find out where to play the song from
 	//right now we just play from the DJLIST
+	CPLog.trace("Will play soemthing...");
 	var song = [djList getSelectedSong];
-	console.log("Se selecciono, %s", [song songTitle]);
+	CPLog.trace("Se selecciono, %s", [song songTitle]);
 	[self playSong:song];
 }
 
 //Plays the song thats passed to it
 - (void)playSong:(XYZSong)aSong{
+	CPLog.trace("On plaing...");
 	if(local){
 		if([theSoundManager isLoaded]){
 			if(!playing){
 				if([aSong pathToSong]==NULL)
-					console.log("No path in the song selected!");//TODO poner aqui una ventana de alerta
+					CPLog.trace("No path in the song selected!");//TODO poner aqui una ventana de alerta
 				else{
-					console.log("Playing: %s", [aSong pathToSong]);
+					CPLog.trace("Playing: %s", [aSong pathToSong]);
 					currentlyPlayingSong=aSong;
 					var currentlyPlayingString= [aSong songTitle]+" by "+[aSong artist];
 					[player setCurrentlyPlayingSong:currentlyPlayingString time:[aSong time]];
@@ -78,12 +80,12 @@ This file is part of XYZRadio.
 				}
 			}else{
 				if(paused){
-					console.log("Resumming...");
+					CPLog.trace("Resumming...");
 					[theSoundManager togglePause];
 					[player setPausedIcon];
 					paused = NO;
 				}else{
-					console.log("Pausing...");
+					CPLog.trace("Pausing...");
 					[theSoundManager togglePause];
 					[player setPlayIcon];
 					paused = YES;
@@ -91,7 +93,7 @@ This file is part of XYZRadio.
 			}
 		}
 		else
-			console.log("El sound manager aun no esta funcionando..espere un momento....");
+			CPLog.trace("El sound manager aun no esta funcionando..espere un momento....");
 	}else{
 		//IP mode
 	}		
@@ -106,11 +108,11 @@ This file is part of XYZRadio.
 		index=0;
 	[djList setSelectionIndexes:index];
 	if(!paused){
-		console.log("Is playing switching to the new song");
+		CPLog.trace("Is playing switching to the new song");
 		[self stopSong];
 		[self playSong:[djList getSongByIndex:index]];
 	}else{
-		console.log("Not playing just selecting the song");
+		CPLog.trace("Not playing just selecting the song");
 		[self stopSong];
 		paused = NO;
 		playing = NO;
@@ -124,14 +126,14 @@ This file is part of XYZRadio.
 	index--;
 	if(index < 0)
 	 index = totalSongs-1;
-	console.log("Index: %s",index);
+	CPLog.trace("Index: %s",index);
 	[djList setSelectionIndexes:index];
 	if(!paused){
-		console.log("Is playing switching to the new song");
+		CPLog.trace("Is playing switching to the new song");
 		[self stopSong];
 		[self playSong:[djList getSongByIndex:index]];	
 	}else{
-		console.log("Not playing just selecting the song");
+		CPLog.trace("Not playing just selecting the song");
 		[self stopSong];
 		paused = NO;
 		playing = NO;
@@ -163,7 +165,7 @@ Moves the timer on the player GUI
 Notification that gets called when the currently playing song finished
 */
 - (void)songDidFinishPlaying:(CPNotification)aNotification{
-	console.log("Song finished playing");
+	CPLog.trace("Song finished playing");
 	[player songDidFinishPlaying];
 	paused=NO;
 	playing=NO;

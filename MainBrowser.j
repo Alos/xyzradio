@@ -59,11 +59,11 @@ This file is part of XYZRadio.
     [theTable addItem:anObject];
 }
 -(void)addList:(CPArray)aModel
-{   console.log("addlist here!");
+{   CPLog.trace("addlist here!");
     [theTable setModel: aModel];
 }
 -(void)removeSelectedItems{
-   console.log("removeSlectedItems in SFBrowser got a msg");
+   CPLog.trace("removeSlectedItems in SFBrowser got a msg");
    [theTable removeSelectedItems];
 }
 
