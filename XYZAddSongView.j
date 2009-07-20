@@ -22,7 +22,12 @@
 
 @implementation XYZAddSongView : DCFormView
 {
-   DCTextField field;
+   DCTextField urlField;
+   DCTextField titleField;
+   DCTextField artistField;
+   DCTextField genreField;
+   DCTextField timeField;
+   DCTextField pathAlbumArtField;
    id HTMLElement @accessors;
    CPTextField link;
    CPPopUpButton menu;
@@ -36,8 +41,8 @@
 		  //[menu setTitle:"add song"];
 		  [menu setPullsDown:YES];
 		  [menu setTitle:@"add song"];
-		  [menu addItemWithTitle:@"local"];
-		  [menu addItemWithTitle:@"url"];
+		  [menu addItemWithTitle:@"LOCAL"];
+		  [menu addItemWithTitle:@"URL"];
 		  [menu setTarget:self];
 		  [menu setAction:@selector(menuDidChangeItem)];      
 		  [self	addSubview:menu]; 	     
@@ -52,13 +57,20 @@
 //se manda llamar a este metodo cuando se cambia un 
 //item del popUpButton 
 -(void)menuDidChangeItem{
-   if([[menu selectedItem] title] == "local"){
+   if([[menu selectedItem] title] == "LOCAL"){
       //console.log("local");
    }
 
-   if([[menu selectedItem] title] == "url"){
+   if([[menu selectedItem] title] == "URL"){
       //console.log("url");
-      field = [self addFieldRowWithTitle:@"URL:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
+      //contruimos el formulario
+      titleField = [self addFieldRowWithTitle:@"title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
+      artistField = [self addFieldRowWithTitle:@"artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
+      genreField = [self addFieldRowWithTitle:@"genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
+      timeField = [self addFieldRowWithTitle:@"time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
+      pathAlbumArtField = [self addFieldRowWithTitle:@"URL album art:" name:@"pathAlbumArt" controlType:DCFormControlTypeTextField required:NO];
+      urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
+      
       [[menu selectedItem] setEnabled:NO];
    }
 }
