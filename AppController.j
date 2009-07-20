@@ -106,7 +106,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	playerControl=[[PlayerControl alloc] init: djList];	
     //testing users
     //[self openUsers];
-    [self openLoginWindow];
+    //[self openLoginWindow];
 
 }
 
@@ -190,7 +190,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
-  var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,380,250)]];
+  var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,400,450)]];
   [addFolloweeFormController startForm];
 }
 
