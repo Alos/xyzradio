@@ -32,23 +32,22 @@
 	CPString userPassReq;
 }
 
-/*Una bonita contructora*/
 - (id)initWithContentRect:(CGRect)aRectangle styleMask:(unsigned int) aStyle {
     self = [super initWithContentRect: aRectangle styleMask: aStyle];
-    if (self)//pa ver si no somos null :P
+    if (self)
     {
 		var contentView = [self contentView];
 		
 		//userid
-	    var usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(20, 12, 100, 30)];
-        [usuarioLabel setStringValue:"Usuario:"];
+	    var usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(568, 252, 100, 30)];
+        [usuarioLabel setStringValue:"User:"];
         [usuarioLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
         [usuarioLabel setBackgroundColor:NULL];
 		[usuarioLabel sizeToFit];
 		//[usuarioLabel resignFirstResponder:YES];
 		[contentView addSubview:usuarioLabel];
 		
-		userid = [[CPTextField alloc] initWithFrame: CGRectMake(80, 10, 170, 30)];
+		userid = [[CPTextField alloc] initWithFrame: CGRectMake(610, 248, 170, 30)];
         [userid setEditable:YES];
         [userid setBezeled:YES];
         [userid setTextColor: [CPColor colorWithHexString:"000000"]];
@@ -56,14 +55,14 @@
 		[contentView addSubview:userid];
 		
 		//pass
-		var passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(10, 60, 100, 30)];
+		var passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(540, 314, 100, 30)];
         [passLabel setStringValue:"Password:"];
         [passLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
         [passLabel setBackgroundColor:NULL];
 		[passLabel sizeToFit];
 		[contentView addSubview:passLabel];
 		
-		password = [[CPTextField alloc] initWithFrame: CGRectMake(80, 58, 170, 30)];
+		password = [[CPTextField alloc] initWithFrame: CGRectMake(610, 308, 170, 30)];
         [password setEditable:YES];
         [password setBezeled:YES];
 		[password setSecure: YES];
@@ -71,14 +70,19 @@
         [password setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 		[contentView addSubview:password];
 		
-        loginButton = [[CPButton alloc] initWithFrame:CGRectMake(200, 106, 100, 30)];
+        loginButton = [[CPButton alloc] initWithFrame:CGRectMake(730, 360, 50, 18)];
         [loginButton setTitle:@"Login"];
-	    [loginButton sizeToFit];
-		[loginButton setBezelStyle:CPHUDBezelStyle];
-		//[loginButton setDefaultButton:YES];
+	    //[loginButton sizeToFit];
+		[loginButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+		//[loginButton setBezelStyle:CPHUDBezelStyle];
         [loginButton setTarget:self];
         [loginButton setAction:@selector(loginActionPerformed)];   
 		[contentView addSubview:loginButton];
+		
+		var poweredByGoogleImage = [[CPImage alloc] initWithContentsOfFile:"Resources/appengine-silver-120x30.gif" size:CPSizeMake(127, 30)];
+		var poweredByGoogleImageView = [[CPImageView alloc] initWithFrame:CGRectMake(840, 750, 127, 30)];
+		[poweredByGoogleImageView setImage: poweredByGoogleImage];
+		[contentView addSubview: poweredByGoogleImageView];
 		
 		[self makeFirstResponder:userid];
 
