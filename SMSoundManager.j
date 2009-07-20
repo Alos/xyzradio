@@ -32,7 +32,7 @@ This file is part of XYZRadio.
 - (id)init
 {
     self = [super init];
-    console.log("Inicializando el SM");
+    CPLog.trace("Inicializando el SM");
     window.setTimeout(setupSoundManager, 1000, self);
     
     return self;
@@ -48,7 +48,7 @@ This file is part of XYZRadio.
 
 - (void)playSound:(CPString)aFile
 {
-	console.log("The File: %s",aFile);
+	CPLog.trace("The File: %s",aFile);
     var song = soundManager.createSound({ 
 		id : 'aSong', 
 		url : aFile,
@@ -83,7 +83,7 @@ This file is part of XYZRadio.
 	soundManager.setVolume('aSong', aVolume);
 }
 -(void)soundDidFinish{
-	 console.log("Sound finished...posting notification...");
+	 CPLog.trace("Sound finished...posting notification...");
 	 [[CPNotificationCenter defaultCenter] postNotificationName:"SongEnded" object:self]; 
 }
 -(void)soundPosition{

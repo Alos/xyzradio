@@ -44,7 +44,7 @@
 	
 	/*Una bonita contructora*/
 	- (id)initWithAcontrol:(PlayerControl)aPlayerControl contentRect:(CGRect)aRectangle{
-		console.log("Inicializanso la ventana con un control");
+		CPLog.trace("Inicializanso la ventana con un control");
 		self = [super initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPBorderlessWindowMask];
 		
 		//set local variables
@@ -234,12 +234,12 @@
 	
 	/*Sets the curently playing song*/
 	-(void)setCurrentlyPlayingSong:(CPString)aSongTitle time:(CPString)aMaxTime{
-		console.log(aMaxTime);
+		CPLog.trace(aMaxTime);
 		[currentlyPlayingTextField setStringValue:aSongTitle];
 		var auxArray = [aMaxTime componentsSeparatedByString:":"];
 		var seconds = (parseInt(auxArray[0]) * 60) + parseInt(auxArray[1]);
 		var milies = seconds * 1000;
-		console.log("%s milies", milies);
+		CPLog.trace("%s milies", milies);
 		[timeSlider setMaxValue:parseInt(milies)];
 		[timeSlider setValue:0];
 	}

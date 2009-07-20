@@ -53,13 +53,13 @@
 //item del popUpButton 
 -(void)menuDidChangeItem{
    if([[menu selectedItem] title] == "local")
-      console.log("local");
+      CPLog.trace("local");
    if([[menu selectedItem] title] == "url")
-      console.log("url");
+      CPLog.trace("url");
 }
 
 -(void)submitAction:(id)sender{
-   console.log([field objectValue]);
+   CPLog.trace([field objectValue]);
 }
 
 -(CPString)thankYouMessage {

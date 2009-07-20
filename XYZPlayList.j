@@ -67,7 +67,7 @@ CPArray theList;
 }
 
 -(void)removeSelectedItems{
-   console.log("removeSlectedItems in SFBrowser got a msg");
+   CPLog.trace("removeSlectedItems in SFBrowser got a msg");
    [theTable removeSelectedItems];
 }
 

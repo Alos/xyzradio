@@ -23,7 +23,6 @@ This file is part of XYZRadio.
     CPString userStatus;
     CPString userName;
     CPString userRating;
-    id delegate;
     CPView superview;
 }
 

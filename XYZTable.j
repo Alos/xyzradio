@@ -89,7 +89,7 @@ SongsDragType = @"SongsDragType";
 
 - (void)performDragOperation:(id <CPDraggingInfo>)aSender
 {
-	console.log("here in performdrag....");
+	CPLog.trace("here in performdrag....");
     // If this is us, don't add it.
     if ([aSender draggingSource] == collectionView)
         return;
@@ -107,7 +107,7 @@ SongsDragType = @"SongsDragType";
             if(![[collectionView content] containsObject:songs[index]])
 				[self addItem:songs[index]];
 			else
-				console.log("Repetido!");
+				CPLog.trace("Repetido!");
 		}
 			
     }
@@ -175,7 +175,7 @@ Gets the current song index in the array
 Gets the song in the index
 */
 -(XYZSong)getSongByIndex:(int)index{
-	console.log([[model objectAtIndex:index] pathToSong]);
+	CPLog.trace("Getting song by index: %s ",[[model objectAtIndex:index] pathToSong]);
 	return [model objectAtIndex:index];
 }
 /**
@@ -194,7 +194,7 @@ Gets the total of songs in the list
 }
 
 -(CPArray)collectionView:(CPCollectionView)collectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices{
-	console.log("here in dragtypes....%s",indices);
+	CPLog.trace("here in dragtypes....%s",indices);
     return [SongsDragType];
 }
 
@@ -230,7 +230,7 @@ var ratingViewSize;
 
 
 - (void)setModel:(CPDictionary)aModel{
-	console.log("Setting the model: %s", aModel);
+	CPLog.trace("Setting the model: %s", aModel);
 	if(aModel){
 		var titleColumn = [aModel objectForKey:"title"];
 		if(titleColumn){
@@ -300,7 +300,7 @@ var ratingViewSize;
 	if(!raterView){
 		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
 		  [raterView setFrameOrigin:CGPointMake(ratingViewSize, 0.0)];
-		  console.log("Setting rater for %s width %s", [anObject songTitle], raterView);
+		  CPLog.trace("Setting rater for %s width %s", [anObject songTitle], raterView);
 		  [anObject setStarRater: raterView];		  
 		  [self addSubview: raterView];
 	}

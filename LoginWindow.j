@@ -18,22 +18,107 @@
     along with Louhi.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+@import "CPLightbox.j"
+
+
+
 @implementation LoginWindow : CPWindow
 {
-	CPWebView loginweb;
+	CPButton loginButton;
+	CPTextField userid;
+	CPTextField password;
+	CPWindow parentWindow;
+	CPString useridReq;
+	CPString userPassReq;
 }
 
 /*Una bonita contructora*/
-- (id)initWithContentRect:(CGRect)aRectangle styleMask:(unsigned int) aStyle url:(CPString)aURL{
+- (id)initWithContentRect:(CGRect)aRectangle styleMask:(unsigned int) aStyle {
     self = [super initWithContentRect: aRectangle styleMask: aStyle];
     if (self)//pa ver si no somos null :P
     {
 		var contentView = [self contentView];
-		loginweb = [[CPWebView alloc] initWithFrame:CGRectMake(0.0, 0.0, 500, 200)];
-		[loginweb setMainFrameURL: aURL];
-		[contentView addSubview: loginweb];
-		[self orderFront:self]; 
-	}
+		
+		//userid
+	    var usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(20, 12, 100, 30)];
+        [usuarioLabel setStringValue:"Usuario:"];
+        [usuarioLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
+        [usuarioLabel setBackgroundColor:NULL];
+		[usuarioLabel sizeToFit];
+		//[usuarioLabel resignFirstResponder:YES];
+		[contentView addSubview:usuarioLabel];
+		
+		userid = [[CPTextField alloc] initWithFrame: CGRectMake(80, 10, 170, 30)];
+        [userid setEditable:YES];
+        [userid setBezeled:YES];
+        [userid setTextColor: [CPColor colorWithHexString:"000000"]];
+        [userid setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
+		[contentView addSubview:userid];
+		
+		//pass
+		var passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(10, 60, 100, 30)];
+        [passLabel setStringValue:"Password:"];
+        [passLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
+        [passLabel setBackgroundColor:NULL];
+		[passLabel sizeToFit];
+		[contentView addSubview:passLabel];
+		
+		password = [[CPTextField alloc] initWithFrame: CGRectMake(80, 58, 170, 30)];
+        [password setEditable:YES];
+        [password setBezeled:YES];
+		[password setSecure: YES];
+        [password setTextColor: [CPColor colorWithHexString:"000000"]];
+        [password setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
+		[contentView addSubview:password];
+		
+        loginButton = [[CPButton alloc] initWithFrame:CGRectMake(200, 106, 100, 30)];
+        [loginButton setTitle:@"Login"];
+	    [loginButton sizeToFit];
+		[loginButton setBezelStyle:CPHUDBezelStyle];
+		//[loginButton setDefaultButton:YES];
+        [loginButton setTarget:self];
+        [loginButton setAction:@selector(loginActionPerformed)];   
+		[contentView addSubview:loginButton];
+		
+		[self makeFirstResponder:userid];
+
+                    
+    }
     return self;
+}
+-(void)loginActionPerformed{
+	var useridReq = [userid objectValue];
+	var userPassReq = [password objectValue];
+	
+	[self loguser: useridReq password: userPassReq];
+	
+}
+
+-(void) loguser:(CPString)aUser password:(CPString)aPassword{
+	var url = "https://www.google.com/accounts/ClientLogin?Email=alosii@gmail.com&Passwd=20lonestar01&accountType=HOSTED_OR_GOOGLE&source=alos-xyzradio-1&service=ah";
+	var request = [CPURLRequest requestWithURL: url];
+	var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
+}
+
+- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
+{
+	var authValue = [data componentsSeparatedByString:"="];
+	var urlWithToken = "http://xyzradioengine.appspot.com/_ah/login?auth="+authValue[3];
+	var googleAuthentification = [[GoogleAuthentification alloc] initWithURL:urlWithToken];
+}
+
+-(void)connectionDidFinishLoading:(CPURLConnection)connection{
+	//nothing
+}
+
+- (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error
+{
+}
+
+- (void)clearConnection:(CPURLConnection)connection
+{
+    //we no longer need to hold on to a reference to this connection
+    if (connection == louhiConnection)
+        louhiConnection = nil;
 }
 @end
