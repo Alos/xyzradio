@@ -41,8 +41,8 @@
 		  [menu setTarget:self];
 		  [menu setAction:@selector(menuDidChangeItem)];      
 		  [self	addSubview:menu]; 	     
-		  //var space = [self addFieldRowWithTitle:@" " name:@" " controlType:DCFormControlTypeHidden required:NO];
-		  field = [self addFieldRowWithTitle:@"URL:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];	
+		  
+		  //field = [self addFieldRowWithTitle:@"URL:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];	
 		  [headerLabel setStringValue:@"Should see the terms of use"];
 		  [self setSubmitButtonTitle:@"Save song"];
 		}
@@ -52,14 +52,20 @@
 //se manda llamar a este metodo cuando se cambia un 
 //item del popUpButton 
 -(void)menuDidChangeItem{
-   if([[menu selectedItem] title] == "local")
-      console.log("local");
-   if([[menu selectedItem] title] == "url")
-      console.log("url");
+   if([[menu selectedItem] title] == "local"){
+      //console.log("local");
+   }
+
+   if([[menu selectedItem] title] == "url"){
+      //console.log("url");
+      field = [self addFieldRowWithTitle:@"URL:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
+      [[menu selectedItem] setEnabled:NO];
+   }
 }
 
 -(void)submitAction:(id)sender{
-   console.log([field objectValue]);
+   //console.log("save");
+   //console.log([field stringValue]);
 }
 
 -(CPString)thankYouMessage {
