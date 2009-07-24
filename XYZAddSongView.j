@@ -19,6 +19,8 @@
  along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
  */
 @import "DCFormView.j"
+@import "FileUpload.j"
+//@import "UploadButton.j"
 
 @implementation XYZAddSongView : DCFormView
 {
@@ -31,7 +33,9 @@
    id HTMLElement @accessors;
    CPTextField link;
    CPPopUpButton menu;
-   BOOL menuURL=NO; 
+   //UploadButton uploadButton;
+   CPButton uploadButton;  
+   CPArray items;
 }
 	
 	/*Una bonita contructora*/
@@ -55,18 +59,30 @@
 		return self;
 	}
 
-//se manda llamar a este metodo cuando se cambia un 
-//item del popUpButton 
+/*se manda llamar a este metodo cuando se cambia un 
+//item del popUpButton
+*/
 -(void)menuDidChangeItem{
-   var items = [self subviews];
- 
+  items = [self subviews];
+  console.log("antes de cargar el menu: ",[items count]);
+   if([items count]==6 || [items count]==17){
+      [self cleanForm];
+   }
+
    if([[menu selectedItem] title] == "LOCAL"){
-      //console.log("local");
+      //agregamos el boton de upload
+      if([items count]==5){
+	uploadButton = [[UploadButton alloc] initWithFrame:CGRectMake(135,250,110,25)];// title:@"Upload"];
+	[uploadButton setTitle:@"Upload"];
+	[uploadButton setDelegate:self];
+	[uploadButton setTarget:self];
+	[self addSubview:uploadButton];
+      }
    }
 
    if([[menu selectedItem] title] == "URL"){
       //contruimos el formulario
-      if([items count]==5){
+      if([items count]==5 || [items count]==6){
 	titleField = [self addFieldRowWithTitle:@"Title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
 	artistField = [self addFieldRowWithTitle:@"Artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
 	genreField = [self addFieldRowWithTitle:@"Genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
@@ -75,18 +91,39 @@
 	urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
       }
    }
-
-   [[menu selectedItem] setEnabled:NO]; 
+   console.log("despues de cargar el menu: ",[items count]);
 }
 
+//limpia el formulario
+-(void)cleanForm{
+  do{
+    for(var i=5;i<[items count];i++){
+      console.log("subviews ",[items objectAtIndex:i]);
+      [[items objectAtIndex:i] removeFromSuperview];
+    }  
+  }while([items count]>5);  
+}
+
+//guarda la cancion de cualquiera de las dos formas
 -(void)submitAction:(id)sender{
-   //console.log("save");
-   //console.log([field stringValue]);
+  if([[menu selectedItem] title] == "URL"){
+    console.log("URL");
+  }
+
+  if([[menu selectedItem] title] == "LOCAL"){
+    console.log("LOCAL");
+  }
 }
 
 -(CPString)thankYouMessage {
 	//return @"Thanks for adding!  They'll show up in the feed soon.";
 	return @"";
+}
+
+//------------------delegate methods-----------------------
+
+-(void)didChangeSelection:(CPNotification)aNotification{
+  console.log("file value: ",[uploadButton selection]);
 }
 
 @end
