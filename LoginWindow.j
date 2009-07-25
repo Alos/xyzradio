@@ -38,8 +38,13 @@
     {
 		var contentView = [self contentView];
 		
+		var bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/fondo-login.jpg" size:CPSizeMake(1000, 800)];
+		var bgImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 1000, 800)];
+		[bgImageView setImage: bgImage];
+		[contentView addSubview: bgImageView];
+		
 		//userid
-	    var usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(568, 252, 100, 30)];
+	    var usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(620, 252, 100, 30)];
         [usuarioLabel setStringValue:"User:"];
         [usuarioLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
         [usuarioLabel setBackgroundColor:NULL];
@@ -47,7 +52,7 @@
 		//[usuarioLabel resignFirstResponder:YES];
 		[contentView addSubview:usuarioLabel];
 		
-		userid = [[CPTextField alloc] initWithFrame: CGRectMake(610, 248, 170, 30)];
+		userid = [[CPTextField alloc] initWithFrame: CGRectMake(660, 248, 170, 30)];
         [userid setEditable:YES];
         [userid setBezeled:YES];
         [userid setTextColor: [CPColor colorWithHexString:"000000"]];
@@ -55,14 +60,14 @@
 		[contentView addSubview:userid];
 		
 		//pass
-		var passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(540, 314, 100, 30)];
+		var passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(595, 314, 100, 30)];
         [passLabel setStringValue:"Password:"];
         [passLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
         [passLabel setBackgroundColor:NULL];
 		[passLabel sizeToFit];
 		[contentView addSubview:passLabel];
 		
-		password = [[CPTextField alloc] initWithFrame: CGRectMake(610, 308, 170, 30)];
+		password = [[CPTextField alloc] initWithFrame: CGRectMake(660, 308, 170, 30)];
         [password setEditable:YES];
         [password setBezeled:YES];
 		[password setSecure: YES];
@@ -70,7 +75,7 @@
         [password setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 		[contentView addSubview:password];
 		
-        loginButton = [[CPButton alloc] initWithFrame:CGRectMake(730, 360, 50, 18)];
+        loginButton = [[CPButton alloc] initWithFrame:CGRectMake(780, 360, 50, 18)];
         [loginButton setTitle:@"Login"];
 	    //[loginButton sizeToFit];
 		[loginButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
@@ -88,11 +93,12 @@
 		
 		var helpLink = [[DCLinkTextField alloc] initWithFrame:CGRectMake(20, 750, 100, 30)];
 		[helpLink setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-		[helpLink HTMLElement].style.color = "#EEEEEE";
+		[helpLink HTMLElement].style.color = "#FFFFFF";
 		[helpLink HTMLElement].style.fontSize = "12px";
 		[helpLink HTMLElement].style.fontFamily = "Helvetica, Sans-Serif";
+		[helpLink HTMLElement].style.fontColor = "#FFFFFF";
 		[helpLink HTMLElement].style.lineHeight = "1.5em";
-		[helpLink setHTML: @"<a href=\"xyzradioHelp.html\">Help</a>"];
+		[helpLink setHTML: @"<a href=\"xyzradioHelpp.html\">Help</a>"];
 		[contentView addSubview: helpLink];
 		
     }

@@ -100,13 +100,15 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	CPLog.trace("Window ready!");
     //[self openBrowser];
 	musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+	[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
 	//[self openDJList];
 	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
+	[djList setFrameOrigin:(CPPointMake(700, 100))];
 	//control init
 	playerControl=[[PlayerControl alloc] init: djList];	
     //testing users
     //[self openUsers];
-    //[self openLoginWindow];
+    [self openLoginWindow];
 
 }
 
