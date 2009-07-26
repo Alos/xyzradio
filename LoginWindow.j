@@ -22,102 +22,41 @@
 @import "DCLinkTextField.j"
 @import "XYZUser.j"
 @import "md5.js"
+@import "LoginForm.j"
+@import "SigninForm.j"
 
 @implementation LoginWindow : CPWindow
 	{
-		CPButton loginButton;
-		CPTextField userid;
-		CPTextField password;
-		CPWindow parentWindow;
+		//the loging form
+		LoginForm loginForm;
+		//for the new user
+		SigninForm signinForm;
 		CPString useridReq;
 		CPString userPassReq;
 		CPApp app;
+		CPView contentView;
+		CPAnimation animFadeInLog;
+		CPAnimation animFadeOutLog;
+		CPAnimation animFadeInSign;
+		CPAnimation animFadeOutSign;
 	}
 	
 	- (id)initWithContentRect:(CGRect)aRectangle styleMask:(unsigned int) aStyle {
 		self = [super initWithContentRect: aRectangle styleMask: aStyle];
 		if (self)
 		{
-			var contentView = [self contentView];
+			contentView = [self contentView];
 			app = [CPApp delegate];
 			var bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/fondo-login.jpg" size:CPSizeMake(1000, 800)];
 			var bgImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 1000, 800)];
 			[bgImageView setImage: bgImage];
 			[contentView addSubview: bgImageView];
 			
-			//instructions
-			var instructionsLabel = [[CPTextField alloc] initWithFrame: CGRectMake(680, 200, 100, 30)];
-			[instructionsLabel setStringValue:"Login to XYZRadio"];
-			[instructionsLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[instructionsLabel setBackgroundColor:NULL];
-			[instructionsLabel sizeToFit];
-			[contentView addSubview:instructionsLabel];
-
+			//At the start we show the loginform
+			loginForm = [[LoginForm alloc]  initWithFrame:CGRectMake(600, 200, 500, 600)];
+			[contentView addSubview: loginForm];
 			
-			//userid
-			var usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(620, 252, 100, 30)];
-			[usuarioLabel setStringValue:"User:"];
-			[usuarioLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[usuarioLabel setBackgroundColor:NULL];
-			[usuarioLabel sizeToFit];
-			[contentView addSubview:usuarioLabel];
-			
-			userid = [[CPTextField alloc] initWithFrame: CGRectMake(660, 248, 170, 30)];
-			[userid setEditable:YES];
-			[userid setBezeled:YES];
-			[userid setPlaceholderString:"bob@gmail.com"];
-			[userid setTextColor: [CPColor colorWithHexString:"000000"]];
-			[userid setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
-			[contentView addSubview:userid];
-			
-			//pass
-			var passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(595, 314, 100, 30)];
-			[passLabel setStringValue:"Password:"];
-			[passLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[passLabel setBackgroundColor:NULL];
-			[passLabel sizeToFit];
-			[contentView addSubview:passLabel];
-			
-			password = [[CPTextField alloc] initWithFrame: CGRectMake(660, 308, 170, 30)];
-			[password setEditable:YES];
-			[password setBezeled:YES];
-			[password setSecure: YES];
-			[password setTextColor: [CPColor colorWithHexString:"000000"]];
-			[password setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
-			[contentView addSubview:password];
-			
-			loginButton = [[CPButton alloc] initWithFrame:CGRectMake(780, 360, 50, 18)];
-			[loginButton setTitle:@"Login"];
-			//[loginButton sizeToFit];
-			[loginButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
-			//[loginButton setBezelStyle:CPHUDBezelStyle];
-			[loginButton setTarget:self];
-			[loginButton setAction:@selector(loginActionPerformed)];   
-			[contentView addSubview:loginButton];
-			
-			
-			
-			//new user
-			var newUserLabel = [[CPTextField alloc] initWithFrame: CGRectMake(620, 460, 100, 30)];
-			[newUserLabel setStringValue:"New user?"];
-			[newUserLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[newUserLabel setBackgroundColor:NULL];
-			[newUserLabel sizeToFit];
-			[contentView addSubview:newUserLabel];
-			
-			newUserButton = [[CPButton alloc] initWithFrame: CGRectMake(690, 460, 170, 30)];
-			[newUserButton setTitle:@"Create an account"];
-			[newUserButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
-			[newUserButton setTarget:self];
-			[newUserButton sizeToFit];
-			[newUserButton setAction:@selector(newUserActionPerformed)];   
-			[contentView addSubview:newUserButton];
-
-			
-			
-			
-			
-			
+			//Stuff at the bottom of the window
 			var poweredByGoogleImage = [[CPImage alloc] initWithContentsOfFile:"Resources/appengine-silver-120x30.gif" size:CPSizeMake(127, 30)];
 			var poweredByGoogleImageView = [[CPImageView alloc] initWithFrame:CGRectMake(840, 750, 127, 30)];
 			[poweredByGoogleImageView setImage: poweredByGoogleImage];
@@ -135,21 +74,96 @@
 			[helpLink setHTML: @"<a href=\"xyzradioHelpp.html\">Help</a>"];
 			[contentView addSubview: helpLink];
 			
+			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(fadeoutLoginSection:) name:"newUserActionPerformed" object:nil];
+			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(loginActionPerformed:) name:"loginActionPerformed" object:nil];	
+			
+			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(createAccountActionPerformed:) name:"createAccountActionPerformed" object:nil];	
+			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(fadeoutSigninSection:) name:"cancelButtonActionPerformed" object:nil];	
+
 		}
 		return self;
 	}
-	-(void)loginActionPerformed{
-		var useridReq = [userid objectValue];
-		var userPassReq = [password objectValue];
+	-(void)loginActionPerformed:(CPNotification)aNotification{
+		var useridReq = [loginForm getUserEmail];
+		var userPassReq = [loginForm getUserPass];
 		userPassReq = b64_md5(userPassReq);
 		[self loguser: useridReq password: userPassReq];
 		
 	}
 	
-	-(void)newUserActionPerformed{
-	
+	-(void)createAccountActionPerformed:(CPNotification)aNotification{
 	
 	}
+	
+	-(void)animationDidEnd:(CPAnimation)animation{
+		if(animation == animFadeOutLog){
+			//the loginform exists so it will be removed
+			CPLog.info("Removing loginform");
+			[loginForm removeFromSuperview];
+			loginForm = nil;
+			//now we add the sign in form
+			CPLog.info("Adding the sign in form");
+			[self fadeinSigninSection];
+		}
+		
+		if(animation == animFadeOutSign){
+			//the signinform will be removed
+			CPLog.info("Removing signinform");
+			[signinForm removeFromSuperview];
+			signinForm = nil;
+			//now we add the sign in form
+			CPLog.info("Adding the login form");
+			[self fadeinLoginSection];
+		}
+	}
+	
+	-(void)fadeinLoginSection{
+		CPLog.info("Adding loginform");
+		loginForm = [[LoginForm alloc]  initWithFrame:CGRectMake(600, 200, 500, 600)];
+		[loginForm setAlphaValue:0];
+		[contentView addSubview: loginForm];
+		
+		animFadeInLog = [[CPPropertyAnimation alloc] initWithView:loginForm property:@"alphaValue"];
+		[animFadeInLog setStart:0];
+		[animFadeInLog setEnd:1];
+		[animFadeInLog setDuration:1.0];
+		[animFadeInLog startAnimation];
+		[animFadeInLog setDelegate: self];
+	}
+	
+	-(void)fadeoutLoginSection:(CPNotification)aNotification{
+		animFadeOutLog = [[CPPropertyAnimation alloc] initWithView:loginForm property:@"alphaValue"];
+		[animFadeOutLog setStart:1];
+		[animFadeOutLog setEnd:0];
+		[animFadeOutLog setDuration:1.0];
+		[animFadeOutLog startAnimation];
+		[animFadeOutLog setDelegate: self];
+	}
+
+	-(void)fadeinSigninSection{
+		CPLog.info("Adding sign in form");
+		signinForm = [[SigninForm alloc]  initWithFrame:CGRectMake(600, 200, 500, 600)];
+		[signinForm setAlphaValue:0];	
+		[contentView addSubview: signinForm];	
+
+		animFadeInSign = [[CPPropertyAnimation alloc] initWithView:signinForm property:@"alphaValue"];
+		[animFadeInSign setStart:0];
+		[animFadeInSign setEnd:1];
+		[animFadeInSign setDuration:1.0];
+		[animFadeInSign startAnimation];
+		[animFadeInSign setDelegate: self];
+	}
+	
+	-(void)fadeoutSigninSection:(CPNotification)aNotification{
+		animFadeOutSign = [[CPPropertyAnimation alloc] initWithView:signinForm property:@"alphaValue"];
+		[animFadeOutSign setStart:1];
+		[animFadeOutSign setEnd:0];
+		[animFadeOutSign setDuration:1.0];
+		[animFadeOutSign startAnimation];
+		[animFadeOutSign setDelegate: self];
+	}
+	
+	
 	
 	-(void) loguser:(CPString)aUser password:(CPString)aPassword{
 		var url = "http://localhost:8080/LoginVerify?email="+aUser+"&passwd="+aPassword;
@@ -200,3 +214,4 @@
         louhiConnection = nil;
 	}
 	@end
+
