@@ -24,11 +24,9 @@ This file is part of XYZRadio.
 @import "XYZAddSongView.j"
 @import "DCFormController.j"
 @import "UserCell.j"
-@import "GoogleAuthentification.j"
 @import "LoginWindow.j"
 @import "UserProfileWindow.j"
 @import "XYZUser.j"
-@import "LoginSucessfullXYZEventManager.j"
 
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
@@ -83,7 +81,6 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	   
 	serverIP = "http://localhost:8080"; 
 
-	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(logToXYZRadio:) name:"GoogleLoginSuccessful" object:nil];		
 	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
 	
@@ -375,16 +372,6 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 		[CPLightbox runModalForWindow:loginWindow];
 }
 
--(void)logToXYZRadio:(CPNotification)aNotification{
-	CPLog.info("Logging to google succesfull! Trying to log to XYZRadio...");
-	
-	
-	
-	[LoginSucessfullXYZEventManager sendLoginToGoogleSucessfullXYZEvent: loggedUserEmail];
-	
-	[CPLightbox stopModal];
-	[loginWindow close];
-}
 
 -(void)closeLoginWindow:(CPNotification)aNotification{
 	[CPLightbox stopModal];
