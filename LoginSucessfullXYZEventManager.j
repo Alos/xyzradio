@@ -15,24 +15,42 @@ This file is part of XYZRadio.
 */
 
 
-@implementation GoogleAuthentification : CPObject
+
+/*This class controlls the login events of XYZRadio*/
+@implementation LoginSucessfullXYZEventManager : CPObject
 {
+	CPURLConnection serverConnection;
+	CPURLRequest theRequest;
+	CPApp app;
 }
 
-- (void)initWithURL:(CPString)aURL
-{
-    
-	var url = aURL;
-	var request = [CPURLRequest requestWithURL: url];
-	var googleAuthentificationConnection = [CPURLConnection connectionWithRequest:request delegate:self];
-	
++ (void)sendLoginToGoogleSucessfullXYZEvent:(CPString)email{
+	app = [CPApp delegate];
+	var url = [app serverIP]+"/LoginVerify?useremail="+email;
+	theRequest = [CPURLRequest requestWithURL: url];
+	serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
 }
+
 /*Delegate methods*/
 
 //for the connections delegate
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 {	
-	[[CPNotificationCenter defaultCenter] postNotificationName:"GoogleLoginSuccessful" object:self]; 	
+	CPLog(data);
+	var response =  JSON.parse(data);
+
+	if(response.user){
+		//user already existed and now we just fill his info
+		CPLog("Logged OK. Returned a user!");
+		var user = [[XYZUser alloc] init];
+		
+		var info = [CPDictionary dictionaryWithObject:song.position forKey:"time"];   
+		[[CPNotificationCenter defaultCenter] postNotificationName:"pos" object:self userInfo:info];
+	}else{
+		//no user was found lets ask the new user stuff
+		CPLog("Logged OK. No user returned");
+	}
+	
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection{

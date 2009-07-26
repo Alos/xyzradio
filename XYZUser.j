@@ -20,68 +20,63 @@ This file is part of XYZRadio.
 
 @implementation XYZUser: CPObject
 {
-    CPString userStatus;
-    CPString userName;
-    CPString userRating;
-    CPView superview;
+	CPString email @accessors;
+	CPString usernick @accessors;
+	BOOL logged @accessors;
+	CPString sex @accessors;
+	CPString status @accessors;  
+	CPArray djList1 @accessors;
+	CPArray djList2 @accessors;
+	CPArray djList3 @accessors;
+	CPArray ownedSongs @accessors;
+	CPString userRating @accessors;
 }
 
 -(id)initWithUserStatus:(CPString)aUserStatus userName:(CPString)aUserName userRating:(CPString)aRating{
     if(self = [super init]){
-        userStatus = aUserStatus;
-        userName = aUserName
+        status = aUserStatus;
+        usernick = aUserName
         userRating = aRating;
     }
     return self;
 }
 
--(void)setUserRating:(CPString)aValue{
-	userRating = aValue;
-}
-
--(CPString)userRating{
-	return userRating;
-}
-
-- (void) setUserStatus:(CPString) aStatus{
-    userStatus = aStatus;
-}
-- (CPString)userStatus{
-    return userStatus;
-}
-
-- (void) setUserName:(CPString)aName{
-    userName = aName;
-}
-
-- (CPString)userName{
-    return userName;
-}
-/*
 -(BOOL)isEqual:(id)anObject{
-if([[anObject class] instancesRespondToSelector: @selector(ID)])
-    if([anObject ID]==[self ID])
+	if([[anObject class] instancesRespondToSelector: @selector(email)])
+    if([anObject email]==[self email])
         return YES;
     else
         return NO;
 }
-*/
+
 
 - (void)encodeWithCoder:(CPCoder)aCoder{
-    [aCoder encodeObject:userStatus forKey:@"UserStatus"];
-    [aCoder encodeObject:userName forKey:@"UserName"];
-//    [aCoder encodeObject:ID forKey:@"ID"];
-    [aCoder encodeObject:userRating forKey:@"UserRating"];
+	[aCoder encodeObject:email forKey:@"Email"];
+	[aCoder encodeObject:usernick forKey:@"UserNick"];
+    [aCoder encodeObject:logged forKey:@"Logged"];
+	[aCoder encodeObject:sex forKey:@"Sex"];
+	[aCoder encodeObject:status forKey:@"Status"];
+	[aCoder encodeObject:djList1 forKey:@"DJList1"];
+	[aCoder encodeObject:djList2 forKey:@"DJList2"];
+	[aCoder encodeObject:djList3 forKey:@"DJList3"];
+	[aCoder encodeObject:ownedSongs forKey:@"OwnedSongs"];
+	[aCoder encodeObject:userRating forKey:@"UserRating"];
 }
 
 - (id)initWithCoder:(CPCoder)aCoder{
     self = [super init];
     if (self)
     {
-        userStatus = [aCoder decodeObjectForKey:@"UserStatus"];
-        userName = [aCoder decodeObjectForKey:@"UserName"];
-//        ID = [aCoder decodeObjectForKey:@"ID"];
-  	userRating = [aCoder decodeObjectForKey:@"UserRating"];
+		email = [aCoder decodeObjectForKey:@"Email"];
+		usernick =[aCoder decodeObjectForKey:@"UserNick"];
+		logged = [aCoder decodeObjectForKey:@"Logged"];
+		sex = [aCoder decodeObjectForKey:@"Sex"];
+		status = [aCoder decodeObjectForKey:@"Status"];  
+		djList1 = [aCoder decodeObjectForKey:@"DJList1"];
+		djList2 = [aCoder decodeObjectForKey:@"DJList2"];
+		djList3 = [aCoder decodeObjectForKey:@"DJList3"];
+		ownedSongs = [aCoder decodeObjectForKey:@"OwnedSongs"];
+		userRating = [aCoder decodeObjectForKey:@"UserRating"];
     }
     return self;
 }

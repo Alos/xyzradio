@@ -27,6 +27,9 @@ This file is part of XYZRadio.
 @import "GoogleAuthentification.j"
 @import "LoginWindow.j"
 @import "UserProfileWindow.j"
+@import "XYZUser.j"
+@import "LoginSucessfullXYZEventManager.j"
+
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -55,11 +58,15 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	CPString serverIP;
 	LoginWindow loginWindow;
 	UserProfileWindow userProfileWindow;
+	XYZUser userLoggedin;//the full user
+	CPString loggedUserEmail; 
 }
+
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    CPLog.trace("Inicio de ventana");
+	CPLogRegister(CPLogPopup)
+    CPLog.info("Inicio de ventana");
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
 	contentView = [theWindow contentView];
     //bg
@@ -72,11 +79,13 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     toolbar= [[CPToolbar alloc] initWithIdentifier:@"main-toolbar"];
     [theWindow setToolbar: toolbar]; 
     [toolbar setDelegate:self];
-    
-	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
- 
+	 
 	   
 	serverIP = "http://localhost:8080"; 
+
+	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(logToXYZRadio:) name:"GoogleLoginSuccessful" object:nil];		
+	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
+
 	
    
 	 
@@ -116,12 +125,20 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	serverIP = aURL;
 }
 
+-(CPString)loggedUserEmail{
+	return loggedUserEmail;
+}
+
+-(void)setLoggedUserEmail:(CPString)anEmail{
+	loggedUserEmail= anEmail;
+}
+
 -(CPString)serverIP{
 	return serverIP;
 }
 
 -(void)sound:(CPSound)aSound didFinishPlaying:(BOOL)aBoolean{
-	CPLog.trace("Sound did finish playing");
+	CPLog.info("Sound did finish playing");
 }
 
 -(void)theWindow{
@@ -356,6 +373,17 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 		[loginWindow setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
 		[CPLightbox setBackgroundColor:[CPColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.6]];
 		[CPLightbox runModalForWindow:loginWindow];
+}
+
+-(void)logToXYZRadio:(CPNotification)aNotification{
+	CPLog.info("Logging to google succesfull! Trying to log to XYZRadio...");
+	
+	
+	
+	[LoginSucessfullXYZEventManager sendLoginToGoogleSucessfullXYZEvent: loggedUserEmail];
+	
+	[CPLightbox stopModal];
+	[loginWindow close];
 }
 
 -(void)closeLoginWindow:(CPNotification)aNotification{

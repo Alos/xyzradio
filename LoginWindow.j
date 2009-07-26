@@ -30,6 +30,7 @@
 	CPWindow parentWindow;
 	CPString useridReq;
 	CPString userPassReq;
+	CPApp app;
 }
 
 - (id)initWithContentRect:(CGRect)aRectangle styleMask:(unsigned int) aStyle {
@@ -37,7 +38,7 @@
     if (self)
     {
 		var contentView = [self contentView];
-		
+		app = [CPApp delegate];
 		var bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/fondo-login.jpg" size:CPSizeMake(1000, 800)];
 		var bgImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 1000, 800)];
 		[bgImageView setImage: bgImage];
@@ -48,6 +49,7 @@
         [usuarioLabel setStringValue:"User:"];
         [usuarioLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
         [usuarioLabel setBackgroundColor:NULL];
+		[usuarioLabel setPlaceholderString:"bob@gmail.com"];
 		[usuarioLabel sizeToFit];
 		//[usuarioLabel resignFirstResponder:YES];
 		[contentView addSubview:usuarioLabel];
@@ -121,8 +123,21 @@
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 {
 	var authValue = [data componentsSeparatedByString:"="];
-	var urlWithToken = "http://xyzradioengine.appspot.com/_ah/login?auth="+authValue[3];
-	var googleAuthentification = [[GoogleAuthentification alloc] initWithURL:urlWithToken];
+	if(authValue[3] != "undefined"){
+		CPLog.info("Valid user: loging to XYZRadioEngine");
+		[app setLoggedUserEmail: [userid objectValue]];
+		var urlWithToken = "http://xyzradioengine.appspot.com/_ah/login?auth="+authValue[3];
+		var googleAuthentification = [[GoogleAuthentification alloc] initWithURL:urlWithToken];
+	}else{
+		CPLog.warn("Bad login!");
+		var mensajeGuardar = [[CPAlert alloc] init];
+		[mensajeGuardar setTitle:"Sorry!"];
+		[mensajeGuardar setWindowStyle:CPHUDBackgroundWindowMask];
+		[mensajeGuardar setMessageText:"The server is not available at this time, please try again later"];
+		[mensajeGuardar addButtonWithTitle:"OK"];
+		[mensajeGuardar runModal];
+
+	}
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection{
