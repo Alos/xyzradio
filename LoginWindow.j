@@ -113,7 +113,7 @@
 }
 
 -(void) loguser:(CPString)aUser password:(CPString)aPassword{
-	var url = "https://www.google.com/accounts/ClientLogin?Email=alosii@gmail.com&Passwd=20lonestar01&accountType=HOSTED_OR_GOOGLE&source=alos-xyzradio-1&service=ah";
+	var url = "https://www.google.com/accounts/ClientLogin?Email="+[userid objectValue]+"&Passwd="+[password objectValue]+"&accountType=HOSTED_OR_GOOGLE&source=alos-xyzradio-1&service=ah";
 	var request = [CPURLRequest requestWithURL: url];
 	var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
 }
