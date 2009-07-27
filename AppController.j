@@ -63,7 +63,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-	CPLogRegister(CPLogPopup)
+	CPLogRegister(CPLogConsole)
     CPLog.info("Inicio de ventana");
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
 	contentView = [theWindow contentView];

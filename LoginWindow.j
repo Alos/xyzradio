@@ -71,7 +71,7 @@
 			[helpLink HTMLElement].style.fontFamily = "Helvetica, Sans-Serif";
 			[helpLink HTMLElement].style.fontColor = "#FFFFFF";
 			[helpLink HTMLElement].style.lineHeight = "1.5em";
-			[helpLink setHTML: @"<a href=\"xyzradioHelpp.html\">Help</a>"];
+			[helpLink setHTML: @"<a href=\"xyzradioHelpp.html\" style=\"color:#ffffff;\">Help</a>"];
 			[contentView addSubview: helpLink];
 			
 			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(fadeoutLoginSection:) name:"newUserActionPerformed" object:nil];
@@ -92,7 +92,12 @@
 	}
 	
 	-(void)createAccountActionPerformed:(CPNotification)aNotification{
-	
+		var useridReq = [signinForm getUserAccount];
+		var userPassReq = [signinForm getUserPass];
+		var userNameReq = [signinForm getUserName];
+		var userSexReq = [signinForm getUserSex];
+		userPassReq = b64_md5(userPassReq);
+		[self createUserAccount:useridReq password:userPassReq name:userNameReq sex:userSexReq];
 	}
 	
 	-(void)animationDidEnd:(CPAnimation)animation{
@@ -165,15 +170,23 @@
 	
 	
 	
-	-(void) loguser:(CPString)aUser password:(CPString)aPassword{
+	-(void)loguser:(CPString)aUser password:(CPString)aPassword{
 		var url = "http://localhost:8080/LoginVerify?email="+aUser+"&passwd="+aPassword;
 		CPLog.info("Connecting to" + url);
 		var request = [CPURLRequest requestWithURL: url];
 		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
 	}
 	
+	-(void)createUserAccount:(CPString)anAccount password:(CPString)aPassword name:(CPString)aName sex:(CPString)aSex{
+		var url = "http://localhost:8080/NewUser?account="+anAccount+"&password="+aPassword+"&name="+aName+"&sex="+aSex;
+		CPLog.info("Connecting to " + url);
+		var request = [CPURLRequest requestWithURL: url];
+		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
+	}
+	
 	- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 	{
+		CPLog.trace(data);
 		try{
 			var response = JSON.parse(data);
 			

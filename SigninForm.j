@@ -75,7 +75,6 @@
 			userName = [[CPTextField alloc] initWithFrame: CGRectMake(70, 132, 170, 30)];
 			[userName setEditable:YES];
 			[userName setBezeled:YES];
-			[userName setSecure: YES];
 			[userName setTextColor: [CPColor colorWithHexString:"000000"]];
 			[userName setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[self addSubview:userName];
@@ -109,10 +108,19 @@
 			[femaleLabel sizeToFit];
 			[self addSubview:femaleLabel];
 
+			//terms
+			var termsLabel = [[DCLinkTextField alloc] initWithFrame:CGRectMake(0, 220, 500, 30)];
+			[termsLabel setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+			[termsLabel HTMLElement].style.color = "#FFFFFF";
+			[termsLabel HTMLElement].style.fontSize = "12px";
+			[termsLabel HTMLElement].style.fontFamily = "Helvetica, Sans-Serif";
+			[termsLabel HTMLElement].style.fontColor = "#FFFFFF";
+			[termsLabel HTMLElement].style.lineHeight = "1.5em";
+			[termsLabel setHTML: @"By clicking on 'I accept' below you are agreeing to the <a href=\"Terms of Service.html\" style=\"color:#ffffff;\">Terms of Service</a>"];
+			[self addSubview: termsLabel];
 			
 			//buttons
-			
-			acceptButton = [[CPButton alloc] initWithFrame:CGRectMake(120, 220, 50, 18)];
+			acceptButton = [[CPButton alloc] initWithFrame:CGRectMake(120, 262, 50, 18)];
 			[acceptButton setTitle:@"I accept. Create my account."];
 			[acceptButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
 			[acceptButton sizeToFit];
@@ -120,7 +128,7 @@
 			[acceptButton setAction:@selector(createAccountActionPerformed)];   
 			[self addSubview:acceptButton];
 						
-			cancelButton = [[CPButton alloc] initWithFrame: CGRectMake(65, 220, 170, 30)];
+			cancelButton = [[CPButton alloc] initWithFrame: CGRectMake(65, 262, 170, 30)];
 			[cancelButton setTitle:@"Cancel"];
 			[cancelButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
 			[cancelButton sizeToFit];	
@@ -146,5 +154,18 @@
 	-(CPString)getUserPass{
 		return  [password objectValue];
 	}
+	
+	-(CPString)getUserName{
+		return  [userName objectValue];
+	}
+	
+	-(CPString)getUserSex{
+		CPLog.info([[maleButton radioGroup] selectedRadio]);
+		if([[maleButton radioGroup] selectedRadio] == maleButton)
+			return "MALE";
+		else
+			return "FEMALE";
+	}
+	
 	@end
 
