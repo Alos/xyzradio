@@ -69,10 +69,10 @@ This file is part of XYZRadio.
 					ownedSongs:nil rating:4 prefrences:nil];
    var user2 =  [[XYZUser alloc] initWithEmail:"osasenky@me.com" usernick:"oswa" pathToAvatar:"" logged:YES 
 					dj:NO sex:"MALE" djList1:nil djList2:nil djList3:nil
-					ownedSongs:nil rating:6 prefrences:nil];
+					ownedSongs:nil rating:2 prefrences:nil];
    var user3 =  [[XYZUser alloc] initWithEmail:"kit@me.com" usernick:"kitsune" pathToAvatar:"" logged:YES 
 				dj:NO sex:"FEMALE" djList1:nil djList2:nil djList3:nil
-				ownedSongs:nil rating:3 prefrences:nil];
+				ownedSongs:nil rating:5 prefrences:nil];
 									
    [list addObject:user1];
    [list addObject:user2];

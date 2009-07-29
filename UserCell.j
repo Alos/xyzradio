@@ -6,6 +6,7 @@
     CPImageView     userView;
     CPView          highlightView;
 	CPImageView glassImageView;
+	StarRatingView raterView;
 }
 
 - (void)setRepresentedObject:(JSObject)anObject
@@ -23,24 +24,24 @@
 		if([anObject sex]=="MALE"){
 			if([anObject dj]== YES){
 				var avatarImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/usuario-dj-hombre.png" size:CPSizeMake(87, 88)];
-				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0,0,87,88)];
+				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 87, 88)];
 				[avatarImageView setImage:avatarImage];
 				[self addSubview:avatarImageView]; 
 			}else{
 				var avatarImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/usuario-hombre.png" size:CPSizeMake(87, 88)];
-				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0,0,87,88)];
+				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 87, 88)];
 				[avatarImageView setImage:avatarImage];
 				[self addSubview:avatarImageView]; 
 			}
 		}else{
 			if([anObject dj]== YES){
 				var avatarImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/usuario-dj-mujer.png" size:CPSizeMake(87, 88)];
-				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0,0,87,88)];
+				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 87, 88)];
 				[avatarImageView setImage:avatarImage];
 				[self addSubview:avatarImageView]; 
 			}else{
 				var avatarImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/usuario-mujer.png" size:CPSizeMake(87, 88)];
-				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0,0,87,88)];
+				var avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 87, 88)];
 				[avatarImageView setImage:avatarImage];
 				[self addSubview:avatarImageView]; 
 			} 
@@ -49,11 +50,22 @@
 		//we add the pic
 	
 	}
-    currentlyPlayingTextField= [[CPTextField alloc] initWithFrame: CGRectMake(0, 0, 350, 18)];
-    [currentlyPlayingTextField setStringValue:[anObject usernick]];
-    [currentlyPlayingTextField setTextColor: [CPColor colorWithHexString:"33FF00"]];
-    [currentlyPlayingTextField setAlignment:CPCenterTextAlignment];
-    [self addSubview: currentlyPlayingTextField];
+	
+	var userNickTextField = [[CPTextField alloc] initWithFrame: CGRectMake(100, 20, 350, 24)];
+	[userNickTextField setStringValue:[anObject usernick]];
+	[userNickTextField sizeToFit];
+    [userNickTextField setTextColor: [CPColor colorWithHexString:"33FF00"]];
+    //[userNickTextField setAlignment:CPCenterTextAlignment];
+    [self addSubview: userNickTextField];
+	
+	if(!raterView){
+		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
+		  [raterView setFrameOrigin:CGPointMake(100, 40)];
+		  [self addSubview: raterView];
+	}
+	var control = [raterView rater];
+	[control setIntValue: [anObject userRating]];
+	
 	
 	var glassImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/brillo-información-usuario.png" size:CPSizeMake(246, 91)];
 	glassImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 246, 91)];
