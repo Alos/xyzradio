@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPString.ji;15;CPApplication.ji;12;CPClipView.ji;12;CPMenuItem.ji;9;CPPanel.jc;66029;
+I;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPString.ji;15;CPApplication.ji;12;CPClipView.ji;12;CPMenuItem.ji;9;CPPanel.jc;65814;
 CPMenuDidAddItemNotification = "CPMenuDidAddItemNotification";
 CPMenuDidChangeItemNotification = "CPMenuDidChangeItemNotification";
 CPMenuDidRemoveItemNotification = "CPMenuDidRemoveItemNotification";
@@ -485,9 +485,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
 {
     var menu = objj_msgSend(aMenuWindow, "menu");
     objj_msgSend(_CPMenuWindow, "poolMenuWindow:", aMenuWindow);
-    var delegate = objj_msgSend(menu, "delegate");
-    if (objj_msgSend(delegate, "respondsToSelector:", sel_getUid("menuDidClose:")))
-        objj_msgSend(delegate, "menuDidClose:", menu);
     if(objj_msgSend(aMenuItem, "isEnabled"))
         objj_msgSend(CPApp, "sendAction:to:from:", objj_msgSend(aMenuItem, "action"), objj_msgSend(aMenuItem, "target"), aMenuItem);
 }
@@ -644,7 +641,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
 { with(self)
 {
     _unconstrainedFrame = CGRectMakeCopy(objj_msgSend(self, "frame"));
-    var screenBounds = CGRectInset(objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "contentBounds"), 5.0, 5.0),
+    var screenBounds = CGRectInset(objj_msgSend(objj_msgSend(self, "platformWindow"), "contentBounds"), 5.0, 5.0),
         constrainedFrame = CGRectIntersection(_unconstrainedFrame, screenBounds),
         menuViewOrigin = objj_msgSend(self, "convertBaseToBridge:", CGPointMake(LEFT_MARGIN, TOP_MARGIN));
     constrainedFrame.origin.x = CGRectGetMinX(_unconstrainedFrame);
@@ -703,7 +700,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
         screenLocation = theWindow ? objj_msgSend(theWindow, "convertBaseToBridge:", objj_msgSend(anEvent, "locationInWindow")) : objj_msgSend(anEvent, "locationInWindow");
     if (type == CPPeriodic)
     {
-        var constrainedBounds = CGRectInset(objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "contentBounds"), 5.0, 5.0);
+        var constrainedBounds = CGRectInset(objj_msgSend(objj_msgSend(self, "platformWindow"), "contentBounds"), 5.0, 5.0);
         if (_scrollingState == _CPMenuWindowScrollingStateUp)
         {
             if (CGRectGetMinY(_unconstrainedFrame) < CGRectGetMinY(constrainedBounds))
@@ -768,14 +765,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
         objj_msgSend(CPEvent, "stopPeriodicEvents");
         var highlightedItem = objj_msgSend(objj_msgSend(_menuView, "menu"), "highlightedItem");
         objj_msgSend(menu, "_highlightItemAtIndex:", CPNotFound);
-        objj_msgSend(_menuView, "setMenu:", nil);
         objj_msgSend(self, "orderOut:", self);
-        if (_sessionDelegate && _didEndSelector)
-            objj_msgSend(_sessionDelegate, _didEndSelector, self, highlightedItem);
-        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPMenuDidEndTrackingNotification, menu);
         var delegate = objj_msgSend(menu, "delegate");
         if (objj_msgSend(delegate, "respondsToSelector:", sel_getUid("menuDidClose:")))
             objj_msgSend(delegate, "menuDidClose:", menu);
+        if (_sessionDelegate && _didEndSelector)
+            objj_msgSend(_sessionDelegate, _didEndSelector, self, highlightedItem);
+        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPMenuDidEndTrackingNotification, menu);
+        objj_msgSend(_menuView, "setMenu:", nil);
         return;
     }
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackEvent:"), CPPeriodicMask | CPMouseMovedMask | CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
@@ -908,8 +905,8 @@ objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.pat
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMenuBarWindow__init(self, _cmd)
 { with(self)
 {
-    var bridgeWidth = CGRectGetWidth(objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "contentBounds"));
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPanel") }, "initWithContentRect:styleMask:", CGRectMake(0.0, 0.0, bridgeWidth, MENUBAR_HEIGHT), CPBorderlessWindowMask);
+    var platformWindowWidth = CGRectGetWidth(objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "contentBounds"));
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPanel") }, "initWithContentRect:styleMask:", CGRectMake(0.0, 0.0, platformWindowWidth, MENUBAR_HEIGHT), CPBorderlessWindowMask);
     if (self)
     {
         objj_msgSend(self, "setLevel:", -1);

@@ -1,4 +1,4 @@
-i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;10;CPObject.ji;7;CPSet.jc;21292;
+i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;10;CPObject.ji;7;CPSet.jc;20592;
 {
 var the_class = objj_getClass("CPObject")
 if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPObject\""));
@@ -30,7 +30,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     if (!anObserver || !aPath)
         return;
-    objj_msgSend(objj_msgSend(KVOProxyMap, "objectForKey:", objj_msgSend(self, "UID")), "_removeObserver:forKeyPath:", anObserver, aPath);
+    objj_msgSend(self[KVOProxyKey], "_removeObserver:forKeyPath:", anObserver, aPath);
 }
 })]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("automaticallyNotifiesObserversForKey:"), function $CPObject__automaticallyNotifiesObserversForKey_(self, _cmd, aKey)
@@ -41,8 +41,8 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("automaticallyNotifiesO
 }), new objj_method(sel_getUid("keyPathsForValuesAffectingValueForKey:"), function $CPObject__keyPathsForValuesAffectingValueForKey_(self, _cmd, aKey)
 { with(self)
 {
-    var capitalizedKey = aKey.charAt(0).toUpperCase()+aKey.substring(1);
-        selector = "keyPathsForValuesAffectingValueFor"+capitalizedKey;
+    var capitalizedKey = aKey.charAt(0).toUpperCase() + aKey.substring(1);
+        selector = "keyPathsForValuesAffecting" + capitalizedKey;
     if (objj_msgSend(objj_msgSend(self, "class"), "respondsToSelector:", selector))
         return objj_msgSend(objj_msgSend(self, "class"), selector);
     return objj_msgSend(CPSet, "set");
@@ -62,11 +62,11 @@ CPKeyValueChangeSetting = 1;
 CPKeyValueChangeInsertion = 2;
 CPKeyValueChangeRemoval = 3;
 CPKeyValueChangeReplacement = 4;
-var kvoNewAndOld = CPKeyValueObservingOptionNew|CPKeyValueObservingOptionOld;
-var KVOProxyMap = objj_msgSend(CPDictionary, "dictionary"),
-    DependentKeysMap = objj_msgSend(CPDictionary, "dictionary");
+var kvoNewAndOld = CPKeyValueObservingOptionNew|CPKeyValueObservingOptionOld,
+    DependentKeysKey = "$KVODEPENDENT",
+    KVOProxyKey = "$KVOPROXY";
 {var the_class = objj_allocateClassPair(CPObject, "_CPKVOProxy"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_targetObject"), new objj_ivar("_nativeClass"), new objj_ivar("_changesForKey"), new objj_ivar("_observersForKey"), new objj_ivar("_replacedKeys")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_targetObject"), new objj_ivar("_nativeClass"), new objj_ivar("_changesForKey"), new objj_ivar("_observersForKey"), new objj_ivar("_observersForKeyLength"), new objj_ivar("_replacedKeys")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), function $_CPKVOProxy__initWithTarget_(self, _cmd, aTarget)
@@ -75,9 +75,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
     _targetObject = aTarget;
     _nativeClass = objj_msgSend(aTarget, "class");
-    _observersForKey = objj_msgSend(CPDictionary, "dictionary");
-    _changesForKey = objj_msgSend(CPDictionary, "dictionary");
     _replacedKeys = objj_msgSend(CPSet, "set");
+    _observersForKey = {};
+    _changesForKey = {};
+    _observersForKeyLength = 0;
     return self;
 }
 }), new objj_method(sel_getUid("_replaceClass"), function $_CPKVOProxy___replaceClass(self, _cmd)
@@ -126,31 +127,29 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
         {
             var theMethod = class_getInstanceMethod(_nativeClass, theSelector);
             class_addMethod(_targetObject.isa, theSelector, theReplacementMethod(aKey, theMethod), "");
-            found = true;
         }
     }
-    if (found)
+    var affectingKeys = objj_msgSend(objj_msgSend(_nativeClass, "keyPathsForValuesAffectingValueForKey:", aKey), "allObjects"),
+        affectingKeysCount = affectingKeys ? affectingKeys.length : 0;
+    if (!affectingKeysCount)
         return;
-    var composedOfKeys = objj_msgSend(objj_msgSend(_nativeClass, "keyPathsForValuesAffectingValueForKey:", aKey), "allObjects");
-    if (!composedOfKeys)
-        return;
-    var dependentKeysForClass = objj_msgSend(DependentKeysMap, "objectForKey:", objj_msgSend(_nativeClass, "UID"));
+    var dependentKeysForClass = _nativeClass[DependentKeysKey];
     if (!dependentKeysForClass)
     {
-        dependentKeysForClass = objj_msgSend(CPDictionary, "new");
-        objj_msgSend(DependentKeysMap, "setObject:forKey:", dependentKeysForClass, objj_msgSend(_nativeClass, "UID"));
+        dependentKeysForClass = {};
+        _nativeClass[DependentKeysKey] = dependentKeysForClass;
     }
-    for (var i=0, count=composedOfKeys.length; i<count; i++)
+    while (affectingKeysCount--)
     {
-        var componentKey = composedOfKeys[i],
-            keysComposedOfKey = objj_msgSend(dependentKeysForClass, "objectForKey:", componentKey);
-        if (!keysComposedOfKey)
+        var affectingKey = affectingKeys[affectingKeysCount],
+            affectedKeys = dependentKeysForClass[affectingKey];
+        if (!affectedKeys)
         {
-            keysComposedOfKey = objj_msgSend(CPSet, "new");
-            objj_msgSend(dependentKeysForClass, "setObject:forKey:", keysComposedOfKey, componentKey);
+            affectedKeys = objj_msgSend(CPSet, "new");
+            dependentKeysForClass[affectingKey] = affectedKeys;
         }
-        objj_msgSend(keysComposedOfKey, "addObject:", aKey);
-        objj_msgSend(self, "_replaceSetterForKey:", componentKey);
+        objj_msgSend(affectedKeys, "addObject:", aKey);
+        objj_msgSend(self, "_replaceSetterForKey:", affectingKey);
     }
 }
 }), new objj_method(sel_getUid("_addObserver:forKeyPath:options:context:"), function $_CPKVOProxy___addObserver_forKeyPath_options_context_(self, _cmd, anObserver, aPath, options, aContext)
@@ -163,11 +162,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
         forwarder = objj_msgSend(objj_msgSend(_CPKVOForwardingObserver, "alloc"), "initWithKeyPath:object:observer:options:context:", aPath, _targetObject, anObserver, options, aContext);
     else
         objj_msgSend(self, "_replaceSetterForKey:", aPath);
-    var observers = objj_msgSend(_observersForKey, "objectForKey:", aPath);
+    var observers = _observersForKey[aPath];
     if (!observers)
     {
         observers = objj_msgSend(CPDictionary, "dictionary");
-        objj_msgSend(_observersForKey, "setObject:forKey:", observers, aPath);
+        _observersForKey[aPath] = observers;
+        _observersForKeyLength++;
     }
     objj_msgSend(observers, "setObject:forKey:", _CPKVOInfoMake(anObserver, options, aContext, forwarder), objj_msgSend(anObserver, "UID"));
     if (options & CPKeyValueObservingOptionInitial)
@@ -182,7 +182,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
 }), new objj_method(sel_getUid("_removeObserver:forKeyPath:"), function $_CPKVOProxy___removeObserver_forKeyPath_(self, _cmd, anObserver, aPath)
 { with(self)
 {
-    var observers = objj_msgSend(_observersForKey, "objectForKey:", aPath);
+    var observers = _observersForKey[aPath];
     if (aPath.indexOf('.') != CPNotFound)
     {
         var forwarder = objj_msgSend(observers, "objectForKey:", objj_msgSend(anObserver, "UID")).forwarder;
@@ -190,17 +190,20 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
     }
     objj_msgSend(observers, "removeObjectForKey:", objj_msgSend(anObserver, "UID"));
     if (!objj_msgSend(observers, "count"))
-        objj_msgSend(_observersForKey, "removeObjectForKey:", aPath);
-    if (!objj_msgSend(_observersForKey, "count"))
+    {
+        _observersForKeyLength--;
+        delete _observersForKey[aPath];
+    }
+    if (!_observersForKeyLength)
     {
         _targetObject.isa = _nativeClass;
-        objj_msgSend(KVOProxyMap, "removeObjectForKey:", objj_msgSend(_targetObject, "UID"));
+        delete _targetObject[KVOProxyKey];
     }
 }
 }), new objj_method(sel_getUid("_sendNotificationsForKey:changeOptions:isBefore:"), function $_CPKVOProxy___sendNotificationsForKey_changeOptions_isBefore_(self, _cmd, aKey, changeOptions, isBefore)
 { with(self)
 {
-    var changes = objj_msgSend(_changesForKey, "objectForKey:", aKey);
+    var changes = _changesForKey[aKey];
     if (isBefore)
     {
         changes = changeOptions;
@@ -222,7 +225,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
             objj_msgSend(changes, "setObject:forKey:", oldValue, CPKeyValueChangeOldKey);
         }
         objj_msgSend(changes, "setObject:forKey:", 1, CPKeyValueChangeNotificationIsPriorKey);
-        objj_msgSend(_changesForKey, "setObject:forKey:", changes, aKey);
+        _changesForKey[aKey] = changes;
     }
     else
     {
@@ -245,8 +248,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
             objj_msgSend(changes, "setObject:forKey:", newValue, CPKeyValueChangeNewKey);
         }
     }
-    var observers = objj_msgSend(objj_msgSend(_observersForKey, "objectForKey:", aKey), "allValues"),
-        count = objj_msgSend(observers, "count");
+    var observers = objj_msgSend(_observersForKey[aKey], "allValues"),
+        count = observers ? observers.length : 0;
     while (count--)
     {
         var observerInfo = observers[count];
@@ -255,7 +258,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
         else if (!isBefore)
             objj_msgSend(observerInfo.observer, "observeValueForKeyPath:ofObject:change:context:", aKey, _targetObject, changes, observerInfo.context);
     }
-    var keysComposedOfKey = objj_msgSend(objj_msgSend(objj_msgSend(DependentKeysMap, "objectForKey:", objj_msgSend(_nativeClass, "UID")), "objectForKey:", aKey), "allObjects");
+    var dependentKeysMap = _nativeClass[DependentKeysKey];
+    if (!dependentKeysMap)
+        return;
+    var keysComposedOfKey = objj_msgSend(dependentKeysMap[aKey], "allObjects");
     if (!keysComposedOfKey)
         return;
     for (var i=0, count=keysComposedOfKey.length; i<count; i++)
@@ -265,12 +271,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
 class_addMethods(meta_class, [new objj_method(sel_getUid("proxyForObject:"), function $_CPKVOProxy__proxyForObject_(self, _cmd, anObject)
 { with(self)
 {
-    var proxy = objj_msgSend(KVOProxyMap, "objectForKey:", objj_msgSend(anObject, "UID"));
+    var proxy = anObject[KVOProxyKey];
     if (proxy)
         return proxy;
     proxy = objj_msgSend(objj_msgSend(self, "alloc"), "initWithTarget:", anObject);
     objj_msgSend(proxy, "_replaceClass");
-    objj_msgSend(KVOProxyMap, "setObject:forKey:", proxy, objj_msgSend(anObject, "UID"));
+    anObject[KVOProxyKey] = proxy;
     return proxy;
 }
 })]);
@@ -311,7 +317,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("willChangeValueForKey:"
 }), new objj_method(sel_getUid("class"), function $_CPKVOModelSubclass__class(self, _cmd)
 { with(self)
 {
-    return objj_msgSend(KVOProxyMap, "objectForKey:", objj_msgSend(self, "UID"))._nativeClass;
+    return self[KVOProxyKey]._nativeClass;
 }
 }), new objj_method(sel_getUid("superclass"), function $_CPKVOModelSubclass__superclass(self, _cmd)
 { with(self)

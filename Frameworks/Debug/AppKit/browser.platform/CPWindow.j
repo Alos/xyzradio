@@ -1,4 +1,4 @@
-I;25;Foundation/CPCountedSet.jI;33;Foundation/CPNotificationCenter.jI;26;Foundation/CPUndoManager.ji;12;CGGeometry.ji;13;CPAnimation.ji;13;CPResponder.jc;59866;
+I;25;Foundation/CPCountedSet.jI;33;Foundation/CPNotificationCenter.jI;26;Foundation/CPUndoManager.ji;12;CGGeometry.ji;13;CPAnimation.ji;13;CPResponder.ji;18;CPPlatformWindow.jc;60058;
 CPBorderlessWindowMask = 0;
 CPTitledWindowMask = 1 << 0;
 CPClosableWindowMask = 1 << 1;
@@ -41,21 +41,17 @@ var SHADOW_MARGIN_LEFT = 20.0,
 var CPWindowSaveImage = nil,
     CPWindowSavingImage = nil;
 {var the_class = objj_allocateClassPair(CPResponder, "CPWindow"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_windowNumber"), new objj_ivar("_styleMask"), new objj_ivar("_frame"), new objj_ivar("_level"), new objj_ivar("_isVisible"), new objj_ivar("_isAnimating"), new objj_ivar("_hasShadow"), new objj_ivar("_isMovableByWindowBackground"), new objj_ivar("_isDocumentEdited"), new objj_ivar("_isDocumentSaving"), new objj_ivar("_shadowView"), new objj_ivar("_windowView"), new objj_ivar("_contentView"), new objj_ivar("_toolbarView"), new objj_ivar("_mouseEnteredStack"), new objj_ivar("_leftMouseDownView"), new objj_ivar("_rightMouseDownView"), new objj_ivar("_toolbar"), new objj_ivar("_firstResponder"), new objj_ivar("_initialFirstResponder"), new objj_ivar("_delegate"), new objj_ivar("_title"), new objj_ivar("_acceptsMouseMovedEvents"), new objj_ivar("_ignoresMouseEvents"), new objj_ivar("_windowController"), new objj_ivar("_minSize"), new objj_ivar("_maxSize"), new objj_ivar("_undoManager"), new objj_ivar("_representedURL"), new objj_ivar("_registeredDraggedTypes"), new objj_ivar("_registeredDraggedTypesArray"), new objj_ivar("_inclusiveRegisteredDraggedTypes"), new objj_ivar("_defaultButton"), new objj_ivar("_defaultButtonEnabled"), new objj_ivar("_autorecalculatesKeyViewLoop"), new objj_ivar("_keyViewLoopIsDirty"), new objj_ivar("_DOMElement"), new objj_ivar("_bridge"), new objj_ivar("_autoresizingMask"), new objj_ivar("_delegateRespondsToWindowWillReturnUndoManagerSelector"), new objj_ivar("_isFullBridge"), new objj_ivar("_fullBridgeSession")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_platformWindow"), new objj_ivar("_windowNumber"), new objj_ivar("_styleMask"), new objj_ivar("_frame"), new objj_ivar("_level"), new objj_ivar("_isVisible"), new objj_ivar("_isAnimating"), new objj_ivar("_hasShadow"), new objj_ivar("_isMovableByWindowBackground"), new objj_ivar("_isDocumentEdited"), new objj_ivar("_isDocumentSaving"), new objj_ivar("_shadowView"), new objj_ivar("_windowView"), new objj_ivar("_contentView"), new objj_ivar("_toolbarView"), new objj_ivar("_mouseEnteredStack"), new objj_ivar("_leftMouseDownView"), new objj_ivar("_rightMouseDownView"), new objj_ivar("_toolbar"), new objj_ivar("_firstResponder"), new objj_ivar("_initialFirstResponder"), new objj_ivar("_delegate"), new objj_ivar("_title"), new objj_ivar("_acceptsMouseMovedEvents"), new objj_ivar("_ignoresMouseEvents"), new objj_ivar("_windowController"), new objj_ivar("_minSize"), new objj_ivar("_maxSize"), new objj_ivar("_undoManager"), new objj_ivar("_representedURL"), new objj_ivar("_registeredDraggedTypes"), new objj_ivar("_registeredDraggedTypesArray"), new objj_ivar("_inclusiveRegisteredDraggedTypes"), new objj_ivar("_defaultButton"), new objj_ivar("_defaultButtonEnabled"), new objj_ivar("_autorecalculatesKeyViewLoop"), new objj_ivar("_keyViewLoopIsDirty"), new objj_ivar("_DOMElement"), new objj_ivar("_autoresizingMask"), new objj_ivar("_delegateRespondsToWindowWillReturnUndoManagerSelector"), new objj_ivar("_isFullPlatformWindow"), new objj_ivar("_fullPlatformWindowSession")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:styleMask:"), function $CPWindow__initWithContentRect_styleMask_(self, _cmd, aContentRect, aStyleMask)
 { with(self)
 {
-    return objj_msgSend(self, "initWithContentRect:styleMask:bridge:", aContentRect, aStyleMask, objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"));
-}
-}), new objj_method(sel_getUid("initWithContentRect:styleMask:bridge:"), function $CPWindow__initWithContentRect_styleMask_bridge_(self, _cmd, aContentRect, aStyleMask, aBridge)
-{ with(self)
-{
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPResponder") }, "init");
     if (self)
     {
-        _isFullBridge = NO;
+        objj_msgSend(self, "setPlatformWindow:", objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"));
+        _isFullPlatformWindow = NO;
         _registeredDraggedTypes = objj_msgSend(CPSet, "set");
         _registeredDraggedTypesArray = [];
         _windowNumber = objj_msgSend(CPApp._windows, "count");
@@ -76,18 +72,26 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
         _DOMElement.style.position = "absolute";
         _DOMElement.style.visibility = "visible";
         _DOMElement.style.zIndex = 0;
-        if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = (_frame.origin.x); CPDOMDisplayServerInstructions[__index + 4] = (_frame.origin.y);;
         if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = 1; CPDOMDisplayServerInstructions[__index + 3] = 1;;
         if (_windowView._DOMElement.CPDOMDisplayContext) _windowView._DOMElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _windowView._DOMElement;;
-        objj_msgSend(self, "setBridge:", aBridge);
         objj_msgSend(self, "setNextResponder:", CPApp);
         objj_msgSend(self, "setHasShadow:", aStyleMask !== CPBorderlessWindowMask);
         if (aStyleMask & CPBorderlessBridgeWindowMask)
-            objj_msgSend(self, "setFullBridge:", YES);
+            objj_msgSend(self, "setFullPlatformWindow:", YES);
         _defaultButtonEnabled = YES;
         _keyViewLoopIsDirty = YES;
     }
     return self;
+}
+}), new objj_method(sel_getUid("platformWindow"), function $CPWindow__platformWindow(self, _cmd)
+{ with(self)
+{
+    return _platformWindow;
+}
+}), new objj_method(sel_getUid("setPlatformWindow:"), function $CPWindow__setPlatformWindow_(self, _cmd, aPlatformWindow)
+{ with(self)
+{
+    _platformWindow = aPlatformWindow;
 }
 }), new objj_method(sel_getUid("awakeFromCib"), function $CPWindow__awakeFromCib(self, _cmd)
 { with(self)
@@ -122,38 +126,40 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
         objj_msgSend(self, "setFrame:", objj_msgSend(self, "frameRectForContentRect:", contentRect));
     }
 }
-}), new objj_method(sel_getUid("setFullBridge:"), function $CPWindow__setFullBridge_(self, _cmd, shouldBeFullBridge)
+}), new objj_method(sel_getUid("setFullPlatformWindow:"), function $CPWindow__setFullPlatformWindow_(self, _cmd, shouldBeFullPlatformWindow)
 { with(self)
 {
-    shouldBeFullBridge = !!shouldBeFullBridge;
-    if (_isFullBridge === shouldBeFullBridge)
+    if (!objj_msgSend(_platformWindow, "supportsFullPlatformWindows"))
         return;
-    _isFullBridge = shouldBeFullBridge;
-    if (_isFullBridge)
+    shouldBeFullPlatformWindow = !!shouldBeFullPlatformWindow;
+    if (_isFullPlatformWindow === shouldBeFullPlatformWindow)
+        return;
+    _isFullPlatformWindow = shouldBeFullPlatformWindow;
+    if (_isFullPlatformWindow)
     {
-        _fullBridgeSession = _CPWindowFullBridgeSessionMake(_windowView, objj_msgSend(self, "contentRectForFrameRect:", objj_msgSend(self, "frame")), objj_msgSend(self, "hasShadow"), objj_msgSend(self, "level"));
-        var fullBridgeWindowViewClass = objj_msgSend(objj_msgSend(self, "class"), "_windowViewClassForFullBridgeStyleMask:", _styleMask),
-            windowView = objj_msgSend(objj_msgSend(fullBridgeWindowViewClass, "alloc"), "initWithFrame:styleMask:", CGRectMakeZero(), _styleMask);
+        _fullPlatformWindowSession = _CPWindowFullPlatformWindowSessionMake(_windowView, objj_msgSend(self, "contentRectForFrameRect:", objj_msgSend(self, "frame")), objj_msgSend(self, "hasShadow"), objj_msgSend(self, "level"));
+        var fullPlatformWindowViewClass = objj_msgSend(objj_msgSend(self, "class"), "_windowViewClassForFullPlatformWindowStyleMask:", _styleMask),
+            windowView = objj_msgSend(objj_msgSend(fullPlatformWindowViewClass, "alloc"), "initWithFrame:styleMask:", CGRectMakeZero(), _styleMask);
         objj_msgSend(self, "_setWindowView:", windowView);
         objj_msgSend(self, "setLevel:", CPBackgroundWindowLevel);
         objj_msgSend(self, "setHasShadow:", NO);
         objj_msgSend(self, "setAutoresizingMask:", CPWindowWidthSizable | CPWindowHeightSizable);
-        objj_msgSend(self, "setFrame:", objj_msgSend(_bridge, "visibleFrame"));
+        objj_msgSend(self, "setFrame:", objj_msgSend(_platformWindow, "usableContentFrame"));
     }
     else
     {
-        var windowView = _fullBridgeSession.windowView;
+        var windowView = _fullPlatformWindowSession.windowView;
         objj_msgSend(self, "_setWindowView:", windowView);
-        objj_msgSend(self, "setLevel:", _fullBridgeSession.level);
-        objj_msgSend(self, "setHasShadow:", _fullBridgeSession.hasShadow);
+        objj_msgSend(self, "setLevel:", _fullPlatformWindowSession.level);
+        objj_msgSend(self, "setHasShadow:", _fullPlatformWindowSession.hasShadow);
         objj_msgSend(self, "setAutoresizingMask:", CPWindowNotSizable);
-        objj_msgSend(self, "setFrame:", objj_msgSend(windowView, "frameRectForContentRect:", _fullBridgeSession.contentRect));
+        objj_msgSend(self, "setFrame:", objj_msgSend(windowView, "frameRectForContentRect:", _fullPlatformWindowSession.contentRect));
     }
 }
-}), new objj_method(sel_getUid("isFullBridge"), function $CPWindow__isFullBridge(self, _cmd)
+}), new objj_method(sel_getUid("isFullPlatformWindow"), function $CPWindow__isFullPlatformWindow(self, _cmd)
 { with(self)
 {
-    return _isFullBridge;
+    return _isFullPlatformWindow;
 }
 }), new objj_method(sel_getUid("styleMask"), function $CPWindow__styleMask(self, _cmd)
 { with(self)
@@ -221,7 +227,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
 }), new objj_method(sel_getUid("orderFront:"), function $CPWindow__orderFront_(self, _cmd, aSender)
 { with(self)
 {
-    objj_msgSend(_bridge, "order:window:relativeTo:", CPWindowAbove, self, nil);
+    objj_msgSend(_platformWindow, "orderFront:", self);
+    objj_msgSend(_platformWindow, "order:window:relativeTo:", CPWindowAbove, self, nil);
 }
 }), new objj_method(sel_getUid("orderBack:"), function $CPWindow__orderBack_(self, _cmd, aSender)
 { with(self)
@@ -232,7 +239,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
 {
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("windowWillClose:")))
         objj_msgSend(_delegate, "windowWillClose:", self);
-    objj_msgSend(_bridge, "order:window:relativeTo:", CPWindowOut, self, nil);
+    objj_msgSend(_platformWindow, "order:window:relativeTo:", CPWindowOut, self, nil);
     if (objj_msgSend(CPApp, "keyWindow") == self)
     {
         objj_msgSend(self, "resignKeyWindow");
@@ -242,7 +249,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
 }), new objj_method(sel_getUid("orderWindow:relativeTo:"), function $CPWindow__orderWindow_relativeTo_(self, _cmd, aPlace, otherWindowNumber)
 { with(self)
 {
-    objj_msgSend(_bridge, "order:window:relativeTo:", aPlace, self, CPApp._windows[otherWindowNumber]);
+    objj_msgSend(_platformWindow, "order:window:relativeTo:", aPlace, self, CPApp._windows[otherWindowNumber]);
 }
 }), new objj_method(sel_getUid("setLevel:"), function $CPWindow__setLevel_(self, _cmd, aLevel)
 { with(self)
@@ -532,8 +539,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
 { with(self)
 {
     var size = objj_msgSend(self, "frame").size,
-        bridgeSize = objj_msgSend(_bridge, "contentBounds").size;
-    objj_msgSend(self, "setFrameOrigin:", CGPointMake((bridgeSize.width - size.width) / 2.0, (bridgeSize.height - size.height) / 2.0));
+        containerSize = objj_msgSend(_platformWindow, "contentBounds").size;
+    objj_msgSend(self, "setFrameOrigin:", CGPointMake((containerSize.width - size.width) / 2.0, (containerSize.height - size.height) / 2.0));
 }
 }), new objj_method(sel_getUid("sendEvent:"), function $CPWindow__sendEvent_(self, _cmd, anEvent)
 { with(self)
@@ -835,8 +842,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
     var frame = CGRectMakeCopy(objj_msgSend(self, "frame")),
         newFrame;
     objj_msgSend(_windowView, "noteToolbarChanged");
-    if (_isFullBridge)
-        newFrame = objj_msgSend(_bridge, "visibleFrame");
+    if (_isFullPlatformWindow)
+        newFrame = objj_msgSend(_platformWindow, "usableContentFrame");
     else
     {
         newFrame = CGRectMakeCopy(objj_msgSend(self, "frame"));
@@ -863,7 +870,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
     _attachedSheet = aSheet;
     aSheet._isSheet = YES;
     objj_msgSend(self, "_setAttachedSheetFrameOrigin");
-    objj_msgSend(_bridge, "order:window:relativeTo:", CPWindowAbove, aSheet, self);
+    objj_msgSend(_platformWindow, "order:window:relativeTo:", CPWindowAbove, aSheet, self);
 }
 }), new objj_method(sel_getUid("attachedSheet"), function $CPWindow__attachedSheet(self, _cmd)
 { with(self)
@@ -1039,7 +1046,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
         return _CPBorderlessWindowView;
     return _CPStandardWindowView;
 }
-}), new objj_method(sel_getUid("_windowViewClassForFullBridgeStyleMask:"), function $CPWindow___windowViewClassForFullBridgeStyleMask_(self, _cmd, aStyleMask)
+}), new objj_method(sel_getUid("_windowViewClassForFullPlatformWindowStyleMask:"), function $CPWindow___windowViewClassForFullPlatformWindowStyleMask_(self, _cmd, aStyleMask)
 { with(self)
 {
     return _CPBorderlessBridgeWindowView;
@@ -1079,27 +1086,14 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
 var the_class = objj_getClass("CPWindow")
 if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPWindow\""));
-var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("setBridge:"), function $CPWindow__setBridge_(self, _cmd, aBridge)
+var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("resizeWithOldPlatformWindowSize:"), function $CPWindow__resizeWithOldPlatformWindowSize_(self, _cmd, aSize)
 { with(self)
 {
-    if (_bridge == aBridge)
-        return;
-    if (_bridge)
-    {
-        objj_msgSend(self, "orderOut:", self);
-    }
-    _bridge = aBridge;
-    if (objj_msgSend(self, "isFullBridge"))
-        objj_msgSend(self, "setFrame:", objj_msgSend(aBridge, "contentBounds"));
-}
-}), new objj_method(sel_getUid("resizeWithOldBridgeSize:"), function $CPWindow__resizeWithOldBridgeSize_(self, _cmd, aSize)
-{ with(self)
-{
-    if (objj_msgSend(self, "isFullBridge"))
-        return objj_msgSend(self, "setFrame:", objj_msgSend(_bridge, "visibleFrame"));
+    if (objj_msgSend(self, "isFullPlatformWindow"))
+        return objj_msgSend(self, "setFrame:", objj_msgSend(_platformWindow, "usableContentFrame"));
     if (_autoresizingMask == CPWindowNotSizable)
         return;
-    var frame = objj_msgSend(_bridge, "contentBounds"),
+    var frame = objj_msgSend(_platformWindow, "contentBounds"),
         newFrame = CGRectMakeCopy(_frame),
         dX = (CGRectGetWidth(frame) - aSize.width) /
             (((_autoresizingMask & CPWindowMinXMargin) ? 1 : 0) + (_autoresizingMask & CPWindowWidthSizable ? 1 : 0) + (_autoresizingMask & CPWindowMaxXMargin ? 1 : 0)),
@@ -1163,6 +1157,21 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 }
 })]);
 }
+{
+var the_class = objj_getClass("CPWindow")
+if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPWindow\""));
+var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("setFullBridge:"), function $CPWindow__setFullBridge_(self, _cmd, shouldBeFullBridge)
+{ with(self)
+{
+    objj_msgSend(self, "setFullPlatformWindow:", shouldBeFullBridge);
+}
+}), new objj_method(sel_getUid("isFullBridge"), function $CPWindow__isFullBridge(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(self, "isFullPlatformWindow");
+}
+})]);
+}
 var interpolate = function(fromValue, toValue, progress)
 {
     return fromValue + (toValue - fromValue) * progress;
@@ -1201,8 +1210,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithWindow:targetFr
 }
 })]);
 }
-_CPWindowFullBridgeSessionMake= function(aWindowView, aContentRect, hasShadow, aLevel)
+_CPWindowFullPlatformWindowSessionMake= function(aWindowView, aContentRect, hasShadow, aLevel)
 {
     return { windowView:aWindowView, contentRect:aContentRect, hasShadow:hasShadow, level:aLevel };
 }
-i;15;_CPWindowView.ji;23;_CPStandardWindowView.ji;18;_CPHUDWindowView.ji;25;_CPBorderlessWindowView.ji;31;_CPBorderlessBridgeWindowView.ji;14;CPDragServer.ji;19;CPDOMWindowBridge.ji;8;CPView.j
+i;15;_CPWindowView.ji;23;_CPStandardWindowView.ji;18;_CPHUDWindowView.ji;25;_CPBorderlessWindowView.ji;31;_CPBorderlessBridgeWindowView.ji;14;CPDragServer.ji;8;CPView.j

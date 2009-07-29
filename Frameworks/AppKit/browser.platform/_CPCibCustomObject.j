@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;1583;
+I;21;Foundation/CPObject.jc;1705;
 var _1="_CPCibCustomObjectClassName";
 var _2=objj_allocateClassPair(CPObject,"_CPCibCustomObject"),_3=_2.isa;
 class_addIvars(_2,[new objj_ivar("_className")]);
@@ -37,6 +37,13 @@ objj_msgSend(_10,"encodeObject:forKey:",_className,_1);
 }),new objj_method(sel_getUid("_cibInstantiate"),function(_11,_12){
 with(_11){
 var _13=CPClassFromString(_className);
+if(_13===objj_msgSend(_11,"class")){
+_className="CPObject";
+return _11;
+}
+if(!_13){
+_13=objj_msgSend(CPObject,"class");
+}
 if(_13===objj_msgSend(CPApplication,"class")){
 return objj_msgSend(CPApplication,"sharedApplication");
 }

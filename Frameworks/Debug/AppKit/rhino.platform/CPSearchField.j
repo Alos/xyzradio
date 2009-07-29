@@ -1,4 +1,4 @@
-i;13;CPTextField.jc;23743;
+i;13;CPTextField.jc;23870;
 CPSearchFieldRecentsTitleMenuItemTag = 1000;
 CPSearchFieldRecentsMenuItemTag = 1001;
 CPSearchFieldClearRecentsMenuItemTag = 1002;
@@ -348,7 +348,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 }), new objj_method(sel_getUid("_showMenu:"), function $CPSearchField___showMenu_(self, _cmd, sender)
 { with(self)
 {
-    if(_searchMenu == nil)
+    if(_searchMenu == nil || !objj_msgSend(self, "isEnabled"))
         return;
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "selectText:", nil);
     var origin = CPMakePoint(objj_msgSend(self, "frame").origin.x, objj_msgSend(self, "frame").origin.y + objj_msgSend(self, "frame").size.height);
@@ -458,12 +458,14 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "initWithCoder:", coder);
     _searchButton = objj_msgSend(coder, "decodeObjectForKey:", CPSearchButtonKey);
-    _searchButton = objj_msgSend(coder, "decodeObjectForKey:", CPCancelButtonKey);
+    _cancelButton = objj_msgSend(coder, "decodeObjectForKey:", CPCancelButtonKey);
     _recentsAutosaveName = objj_msgSend(coder, "decodeObjectForKey:", CPRecentsAutosaveNameKey);
     _sendsWholeSearchString = objj_msgSend(coder, "decodeBoolForKey:", CPSendsWholeSearchStringKey);
     _sendsSearchStringImmediately = objj_msgSend(coder, "decodeBoolForKey:", CPSendsSearchStringImmediatelyKey);
     _maximumRecents = objj_msgSend(coder, "decodeIntForKey:", CPMaximumRecentsKey);
     objj_msgSend(self, "setSearchMenuTemplate:", objj_msgSend(coder, "decodeObjectForKey:", CPSearchMenuTemplateKey));
+    objj_msgSend(self, "resetCancelButton");
+    objj_msgSend(self, "setDelegate:", self);
     return self;
 }
 })]);

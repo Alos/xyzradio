@@ -88,6 +88,10 @@
 		<string>CPOutlineView.j</string>
 		<string>CPPanel.j</string>
 		<string>CPPasteboard.j</string>
+		<string>CPPlatform.j</string>
+		<string>CPPlatformString.j</string>
+		<string>CPPlatformWindow+DOM.j</string>
+		<string>CPPlatformWindow.j</string>
 		<string>CPPopUpButton.j</string>
 		<string>CPProgressIndicator.j</string>
 		<string>CPRadio.j</string>

@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;19;Foundation/CPData.jI;23;Foundation/CPIndexSet.jI;28;Foundation/CPKeyedArchiver.jI;30;Foundation/CPKeyedUnarchiver.jI;15;AppKit/CPView.jc;19001;
+I;20;Foundation/CPArray.jI;19;Foundation/CPData.jI;23;Foundation/CPIndexSet.jI;28;Foundation/CPKeyedArchiver.jI;30;Foundation/CPKeyedUnarchiver.jI;15;AppKit/CPView.jc;19233;
 {var the_class = objj_allocateClassPair(CPView, "CPCollectionView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_content"), new objj_ivar("_items"), new objj_ivar("_itemData"), new objj_ivar("_itemPrototype"), new objj_ivar("_itemForDragging"), new objj_ivar("_cachedItems"), new objj_ivar("_maxNumberOfRows"), new objj_ivar("_maxNumberOfColumns"), new objj_ivar("_minItemSize"), new objj_ivar("_maxItemSize"), new objj_ivar("_tileWidth"), new objj_ivar("_isSelectable"), new objj_ivar("_allowsMultipleSelection"), new objj_ivar("_allowsEmptySelection"), new objj_ivar("_selectionIndexes"), new objj_ivar("_itemSize"), new objj_ivar("_horizontalMargin"), new objj_ivar("_verticalMargin"), new objj_ivar("_numberOfRows"), new objj_ivar("_numberOfColumns"), new objj_ivar("_delegate")]);
 objj_registerClassPair(the_class);
@@ -396,11 +396,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _content = [];
         _cachedItems = [];
         _itemSize = CGSizeMakeZero();
-        _minItemSize = objj_msgSend(aCoder, "decodeSizeForKey:", CPCollectionViewMinItemSizeKey);
-        _maxItemSize = objj_msgSend(aCoder, "decodeSizeForKey:", CPCollectionViewMaxItemSizeKey);
-        _verticalMargin = objj_msgSend(aCoder, "decodeSizeForKey:", CPCollectionViewVerticalMarginKey);
+        _minItemSize = objj_msgSend(aCoder, "decodeSizeForKey:", CPCollectionViewMinItemSizeKey) || CGSizeMakeZero();
+        _maxItemSize = objj_msgSend(aCoder, "decodeSizeForKey:", CPCollectionViewMaxItemSizeKey) || CGSizeMakeZero();
+        _verticalMargin = objj_msgSend(aCoder, "decodeFloatForKey:", CPCollectionViewVerticalMarginKey);
         _tileWidth = -1.0;
         _selectionIndexes = objj_msgSend(CPIndexSet, "indexSet");
+        _allowsEmptySelection = YES;
+        _isSelectable = YES;
     }
     return self;
 }
@@ -408,9 +410,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
-    objj_msgSend(aCoder, "encodeSize:forKey:", _minItemSize, CPCollectionViewMinItemSizeKey);
-    objj_msgSend(aCoder, "encodeSize:forKey:", _maxItemSize, CPCollectionViewMaxItemSizeKey);
-    objj_msgSend(aCoder, "encodeSize:forKey:", _verticalMargin, CPCollectionViewVerticalMarginKey);
+    if (!CGSizeEqualToSize(_minItemSize, CGSizeMakeZero()))
+      objj_msgSend(aCoder, "encodeSize:forKey:", _minItemSize, CPCollectionViewMinItemSizeKey);
+    if (!CGSizeEqualToSize(_maxItemSize, CGSizeMakeZero()))
+      objj_msgSend(aCoder, "encodeSize:forKey:", _maxItemSize, CPCollectionViewMaxItemSizeKey);
+    objj_msgSend(aCoder, "encodeFloat:forKey:", _verticalMargin, CPCollectionViewVerticalMarginKey);
 }
 })]);
 }

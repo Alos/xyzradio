@@ -1,4 +1,4 @@
-i;8;CPView.ji;13;CPImageView.jc;12531;
+i;8;CPView.ji;13;CPImageView.jc;12541;
 var _CPWindowViewResizeIndicatorImage = nil;
 {var the_class = objj_allocateClassPair(CPView, "_CPWindowView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_styleMask"), new objj_ivar("_resizeIndicator"), new objj_ivar("_resizeIndicatorOffset"), new objj_ivar("_toolbarView"), new objj_ivar("_resizeFrame"), new objj_ivar("_mouseDraggedPoint"), new objj_ivar("_cachedScreenFrame")]);
@@ -73,7 +73,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
 {
     var visibleFrame = _cachedScreenFrame;
     if (!visibleFrame)
-        visibleFrame = objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "visibleFrame");
+        visibleFrame = objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "usableContentFrame");
     var restrictedPoint = CGPointMake(0, 0);
     restrictedPoint.x = MIN(MAX(aPoint.x, -_frame.size.width + 4.0), CGRectGetMaxX(visibleFrame) - 4.0);
     restrictedPoint.y = MIN(MAX(aPoint.y, 0.0), CGRectGetMaxY(visibleFrame) - 8.0);
@@ -91,7 +91,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
     else if (type === CPLeftMouseDown)
     {
         _mouseDraggedPoint = objj_msgSend(objj_msgSend(self, "window"), "convertBaseToBridge:", objj_msgSend(anEvent, "locationInWindow"));
-        _cachedScreenFrame = objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "visibleFrame");
+        _cachedScreenFrame = objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "usableContentFrame");
     }
     else if (type === CPLeftMouseDragged)
     {

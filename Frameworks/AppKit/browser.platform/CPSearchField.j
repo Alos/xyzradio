@@ -1,4 +1,4 @@
-i;13;CPTextField.jc;17816;
+i;13;CPTextField.jc;17925;
 CPSearchFieldRecentsTitleMenuItemTag=1000;
 CPSearchFieldRecentsMenuItemTag=1001;
 CPSearchFieldClearRecentsMenuItemTag=1002;
@@ -297,7 +297,7 @@ _searchMenu=_70;
 }
 }),new objj_method(sel_getUid("_showMenu:"),function(_78,_79,_7a){
 with(_78){
-if(_searchMenu==nil){
+if(_searchMenu==nil||!objj_msgSend(_78,"isEnabled")){
 return;
 }
 objj_msgSendSuper({receiver:_78,super_class:objj_getClass("CPTextField")},"selectText:",nil);
@@ -391,12 +391,14 @@ objj_msgSend(_a6,"encodeObject:forKey:",_searchMenuTemplate,_a3);
 with(_a7){
 _a7=objj_msgSendSuper({receiver:_a7,super_class:objj_getClass("CPTextField")},"initWithCoder:",_a9);
 _searchButton=objj_msgSend(_a9,"decodeObjectForKey:",_9d);
-_searchButton=objj_msgSend(_a9,"decodeObjectForKey:",_9e);
+_cancelButton=objj_msgSend(_a9,"decodeObjectForKey:",_9e);
 _recentsAutosaveName=objj_msgSend(_a9,"decodeObjectForKey:",_9f);
 _sendsWholeSearchString=objj_msgSend(_a9,"decodeBoolForKey:",_a0);
 _sendsSearchStringImmediately=objj_msgSend(_a9,"decodeBoolForKey:",_a1);
 _maximumRecents=objj_msgSend(_a9,"decodeIntForKey:",_a2);
 objj_msgSend(_a7,"setSearchMenuTemplate:",objj_msgSend(_a9,"decodeObjectForKey:",_a3));
+objj_msgSend(_a7,"resetCancelButton");
+objj_msgSend(_a7,"setDelegate:",_a7);
 return _a7;
 }
 })]);

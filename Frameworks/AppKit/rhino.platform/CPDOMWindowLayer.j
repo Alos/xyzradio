@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;2416;
+I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;2430;
 var _1=objj_allocateClassPair(CPObject,"CPDOMWindowLayer"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_level"),new objj_ivar("_windows"),new objj_ivar("_DOMElement")]);
 objj_registerClassPair(_1);
@@ -65,7 +65,7 @@ CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_DOMElement
 CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_f._DOMElement;
 _f._isVisible=YES;
 if(objj_msgSend(_f,"isFullBridge")){
-objj_msgSend(_f,"setFrame:",objj_msgSend(_f._bridge,"visibleFrame"));
+objj_msgSend(_f,"setFrame:",objj_msgSend(_f._platformWindow,"usableContentFrame"));
 }
 }
 }

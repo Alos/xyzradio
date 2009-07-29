@@ -1,4 +1,4 @@
-i;10;CPButton.ji;12;CPGeometry.ji;8;CPMenu.ji;12;CPMenuItem.jc;18729;
+i;10;CPButton.ji;12;CPGeometry.ji;8;CPMenu.ji;12;CPMenuItem.jc;18922;
 var VISIBLE_MARGIN = 7.0;
 CPPopUpButtonStatePullsDown = CPThemeState("pulls-down");
 {var the_class = objj_allocateClassPair(CPButton, "CPPopUpButton"),
@@ -96,7 +96,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:pullsDown
 }), new objj_method(sel_getUid("selectedItem"), function $CPPopUpButton__selectedItem(self, _cmd)
 { with(self)
 {
-    if (_selectedIndex < 0)
+    if (_selectedIndex < 0 || _selectedIndex > objj_msgSend(self, "numberOfItems") - 1)
         return nil;
     return objj_msgSend(_menu, "itemAtIndex:", _selectedIndex);
 }
@@ -333,13 +333,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:pullsDown
 { with(self)
 {
     var numberOfItems = objj_msgSend(self, "numberOfItems");
-    if (numberOfItems <= _selectedIndex)
+    if (numberOfItems <= _selectedIndex && numberOfItems > 0)
         objj_msgSend(self, "selectItemAtIndex:", numberOfItems - 1);
+    else
+        objj_msgSend(self, "synchronizeTitleAndSelectedItem");
 }
 }), new objj_method(sel_getUid("mouseDown:"), function $CPPopUpButton__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
-    if (!objj_msgSend(self, "isEnabled"))
+    if (!objj_msgSend(self, "isEnabled") || !objj_msgSend(self, "numberOfItems"))
         return;
     objj_msgSend(self, "highlight:", YES);
     var menu = objj_msgSend(self, "menu"),

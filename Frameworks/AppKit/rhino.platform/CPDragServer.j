@@ -1,4 +1,4 @@
-I;15;AppKit/CPView.jI;16;AppKit/CPEvent.jI;21;AppKit/CPPasteboard.jI;20;AppKit/CPImageView.jc;7236;
+I;15;AppKit/CPView.jI;16;AppKit/CPEvent.jI;21;AppKit/CPPasteboard.jI;20;AppKit/CPImageView.jc;7093;
 var _1=nil;
 var _2=nil,_3=nil,_4=nil,_5=nil,_6=nil,_7=nil,_8=nil,_9=nil,_a=nil,_b=nil;
 var _c=NO,_d=NO,_e=NO,_f=NO,_10=NO;
@@ -39,7 +39,7 @@ _b=setInterval(_11,100);
 _a=_15;
 objj_msgSend(CPApp,"setCallback:forNextEventMatchingMask:untilDate:inMode:dequeue:",_14,CPMouseMovedMask|CPLeftMouseDraggedMask|CPLeftMouseUpMask,nil,0,NO);
 var _16=objj_msgSend(_15,"locationInWindow"),_17=bridgeLocation=objj_msgSend(objj_msgSend(_15,"window"),"convertBaseToBridge:",_16);
-var _18=objj_msgSend(objj_msgSend(CPDOMWindowBridge,"sharedDOMWindowBridge"),"_dragHitTest:pasteboard:",bridgeLocation,_7);
+var _18=objj_msgSend(objj_msgSend(CPPlatformWindow,"primaryPlatformWindow"),"_dragHitTest:pasteboard:",bridgeLocation,_7);
 _6=objj_msgSend((objj_msgSend(_18,"isKindOfClass:",objj_msgSend(CPWindow,"class"))?_18:objj_msgSend(_18,"window")),"convertBridgeToBase:",bridgeLocation);
 if(_18!=_8){
 if(_8&&objj_msgSend(_8,"respondsToSelector:",sel_getUid("draggingExited:"))){
@@ -118,7 +118,6 @@ _3=_33;
 _4=_2e;
 _5=CPPointMake(_35.x-_2f.x,_35.y-_2f.y);
 _7=objj_msgSend(CPPasteboard,"pasteboardWithName:",CPDragPboard);
-objj_msgSend(_dragWindow,"setFrameSize:",CGSizeMakeCopy(objj_msgSend(objj_msgSend(CPDOMWindowBridge,"sharedDOMWindowBridge"),"frame").size));
 objj_msgSend(_dragWindow,"orderFront:",_2b);
 objj_msgSend(_2d,"setFrameOrigin:",_2f);
 objj_msgSend(objj_msgSend(_dragWindow,"contentView"),"addSubview:",_2d);

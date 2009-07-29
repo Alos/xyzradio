@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;2289;
+I;21;Foundation/CPObject.jc;2472;
 
 
 var _CPCibCustomObjectClassName = "_CPCibCustomObjectClassName";
@@ -49,9 +49,20 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     var theClass = CPClassFromString(_className);
 
 
+    if (theClass === objj_msgSend(self, "class"))
+    {
+        _className = "CPObject";
+
+        return self;
+    }
+
     if (!theClass)
+    {
+
         CPLog("Unknown class \"" + _className + "\" in cib file");
 
+        theClass = objj_msgSend(CPObject, "class");
+    }
 
     if (theClass === objj_msgSend(CPApplication, "class"))
         return objj_msgSend(CPApplication, "sharedApplication");

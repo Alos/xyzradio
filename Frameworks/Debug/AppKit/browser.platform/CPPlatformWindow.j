@@ -1,0 +1,128 @@
+I;21;Foundation/CPObject.jc;4712;
+
+
+
+
+
+var PrimaryPlatformWindow = NULL;
+
+{var the_class = objj_allocateClassPair(CPObject, "CPPlatformWindow"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentRect"), new objj_ivar("_DOMWindow"), new objj_ivar("_DOMBodyElement"), new objj_ivar("_DOMFocusElement"), new objj_ivar("_windowLevels"), new objj_ivar("_windowLayers"), new objj_ivar("_mouseIsDown"), new objj_ivar("_mouseDownWindow"), new objj_ivar("_lastMouseUp"), new objj_ivar("_lastMouseDown"), new objj_ivar("_charCodes"), new objj_ivar("_keyCode"), new objj_ivar("_DOMEventMode"), new objj_ivar("_DOMPasteboardElement"), new objj_ivar("_pasteboardKeyDownEvent"), new objj_ivar("_overriddenEventType")]);
+objj_registerClassPair(the_class);
+objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
+class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"), function $CPPlatformWindow__initWithContentRect_(self, _cmd, aRect)
+{ with(self)
+{
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
+
+    if (self)
+    {
+        _contentRect = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
+
+
+        _windowLevels = [];
+        _windowLayers = objj_msgSend(CPDictionary, "dictionary");
+
+        _charCodes = {};
+
+    }
+
+    return self;
+}
+}), new objj_method(sel_getUid("init"), function $CPPlatformWindow__init(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(self, "initWithContentRect:", { origin: { x:0.0, y:0.0 }, size: { width:400.0, height:500.0 } });
+}
+}), new objj_method(sel_getUid("contentRect"), function $CPPlatformWindow__contentRect(self, _cmd)
+{ with(self)
+{
+    return { origin: { x:_contentRect.origin.x, y:_contentRect.origin.y }, size: { width:_contentRect.size.width, height:_contentRect.size.height } };
+}
+}), new objj_method(sel_getUid("contentBounds"), function $CPPlatformWindow__contentBounds(self, _cmd)
+{ with(self)
+{
+    var contentBounds = objj_msgSend(self, "contentRect");
+
+    contentBounds.origin = { x:0.0, y:0.0 };
+
+    return contentBounds;
+}
+}), new objj_method(sel_getUid("usableContentFrame"), function $CPPlatformWindow__usableContentFrame(self, _cmd)
+{ with(self)
+{
+    var frame = objj_msgSend(self, "contentBounds");
+
+    frame.origin = CGPointMakeZero();
+
+    if (objj_msgSend(CPMenu, "menuBarVisible"))
+    {
+        var menuBarHeight = objj_msgSend(objj_msgSend(CPApp, "mainMenu"), "menuBarHeight");
+
+        frame.origin.y += menuBarHeight;
+        frame.size.height -= menuBarHeight;
+    }
+
+    return frame;
+}
+}), new objj_method(sel_getUid("setContentRect:"), function $CPPlatformWindow__setContentRect_(self, _cmd, aRect)
+{ with(self)
+{
+    if (!aRect || ((_contentRect.origin.x == aRect.origin.x && _contentRect.origin.y == aRect.origin.y) && (_contentRect.size.width == aRect.size.width && _contentRect.size.height == aRect.size.height)))
+        return;
+
+    objj_msgSend(self, "setContentOrigin:", aRect.origin);
+    objj_msgSend(self, "setContentSize:", aRect.size);
+}
+}), new objj_method(sel_getUid("setContentOrigin:"), function $CPPlatformWindow__setContentOrigin_(self, _cmd, aPoint)
+{ with(self)
+{
+    var origin = _contentRect.origin;
+
+    if (!aPoint || (origin.x == aPoint.x && origin.y == aPoint.y))
+        return;
+
+    origin.x = aPoint.x;
+    origin.y = aPoint.y;
+
+    objj_msgSend(self, "updateNativeContentOrigin");
+}
+}), new objj_method(sel_getUid("setContentSize:"), function $CPPlatformWindow__setContentSize_(self, _cmd, aSize)
+{ with(self)
+{
+    var size = _contentRect.size;
+
+    if (!aSize || (size.width == aSize.width && size.height == aSize.height))
+        return;
+
+    var delta = { width:aSize.width - size.width, height:aSize.height - size.height };
+
+    size.width = aSize.width;
+    size.height = aSize.height;
+
+    objj_msgSend(self, "updateNativeContentSize");
+}
+}), new objj_method(sel_getUid("updateFromNativeContentRect"), function $CPPlatformWindow__updateFromNativeContentRect(self, _cmd)
+{ with(self)
+{
+    objj_msgSend(self, "setContentRect:", objj_msgSend(self, "nativeContentRect"));
+}
+}), new objj_method(sel_getUid("supportsFullPlatformWindows"), function $CPPlatformWindow__supportsFullPlatformWindows(self, _cmd)
+{ with(self)
+{
+    return YES;
+}
+})]);
+class_addMethods(meta_class, [new objj_method(sel_getUid("primaryPlatformWindow"), function $CPPlatformWindow__primaryPlatformWindow(self, _cmd)
+{ with(self)
+{
+    return PrimaryPlatformWindow;
+}
+}), new objj_method(sel_getUid("setPrimaryPlatformWindow:"), function $CPPlatformWindow__setPrimaryPlatformWindow_(self, _cmd, aPlatformWindow)
+{ with(self)
+{
+    PrimaryPlatformWindow = aPlatformWindow;
+}
+})]);
+}
+i;22;CPPlatformWindow+DOM.j

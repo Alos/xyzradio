@@ -1,4 +1,4 @@
-I;21;Foundation/CPBundle.ji;17;CPCompatibility.ji;9;CPEvent.ji;8;CPMenu.ji;13;CPResponder.ji;22;CPDocumentController.ji;14;CPThemeBlend.ji;14;CPCibLoading.jc;23887;
+I;21;Foundation/CPBundle.ji;17;CPCompatibility.ji;9;CPEvent.ji;8;CPMenu.ji;13;CPResponder.ji;22;CPDocumentController.ji;14;CPThemeBlend.ji;14;CPCibLoading.ji;12;CPPlatform.jc;24118;
 var CPMainCibFile = "CPMainCibFile",
     CPMainCibFileHumanFriendly = "Main cib file base name";
 CPApp = nil;
@@ -407,13 +407,16 @@ CPApplicationMain= function(args, namedArgs)
     if (!principalClass)
         principalClass = objj_msgSend(CPApplication, "class");
     objj_msgSend(principalClass, "sharedApplication");
-    if (!args && !namedArgs)
+    if (!args)
     {
-        var args = objj_msgSend(CPApp, "arguments"),
-            searchParams = window.location.search.substring(1).split("&");
-            namedArgs = objj_msgSend(CPDictionary, "dictionary");
+        var args = objj_msgSend(CPApp, "arguments");
         if(objj_msgSend(args, "containsObject:", "debug"))
             CPLogRegister(CPLogPopup);
+    }
+    if (!namedArgs)
+    {
+        var searchParams = window.location.search.substring(1).split("&");
+            namedArgs = objj_msgSend(CPDictionary, "dictionary");
         for(var i=0; i<searchParams.length; i++)
         {
             var index = searchParams[i].indexOf('=');
@@ -434,7 +437,7 @@ objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.pat
 class_addMethods(meta_class, [new objj_method(sel_getUid("actions"), function $_CPAppBootstrapper__actions(self, _cmd)
 { with(self)
 {
-    return [sel_getUid("loadDefaultTheme"), sel_getUid("loadMainCibFile")];
+    return [sel_getUid("bootstrapPlatform"), sel_getUid("loadDefaultTheme"), sel_getUid("loadMainCibFile")];
 }
 }), new objj_method(sel_getUid("performActions"), function $_CPAppBootstrapper__performActions(self, _cmd)
 { with(self)
@@ -448,6 +451,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("actions"), function $_
             return;
     }
     objj_msgSend(CPApp, "run");
+}
+}), new objj_method(sel_getUid("bootstrapPlatform"), function $_CPAppBootstrapper__bootstrapPlatform(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(CPPlatform, "bootstrap");
 }
 }), new objj_method(sel_getUid("loadDefaultTheme"), function $_CPAppBootstrapper__loadDefaultTheme(self, _cmd)
 { with(self)

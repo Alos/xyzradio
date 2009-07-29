@@ -41,7 +41,6 @@ This file is part of XYZRadio.
 	self = [super init];
 	if(self){
 		djList=aDJList;
-		CPLog.trace("Player initialized!");
 		[self togglePlayerWindow];
 		theSoundManager = [[SMSoundManager alloc] init];
 		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setTime:) name:"pos" object:theSoundManager];
@@ -179,10 +178,11 @@ Sets the song volume
 }
 
 -(void)togglePlayerWindow{
-    if(!player)
+    if(!player){
 		player = [[PlayerWindow alloc] initWithAcontrol:self contentRect:CGRectMake(500, 560, 400, 200)];
+		[player setFrameOrigin:(CPPointMake(500, 560))];
+	}
     if([player isVisible]){
-        [player setFrameOrigin:(CPPointMake(500, 560))];
         [player close];
     }
     else    

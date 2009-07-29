@@ -1,4 +1,4 @@
-i;10;CPObject.ji;13;CPException.ji;18;CPSortDescriptor.ji;9;CPValue.jc;13344;
+i;10;CPObject.ji;13;CPException.ji;18;CPSortDescriptor.ji;9;CPValue.jc;13608;
 CPCaseInsensitiveSearch = 1;
 CPLiteralSearch = 2;
 CPBackwardsSearch = 4;
@@ -9,7 +9,8 @@ var CPStringRegexSpecialCharacters = [
       '/', '.', '*', '+', '?', '|', '$', '^',
       '(', ')', '[', ']', '{', '}', '\\'
     ],
-    CPStringRegexEscapeExpression = new RegExp("(\\" + CPStringRegexSpecialCharacters.join("|\\") + ")", 'g');
+    CPStringRegexEscapeExpression = new RegExp("(\\" + CPStringRegexSpecialCharacters.join("|\\") + ")", 'g'),
+    CPStringRegexTrimWhitespace = new RegExp("(^\\s+|\\s+$)", 'g');
 {var the_class = objj_allocateClassPair(CPObject, "CPString"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
@@ -145,6 +146,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
 { with(self)
 {
  return '' + substring(0, range.location) + replacement + substring(range.location + range.length, self.length);
+}
+}), new objj_method(sel_getUid("stringByTrimmingWhitespace"), function $CPString__stringByTrimmingWhitespace(self, _cmd)
+{ with(self)
+{
+    return self.replace(CPStringRegexTrimWhitespace, "");
 }
 }), new objj_method(sel_getUid("compare:"), function $CPString__compare_(self, _cmd, aString)
 { with(self)

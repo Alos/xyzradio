@@ -1849,12 +1849,14 @@ var objj_preprocessor = function(aString, aSourceFile, aBundle, flags)
 {
     this._currentClass = "";
     this._currentSuperClass = "";
+    this._currentSuperMetaClass = "";
     this._file = aSourceFile;
     this._fragments = [];
     this._preprocessed = new objj_stringBuffer();
     this._tokens = new objj_lexer(aString);
     this._flags = flags;
     this._bundle = aBundle;
+    this._classMethod = false;
     this.preprocess(this._tokens, this._preprocessed);
     this.fragment();
 }
@@ -1914,7 +1916,7 @@ objj_preprocessor.prototype.brackets = function( tokens, aStringBuffer)
         if (tuples[0][0].atoms[0] == TOKEN_SUPER)
         {
             aStringBuffer.atoms[aStringBuffer.atoms.length] = "objj_msgSendSuper(";
-            aStringBuffer.atoms[aStringBuffer.atoms.length] = "{ receiver:self, super_class:" + this._currentSuperClass + " }";
+            aStringBuffer.atoms[aStringBuffer.atoms.length] = "{ receiver:self, super_class:" + (this._classMethod ? this._currentSuperMetaClass : this._currentSuperClass ) + " }";
         }
         else
         {
@@ -1979,6 +1981,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
     if (!(/^\w/).test(class_name))
         objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected class name, found \"" + class_name + "\"."));
     this._currentSuperClass = NULL;
+    this._currentSuperMetaClass = NULL;
     this._currentClass = class_name;
     if((token = tokens.skip_whitespace()) == TOKEN_OPEN_PARENTHESIS)
     {
@@ -1992,9 +1995,15 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
         buffer.atoms[buffer.atoms.length] = "var meta_class = the_class.isa;";
         var superclass_name = ((SUPER_CLASSES)._buckets[class_name]);
         if (!superclass_name)
+        {
             this._currentSuperClass = "objj_getClass(\"" + class_name + "\").super_class";
+            this._currentSuperMetaClass = "objj_getMetaClass(\"" + class_name + "\").super_class";
+        }
         else
+        {
             this._currentSuperClass = "objj_getClass(\"" + superclass_name + "\")";
+            this._currentSuperMetaClass = "objj_getMeraClass(\"" + superclass_name + "\")";
+        }
     }
     else
     {
@@ -2005,6 +2014,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                 objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected class name, found \"" + token + "\"."));
             superclass_name = token;
             this._currentSuperClass = "objj_getClass(\"" + superclass_name + "\")";
+            this._currentSuperMetaClass = "objj_getMetaClass(\"" + superclass_name + "\")";
             { if ((SUPER_CLASSES)._buckets[class_name] == NULL) { (SUPER_CLASSES)._keys.push(class_name); ++(SUPER_CLASSES).count; } if (((SUPER_CLASSES)._buckets[class_name] = superclass_name) == NULL) --(SUPER_CLASSES).count;};
             token = tokens.skip_whitespace();
         }
@@ -2079,12 +2089,14 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
     {
         if (token == TOKEN_PLUS)
         {
+            this._classMethod = true;
             if (class_methods.atoms.length !== 0)
                 class_methods.atoms[class_methods.atoms.length] = ", ";
             class_methods.atoms[class_methods.atoms.length] = this.method(tokens);
         }
         else if (token == TOKEN_MINUS)
         {
+            this._classMethod = false;
             if (instance_methods.atoms.length !== 0)
                 instance_methods.atoms[instance_methods.atoms.length] = ", ";
             instance_methods.atoms[instance_methods.atoms.length] = this.method(tokens);

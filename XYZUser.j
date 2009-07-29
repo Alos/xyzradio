@@ -22,19 +22,40 @@ This file is part of XYZRadio.
 {
 	CPString email @accessors;
 	CPString usernick @accessors;
+	CPString pathToAvatar @accessors;
 	BOOL logged @accessors;
+	BOOL dj @accessors;
 	CPString sex @accessors;
-	CPString status @accessors;  
 	CPArray djList1 @accessors;
 	CPArray djList2 @accessors;
 	CPArray djList3 @accessors;
 	CPArray ownedSongs @accessors;
 	CPString userRating @accessors;
+	XYZUserPrefrences prefrences @accessors;
 }
 
--(id)initWithUserStatus:(CPString)aUserStatus userName:(CPString)aUserName userRating:(CPString)aRating{
+-(id)initWithEmail:(CPString)anEmail usernick:(CPString)aName pathToAvatar:(CPString)aPath logged:(BOOL)state 
+					dj:(BOOL)isDJ sex:(CPString)aSex djList1:(CPArray)aDJList djList2:(CPArray)aDJList2 djList3:(CPArray)aDJList3
+					ownedSongs:(CPArray)aList rating:(CPString)aRating prefrences:(XYZUserPrefrences)somePrefs{
     if(self = [super init]){
-        status = aUserStatus;
+		email = anEmail;
+        usernick = aName;
+		pathToAvatar = aPath;
+		logged = state;
+		dj = isDJ;
+		sex = aSex;
+		djList1 = aDJList;
+		djList2 = aDJList2;
+		djList3 = aDJList3;
+		ownedSongs = aList;
+        userRating = aRating;
+		prefrences = somePrefs;
+    }
+    return self;
+}
+
+-(id)initWithUserName:(CPString)aUserName rating:(CPString)aRating{
+    if(self = [super init]){
         usernick = aUserName
         userRating = aRating;
     }

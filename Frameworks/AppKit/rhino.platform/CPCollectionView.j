@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;19;Foundation/CPData.jI;23;Foundation/CPIndexSet.jI;28;Foundation/CPKeyedArchiver.jI;30;Foundation/CPKeyedUnarchiver.jI;15;AppKit/CPView.jc;13723;
+I;20;Foundation/CPArray.jI;19;Foundation/CPData.jI;23;Foundation/CPIndexSet.jI;28;Foundation/CPKeyedArchiver.jI;30;Foundation/CPKeyedUnarchiver.jI;15;AppKit/CPView.jc;13921;
 var _1=objj_allocateClassPair(CPView,"CPCollectionView"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_content"),new objj_ivar("_items"),new objj_ivar("_itemData"),new objj_ivar("_itemPrototype"),new objj_ivar("_itemForDragging"),new objj_ivar("_cachedItems"),new objj_ivar("_maxNumberOfRows"),new objj_ivar("_maxNumberOfColumns"),new objj_ivar("_minItemSize"),new objj_ivar("_maxItemSize"),new objj_ivar("_tileWidth"),new objj_ivar("_isSelectable"),new objj_ivar("_allowsMultipleSelection"),new objj_ivar("_allowsEmptySelection"),new objj_ivar("_selectionIndexes"),new objj_ivar("_itemSize"),new objj_ivar("_horizontalMargin"),new objj_ivar("_verticalMargin"),new objj_ivar("_numberOfRows"),new objj_ivar("_numberOfColumns"),new objj_ivar("_delegate")]);
 objj_registerClassPair(_1);
@@ -361,20 +361,26 @@ _items=[];
 _content=[];
 _cachedItems=[];
 _itemSize=CGSizeMakeZero();
-_minItemSize=objj_msgSend(_8f,"decodeSizeForKey:",_8a);
-_maxItemSize=objj_msgSend(_8f,"decodeSizeForKey:",_8b);
-_verticalMargin=objj_msgSend(_8f,"decodeSizeForKey:",_8c);
+_minItemSize=objj_msgSend(_8f,"decodeSizeForKey:",_8a)||CGSizeMakeZero();
+_maxItemSize=objj_msgSend(_8f,"decodeSizeForKey:",_8b)||CGSizeMakeZero();
+_verticalMargin=objj_msgSend(_8f,"decodeFloatForKey:",_8c);
 _tileWidth=-1;
 _selectionIndexes=objj_msgSend(CPIndexSet,"indexSet");
+_allowsEmptySelection=YES;
+_isSelectable=YES;
 }
 return _8d;
 }
 }),new objj_method(sel_getUid("encodeWithCoder:"),function(_90,_91,_92){
 with(_90){
 objj_msgSendSuper({receiver:_90,super_class:objj_getClass("CPView")},"encodeWithCoder:",_92);
+if(!CGSizeEqualToSize(_minItemSize,CGSizeMakeZero())){
 objj_msgSend(_92,"encodeSize:forKey:",_minItemSize,_8a);
+}
+if(!CGSizeEqualToSize(_maxItemSize,CGSizeMakeZero())){
 objj_msgSend(_92,"encodeSize:forKey:",_maxItemSize,_8b);
-objj_msgSend(_92,"encodeSize:forKey:",_verticalMargin,_8c);
+}
+objj_msgSend(_92,"encodeFloat:forKey:",_verticalMargin,_8c);
 }
 })]);
 var _93="CPCollectionViewItemViewKey";

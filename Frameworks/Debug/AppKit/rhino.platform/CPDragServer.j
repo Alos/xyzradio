@@ -1,4 +1,4 @@
-I;15;AppKit/CPView.jI;16;AppKit/CPEvent.jI;21;AppKit/CPPasteboard.jI;20;AppKit/CPImageView.jc;12323;
+I;15;AppKit/CPView.jI;16;AppKit/CPEvent.jI;21;AppKit/CPPasteboard.jI;20;AppKit/CPImageView.jc;12172;
 var CPSharedDragServer = nil;
 var CPDragServerView = nil,
     CPDragServerSource = nil,
@@ -56,7 +56,7 @@ var CPDragServerUpdateDragging = function(anEvent)
     var location = objj_msgSend(anEvent, "locationInWindow"),
         operation =
         bridgeLocation = objj_msgSend(objj_msgSend(anEvent, "window"), "convertBaseToBridge:", location);
-    var draggingDestination = objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "_dragHitTest:pasteboard:", bridgeLocation, CPDragServerPasteboard);
+    var draggingDestination = objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "_dragHitTest:pasteboard:", bridgeLocation, CPDragServerPasteboard);
     CPDragServerLocation = objj_msgSend((objj_msgSend(draggingDestination, "isKindOfClass:", objj_msgSend(CPWindow, "class")) ? draggingDestination : objj_msgSend(draggingDestination, "window")), "convertBridgeToBase:", bridgeLocation);
     if(draggingDestination != CPDragServerDestination)
     {
@@ -140,7 +140,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDra
     CPDragServerWindow = aWindow;
     CPDragServerOffset = CPPointMake(eventLocation.x - viewLocation.x, eventLocation.y - viewLocation.y);
     CPDragServerPasteboard = objj_msgSend(CPPasteboard, "pasteboardWithName:", CPDragPboard);
-    objj_msgSend(_dragWindow, "setFrameSize:", CGSizeMakeCopy(objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "frame").size));
     objj_msgSend(_dragWindow, "orderFront:", self);
     objj_msgSend(aView, "setFrameOrigin:", viewLocation);
     objj_msgSend(objj_msgSend(_dragWindow, "contentView"), "addSubview:", aView);

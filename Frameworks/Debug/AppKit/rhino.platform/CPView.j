@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;20;CPDOMDisplayServer.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.jc;58368;
+I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;20;CPDOMDisplayServer.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.jc;58920;
 CPViewNotSizable = 0;
 CPViewMinXMargin = 1;
 CPViewWidthSizable = 2;
@@ -242,6 +242,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 {
     return { origin: { x:_frame.origin.x, y:_frame.origin.y }, size: { width:_frame.size.width, height:_frame.size.height } };
 }
+}), new objj_method(sel_getUid("frameOrigin"), function $CPView__frameOrigin(self, _cmd)
+{ with(self)
+{
+    return { x:_frame.origin.x, y:_frame.origin.y };
+}
+}), new objj_method(sel_getUid("frameSize"), function $CPView__frameSize(self, _cmd)
+{ with(self)
+{
+    return { width:_frame.size.width, height:_frame.size.height };
+}
 }), new objj_method(sel_getUid("setCenter:"), function $CPView__setCenter_(self, _cmd, aPoint)
 { with(self)
 {
@@ -406,7 +416,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 { with(self)
 {
     _fullScreenModeState = _CPViewFullScreenModeStateMake(self);
-    var fullScreenWindow = objj_msgSend(objj_msgSend(CPWindow, "alloc"), "initWithContentRect:styleMask:", objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "contentBounds"), CPBorderlessWindowMask);
+    var fullScreenWindow = objj_msgSend(objj_msgSend(CPWindow, "alloc"), "initWithContentRect:styleMask:", objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "contentBounds"), CPBorderlessWindowMask);
     objj_msgSend(fullScreenWindow, "setLevel:", CPScreenSaverWindowLevel);
     objj_msgSend(fullScreenWindow, "setAutoresizingMask:", CPViewWidthSizable | CPViewHeightSizable);
     var contentView = objj_msgSend(fullScreenWindow, "contentView");
@@ -835,6 +845,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     if (self !== objj_msgSend(CPView, "class"))
         return;
     CachedNotificationCenter = objj_msgSend(CPNotificationCenter, "defaultCenter");
+}
+}), new objj_method(sel_getUid("keyPathsForValuesAffectingFrame"), function $CPView__keyPathsForValuesAffectingFrame(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(CPSet, "setWithObjects:", "frameOrigin", "frameSize");
 }
 })]);
 }

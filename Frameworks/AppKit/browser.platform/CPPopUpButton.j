@@ -1,4 +1,4 @@
-i;10;CPButton.ji;12;CPGeometry.ji;8;CPMenu.ji;12;CPMenuItem.jc;13753;
+i;10;CPButton.ji;12;CPGeometry.ji;8;CPMenu.ji;12;CPMenuItem.jc;13908;
 var _1=7;
 CPPopUpButtonStatePullsDown=CPThemeState("pulls-down");
 var _2=objj_allocateClassPair(CPButton,"CPPopUpButton"),_3=_2.isa;
@@ -88,7 +88,7 @@ objj_msgSend(_29,"synchronizeTitleAndSelectedItem");
 }
 }),new objj_method(sel_getUid("selectedItem"),function(_2c,_2d){
 with(_2c){
-if(_selectedIndex<0){
+if(_selectedIndex<0||_selectedIndex>objj_msgSend(_2c,"numberOfItems")-1){
 return nil;
 }
 return objj_msgSend(_menu,"itemAtIndex:",_selectedIndex);
@@ -297,13 +297,15 @@ objj_msgSend(_86,"synchronizeTitleAndSelectedItem");
 }),new objj_method(sel_getUid("menuDidRemoveItem:"),function(_8a,_8b,_8c){
 with(_8a){
 var _8d=objj_msgSend(_8a,"numberOfItems");
-if(_8d<=_selectedIndex){
+if(_8d<=_selectedIndex&&_8d>0){
 objj_msgSend(_8a,"selectItemAtIndex:",_8d-1);
+}else{
+objj_msgSend(_8a,"synchronizeTitleAndSelectedItem");
 }
 }
 }),new objj_method(sel_getUid("mouseDown:"),function(_8e,_8f,_90){
 with(_8e){
-if(!objj_msgSend(_8e,"isEnabled")){
+if(!objj_msgSend(_8e,"isEnabled")||!objj_msgSend(_8e,"numberOfItems")){
 return;
 }
 objj_msgSend(_8e,"highlight:",YES);

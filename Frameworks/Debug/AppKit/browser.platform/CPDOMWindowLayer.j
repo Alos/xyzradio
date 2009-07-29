@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;3335;
+I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;3349;
 {var the_class = objj_allocateClassPair(CPObject, "CPDOMWindowLayer"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_level"), new objj_ivar("_windows"), new objj_ivar("_DOMElement")]);
 objj_registerClassPair(the_class);
@@ -68,7 +68,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithLevel:"), funct
         if (aWindow._DOMElement.CPDOMDisplayContext) aWindow._DOMElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = aWindow._DOMElement;;
         aWindow._isVisible = YES;
         if (objj_msgSend(aWindow, "isFullBridge"))
-            objj_msgSend(aWindow, "setFrame:", objj_msgSend(aWindow._bridge, "visibleFrame"));
+            objj_msgSend(aWindow, "setFrame:", objj_msgSend(aWindow._platformWindow, "usableContentFrame"));
     }
 }
 }), new objj_method(sel_getUid("orderedWindows"), function $CPDOMWindowLayer__orderedWindows(self, _cmd)

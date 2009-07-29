@@ -38,25 +38,22 @@ This file is part of XYZRadio.
         
 	 [self setBackgroundColor:nil];
          //scrollView
-	 var listScrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0, 0, 200 , CGRectGetHeight(bounds))];
+	 var listScrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0, 0, 246 , CGRectGetHeight(bounds))];
          [listScrollView setAutohidesScrollers:YES];
 	 [listScrollView setAutoresizingMask:CPViewHeightSizable];
 	 [[listScrollView contentView] setBackgroundColor:[CPColor colorWithRed:0 green:0 blue:0 alpha:0.0]];
 
-	 var photosListItem = [[CPCollectionViewItem alloc] init];
-	 [photosListItem setView:[[UserCell alloc] initWithFrame:CGRectMakeZero()]];
+	 var userListItem = [[CPCollectionViewItem alloc] init];
+	 [userListItem setView:[[UserCell alloc] initWithFrame:CGRectMakeZero()]];
 
-	 listCollectionView = [[CPCollectionView alloc] initWithFrame:CGRectMake(0, 0, 200, 0)];
+	 listCollectionView = [[CPCollectionView alloc] initWithFrame:CGRectMake(0, 0, 246, 91)];
 	 [listCollectionView setDelegate:self];
-	 [listCollectionView setItemPrototype:photosListItem];
+	 [listCollectionView setItemPrototype:userListItem];
     
-	 [listCollectionView setMinItemSize:CGSizeMake(20.0, 45.0)];
-	 [listCollectionView setMaxItemSize:CGSizeMake(1000.0, 45.0)];
+	 [listCollectionView setMinItemSize:CGSizeMake(246, 91)];
+	 [listCollectionView setMaxItemSize:CGSizeMake(246, 91)];
 	 [listCollectionView setMaxNumberOfColumns:1]; 
-    
-	 [listCollectionView setVerticalMargin:0.0];
-	 [listCollectionView setAutoresizingMask:CPViewWidthSizable];
-	 [listScrollView setDocumentView:listCollectionView];        
+     [listScrollView setDocumentView:listCollectionView];        
 	 [contentView addSubview:listScrollView];    
 
 	 [self usersArray];
@@ -67,10 +64,19 @@ This file is part of XYZRadio.
 
 -(CPArray)usersArray{
    list = [[CPArray alloc] init];
-   var user1 = [[XYZUser alloc] initWithUserStatus:@"" userName:@"alos" userRating:@""];
-   var user2 = [[XYZUser alloc] initWithUserStatus:@"" userName:@"oswa" userRating:@""];
+   var user1 = [[XYZUser alloc] initWithEmail:"alos@me.com" usernick:"alos" pathToAvatar:"" logged:YES 
+					dj:YES sex:"MALE" djList1:nil djList2:nil djList3:nil
+					ownedSongs:nil rating:4 prefrences:nil];
+   var user2 =  [[XYZUser alloc] initWithEmail:"osasenky@me.com" usernick:"oswa" pathToAvatar:"" logged:YES 
+					dj:NO sex:"MALE" djList1:nil djList2:nil djList3:nil
+					ownedSongs:nil rating:6 prefrences:nil];
+   var user3 =  [[XYZUser alloc] initWithEmail:"kit@me.com" usernick:"kitsune" pathToAvatar:"" logged:YES 
+				dj:NO sex:"FEMALE" djList1:nil djList2:nil djList3:nil
+				ownedSongs:nil rating:3 prefrences:nil];
+									
    [list addObject:user1];
    [list addObject:user2];
+   [list addObject:user3];
    [listCollectionView setContent:list];
    return list;
 }

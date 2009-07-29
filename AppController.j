@@ -103,18 +103,18 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	[self addSongList: demoList];
     //brings the window to the front
     [theWindow orderFront:self];
-	CPLog.trace("Window ready!");
-    //[self openBrowser];
+
+
 	musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
 	[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
-	//[self openDJList];
+
 	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
 	[djList setFrameOrigin:(CPPointMake(700, 100))];
-	//control init
+
 	playerControl=[[PlayerControl alloc] init: djList];	
     //testing users
     //[self openUsers];
-    [self openLoginWindow];
+   // [self openLoginWindow];
 
 }
 
@@ -182,8 +182,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 -(void)openPreferences{
     if(!preferencesWindow)
         preferencesWindow = [[PreferencesWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
+		[preferencesWindow setFrameOrigin:(CPPointMake(500, 50))];
     if([preferencesWindow isVisible]){
-        [preferencesWindow setFrameOrigin:(CPPointMake(500, 50))];
+        [preferencesWindow setFrameOrigin:(CPPointMake(500, 100))];
         [preferencesWindow close];
     }
     else    
@@ -191,10 +192,11 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 }
 
 
-//abre la ventana de preferencias
+//abre la ventana de usuarios
 -(void)openUserProfileWindow{
     if(!userProfileWindow)
         userProfileWindow = [[UserProfileWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
+		[userProfileWindow setFrameOrigin:(CPPointMake(500, 50))];
     if([userProfileWindow isVisible]){
         [userProfileWindow setFrameOrigin:(CPPointMake(500, 50))];
         [userProfileWindow close];
@@ -240,8 +242,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 //abre la ventana de usuarios
 -(void)openUsers{
    if(!usersWindow){
-	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,200,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
-	[usersWindow setFrameOrigin:(CPPointMake(5, 60))];
+	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,247,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
+	[usersWindow setFrameOrigin:(CPPointMake(5, 70))];
    }	
    if([usersWindow isVisible]){
 	[usersWindow close];

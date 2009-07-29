@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;31053;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;31432;
 CPLineBreakByWordWrapping = 0;
 CPLineBreakByCharWrapping = 1;
 CPLineBreakByClipping = 2;
@@ -293,6 +293,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     element.style.color = objj_msgSend(objj_msgSend(self, "currentValueForThemeAttribute:", "text-color"), "cssString");
     element.style.font = objj_msgSend(objj_msgSend(self, "currentValueForThemeAttribute:", "font"), "cssString");
     element.style.zIndex = 1000;
+    switch (objj_msgSend(self, "alignment"))
+    {
+        case CPCenterTextAlignment: element.style.textAlign = "center";
+                                    break;
+        case CPRightTextAlignment: element.style.textAlign = "right";
+                                    break;
+        default: element.style.textAlign = "left";
+    }
     var contentRect = objj_msgSend(self, "contentRectForBounds:", objj_msgSend(self, "bounds"));
     element.style.top = (contentRect.origin.y) + "px";
     element.style.left = ((contentRect.origin.x) - 1) + "px";
@@ -305,7 +313,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         CPTextFieldInputOwner = self;
     }, 0.0);
     objj_msgSend(self, "textDidBeginEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidBeginEditingNotification, self, nil));
-    objj_msgSend(objj_msgSend(CPDOMWindowBridge, "sharedDOMWindowBridge"), "_propagateCurrentDOMEvent:", YES);
+    objj_msgSend(objj_msgSend(objj_msgSend(self, "window"), "platformWindow"), "_propagateCurrentDOMEvent:", YES);
     CPTextFieldInputIsActive = YES;
     if (document.attachEvent)
     {
@@ -409,8 +417,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
 { with(self)
 {
     var element = objj_msgSend(self, "_inputElement");
-    if (element.parentNode == _DOMElement && (objj_msgSend(self, "isEditable") || objj_msgSend(self, "isSelectable")))
-        element.select();
+    if (element.parentNode === _DOMElement && (objj_msgSend(self, "isEditable") || objj_msgSend(self, "isSelectable")))
+        window.setTimeout(function() { element.select(); }, 0);
 }
 }), new objj_method(sel_getUid("setDelegate:"), function $CPTextField__setDelegate_(self, _cmd, aDelegate)
 { with(self)

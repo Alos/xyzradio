@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;20532;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;20777;
 CPLineBreakByWordWrapping=0;
 CPLineBreakByCharWrapping=1;
 CPLineBreakByClipping=2;
@@ -252,6 +252,16 @@ _4d.value=_4c;
 _4d.style.color=objj_msgSend(objj_msgSend(_4a,"currentValueForThemeAttribute:","text-color"),"cssString");
 _4d.style.font=objj_msgSend(objj_msgSend(_4a,"currentValueForThemeAttribute:","font"),"cssString");
 _4d.style.zIndex=1000;
+switch(objj_msgSend(_4a,"alignment")){
+case CPCenterTextAlignment:
+_4d.style.textAlign="center";
+break;
+case CPRightTextAlignment:
+_4d.style.textAlign="right";
+break;
+default:
+_4d.style.textAlign="left";
+}
 var _4e=objj_msgSend(_4a,"contentRectForBounds:",objj_msgSend(_4a,"bounds"));
 _4d.style.top=(_4e.origin.y)+"px";
 _4d.style.left=((_4e.origin.x)-1)+"px";
@@ -263,7 +273,7 @@ _4d.focus();
 _4=_4a;
 },0);
 objj_msgSend(_4a,"textDidBeginEditing:",objj_msgSend(CPNotification,"notificationWithName:object:userInfo:",CPControlTextDidBeginEditingNotification,_4a,nil));
-objj_msgSend(objj_msgSend(CPDOMWindowBridge,"sharedDOMWindowBridge"),"_propagateCurrentDOMEvent:",YES);
+objj_msgSend(objj_msgSend(objj_msgSend(_4a,"window"),"platformWindow"),"_propagateCurrentDOMEvent:",YES);
 _8=YES;
 if(document.attachEvent){
 _9=document.body.onselectstart;
@@ -362,8 +372,10 @@ objj_msgSend(_62,"setFrameSize:",_64);
 }),new objj_method(sel_getUid("selectText:"),function(_68,_69,_6a){
 with(_68){
 var _6b=objj_msgSend(_68,"_inputElement");
-if(_6b.parentNode==_DOMElement&&(objj_msgSend(_68,"isEditable")||objj_msgSend(_68,"isSelectable"))){
+if(_6b.parentNode===_DOMElement&&(objj_msgSend(_68,"isEditable")||objj_msgSend(_68,"isSelectable"))){
+window.setTimeout(function(){
 _6b.select();
+},0);
 }
 }
 }),new objj_method(sel_getUid("setDelegate:"),function(_6c,_6d,_6e){

@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;12379;
+I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;12456;
 CPSaveOperation=0;
 CPSaveAsOperation=1;
 CPSaveToOperation=2;
@@ -13,7 +13,7 @@ CPDocumentDidSaveNotification="CPDocumentDidSaveNotification";
 CPDocumentDidFailToSaveNotification="CPDocumentDidFailToSaveNotification";
 var _1=0;
 var _2=objj_allocateClassPair(CPResponder,"CPDocument"),_3=_2.isa;
-class_addIvars(_2,[new objj_ivar("_fileURL"),new objj_ivar("_fileType"),new objj_ivar("_windowControllers"),new objj_ivar("_untitledDocumentIndex"),new objj_ivar("_hasUndoManager"),new objj_ivar("_undoManager"),new objj_ivar("_changeCount"),new objj_ivar("_readConnection"),new objj_ivar("_writeRequest")]);
+class_addIvars(_2,[new objj_ivar("_window"),new objj_ivar("_fileURL"),new objj_ivar("_fileType"),new objj_ivar("_windowControllers"),new objj_ivar("_untitledDocumentIndex"),new objj_ivar("_hasUndoManager"),new objj_ivar("_undoManager"),new objj_ivar("_changeCount"),new objj_ivar("_readConnection"),new objj_ivar("_writeRequest")]);
 objj_registerClassPair(_2);
 objj_addClassForBundle(_2,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(_2,[new objj_method(sel_getUid("init"),function(_4,_5){
@@ -65,8 +65,10 @@ objj_msgSend(CPException,"raise:reason:",CPUnsupportedMethodException,"readFromD
 }
 }),new objj_method(sel_getUid("makeWindowControllers"),function(_22,_23){
 with(_22){
-var _24=objj_msgSend(objj_msgSend(CPWindowController,"alloc"),"initWithWindowCibName:",nil);
-objj_msgSend(_22,"addWindowController:",_24);
+var _24=objj_msgSend(_22,"windowCibName");
+if(_24){
+objj_msgSend(_22,"addWindowController:",objj_msgSend(objj_msgSend(CPWindowController,"alloc"),"initWithWindowCibName:owner:",_24,_22));
+}
 }
 }),new objj_method(sel_getUid("windowControllers"),function(_25,_26){
 with(_25){
@@ -75,7 +77,7 @@ return _windowControllers;
 }),new objj_method(sel_getUid("addWindowController:"),function(_27,_28,_29){
 with(_27){
 objj_msgSend(_windowControllers,"addObject:",_29);
-if(objj_msgSend(_29,"document")!=_27){
+if(objj_msgSend(_29,"document")!==_27){
 objj_msgSend(_29,"setNextResponder:",_27);
 objj_msgSend(_29,"setDocument:",_27);
 }
@@ -101,10 +103,10 @@ return "Untitled "+_untitledDocumentIndex;
 with(_2e){
 return nil;
 }
-}),new objj_method(sel_getUid("windowControllerDidLoadNib:"),function(_30,_31,_32){
+}),new objj_method(sel_getUid("windowControllerDidLoadCib:"),function(_30,_31,_32){
 with(_30){
 }
-}),new objj_method(sel_getUid("windowControllerWillLoadNib:"),function(_33,_34,_35){
+}),new objj_method(sel_getUid("windowControllerWillLoadCib:"),function(_33,_34,_35){
 with(_33){
 }
 }),new objj_method(sel_getUid("readFromURL:ofType:delegate:didReadSelector:contextInfo:"),function(_36,_37,_38,_39,_3a,_3b,_3c){

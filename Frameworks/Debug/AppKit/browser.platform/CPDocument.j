@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;17281;
+I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;17385;
 CPSaveOperation = 0;
 CPSaveAsOperation = 1;
 CPSaveToOperation = 2;
@@ -13,7 +13,7 @@ CPDocumentDidSaveNotification = "CPDocumentDidSaveNotification";
 CPDocumentDidFailToSaveNotification = "CPDocumentDidFailToSaveNotification";
 var CPDocumentUntitledCount = 0;
 {var the_class = objj_allocateClassPair(CPResponder, "CPDocument"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_fileURL"), new objj_ivar("_fileType"), new objj_ivar("_windowControllers"), new objj_ivar("_untitledDocumentIndex"), new objj_ivar("_hasUndoManager"), new objj_ivar("_undoManager"), new objj_ivar("_changeCount"), new objj_ivar("_readConnection"), new objj_ivar("_writeRequest")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_fileURL"), new objj_ivar("_fileType"), new objj_ivar("_windowControllers"), new objj_ivar("_untitledDocumentIndex"), new objj_ivar("_hasUndoManager"), new objj_ivar("_undoManager"), new objj_ivar("_changeCount"), new objj_ivar("_readConnection"), new objj_ivar("_writeRequest")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDocument__init(self, _cmd)
@@ -74,8 +74,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 }), new objj_method(sel_getUid("makeWindowControllers"), function $CPDocument__makeWindowControllers(self, _cmd)
 { with(self)
 {
-    var controller = objj_msgSend(objj_msgSend(CPWindowController, "alloc"), "initWithWindowCibName:", nil);
-    objj_msgSend(self, "addWindowController:", controller);
+    var windowCibName = objj_msgSend(self, "windowCibName");
+    if (windowCibName)
+        objj_msgSend(self, "addWindowController:", objj_msgSend(objj_msgSend(CPWindowController, "alloc"), "initWithWindowCibName:owner:", windowCibName, self));
 }
 }), new objj_method(sel_getUid("windowControllers"), function $CPDocument__windowControllers(self, _cmd)
 { with(self)
@@ -86,7 +87,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 { with(self)
 {
     objj_msgSend(_windowControllers, "addObject:", aWindowController);
-    if (objj_msgSend(aWindowController, "document") != self)
+    if (objj_msgSend(aWindowController, "document") !== self)
     {
         objj_msgSend(aWindowController, "setNextResponder:", self);
         objj_msgSend(aWindowController, "setDocument:", self);
@@ -113,11 +114,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 {
     return nil;
 }
-}), new objj_method(sel_getUid("windowControllerDidLoadNib:"), function $CPDocument__windowControllerDidLoadNib_(self, _cmd, aWindowController)
+}), new objj_method(sel_getUid("windowControllerDidLoadCib:"), function $CPDocument__windowControllerDidLoadCib_(self, _cmd, aWindowController)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("windowControllerWillLoadNib:"), function $CPDocument__windowControllerWillLoadNib_(self, _cmd, aWindowController)
+}), new objj_method(sel_getUid("windowControllerWillLoadCib:"), function $CPDocument__windowControllerWillLoadCib_(self, _cmd, aWindowController)
 { with(self)
 {
 }
