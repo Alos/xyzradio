@@ -27,14 +27,15 @@ This file is part of XYZRadio.
 @import "LoginWindow.j"
 @import "UserProfileWindow.j"
 @import "XYZUser.j"
-
+@import "EventListenerManager.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
     AddSongToolbarItemIdentifier = "AddSongToolbarItemIdentifier",
     RemoveSongToolbarItemIdentifier = "RemoveSongToolbarItemIdentifier",
     preferencesItemIdentifier = "preferencesItemIdentifier",
-    usersItemIdentifier = "usresItemIdentifier";	
+    usersItemIdentifier = "usresItemIdentifier",
+	logoutIdentifier = "logoutIdentifier";	
 
 
 @implementation AppController : CPObject
@@ -57,13 +58,14 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	LoginWindow loginWindow;
 	UserProfileWindow userProfileWindow;
 	XYZUser userLoggedin;//the full user
-	CPString loggedUserEmail; 
+	CPTimer userLoggingTimer;
+	EventListenerManager eventListenerManager;
 }
 
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-	CPLogRegister(CPLogConsole)
+	CPLogRegister(CPLogConsole);
     CPLog.info("Inicio de ventana");
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
 	contentView = [theWindow contentView];
@@ -92,6 +94,13 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	[sound play];
 	console.log("playing...");*/		
 	
+	musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+	[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
+
+	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
+	[djList setFrameOrigin:(CPPointMake(700, 100))];
+	
+	
     //testing...
     var demoList = [[CPArray alloc] init]; 
     var song1 = [[XYZSong alloc] initWithSongTitle:@"do it over" setArtist:@"amélie" setID:1 time:"3:04" pathToSong:"http://files.me.com/alos/h4w1s0.mp3" rating:"4"];
@@ -105,16 +114,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [theWindow orderFront:self];
 
 
-	musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
-	[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
-
-	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
-	[djList setFrameOrigin:(CPPointMake(700, 100))];
-
 	playerControl=[[PlayerControl alloc] init: djList];	
-    //testing users
-    //[self openUsers];
-   // [self openLoginWindow];
+    
+    [self openLoginWindow];
 
 }
 
@@ -122,12 +124,12 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	serverIP = aURL;
 }
 
--(CPString)loggedUserEmail{
-	return loggedUserEmail;
+-(XYZUser)userLoggedin{
+	return userLoggedin;
 }
 
--(void)setLoggedUserEmail:(CPString)anEmail{
-	loggedUserEmail= anEmail;
+-(void)setUserLoggedin:(XYZUser)aUser{
+	userLoggedin= aUser;
 }
 
 -(CPString)serverIP{
@@ -192,7 +194,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 }
 
 
-//abre la ventana de usuarios
+//abre la ventana de las preferencias de los usuarios usuarios
 -(void)openUserProfileWindow{
     if(!userProfileWindow)
         userProfileWindow = [[UserProfileWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
@@ -208,8 +210,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
-  var addFolloweeFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,400,450)]];
-  [addFolloweeFormController startForm];
+  var addSongFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,400,450)]];
+  [addSongFormController startForm];
 }
 
 /*Abre la lista de canciones del usuario*/
@@ -240,26 +242,44 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 }
 
 //abre la ventana de usuarios
--(void)openUsers{
-   if(!usersWindow){
-	usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,247,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
-	[usersWindow setFrameOrigin:(CPPointMake(5, 70))];
-   }	
-   if([usersWindow isVisible]){
-	[usersWindow close];
-   }
-   else
-   	[usersWindow orderFront:self];
+	-(void)openUsers{
+		if(!usersWindow){
+			usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,247,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
+			[usersWindow setFrameOrigin:(CPPointMake(5, 70))];
+
+			CPLog.info("Starting timer!");
+			userLoggingTimer = [CPTimer scheduledTimerWithTimeInterval:15.0 target: self selector:"checkForNewUsers:" userInfo:nil repeats:YES ];
+			
+			[usersWindow orderFront:self];
+		}else{	
+			if([usersWindow isVisible]){
+				[usersWindow close];
+				CPLog.info("Stoping the timer");
+				[userLoggingTimer invalidate];
+			}
+			else{
+				CPLog.info("Restarting the timer");
+				userLoggingTimer = [CPTimer scheduledTimerWithTimeInterval:15.0 target: self selector:"checkForNewUsers:" userInfo:nil repeats:YES ];
+			
+				[usersWindow orderFront:self];
+			}
+		}
+	}
+
+-(void)checkForNewUsers:(CPTimer)theTimer{
+		CPLog.info("Getting events");
+		eventListenerManager = [[EventListenerManager alloc] init];
+		[eventListenerManager getEvents];
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,usersItemIdentifier,RemoveSongToolbarItemIdentifier,preferencesItemIdentifier];
+   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,usersItemIdentifier,RemoveSongToolbarItemIdentifier,logoutIdentifier,preferencesItemIdentifier];
 }
 
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,usersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,preferencesItemIdentifier];
+   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,usersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,logoutIdentifier,preferencesItemIdentifier];
 }
 
 - (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)anItemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag
@@ -362,10 +382,34 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }
+	 else if (anItemIdentifier == logoutIdentifier)
+    {   
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/setup.png" size:CPSizeMake(30, 25)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/setupOff.png" size:CPSizeMake(30, 25)];
+		
+		[toolbarItem setImage: image];
+        [toolbarItem setAlternateImage: highlighted];
+		
+		[toolbarItem setTarget:self];
+        [toolbarItem setAction:@selector(logoutUser)]; 
+        [toolbarItem setLabel:"Logout"];
+		
+        [toolbarItem setMinSize:CGSizeMake(32, 32)];
+        [toolbarItem setMaxSize:CGSizeMake(32, 32)];
+    }
 
         
     return toolbarItem;
 }
+
+-(void)logoutUser{
+		var url = "http://localhost:8080/LogoutUser?email="+[userLoggedin email];
+		CPLog.info("Connecting to" + url);
+		var request = [CPURLRequest requestWithURL: url];
+		var connection = [CPURLConnection connectionWithRequest:request delegate:self];
+		[self openLoginWindow];
+}
+
 
 -(void)openLoginWindow{
 		loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(0, 0, 1000, 800) styleMask: CPHUDBackgroundWindowMask | CPBorderlessWindowMask];
@@ -376,6 +420,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 
 -(void)closeLoginWindow:(CPNotification)aNotification{
+	var info = [aNotification userInfo];
+	var aux = [info objectForKey:"user"];
+	userLoggedin = aux;
 	[CPLightbox stopModal];
 	[loginWindow close];
 }

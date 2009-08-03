@@ -79,7 +79,7 @@
 			
 			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(createAccountActionPerformed:) name:"createAccountActionPerformed" object:nil];	
 			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(fadeoutSigninSection:) name:"cancelButtonActionPerformed" object:nil];	
-
+			
 		}
 		return self;
 	}
@@ -144,13 +144,13 @@
 		[animFadeOutLog startAnimation];
 		[animFadeOutLog setDelegate: self];
 	}
-
+	
 	-(void)fadeinSigninSection{
 		CPLog.info("Adding sign in form");
 		signinForm = [[SigninForm alloc]  initWithFrame:CGRectMake(600, 200, 500, 600)];
 		[signinForm setAlphaValue:0];	
 		[contentView addSubview: signinForm];	
-
+		
 		animFadeInSign = [[CPPropertyAnimation alloc] initWithView:signinForm property:@"alphaValue"];
 		[animFadeInSign setStart:0];
 		[animFadeInSign setEnd:1];
@@ -171,7 +171,7 @@
 	
 	
 	-(void)loguser:(CPString)aUser password:(CPString)aPassword{
-		var url = "http://localhost:8080/LoginVerify?email="+aUser+"&passwd="+aPassword;
+		var url = "http://localhost:8080/LoginUser?email="+aUser+"&passwd="+aPassword;
 		CPLog.info("Connecting to" + url);
 		var request = [CPURLRequest requestWithURL: url];
 		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
@@ -186,7 +186,7 @@
 	
 	- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 	{
-		CPLog.trace(data);
+		CPLog.trace("La data en loging window: %s", data);
 		try{
 			var response = JSON.parse(data);
 			
@@ -194,11 +194,33 @@
 				CPLog.error(response.error);
 			}
 			
-			if(response.user){
+			if(response){
 				var userRecived = [[XYZUser alloc] init];
 				
+				[userRecived setEmail: response.email];
+				[userRecived setUsernick: response.usernick];
+				if(response.pathToAvatar)
+					[userRecived setPathToAvatar: response.pathToAvatar];
+				else
+					[userRecived setPathToAvatar:""];
+				[userRecived setLogged: response.logged];
+				if(response.dj)
+					[userRecived setDj:YES];
+				else
+					[userRecived setDj:NO];
+				[userRecived setSex: response.sex];
+				[userRecived setDjList1: response.djList1];
+				[userRecived setDjList2: response.djList2];
+				[userRecived setDjList3: response.djList3];
+				[userRecived setOwnedSongs: response.ownedSongs];
+				[userRecived setUserRating: response.userRating];
+				
+				var somePrefrences = [[XYZUserPrefrences alloc] init];
+				
+				[userRecived setPrefrences: somePrefrences];
+				
 				var info = [CPDictionary dictionaryWithObject:userRecived forKey:"user"];   
-				[[CPNotificationCenter defaultCenter] postNotificationName:"LoginSuccessful" object:self userInfo:info]; 	
+				[[CPNotificationCenter defaultCenter] postNotificationName:"LoginSuccessful" object:self userInfo:info]; 
 			}
 			
 		}catch(e){

@@ -62,6 +62,14 @@ This file is part of XYZRadio.
     return self;
 }
 
+-(id)init{
+	self = [super init];
+    if(self){
+		
+    }
+    return self;
+}
+
 -(BOOL)isEqual:(id)anObject{
 	if([[anObject class] instancesRespondToSelector: @selector(email)])
     if([anObject email]==[self email])
