@@ -70,8 +70,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
 	contentView = [theWindow contentView];
     //bg
-    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/theGoldenAgeOf60.jpg" size:CPSizeMake(30, 25)];
-    [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
+    //bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/theGoldenAgeOf60.jpg" size:CPSizeMake(30, 25)];
+    //[contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
+    [contentView setBackgroundColor:[CPColor colorWithHexString:"666666"]];
     //sizes
     bounds = [contentView bounds];
     librarySongs = [[CPArray alloc] init];    
@@ -82,7 +83,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	 
 	   
 	serverIP = "http://localhost:8080"; 
-
+	//serverIP = "http://xyzradioengine.appspot.com";	
 	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
 	
@@ -102,14 +103,14 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 	
 	
     //testing...
-    var demoList = [[CPArray alloc] init]; 
+   /* var demoList = [[CPArray alloc] init]; 
     var song1 = [[XYZSong alloc] initWithSongTitle:@"do it over" setArtist:@"amélie" setID:1 time:"3:04" pathToSong:"http://files.me.com/alos/h4w1s0.mp3" rating:"4"];
     [demoList addObject:song1];
     var song2 = [[XYZSong alloc] initWithSongTitle:@"Broken Stereo (Acoustic Version)" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:"Resources/LocalMusic/Broken Stereo (Acoustic Version).mp3" rating:"2"];
     [demoList addObject:song2];
     var song3 = [[XYZSong alloc] initWithSongTitle:@"My Last Breath (Live version)" setArtist:@"Evanescence" setID:3 time:"3:59" pathToSong:"" rating:"3"];
     [demoList addObject:song3];
-	[self addSongList: demoList];
+	[self addSongList: demoList];*/
     //brings the window to the front
     [theWindow orderFront:self];
 
@@ -403,7 +404,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 }
 
 -(void)logoutUser{
-		var url = "http://localhost:8080/LogoutUser?email="+[userLoggedin email];
+		var url = serverIP+"/LogoutUser?email="+[userLoggedin email];
 		CPLog.info("Connecting to" + url);
 		var request = [CPURLRequest requestWithURL: url];
 		var connection = [CPURLConnection connectionWithRequest:request delegate:self];

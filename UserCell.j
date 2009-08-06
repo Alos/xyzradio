@@ -2,6 +2,7 @@
 
 @implementation UserCell : CPView
 {
+	CPTextField userNickTextField;
     CPImage         image;
     CPImageView     userView;
     CPView          highlightView;
@@ -14,7 +15,7 @@
     //colocamos el avatar
     if(!userView)
     {
-		var backImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/fondo-información-de-usuario.png" size:CPSizeMake(246, 91)];
+		var backImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/userBG.png" size:CPSizeMake(246, 91)];
         userView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 246, 91)];
 		[userView setImage:backImage];
         [self addSubview:userView];     
@@ -51,24 +52,26 @@
 	
 	}
 	
-	var userNickTextField = [[CPTextField alloc] initWithFrame: CGRectMake(100, 20, 350, 24)];
+	if(!userNickTextField)
+		userNickTextField = [[CPTextField alloc] initWithFrame: CGRectMake(100, 20, 350, 24)];
 	[userNickTextField setStringValue:[anObject usernick]];
 	[userNickTextField sizeToFit];
-    [userNickTextField setTextColor: [CPColor colorWithHexString:"33FF00"]];
-    //[userNickTextField setAlignment:CPCenterTextAlignment];
+	[userNickTextField setTextColor: [CPColor colorWithHexString:"33FF00"]];
     [self addSubview: userNickTextField];
 	
 	if(!raterView){
-		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
-		  [raterView setFrameOrigin:CGPointMake(100, 40)];
-		  [self addSubview: raterView];
+		  raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
+		 
 	}
+	[raterView setFrameOrigin:CGPointMake(100, 40)];
+	[self addSubview: raterView];
 	var control = [raterView rater];
 	[control setIntValue: [anObject userRating]];
 	
-	
-	var glassImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/brillo-información-usuario.png" size:CPSizeMake(246, 91)];
-	glassImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 246, 91)];
+	if(!glassImageView){
+			glassImageView = [[CPImageView alloc] initWithFrame:CGRectMake(0, 0, 246, 91)];
+	}
+	var glassImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/70/userInfoGlow.png" size:CPSizeMake(246, 91)];
 	[glassImageView setImage:glassImage];
 	[glassImageView setAlphaValue:.3];
 	[self addSubview:glassImageView]; 

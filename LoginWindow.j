@@ -171,14 +171,14 @@
 	
 	
 	-(void)loguser:(CPString)aUser password:(CPString)aPassword{
-		var url = "http://localhost:8080/LoginUser?email="+aUser+"&passwd="+aPassword;
+		var url = [app serverIP]+"/LoginUser?email="+aUser+"&passwd="+aPassword;
 		CPLog.info("Connecting to" + url);
 		var request = [CPURLRequest requestWithURL: url];
 		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
 	}
 	
 	-(void)createUserAccount:(CPString)anAccount password:(CPString)aPassword name:(CPString)aName sex:(CPString)aSex{
-		var url = "http://localhost:8080/NewUser?account="+anAccount+"&password="+aPassword+"&name="+aName+"&sex="+aSex;
+		var url = [app serverIP]+"/NewUser?account="+anAccount+"&password="+aPassword+"&name="+aName+"&sex="+aSex;
 		CPLog.info("Connecting to " + url);
 		var request = [CPURLRequest requestWithURL: url];
 		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
