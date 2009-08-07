@@ -57,24 +57,24 @@
 			var bounds = [contentView bounds];  
 			var center= CGRectGetWidth(bounds)/2.0 -35;
 			
-			var backImage = [[CPImage alloc] initWithContentsOfFile:"Resources/backButton.png" size:CPSizeMake(50, 50)];
-			var backImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/backButtonPressed.png" size:CPSizeMake(50, 50)];
+			var backImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButton.png" size:CPSizeMake(50, 50)];
+			var backImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButtonPressed.png" size:CPSizeMake(50, 50)];
 			backButton = [[CPButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(bounds)/2.0-100 , 30, 50, 50)];
 			[backButton setImage: backImage];
 			[backButton setAlternateImage: backImagePressed];
 			[backButton setBordered:NO];
 			[backButton setAction:@selector(previousSong)];
 			
-			var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/playButtonPressed.png" size:CPSizeMake(70, 70)];
-			var playImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/playButton.png" size:CPSizeMake(70, 70)];
+			var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playButtonPressed.png" size:CPSizeMake(70, 70)];
+			var playImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playButton.png" size:CPSizeMake(70, 70)];
 			playButton = [[CPButton alloc] initWithFrame:CGRectMake(center, 15, 70, 70)];
 			[playButton setImage: playImage];
 			[playButton setBordered:NO];
 			[playButton setAction:@selector(playSong)];
 			
 			
-			var forwardImage = [[CPImage alloc] initWithContentsOfFile:"Resources/nextButton.png" size:CPSizeMake(50, 50)];
-			var forwardImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/nextButtonPressed.png" size:CPSizeMake(50, 50)];
+			var forwardImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/nextButton.png" size:CPSizeMake(50, 50)];
+			var forwardImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/player/nextButtonPressed.png" size:CPSizeMake(50, 50)];
 			forwardButton = [[CPButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(bounds)/2.0+50, 30, 50, 50)];
 			[forwardButton setImage: forwardImage];
 			[forwardButton setAlternateImage: forwardImagePressed];
@@ -88,11 +88,11 @@
 			[volumeSlider setValue:100];        
 			[contentView addSubview:volumeSlider];
 			//Ponemos las labeles al rededor del slider
-			var volumeDownImage = [[CPImage alloc] initWithContentsOfFile:"Resources/volumeDown.png" size:CPSizeMake(26, 25)];
+			var volumeDownImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/volumeDown.png" size:CPSizeMake(26, 25)];
 			var volumeDownImageView = [[CPImageView alloc] initWithFrame:CGRectMake(70, 95, 26, 25)];
 			[volumeDownImageView setImage: volumeDownImage];
 			
-			var volumeUpImage = [[CPImage alloc] initWithContentsOfFile:"Resources/volumeUp.png" size:CPSizeMake(26, 25)];
+			var volumeUpImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/volumeUp.png" size:CPSizeMake(26, 25)];
 			var volumeUpImageView = [[CPImageView alloc] initWithFrame:CGRectMake(305, 95, 26, 25)];
 			[volumeUpImageView setImage: volumeUpImage];	
 			
@@ -163,7 +163,7 @@
 	 Sets the play icon
 	 */
 	-(void)setPlayIcon{
-		var pausedIcon = [[CPImage alloc] initWithContentsOfFile:"Resources/playButton.png" size:CPSizeMake(70, 70)];
+		var pausedIcon = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playButton.png" size:CPSizeMake(70, 70)];
 		[playButton setImage:pausedIcon];
 	}
 	/**
@@ -177,7 +177,7 @@
 	 Set the pused icon
 	 */
 	-(void)setPausedIcon{
-		var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/pausedIcon.png" size:CPSizeMake(70, 70)];
+		var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/pausedIcon.png" size:CPSizeMake(70, 70)];
 		[playButton setImage:playImage];
 	}
 	
@@ -204,7 +204,7 @@
 	 Stops the playing song
 	 */
 	-(void)stopSong{
-		var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/playButton.png" size:CPSizeMake(70, 70)];
+		var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playButton.png" size:CPSizeMake(70, 70)];
 		[playButton setImage:playImage];
 	}
 	
@@ -257,8 +257,8 @@
 	}
 	
 	- (void)songDidFinishPlaying{
-		var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/playButtonPressed.png" size:CPSizeMake(70, 70)];
-		var playImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/playButton.png" size:CPSizeMake(70, 70)];
+		var playImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playButtonPressed.png" size:CPSizeMake(70, 70)];
+		var playImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playButton.png" size:CPSizeMake(70, 70)];
 		[playButton setImage: playImage];
 		[playButton setAlternateImage: playImagePressed];
 		[currentlyPlayingTextField setStringValue:" "];

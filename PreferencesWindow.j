@@ -50,9 +50,10 @@ This file is part of XYZRadio.
         [wallpaperLabel setBackgroundColor:NULL];
         
         var arr =[[CPArray alloc] init];
-        [arr addObject:"theGoldenAgeOf60"];
-        [arr addObject:"Organ-ism"];
-	[arr addObject:"Retro_Music"];  
+		[arr addObject:"xyzradiowallpaper.png"]
+        [arr addObject:"theGoldenAgeOf60.jpg"];
+        [arr addObject:"Organ-ism.jpg"];
+		[arr addObject:"Retro_Music.jpg"];  
         wallpaperMenus =[[CPPopUpButton alloc] initWithFrame:CGRectMake(125, 50, 170, 24)];
         [wallpaperMenus addItemsWithTitles:arr];
         
@@ -86,7 +87,7 @@ This file is part of XYZRadio.
 
 -(void)savePreferences{
     //var contentView = [bridgeWindow contentView];
-    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/"+[wallpaperMenus titleOfSelectedItem]+".jpg" size:CPSizeMake(30, 25)];
+    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/"+[wallpaperMenus titleOfSelectedItem] size:CPSizeMake(1440, 960)];
     [contentViewOfWindow setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
 }
 

@@ -70,9 +70,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
 	contentView = [theWindow contentView];
     //bg
-    //bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/theGoldenAgeOf60.jpg" size:CPSizeMake(30, 25)];
-    //[contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
-    [contentView setBackgroundColor:[CPColor colorWithHexString:"666666"]];
+    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/fondo-interface.png" size:CPSizeMake(30, 25)];
+    [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
+    //[contentView setBackgroundColor:[CPColor colorWithHexString:"666666"]];
     //sizes
     bounds = [contentView bounds];
     librarySongs = [[CPArray alloc] init];    
@@ -280,7 +280,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,usersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,logoutIdentifier,preferencesItemIdentifier];
+   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,usersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,preferencesItemIdentifier,logoutIdentifier];
 }
 
 - (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)anItemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag
@@ -291,8 +291,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
 		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/biblioteca.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/bibliotecaOff.png" size:CPSizeMake(30, 25)];
+		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/biblioteca.png" size:CPSizeMake(27, 27)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/bibliotecaOff.png" size:CPSizeMake(27, 27)];
 			
 		[toolbarItem setImage: image];
 		[toolbarItem setAlternateImage: highlighted];
@@ -308,8 +308,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
 		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/dj.png" size:CPSizeMake(30, 25)],
-		highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/djOff.png" size:CPSizeMake(30, 25)];
+		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/dj.png" size:CPSizeMake(27, 27)],
+		highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/djOff.png" size:CPSizeMake(27, 27)];
 		
 		[toolbarItem setImage: image];
 		[toolbarItem setAlternateImage: highlighted];
@@ -323,8 +323,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     else if (anItemIdentifier == AddSongToolbarItemIdentifier)
     {
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/addSong.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/addSongOff.png" size:CPSizeMake(30, 25)];
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/addSong.png" size:CPSizeMake(27, 27)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/addSongOff.png" size:CPSizeMake(27, 27)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
@@ -338,8 +338,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     else if (anItemIdentifier == RemoveSongToolbarItemIdentifier)
     {        
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSong.png" size:CPSizeMake(30, 25)],
-        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/removeSongOff.png" size:CPSizeMake(30, 25)];
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/removeSong.png" size:CPSizeMake(27, 27)],
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/removeSongOff.png" size:CPSizeMake(27, 27)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
@@ -353,8 +353,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
     //ventana de usuarios	
     else if(anItemIdentifier == usersItemIdentifier){
-	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/usuario.png" size:CPSizeMake(30, 25)],
-        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/usuariosOff.png" size:CPSizeMake(30, 25)];
+	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuario.png" size:CPSizeMake(27, 27)],
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuariosOff.png" size:CPSizeMake(27, 27)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
@@ -368,10 +368,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
     } 	
     else if (anItemIdentifier == preferencesItemIdentifier)
-    {   //TODO crear una view y luego ponerle 
-        // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/setup.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/setupOff.png" size:CPSizeMake(30, 25)];
+    {   
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/setup.png" size:CPSizeMake(27, 27)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/setupOff.png" size:CPSizeMake(27, 27)];
 		
 		[toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
@@ -385,8 +384,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     }
 	 else if (anItemIdentifier == logoutIdentifier)
     {   
-        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/setup.png" size:CPSizeMake(30, 25)],
-            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/setupOff.png" size:CPSizeMake(30, 25)];
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/logouton.png" size:CPSizeMake(27, 27)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/logoutOff.png" size:CPSizeMake(27, 27)];
 		
 		[toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
