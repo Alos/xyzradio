@@ -44,5 +44,7 @@ This file is part of Louhi.
 	var request = [CPURLRequest requestWithURL:aURL];
 	connection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
-
+-(void)connectionDidFinishLoading:(CPURLConnection)connection{
+	[[CPNotificationCenter defaultCenter] postNotificationName:"SubmitSuccessful" object:self];
+}
 @end

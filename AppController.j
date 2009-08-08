@@ -70,7 +70,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
 	contentView = [theWindow contentView];
     //bg
-    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/fondo-interface.png" size:CPSizeMake(30, 25)];
+    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/xyzradiowallpaper.png" size:CPSizeMake(30, 25)];
     [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
     //[contentView setBackgroundColor:[CPColor colorWithHexString:"666666"]];
     //sizes
@@ -100,17 +100,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
 	[djList setFrameOrigin:(CPPointMake(700, 100))];
-	
-	
-    //testing...
-   /* var demoList = [[CPArray alloc] init]; 
-    var song1 = [[XYZSong alloc] initWithSongTitle:@"do it over" setArtist:@"amélie" setID:1 time:"3:04" pathToSong:"http://files.me.com/alos/h4w1s0.mp3" rating:"4"];
-    [demoList addObject:song1];
-    var song2 = [[XYZSong alloc] initWithSongTitle:@"Broken Stereo (Acoustic Version)" setArtist:@"AZ Yet" setID:2 time:"4:28" pathToSong:"Resources/LocalMusic/Broken Stereo (Acoustic Version).mp3" rating:"2"];
-    [demoList addObject:song2];
-    var song3 = [[XYZSong alloc] initWithSongTitle:@"My Last Breath (Live version)" setArtist:@"Evanescence" setID:3 time:"3:59" pathToSong:"" rating:"3"];
-    [demoList addObject:song3];
-	[self addSongList: demoList];*/
+
     //brings the window to the front
     [theWindow orderFront:self];
 

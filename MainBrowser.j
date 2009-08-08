@@ -37,6 +37,10 @@ This file is part of XYZRadio.
         [self setTitle:@"Music Browser"];
         var contentView = [self contentView];
         var bounds = [contentView bounds];
+		
+		
+		[self getAllSongs];
+		
         //para los titulos
 		var playingColumnModel = [[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 26, 31) title:" " color:nil];
 		var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(27, 7, 202, 31) title:"Name" color:nil];
@@ -46,7 +50,6 @@ This file is part of XYZRadio.
 		
 		var fullModel = [CPDictionary dictionaryWithObjects:[playingColumnModel, titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["playing", "title", "artist", "time", "rating"]];
 		
-       
         theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: bounds];
         
         [contentView addSubview: theTable];    
@@ -67,5 +70,54 @@ This file is part of XYZRadio.
    [theTable removeSelectedItems];
 }
 
+- (void)getAllSongs{
+	app = [CPApp delegate];
+	var url = [app serverIP]+"/GetAllSongs";
+	theRequest = [CPURLRequest requestWithURL: url];
+	serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
+}
+
+/*Delegate methods*/
+
+//for the connections delegate
+- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
+{	
+	CPLog(data);
+	var response =  JSON.parse(data);
+
+	if(!response.error){
+		//Everything is ok now we fill the table with songs!
+		CPLog.info("Filling songs...");
+		var songsArray = [[CPArray alloc] init];
+		for(var i=0; i< response.length; i++){
+			var info = response[i];
+			var newSong = [[XYZSong alloc] init];
+			[newSong setSongTitle:info.songTitle];
+			[newSong setArtist:info.artist];
+			[newSong setTime:info.time];
+			[newSong setGenre:info.genre];
+			[newSong setRating:info.rating];
+			[newSong setSongID:info.songID];
+			[newSong setLocal:info.isLocal];
+			[newSong setPathToSong:info.pathToSong];
+			[newSong setPathToAlbumArt:info.pathToAlbumArt];
+			
+			[songsArray addObject: newSong];
+		}
+		[self addList:songsArray];
+	}else{
+		//no user was found lets ask the new user stuff
+		CPLog.error("No songs found in data!");
+	}
+	
+}
+
+-(void)connectionDidFinishLoading:(CPURLConnection)connection{
+	//nothing
+}
+
+- (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error
+{
+}
 
 @end

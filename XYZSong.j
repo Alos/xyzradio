@@ -20,88 +20,28 @@ This file is part of XYZRadio.
 
 @implementation XYZSong: CPObject
 {
-    CPString songTitle;
-    CPString artist;
-    CPString time;
-    CPString genre;
-	CPString rating;
-    int ID;
-    BOOL isLocal;
-	CPString pathToSong;
-    id delegate;
-    CPView superview;
+    CPString songTitle @accessors;
+    CPString artist @accessors;
+    CPString time @accessors;
+    CPString genre @accessors;
+	CPString rating @accessors;
+	CPString pathToAlbumArt @accessors;
+    CPString songID @accessors;
+	BOOL local @accessors ;//(getter=isLocal, setter=setLocal:);
+	CPString pathToSong @accessors;
 }
 
 -(id)initWithSongTitle:(CPString)aSongTitle setArtist:(CPString)anArtist setID:(int)anID time:(CPString)aTime pathToSong:(CPString)aPath rating:(CPString)aRating{
     if(self = [super init]){
         songTitle = aSongTitle;
         artist = anArtist;
-        ID = anID;
+        songID = anID;
         isLocal = false;
         time = aTime;
 		pathToSong = aPath;
 		rating = aRating;
     }
     return self;
-}
-
--(void)setRating:(CPString)aValue{
-	rating = aValue;
-}
-
--(CPString)rating{
-	return rating;
-}
-
-- (void) setSongTitle:(CPString) aSong{
-    songTitle = aSong;
-}
-- (CPString)songTitle{
-    return songTitle;
-}
-
-- (void) setArtist:(CPString)anArtist{
-    artist = anArtist;
-}
-
-- (CPString)artist{
-    return artist;
-}
-
--(void)setTime:(CPString)aTime{
-    time=aTime;
-}
--(CPString)time{
-    return time;
-}
--(void)setGenre:(CPString)aGenre{
-    genre=aGenre;
-}
--(CPString)genre{
-    return genre;
-}
--(void)setID:(int)anID{
-    ID=anID;
-}
-
-- (int)ID{
-    return ID;
-}
-
--(void)setPathToSong:(CPString)aPath{
-	pathToSong=aPath;
-}
-
--(CPString)pathToSong{
-	return pathToSong;
-}
-
-- (void) setLocal:(BOOL)local{
-    isLocal=local;
-}
-
-- (BOOL)isLocal{
-    return isLocal;
 }
 
 -(BOOL)isEqual:(id)anObject{
@@ -115,11 +55,13 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
 - (void)encodeWithCoder:(CPCoder)aCoder{
     [aCoder encodeObject:songTitle forKey:@"SongTitle"];
     [aCoder encodeObject:artist forKey:@"Artist"];
-    [aCoder encodeObject:ID forKey:@"ID"];
-    [aCoder encodeObject:isLocal forKey:@"isLocal"];
-    [aCoder encodeObject:time forKey:@"time"];
-	[aCoder encodeObject:pathToSong forKey:@"pathToSong"];
-	[aCoder encodeObject:rating forKey:@"rating"];
+    [aCoder encodeObject:time forKey:@"Time"];
+	[aCoder encodeObject:genre forKey:@"Genre"];
+	[aCoder encodeObject:rating forKey:@"Rating"];
+	[aCoder encodeObject:pathToAlbumArt forKey:@"PathToAlbumArt"];
+	[aCoder encodeObject:songID forKey:@"SongID"];
+    [aCoder encodeObject:local forKey:@"Local"];
+	[aCoder encodeObject:pathToSong forKey:@"PathToSong"];
 }
 
 - (id)initWithCoder:(CPCoder)aCoder{
@@ -128,11 +70,14 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
     {
         songTitle = [aCoder decodeObjectForKey:@"SongTitle"];
         artist = [aCoder decodeObjectForKey:@"Artist"];
-        ID = [aCoder decodeObjectForKey:@"ID"];
-        isLocal = [aCoder decodeObjectForKey:@"isLocal"];
-        time = [aCoder decodeObjectForKey:@"time"];
-		pathToSong = [aCoder decodeObjectForKey:@"pathToSong"];
-		rating = [aCoder decodeObjectForKey:@"rating"];
+        time = [aCoder decodeObjectForKey:@"Time"];
+		genre = [aCoder decodeObjectForKey:@"Genre"];
+		rating = [aCoder decodeObjectForKey:@"Rating"];
+		pathToAlbumArt = [aCoder decodeObjectForKey:@"PathToAlbumArt"];
+		songID = [aCoder decodeObjectForKey:@"SongID"];
+       // local = [aCoder decodeObjectForKey:@"Local"];
+		pathToSong = [aCoder decodeObjectForKey:@"PathToSong"];
+
     }
     return self;
 }

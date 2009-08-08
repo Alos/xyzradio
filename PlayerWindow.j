@@ -85,7 +85,7 @@
 			volumeSlider = [[CPSlider alloc] initWithFrame:CGRectMake(CGRectGetWidth(bounds)/2.0 - 100, 95, 200, 25)];
 			[volumeSlider setMinValue:0];
 			[volumeSlider setMaxValue:100];
-			[volumeSlider setValue:100];        
+			[volumeSlider setDoubleValue:100];        
 			[contentView addSubview:volumeSlider];
 			//Ponemos las labeles al rededor del slider
 			var volumeDownImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/volumeDown.png" size:CPSizeMake(26, 25)];
@@ -134,7 +134,7 @@
 			timeSlider = [[CPSlider alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 250)/2, 170, 250, 25)];
 			[timeSlider setMinValue:0];
 			[timeSlider setMaxValue:100];
-			[timeSlider setValue:0];        
+			[timeSlider setDoubleValue:0];        
 			[timeSlider setTarget:self];
 			[timeSlider setAction:@selector(setTimeOfSong:)];
 			[contentView addSubview:timeSlider];
@@ -185,7 +185,7 @@
 	 Gets the vol and tells the control to set it
 	 */
 	- (void)setVolume:(id)aVolume{
-		[playerControl setVolume:[aVolume value]];
+		[playerControl setVolume:[aVolume doubleValue]];
 	}
 	
 	/*playSong*/
@@ -227,7 +227,7 @@
 	-(void)setTime:(int)aTime{
 		if(aTime){
 			[currentlyPlayingTimeTextField setStringValue: [self getTime: aTime]];
-			[timeSlider setValue:parseInt(aTime)];
+			[timeSlider setDoubleValue:parseInt(aTime)];
 			[[CPRunLoop currentRunLoop] performSelectors];
 		}
 	}
@@ -241,7 +241,7 @@
 		var milies = seconds * 1000;
 		CPLog.trace("%s milies", milies);
 		[timeSlider setMaxValue:parseInt(milies)];
-		[timeSlider setValue:0];
+		[timeSlider setDoubleValue:0];
 	}
 	
 	- (CPTextField)labelWithTitle:(CPString)aTitle
