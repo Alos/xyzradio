@@ -34,14 +34,15 @@
    id HTMLElement @accessors;
    CPTextField link;
    CPPopUpButton menu;
-   //UploadButton uploadButton;
    CPButton uploadButton;  
    CPArray items;
+   SongURLUploader songURLUploader;
 }
 	
 	- (id) initWithFrame:(CGRect)aRect{
 		self = [super initWithFrame:aRect];
 		if(self){
+		  songURLUploader = [[SongURLUploader alloc] init];	
 		  menu=[[CPPopUpButton alloc] initWithFrame:CGRectMake(135,85,150,25)];
 		  [menu setPullsDown:YES];
 		  [menu setTitle:@"Submit a song"];
@@ -53,6 +54,7 @@
 		  
 		  [headerLabel setStringValue:@"Please read the terms of use before submiting a song"];
 		  [self setSubmitButtonTitle:@"Save song"];
+		  [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(clearAndClose:) name:"SubmitSuccessful" object:songURLUploader];
 		}
 		return self;
 	}
@@ -103,21 +105,47 @@
 }
 
 //guarda la cancion de cualquiera de las dos formas
--(void)submitAction:(id)sender{
-  if([[menu selectedItem] title] == "URL"){
-    CPLog.info("Saving a song form a URL with title %s", [titleField stringValue]);
-	var songURLUploader = [[SongURLUploader alloc] init];
-	[songURLUploader uploadSongWithTitle:[titleField stringValue] artist:[artistField stringValue]  genere:[genreField stringValue] time:[timeField stringValue] pathToAlbumArt:[pathAlbumArtField stringValue] songURL:[urlField stringValue]];
-  }
-
-  if([[menu selectedItem] title] == "LOCAL"){
-    console.log("LOCAL");
-  }
-}
+	-(void)submitAction:(id)sender{
+		if([[menu selectedItem] title] == "URL"){
+			[self setEnabled:NO];
+			var requiredError = NO;
+			for (var i = 0; i < [fields count]; i++) {
+				if ([[fields objectAtIndex:i] required] && [[[fields objectAtIndex:i] stringValue] isEqualToString:""]) {
+					requiredError = YES;
+				}
+			}
+			if (requiredError) {
+				alert("Please fill in all required fields.");
+				[self setEnabled:YES];
+				for (var i = 0; i < [fields count]; i++) {
+					if ([[fields objectAtIndex:i] required] && [[[fields objectAtIndex:i] stringValue] isEqualToString:""]) {
+						[[fields objectAtIndex:i] becomeFirstResponder];
+						return;
+					}
+				}
+			} else {
+				//everything is ok s now we submit!
+				CPLog.info("Saving a song form a URL with title %s", [titleField stringValue]);
+				[songURLUploader uploadSongWithTitle:[titleField stringValue] artist:[artistField stringValue]  genere:[genreField stringValue] time:[timeField stringValue] pathToAlbumArt:[pathAlbumArtField stringValue] songURL:[urlField stringValue]];
+			}
+		}
+		
+		if([[menu selectedItem] title] == "LOCAL"){
+			console.log("LOCAL");
+		}
+	}
 
 -(CPString)thankYouMessage {
 	//return @"Thanks for adding!  They'll show up in the feed soon.";
 	return @"Thanks for submitting a song!";
+}
+
+- (void)clearAndClose:(CPNotification)aNotification {
+	for (var i = 0; i < [items count]; i++) {
+		[[items objectAtIndex:i] setStringValue:@""];
+	}
+	[self setEnabled:YES];
+	[delegate endForm];
 }
 
 //------------------delegate methods-----------------------
