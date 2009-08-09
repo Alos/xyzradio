@@ -46,9 +46,7 @@
 		//the mode control
 		CPButton modeControl;
 		CPImage singleUserModeImageOn;
-		CPImage singleUserModeImageOff;
 		CPImage multiUserModeImageOn;
-		CPImage multiUserModeImageOff;
 		BOOL singleImage;
 	}
 	
@@ -68,13 +66,10 @@
 			var center= CGRectGetWidth(bounds)/2.0 -35;
 			
 			//the mode control
-			var singleUserModeImageOn = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playing.png" size:CPSizeMake(27, 27)];
-			var singleUserModeImageOff = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playing.png" size:CPSizeMake(27, 27)];
-			var multiUserModeImageOn = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButton.png" size:CPSizeMake(27, 27)];
-			var multiUserModeImageOff = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButton.png" size:CPSizeMake(27, 27)];
-			modeControl = [[CPButton alloc] initWithFrame:CGRectMake(20, 20, 27, 27)];
+			var singleUserModeImageOn = [[CPImage alloc] initWithContentsOfFile:"Resources/player/privado.png" size:CPSizeMake(26, 27)];
+			var multiUserModeImageOn = [[CPImage alloc] initWithContentsOfFile:"Resources/player/radio.png" size:CPSizeMake(26, 27)];
+			modeControl = [[CPButton alloc] initWithFrame:CGRectMake(20, 20, 26, 27)];
 			[modeControl setImage: singleUserModeImageOn];
-			[modeControl setAlternateImage: singleUserModeImageOff];
 			[modeControl setBordered:NO];
 			[modeControl setAction:@selector(modeControlActionPerformed)];
 			[contentView addSubview:modeControl];
@@ -309,13 +304,11 @@
 		if(singleImage){
 			CPLog.info("Setting singleuser");
 			[modeControl setImage: multiUserModeImageOn];
-			[modeControl setAlternateImage: multiUserModeImageOff];
 			[playerControl setSingleMode:YES];
 			singleImage = NO;
 		}else{
 			CPLog.info("Setting multiuser");
 			[modeControl setImage: singleUserModeImageOn];
-			[modeControl setAlternateImage: singleUserModeImageOff];
 			[playerControl setSingleMode:NO];
 			singleImage = YES;
 		}

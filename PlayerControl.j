@@ -100,8 +100,10 @@ This file is part of XYZRadio.
 				}
 			}
 		}
-		else
+		else{
 			CPLog.trace("El sound manager aun no esta funcionando..espere un momento....");
+			theSoundManager = [[SMSoundManager alloc] init];
+		}
 }
 
 //plays the next song
