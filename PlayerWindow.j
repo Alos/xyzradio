@@ -26,20 +26,30 @@
 
 @implementation PlayerWindow : CPWindow
 	{
+		//the main control
 		CPButton backButton;
 		CPButton playButton;
 		CPButton forwardButton;
 		CPSlider volumeSlider;
 		CPTextField currentlyPlayingTextField;
 		CPTextField currentlyPlayingTimeTextField;	
-		//the control
+		//the controller for this view
 		PlayerControl playerControl;
+		
 		//timer
 		CPString time;
 		CPSlider timeSlider;
 		
 		//contentview
 		CPView contentView;
+		
+		//the mode control
+		CPButton modeControl;
+		CPImage singleUserModeImageOn;
+		CPImage singleUserModeImageOff;
+		CPImage multiUserModeImageOn;
+		CPImage multiUserModeImageOff;
+		BOOL singleImage;
 	}
 	
 	/*Una bonita contructora*/
@@ -57,6 +67,20 @@
 			var bounds = [contentView bounds];  
 			var center= CGRectGetWidth(bounds)/2.0 -35;
 			
+			//the mode control
+			var singleUserModeImageOn = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playing.png" size:CPSizeMake(27, 27)];
+			var singleUserModeImageOff = [[CPImage alloc] initWithContentsOfFile:"Resources/player/playing.png" size:CPSizeMake(27, 27)];
+			var multiUserModeImageOn = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButton.png" size:CPSizeMake(27, 27)];
+			var multiUserModeImageOff = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButton.png" size:CPSizeMake(27, 27)];
+			modeControl = [[CPButton alloc] initWithFrame:CGRectMake(20, 20, 27, 27)];
+			[modeControl setImage: singleUserModeImageOn];
+			[modeControl setAlternateImage: singleUserModeImageOff];
+			[modeControl setBordered:NO];
+			[modeControl setAction:@selector(modeControlActionPerformed)];
+			[contentView addSubview:modeControl];
+			singleImage=YES;
+	
+			//the controls
 			var backImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButton.png" size:CPSizeMake(50, 50)];
 			var backImagePressed = [[CPImage alloc] initWithContentsOfFile:"Resources/player/backButtonPressed.png" size:CPSizeMake(50, 50)];
 			backButton = [[CPButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(bounds)/2.0-100 , 30, 50, 50)];
@@ -112,9 +136,9 @@
 			
 			
 			/*var timebar = [[CPImage alloc] initWithContentsOfFile:"Resources/player/timeline.png" size:CPSizeMake(371, 5)];
-			var timebarImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 175, 371, 5)];
-			[timebarImageView setImage: timebar];
-			[contentView addSubview: timebarImageView];*/
+			 var timebarImageView = [[CPImageView alloc] initWithFrame:CGRectMake( (CGRectGetWidth(bounds)- 371)/2, 175, 371, 5)];
+			 [timebarImageView setImage: timebar];
+			 [contentView addSubview: timebarImageView];*/
 			
 			var currentlyPlayingString=" ";
 			currentlyPlayingTextField= [[CPTextField alloc] initWithFrame: CGRectMake(20, 150, 350, 18)];
@@ -138,7 +162,7 @@
 			[timeSlider setTarget:self];
 			[timeSlider setAction:@selector(setTimeOfSong:)];
 			[contentView addSubview:timeSlider];
-
+			
 			
 			
 			var glassImage = [[CPImage alloc] initWithContentsOfFile:"Resources/player/transparencia-cristal.png" size:CPSizeMake(371, 34)];
@@ -152,13 +176,10 @@
 			[contentView addSubview: playButton];
 			[contentView addSubview: forwardButton];
 			
-			
-			playing = NO;
-			paused = NO;
-			local=YES;
 		}
 		return self;
 	}
+	
 	/**
 	 Sets the play icon
 	 */
@@ -270,18 +291,34 @@
 	}
 	
 	
-/**
-Changes milis to regular time
-*/
--(CPString)getTime:(int)timeInMilis{
-	var nSec = Math.floor(timeInMilis/1000);
-    var min = Math.floor(nSec/60);
-    var sec = nSec-(min*60);
-    if (min == 0 && sec == 0) return null; // return 0:00 as null
-	if(sec>=10)
+	/**
+	 Changes milis to regular time
+	 */
+	-(CPString)getTime:(int)timeInMilis{
+		var nSec = Math.floor(timeInMilis/1000);
+		var min = Math.floor(nSec/60);
+		var sec = nSec-(min*60);
+		if (min == 0 && sec == 0) return null; // return 0:00 as null
+		if(sec>=10)
 		return min+":"+sec;
-	else
+		else
 		return min+":0"+sec;
-}
+	}
+	
+	-(void)modeControlActionPerformed{
+		if(singleImage){
+			CPLog.info("Setting singleuser");
+			[modeControl setImage: multiUserModeImageOn];
+			[modeControl setAlternateImage: multiUserModeImageOff];
+			[playerControl setSingleMode:YES];
+			singleImage = NO;
+		}else{
+			CPLog.info("Setting multiuser");
+			[modeControl setImage: singleUserModeImageOn];
+			[modeControl setAlternateImage: singleUserModeImageOff];
+			[playerControl setSingleMode:NO];
+			singleImage = YES;
+		}
+	}
 	@end
 

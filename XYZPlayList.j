@@ -38,7 +38,7 @@ CPArray theList;
 }
 
 -(XYZSong)getSelectedSong{
-	var index = [theTable getSelectedItem]; //we ask the table the selected item
+	var index = [theTable getSelectedItem]; //we ask the table the selected item	
 	var aux = [theTable getSongByIndex: index]; //we take said item from the list
 	return aux;
 }
@@ -67,7 +67,6 @@ CPArray theList;
 }
 
 -(void)removeSelectedItems{
-   CPLog.trace("removeSlectedItems in SFBrowser got a msg");
    [theTable removeSelectedItems];
 }
 

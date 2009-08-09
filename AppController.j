@@ -33,9 +33,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
     AddSongToolbarItemIdentifier = "AddSongToolbarItemIdentifier",
     RemoveSongToolbarItemIdentifier = "RemoveSongToolbarItemIdentifier",
-    preferencesItemIdentifier = "preferencesItemIdentifier",
-    usersItemIdentifier = "usresItemIdentifier",
-	logoutIdentifier = "logoutIdentifier";	
+    PreferencesItemIdentifier = "PreferencesItemIdentifier",
+    UsersItemIdentifier = "UsresItemIdentifier",
+	LogoutIdentifier = "LogoutIdentifier";	
 
 
 @implementation AppController : CPObject
@@ -82,8 +82,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [toolbar setDelegate:self];
 	 
 	   
-	serverIP = "http://localhost:8080"; 
-	//serverIP = "http://xyzradioengine.appspot.com";	
+	//serverIP = "http://localhost:8080"; 
+	serverIP = "http://xyzradioengine.appspot.com";	
 	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
 	
@@ -105,7 +105,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [theWindow orderFront:self];
 
 
-	playerControl=[[PlayerControl alloc] init: djList];	
+	playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
     
     [self openLoginWindow];
 
@@ -265,12 +265,12 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,usersItemIdentifier,RemoveSongToolbarItemIdentifier,logoutIdentifier,preferencesItemIdentifier];
+   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier, AddSongToolbarItemIdentifier, UsersItemIdentifier, RemoveSongToolbarItemIdentifier, LogoutIdentifier, PreferencesItemIdentifier];
 }
 
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [BotonBrowserIdentifier,BotonMiListaIdentifier,AddSongToolbarItemIdentifier,RemoveSongToolbarItemIdentifier,usersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier,preferencesItemIdentifier,logoutIdentifier];
+   return [BotonBrowserIdentifier, BotonMiListaIdentifier, AddSongToolbarItemIdentifier, RemoveSongToolbarItemIdentifier, UsersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier, PreferencesItemIdentifier,LogoutIdentifier];
 }
 
 - (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)anItemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag
@@ -342,7 +342,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }
     //ventana de usuarios	
-    else if(anItemIdentifier == usersItemIdentifier){
+    else if(anItemIdentifier == UsersItemIdentifier){
 	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuario.png" size:CPSizeMake(27, 27)],
         highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuariosOff.png" size:CPSizeMake(27, 27)];
             
@@ -356,8 +356,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
 
-    } 	
-    else if (anItemIdentifier == preferencesItemIdentifier)
+    }else if (anItemIdentifier == PreferencesItemIdentifier)
     {   
         var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/setup.png" size:CPSizeMake(27, 27)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/setupOff.png" size:CPSizeMake(27, 27)];
@@ -371,8 +370,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 		
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
-    }
-	 else if (anItemIdentifier == logoutIdentifier)
+    }else if (anItemIdentifier == LogoutIdentifier)
     {   
         var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/logouton.png" size:CPSizeMake(27, 27)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/logoutOff.png" size:CPSizeMake(27, 27)];
@@ -386,10 +384,15 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 		
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
-    }
+    } 
 
         
     return toolbarItem;
+}
+
+-(void)modeSwitch{
+
+
 }
 
 -(void)logoutUser{

@@ -23,6 +23,7 @@ This file is part of XYZRadio.
 @import "PlayerWindow.j"
 @import "XYZSong.j"
 @import "MainBrowser.j"
+@import "DJList.j"
 @import "SMSoundManager.j"
 
 @implementation PlayerControl : CPObject
@@ -30,22 +31,25 @@ This file is part of XYZRadio.
 	PlayerWindow player;//the window that has the play button
 	SMSoundManager theSoundManager;//the wrapper on the sound manager
     XYZSong currentlyPlayingSong;//the currently playing song
+	
+	MainBrowser mainBrowser;
 	DJList djList;//the dj list that contains the songs
 	//flags for playing
 	BOOL playing;
 	BOOL paused;
-	BOOL local;
+	BOOL singleMode @accessors;
 }
 
--(id)init:(DJList)aDJList{
+-(id)initWithMainPlayingList:(MainBrowser)aMainBrowser djList:(DJList)aDJList{
 	self = [super init];
 	if(self){
 		djList=aDJList;
+		mainBrowser = aMainBrowser;
 		[self togglePlayerWindow];
 		theSoundManager = [[SMSoundManager alloc] init];
 		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setTime:) name:"pos" object:theSoundManager];
 		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(songDidFinishPlaying:) name:"SongEnded" object:theSoundManager];
-		local=YES;//for testing 
+		singleMode=YES;//for testing 
 		return self;
 	}
 }
@@ -54,21 +58,26 @@ This file is part of XYZRadio.
 	//first we find out where to play the song from
 	//right now we just play from the DJLIST
 	CPLog.trace("Will play soemthing...");
-	var song = [djList getSelectedSong];
-	CPLog.trace("Se selecciono, %s", [song songTitle]);
-	[self playSong:song];
+	if(singleMode){
+		var song = [mainBrowser getSelectedSong];
+		CPLog.trace("Se selecciono del main browser, %s", [song songTitle]);
+		[self playSong:song];
+		
+	}else{
+		var song = [djList getSelectedSong];
+		CPLog.trace("Se selecciono del DJList, %s", [song songTitle]);
+		[self playSong:song];
+	}
 }
 
 //Plays the song thats passed to it
 - (void)playSong:(XYZSong)aSong{
-	CPLog.trace("On plaing...");
-	if(local){
 		if([theSoundManager isLoaded]){
 			if(!playing){
 				if([aSong pathToSong]==NULL)
-					CPLog.trace("No path in the song selected!");//TODO poner aqui una ventana de alerta
+					CPLog.error("No path in the song selected!");//TODO poner aqui una ventana de alerta
 				else{
-					CPLog.trace("Playing: %s", [aSong pathToSong]);
+					CPLog.info("Playing: %s", [aSong pathToSong]);
 					currentlyPlayingSong=aSong;
 					var currentlyPlayingString= [aSong songTitle]+" by "+[aSong artist];
 					[player setCurrentlyPlayingSong:currentlyPlayingString time:[aSong time]];
@@ -93,51 +102,55 @@ This file is part of XYZRadio.
 		}
 		else
 			CPLog.trace("El sound manager aun no esta funcionando..espere un momento....");
-	}else{
-		//IP mode
-	}		
 }
 
 //plays the next song
--(void)nextSong{
-	var totalSongs = [djList getSongListSize];
-	var index = [djList getSongIndex: currentlyPlayingSong];
-	index++;
-	if(totalSongs <= index)
-		index=0;
-	[djList setSelectionIndexes:index];
-	if(!paused){
-		CPLog.trace("Is playing switching to the new song");
-		[self stopSong];
-		[self playSong:[djList getSongByIndex:index]];
-	}else{
-		CPLog.trace("Not playing just selecting the song");
-		[self stopSong];
-		paused = NO;
-		playing = NO;
+	-(void)nextSong{
+		if(singleMode){
+			var totalSongs = [mainBrowser getSongListSize];
+			var index = [mainBrowser getSongIndex: currentlyPlayingSong];
+			index++;
+			if(totalSongs <= index)
+				index=0;
+			[mainBrowser setSelectionIndexes:index];
+			if(!paused){
+				CPLog.trace("Is playing switching to the new song");
+				[self stopSong];
+				[self playSong:[mainBrowser getSongByIndex:index]];
+			}else{
+				CPLog.trace("Not playing just selecting the song");
+				[self stopSong];
+				paused = NO;
+				playing = NO;
+			}
+		}else{
+			
+		}
 	}
-}
 
 //plays the previous song
 -(void)previousSong{
-    var totalSongs = [djList getSongListSize];
-	var index = [djList getSongIndex: currentlyPlayingSong];
-	index--;
-	if(index < 0)
-	 index = totalSongs-1;
-	CPLog.trace("Index: %s",index);
-	[djList setSelectionIndexes:index];
-	if(!paused){
-		CPLog.trace("Is playing switching to the new song");
-		[self stopSong];
-		[self playSong:[djList getSongByIndex:index]];	
+	if(singleMode){
+		var totalSongs = [mainBrowser getSongListSize];
+		var index = [mainBrowser getSongIndex: currentlyPlayingSong];
+		index--;
+		if(index < 0)
+			index = totalSongs-1;
+		CPLog.trace("Index: %s",index);
+		[mainBrowser setSelectionIndexes:index];
+		if(!paused){
+			CPLog.trace("Is playing switching to the new song");
+			[self stopSong];
+			[self playSong:[mainBrowser getSongByIndex:index]];	
+		}else{
+			CPLog.trace("Not playing just selecting the song");
+			[self stopSong];
+			paused = NO;
+			playing = NO;
+		}
 	}else{
-		CPLog.trace("Not playing just selecting the song");
-		[self stopSong];
-		paused = NO;
-		playing = NO;
+		
 	}
-	
 }
 
 //Stops the currently playing song

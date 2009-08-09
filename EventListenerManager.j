@@ -66,6 +66,13 @@ This file is part of Louhi.
 			[[CPNotificationCenter defaultCenter] postNotificationName:"UserLoggedoff" object:self userInfo:info]; 
 			
 		}
+		else if(event.eventName == "com.xyzradioengine.model.events.NewSongAddedXYZEvent")
+		{
+			CPLog.info("%s new song arrived: ", event.song); 
+			var info = [CPDictionary dictionaryWithObject:event.song forKey:"song"];   
+			[[CPNotificationCenter defaultCenter] postNotificationName:"NewSongAddedXYZEvent" object:self userInfo:info]; 
+			
+		}
 
 	}
 

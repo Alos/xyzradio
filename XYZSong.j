@@ -27,7 +27,7 @@ This file is part of XYZRadio.
 	CPString rating @accessors;
 	CPString pathToAlbumArt @accessors;
     CPString songID @accessors;
-	BOOL local @accessors ;//(getter=isLocal, setter=setLocal:);
+	BOOL local @accessors (getter=isLocal, setter=setLocal:);
 	CPString pathToSong @accessors;
 }
 
@@ -45,8 +45,8 @@ This file is part of XYZRadio.
 }
 
 -(BOOL)isEqual:(id)anObject{
-if([[anObject class] instancesRespondToSelector: @selector(ID)])
-    if([anObject ID]==[self ID])
+if([[anObject class] instancesRespondToSelector: @selector(songID)])
+    if([anObject songID] == [self songID])
         return YES;
     else
         return NO;
@@ -75,7 +75,7 @@ if([[anObject class] instancesRespondToSelector: @selector(ID)])
 		rating = [aCoder decodeObjectForKey:@"Rating"];
 		pathToAlbumArt = [aCoder decodeObjectForKey:@"PathToAlbumArt"];
 		songID = [aCoder decodeObjectForKey:@"SongID"];
-       // local = [aCoder decodeObjectForKey:@"Local"];
+        local = [aCoder decodeObjectForKey:@"Local"];
 		pathToSong = [aCoder decodeObjectForKey:@"PathToSong"];
 
     }

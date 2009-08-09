@@ -53,7 +53,9 @@ This file is part of XYZRadio.
         theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: bounds];
         
         [contentView addSubview: theTable];    
-            
+		
+		//this soudl probably 
+		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllSongs:) name:"NewSongAddedXYZEvent" object:nil];
     }
     
     return self;
@@ -82,7 +84,6 @@ This file is part of XYZRadio.
 //for the connections delegate
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 {	
-	CPLog(data);
 	var response =  JSON.parse(data);
 
 	if(!response.error){
@@ -107,7 +108,7 @@ This file is part of XYZRadio.
 		[self addList:songsArray];
 	}else{
 		//no user was found lets ask the new user stuff
-		CPLog.error("No songs found in data!");
+		CPLog.info("No songs found in data!");
 	}
 	
 }
