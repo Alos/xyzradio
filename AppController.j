@@ -28,6 +28,7 @@ This file is part of XYZRadio.
 @import "UserProfileWindow.j"
 @import "XYZUser.j"
 @import "EventListenerManager.j"
+@import "ProfileWindow.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -35,6 +36,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     RemoveSongToolbarItemIdentifier = "RemoveSongToolbarItemIdentifier",
     PreferencesItemIdentifier = "PreferencesItemIdentifier",
     UsersItemIdentifier = "UsresItemIdentifier",
+    ProfileItemIdentifier = "ProfileItemIdentifier";	
 	LogoutIdentifier = "LogoutIdentifier";	
 
 
@@ -50,6 +52,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     CPWindow theWindow;
     CPView contentView;
     UsersWindow usersWindow;
+    ProfileWindow profileWindow;
     CPCollectionView listCollectionView;
     CPWindow contentUsers;
     CGRect bounds;
@@ -107,7 +110,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 	playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
     
-    [self openLoginWindow];
+    //[self openLoginWindow];
 
 }
 
@@ -232,7 +235,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [musicBrowser orderFront:self];
 }
 
-//abre la ventana de usuarios
+//Abre la ventana de usuarios
 	-(void)openUsers{
 		if(!usersWindow){
 			usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,247,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
@@ -257,6 +260,21 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 		}
 	}
 
+//Abre la ventana de perfil de usuario
+-(void)openProfile{
+  if(!profileWindow){
+    profileWindow = [[ProfileWindow alloc] initWithContentRect:CGRectMake(100,200,300,400) styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
+    [profileWindow setFrameOrigin:(CPPointMake(100, 200))];			
+    [profileWindow orderFront:self];
+  }else{	
+    if([profileWindow isVisible]){
+	[profileWindow close];
+    }else{
+	[profileWindow orderFront:self];
+    }
+  }
+}
+
 -(void)checkForNewUsers:(CPTimer)theTimer{
 		CPLog.info("Getting events");
 		eventListenerManager = [[EventListenerManager alloc] init];
@@ -265,12 +283,12 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier, AddSongToolbarItemIdentifier, UsersItemIdentifier, RemoveSongToolbarItemIdentifier, LogoutIdentifier, PreferencesItemIdentifier];
+   return [CPToolbarFlexibleSpaceItemIdentifier, BotonBrowserIdentifier,BotonMiListaIdentifier, AddSongToolbarItemIdentifier, UsersItemIdentifier, ProfileItemIdentifier, RemoveSongToolbarItemIdentifier, LogoutIdentifier, PreferencesItemIdentifier];
 }
 
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar
 {
-   return [BotonBrowserIdentifier, BotonMiListaIdentifier, AddSongToolbarItemIdentifier, RemoveSongToolbarItemIdentifier, UsersItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier, PreferencesItemIdentifier,LogoutIdentifier];
+   return [BotonBrowserIdentifier, BotonMiListaIdentifier, AddSongToolbarItemIdentifier, RemoveSongToolbarItemIdentifier, UsersItemIdentifier, ProfileItemIdentifier, CPToolbarFlexibleSpaceItemIdentifier, PreferencesItemIdentifier,LogoutIdentifier];
 }
 
 - (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)anItemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag
@@ -352,6 +370,20 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setTarget: self];
         [toolbarItem setAction: @selector(openUsers)];
         [toolbarItem setLabel: "Users"];
+        
+        [toolbarItem setMinSize:CGSizeMake(32, 32)];
+        [toolbarItem setMaxSize:CGSizeMake(32, 32)];
+
+    }else if(anItemIdentifier == ProfileItemIdentifier){
+	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuario.png" size:CPSizeMake(27, 27)],
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuariosOff.png" size:CPSizeMake(27, 27)];
+            
+        [toolbarItem setImage: image];
+        [toolbarItem setAlternateImage: highlighted];
+
+        [toolbarItem setTarget: self];
+        [toolbarItem setAction: @selector(openProfile)];
+        [toolbarItem setLabel: "Profile"];
         
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
