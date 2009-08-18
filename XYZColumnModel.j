@@ -28,7 +28,10 @@ CPTextField textfield;
     self= [[CPView alloc] initWithFrame: aFrame];
 	textfield = [[CPTextField alloc] initWithFrame: CGRectMake(0, 0, 0, 18)];
     [textfield setStringValue:aTitle];
-    [textfield setTextColor: [CPColor colorWithHexString:"33FF00"]];
+	if(aColor)
+		[textfield setTextColor: aColor];
+	else
+		[textfield setTextColor: [CPColor colorWithHexString:"33FF00"]];
     [textfield setBackgroundColor: aColor];
 	[textfield sizeToFit];
 	[self addSubview: textfield];
