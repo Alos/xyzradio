@@ -108,6 +108,7 @@ var setupSoundManager = function(obj)
 		};
         soundManager.beginDelayedInit();
 		soundManager.debugMode = false;
+		soundManager.defaultOptions.volume = 100;
 	}, YES);	
 	
 	document.getElementsByTagName("head")[0].appendChild(script);
