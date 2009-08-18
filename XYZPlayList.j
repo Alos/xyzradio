@@ -18,9 +18,7 @@ This file is part of XYZRadio.
     You should have received a copy of the GNU Lesser General Public License
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
-@import <Foundation/CPArray.j>
-@import <AppKit/CPPanel.j>
-@import <AppKit/CPWindowController.j>
+
 @import "XYZSong.j"
 
 @implementation XYZPlayList : CPWindow
