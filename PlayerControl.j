@@ -31,7 +31,7 @@ This file is part of XYZRadio.
 	PlayerWindow player;//the window that has the play button
 	SMSoundManager theSoundManager;//the wrapper on the sound manager
     XYZSong currentlyPlayingSong;//the currently playing song
-	
+	CPApp app;
 	MainBrowser mainBrowser;
 	DJList djList;//the dj list that contains the songs
 	//flags for playing
@@ -43,6 +43,7 @@ This file is part of XYZRadio.
 -(id)initWithMainPlayingList:(MainBrowser)aMainBrowser djList:(DJList)aDJList{
 	self = [super init];
 	if(self){
+		app = [CPApp delegate];
 		djList=aDJList;
 		mainBrowser = aMainBrowser;
 		[self togglePlayerWindow];
@@ -193,9 +194,10 @@ Sets the song volume
 }
 
 -(void)togglePlayerWindow{
+	var xpos = [[[app theWindow] contentView] bounds];
     if(!player){
-		player = [[PlayerWindow alloc] initWithAcontrol:self contentRect:CGRectMake(500, 560, 400, 200)];
-		[player setFrameOrigin:(CPPointMake(500, 560))];
+		player = [[PlayerWindow alloc] initWithAcontrol:self contentRect:CGRectMake(CGRectGetWidth(xpos)/2, 560, 400, 200)];
+		[player setFrameOrigin:(CPPointMake(CGRectGetWidth(xpos)/2 - 200, 560))];
 	}
     if([player isVisible]){
         [player close];
