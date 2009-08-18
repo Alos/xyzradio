@@ -28,6 +28,7 @@ This file is part of XYZRadio.
 @import "UserProfileWindow.j"
 @import "XYZUser.j"
 @import "EventListenerManager.j"
+@import "DJList.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -82,8 +83,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     [toolbar setDelegate:self];
 	 
 	   
-	//serverIP = "http://localhost:8080"; 
-	serverIP = "http://xyzradioengine.appspot.com";	
+	serverIP = "http://localhost:8080"; 
+	//serverIP = "http://xyzradioengine.appspot.com";	
 	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
 	
