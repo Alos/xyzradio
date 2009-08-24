@@ -19,8 +19,6 @@ This file is part of XYZRadio.
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import <Foundation/CPObject.j>
-@import <AppKit/AppKit.j>
 
 @implementation SMSoundManager : CPObject
 {
@@ -102,13 +100,12 @@ var setupSoundManager = function(obj)
 	
 	script.addEventListener("load", function()
 	{
-		soundManager.url = "Resources/"; // path to directory containing SoundManager2 .SWF file
+		soundManager.url = "Resources/soundmanager2.js"; // path to directory containing SoundManager2 .SWF file
 		soundManager.onload = function() {
             [obj soundManagerDidLoad:soundManager];            
 		};
         soundManager.beginDelayedInit();
 		soundManager.debugMode = false;
-		soundManager.defaultOptions.volume = 100;
 	}, YES);	
 	
 	document.getElementsByTagName("head")[0].appendChild(script);
