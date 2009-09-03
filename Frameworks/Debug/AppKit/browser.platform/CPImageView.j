@@ -1,4 +1,4 @@
-I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;12190;
+I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;12874;
 CPScaleProportionally = 0;
 CPScaleToFit = 1;
 CPScaleNone = 2;
@@ -23,22 +23,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         _DOMImageElement.style.position = "absolute";
         _DOMImageElement.style.left = "0px";
         _DOMImageElement.style.top = "0px";
+        if (objj_msgSend(CPPlatform, "supportsDragAndDrop"))
+        {
+            _DOMImageElement.setAttribute("draggable", "true");
+            _DOMImageElement.style["-khtml-user-drag"] = "element";
+        }
         if (_DOMImageElement.CPDOMDisplayContext) _DOMImageElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMImageElement;;
         _DOMImageElement.style.visibility = "hidden";
     }
     return self;
 }
-}), new objj_method(sel_getUid("image"), function $CPImageView__image(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("image"), function $CPImageView__image(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "objectValue");
 }
-}), new objj_method(sel_getUid("setImage:"), function $CPImageView__setImage_(self, _cmd, anImage)
+},["CPImage"]), new objj_method(sel_getUid("setImage:"), function $CPImageView__setImage_(self, _cmd, anImage)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", anImage);
 }
-}), new objj_method(sel_getUid("setObjectValue:"), function $CPImageView__setObjectValue_(self, _cmd, anImage)
+},["void","CPImage"]), new objj_method(sel_getUid("setObjectValue:"), function $CPImageView__setObjectValue_(self, _cmd, anImage)
 { with(self)
 {
     var oldImage = objj_msgSend(self, "objectValue");
@@ -65,19 +70,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "setNeedsDisplay:", YES);
     }
 }
-}), new objj_method(sel_getUid("imageDidLoad:"), function $CPImageView__imageDidLoad_(self, _cmd, aNotification)
+},["void","CPImage"]), new objj_method(sel_getUid("imageDidLoad:"), function $CPImageView__imageDidLoad_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "hideOrDisplayContents");
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("hasShadow"), function $CPImageView__hasShadow(self, _cmd)
+},["void","CPNotification"]), new objj_method(sel_getUid("hasShadow"), function $CPImageView__hasShadow(self, _cmd)
 { with(self)
 {
     return _hasShadow;
 }
-}), new objj_method(sel_getUid("setHasShadow:"), function $CPImageView__setHasShadow_(self, _cmd, shouldHaveShadow)
+},["BOOL"]), new objj_method(sel_getUid("setHasShadow:"), function $CPImageView__setHasShadow_(self, _cmd, shouldHaveShadow)
 { with(self)
 {
     if (_hasShadow == shouldHaveShadow)
@@ -97,7 +102,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "hideOrDisplayContents");
 }
-}), new objj_method(sel_getUid("setImageScaling:"), function $CPImageView__setImageScaling_(self, _cmd, anImageScaling)
+},["void","BOOL"]), new objj_method(sel_getUid("setImageScaling:"), function $CPImageView__setImageScaling_(self, _cmd, anImageScaling)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setImageScaling:", anImageScaling);
@@ -108,7 +113,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("hideOrDisplayContents"), function $CPImageView__hideOrDisplayContents(self, _cmd)
+},["void","CPImageScaling"]), new objj_method(sel_getUid("hideOrDisplayContents"), function $CPImageView__hideOrDisplayContents(self, _cmd)
 { with(self)
 {
     if (!objj_msgSend(self, "image"))
@@ -122,12 +127,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(_shadowView, "setHidden:", NO);
     }
 }
-}), new objj_method(sel_getUid("imageRect"), function $CPImageView__imageRect(self, _cmd)
+},["void"]), new objj_method(sel_getUid("imageRect"), function $CPImageView__imageRect(self, _cmd)
 { with(self)
 {
     return _imageRect;
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPImageView__layoutSubviews(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("layoutSubviews"), function $CPImageView__layoutSubviews(self, _cmd)
 { with(self)
 {
     if (!objj_msgSend(self, "image"))
@@ -190,12 +195,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (_hasShadow)
         objj_msgSend(_shadowView, "setFrame:", { origin: { x:x - LEFT_SHADOW_INSET, y:y - TOP_SHADOW_INSET }, size: { width:width + insetWidth, height:height + insetHeight } });
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPImageView__mouseDown_(self, _cmd, anEvent)
+},["void"]), new objj_method(sel_getUid("mouseDown:"), function $CPImageView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(objj_msgSend(self, "nextResponder"), "mouseDown:", anEvent);
 }
-}), new objj_method(sel_getUid("setEditable:"), function $CPImageView__setEditable_(self, _cmd, shouldBeEditable)
+},["void","CPEvent"]), new objj_method(sel_getUid("setEditable:"), function $CPImageView__setEditable_(self, _cmd, shouldBeEditable)
 { with(self)
 {
     if (_isEditable === shouldBeEditable)
@@ -211,19 +216,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "registerForDraggedTypes:", draggedTypes);
     }
 }
-}), new objj_method(sel_getUid("isEditable"), function $CPImageView__isEditable(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isEditable"), function $CPImageView__isEditable(self, _cmd)
 { with(self)
 {
     return _isEditable;
 }
-}), new objj_method(sel_getUid("performDragOperation:"), function $CPImageView__performDragOperation_(self, _cmd, aSender)
+},["BOOL"]), new objj_method(sel_getUid("performDragOperation:"), function $CPImageView__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
     var images = objj_msgSend(CPKeyedUnarchiver, "unarchiveObjectWithData:", objj_msgSend(objj_msgSend(aSender, "draggingPasteboard"), "dataForType:", CPImagesPboardType));
     if (objj_msgSend(images, "count"))
         objj_msgSend(self, "setImage:", images[0]);
 }
-})]);
+},["void","CPDraggingInfo"])]);
 }
 var CPImageViewImageKey = "CPImageViewImageKey",
     CPImageViewImageScalingKey = "CPImageViewImageScalingKey",
@@ -240,6 +245,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     _DOMImageElement.style.left = "0px";
     _DOMImageElement.style.top = "0px";
     _DOMImageElement.style.visibility = "hidden";
+    if (objj_msgSend(CPPlatform, "supportsDragAndDrop"))
+    {
+        _DOMImageElement.setAttribute("draggable", "true");
+        _DOMImageElement.style["-khtml-user-drag"] = "element";
+    }
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "initWithCoder:", aCoder);
     if (self)
     {
@@ -252,7 +262,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPImageView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPImageView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     if (_shadowView)
@@ -268,6 +278,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     if (_isEditable)
         objj_msgSend(aCoder, "encodeBool:forKey:", _isEditable, CPImageViewIsEditableKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

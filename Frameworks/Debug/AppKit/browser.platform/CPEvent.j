@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;11847;
+I;21;Foundation/CPObject.jc;13230;
 CPLeftMouseDown = 1;
 CPLeftMouseUp = 2;
 CPRightMouseDown = 3;
@@ -94,7 +94,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initMouseEventWithType
     }
     return self;
 }
-}), new objj_method(sel_getUid("_initKeyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:"), function $CPEvent___initKeyEventWithType_location_modifierFlags_timestamp_windowNumber_context_characters_charactersIgnoringModifiers_isARepeat_keyCode_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, characters, unmodCharacters, isARepeat, code)
+},["id","CPEventType","CPPoint","unsigned","CPTimeInterval","int","CPGraphicsContext","int","int","float"]), new objj_method(sel_getUid("_initKeyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:"), function $CPEvent___initKeyEventWithType_location_modifierFlags_timestamp_windowNumber_context_characters_charactersIgnoringModifiers_isARepeat_keyCode_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, characters, unmodCharacters, isARepeat, code)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -113,7 +113,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initMouseEventWithType
     }
     return self;
 }
-}), new objj_method(sel_getUid("_initOtherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:"), function $CPEvent___initOtherEventWithType_location_modifierFlags_timestamp_windowNumber_context_subtype_data1_data2_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, aSubtype, aData1, aData2)
+},["id","CPEventType","CPPoint","unsignedint","CPTimeInterval","int","CPGraphicsContext","CPString","CPString","BOOL","unsignedshort"]), new objj_method(sel_getUid("_initOtherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:"), function $CPEvent___initOtherEventWithType_location_modifierFlags_timestamp_windowNumber_context_subtype_data1_data2_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, aSubtype, aData1, aData2)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -130,116 +130,125 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initMouseEventWithType
     }
     return self;
 }
-}), new objj_method(sel_getUid("locationInWindow"), function $CPEvent__locationInWindow(self, _cmd)
+},["id","CPEventType","CGPoint","unsigned","CPTimeInterval","int","CPGraphicsContext","short","int","int"]), new objj_method(sel_getUid("locationInWindow"), function $CPEvent__locationInWindow(self, _cmd)
 { with(self)
 {
-    return _location;
+    return { x:_location.x, y:_location.y };
 }
-}), new objj_method(sel_getUid("modifierFlags"), function $CPEvent__modifierFlags(self, _cmd)
+},["CGPoint"]), new objj_method(sel_getUid("modifierFlags"), function $CPEvent__modifierFlags(self, _cmd)
 { with(self)
 {
     return _modifierFlags;
 }
-}), new objj_method(sel_getUid("timestamp"), function $CPEvent__timestamp(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("timestamp"), function $CPEvent__timestamp(self, _cmd)
 { with(self)
 {
     return _timestamp;
 }
-}), new objj_method(sel_getUid("type"), function $CPEvent__type(self, _cmd)
+},["CPTimeInterval"]), new objj_method(sel_getUid("type"), function $CPEvent__type(self, _cmd)
 { with(self)
 {
     return _type;
 }
-}), new objj_method(sel_getUid("window"), function $CPEvent__window(self, _cmd)
+},["CPEventType"]), new objj_method(sel_getUid("window"), function $CPEvent__window(self, _cmd)
 { with(self)
 {
     if (!_window)
         _window = objj_msgSend(CPApp, "windowWithWindowNumber:", _windowNumber);
     return _window;
 }
-}), new objj_method(sel_getUid("windowNumber"), function $CPEvent__windowNumber(self, _cmd)
+},["CPWindow"]), new objj_method(sel_getUid("windowNumber"), function $CPEvent__windowNumber(self, _cmd)
 { with(self)
 {
     return _windowNumber;
 }
-}), new objj_method(sel_getUid("buttonNumber"), function $CPEvent__buttonNumber(self, _cmd)
+},["int"]), new objj_method(sel_getUid("buttonNumber"), function $CPEvent__buttonNumber(self, _cmd)
 { with(self)
 {
     return _buttonNumber;
 }
-}), new objj_method(sel_getUid("clickCount"), function $CPEvent__clickCount(self, _cmd)
+},["int"]), new objj_method(sel_getUid("clickCount"), function $CPEvent__clickCount(self, _cmd)
 { with(self)
 {
     return _clickCount;
 }
-}), new objj_method(sel_getUid("characters"), function $CPEvent__characters(self, _cmd)
+},["int"]), new objj_method(sel_getUid("characters"), function $CPEvent__characters(self, _cmd)
 { with(self)
 {
     return _characters;
 }
-}), new objj_method(sel_getUid("charactersIgnoringModifiers"), function $CPEvent__charactersIgnoringModifiers(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("charactersIgnoringModifiers"), function $CPEvent__charactersIgnoringModifiers(self, _cmd)
 { with(self)
 {
     return _charactersIgnoringModifiers;
 }
-}), new objj_method(sel_getUid("isARepeat"), function $CPEvent__isARepeat(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("isARepeat"), function $CPEvent__isARepeat(self, _cmd)
 { with(self)
 {
     return _isARepeat;
 }
-}), new objj_method(sel_getUid("keyCode"), function $CPEvent__keyCode(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("keyCode"), function $CPEvent__keyCode(self, _cmd)
 { with(self)
 {
     return _keyCode;
 }
-}), new objj_method(sel_getUid("pressure"), function $CPEvent__pressure(self, _cmd)
+},["unsignedshort"]), new objj_method(sel_getUid("pressure"), function $CPEvent__pressure(self, _cmd)
 { with(self)
 {
     return _pressure;
 }
-}), new objj_method(sel_getUid("_DOMEvent"), function $CPEvent___DOMEvent(self, _cmd)
+},["float"]), new objj_method(sel_getUid("_DOMEvent"), function $CPEvent___DOMEvent(self, _cmd)
 { with(self)
 {
     return _DOMEvent;
 }
-}), new objj_method(sel_getUid("deltaX"), function $CPEvent__deltaX(self, _cmd)
+},["DOMEvent"]), new objj_method(sel_getUid("deltaX"), function $CPEvent__deltaX(self, _cmd)
 { with(self)
 {
     return _deltaX;
 }
-}), new objj_method(sel_getUid("deltaY"), function $CPEvent__deltaY(self, _cmd)
+},["float"]), new objj_method(sel_getUid("deltaY"), function $CPEvent__deltaY(self, _cmd)
 { with(self)
 {
     return _deltaY;
 }
-}), new objj_method(sel_getUid("deltaZ"), function $CPEvent__deltaZ(self, _cmd)
+},["float"]), new objj_method(sel_getUid("deltaZ"), function $CPEvent__deltaZ(self, _cmd)
 { with(self)
 {
     return _deltaZ;
 }
-})]);
+},["float"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:"), function $CPEvent__keyEventWithType_location_modifierFlags_timestamp_windowNumber_context_characters_charactersIgnoringModifiers_isARepeat_keyCode_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, characters, unmodCharacters, repeatKey, code)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "_initKeyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:", anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, characters, unmodCharacters, repeatKey, code);
 }
-}), new objj_method(sel_getUid("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:"), function $CPEvent__mouseEventWithType_location_modifierFlags_timestamp_windowNumber_context_eventNumber_clickCount_pressure_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, anEventNumber, aClickCount, aPressure)
+},["CPEvent","CPEventType","CGPoint","unsignedint","CPTimeInterval","int","CPGraphicsContext","CPString","CPString","BOOL","unsignedshort"]), new objj_method(sel_getUid("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:"), function $CPEvent__mouseEventWithType_location_modifierFlags_timestamp_windowNumber_context_eventNumber_clickCount_pressure_(self, _cmd, anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, anEventNumber, aClickCount, aPressure)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "_initMouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:", anEventType, aPoint, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, anEventNumber, aClickCount, aPressure);
 }
-}), new objj_method(sel_getUid("otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:"), function $CPEvent__otherEventWithType_location_modifierFlags_timestamp_windowNumber_context_subtype_data1_data2_(self, _cmd, anEventType, aLocation, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, aSubtype, aData1, aData2)
+},["id","CPEventType","CGPoint","unsigned","CPTimeInterval","int","CPGraphicsContext","int","int","float"]), new objj_method(sel_getUid("otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:"), function $CPEvent__otherEventWithType_location_modifierFlags_timestamp_windowNumber_context_subtype_data1_data2_(self, _cmd, anEventType, aLocation, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, aSubtype, aData1, aData2)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "_initOtherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:", anEventType, aLocation, modifierFlags, aTimestamp, aWindowNumber, aGraphicsContext, aSubtype, aData1, aData2);
 }
-}), new objj_method(sel_getUid("startPeriodicEventsAfterDelay:withPeriod:"), function $CPEvent__startPeriodicEventsAfterDelay_withPeriod_(self, _cmd, aDelay, aPeriod)
+},["CPEvent","CPEventType","CGPoint","unsigned","CPTimeInterval","int","CPGraphicsContext","short","int","int"]), new objj_method(sel_getUid("mouseLocation"), function $CPEvent__mouseLocation(self, _cmd)
+{ with(self)
+{
+    var event = objj_msgSend(CPApp, "currentEvent"),
+        eventWindow = objj_msgSend(event, "window");
+    if (eventWindow)
+        return objj_msgSend(eventWindow, "convertBaseToGlobal:", objj_msgSend(event, "locationInWindow"));
+    return objj_msgSend(event, "locationInWindow");
+}
+},["CGPoint"]), new objj_method(sel_getUid("startPeriodicEventsAfterDelay:withPeriod:"), function $CPEvent__startPeriodicEventsAfterDelay_withPeriod_(self, _cmd, aDelay, aPeriod)
 { with(self)
 {
     _CPEventPeriodicEventPeriod = aPeriod;
     _CPEventPeriodicEventTimer = window.setTimeout(function() { _CPEventPeriodicEventTimer = window.setInterval(_CPEventFirePeriodEvent, aPeriod * 1000.0); }, aDelay * 1000.0);
 }
-}), new objj_method(sel_getUid("stopPeriodicEvents"), function $CPEvent__stopPeriodicEvents(self, _cmd)
+},["void","CPTimeInterval","CPTimeInterval"]), new objj_method(sel_getUid("stopPeriodicEvents"), function $CPEvent__stopPeriodicEvents(self, _cmd)
 { with(self)
 {
     if (_CPEventPeriodicEventTimer === nil)
@@ -247,7 +256,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("keyEventWithType:locat
     window.clearTimeout(_CPEventPeriodicEventTimer);
     _CPEventPeriodicEventTimer = nil;
 }
-})]);
+},["void"])]);
 }
 _CPEventFirePeriodEvent= function()
 {

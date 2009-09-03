@@ -1,4 +1,5 @@
-i;10;CPObject.jc;785;
+i;10;CPObject.jc;816;
+CPPropertyListUnknownFormat=0;
 CPPropertyListOpenStepFormat=kCFPropertyListOpenStepFormat;
 CPPropertyListXMLFormat_v1_0=kCFPropertyListXMLFormat_v1_0;
 CPPropertyListBinaryFormat_v1_0=kCFPropertyListBinaryFormat_v1_0;

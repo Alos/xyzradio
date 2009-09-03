@@ -1,4 +1,4 @@
-I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;8593;
+I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;8911;
 CPScaleProportionally=0;
 CPScaleToFit=1;
 CPScaleNone=2;
@@ -16,6 +16,10 @@ _DOMImageElement=document.createElement("img");
 _DOMImageElement.style.position="absolute";
 _DOMImageElement.style.left="0px";
 _DOMImageElement.style.top="0px";
+if(objj_msgSend(CPPlatform,"supportsDragAndDrop")){
+_DOMImageElement.setAttribute("draggable","true");
+_DOMImageElement.style["-khtml-user-drag"]="element";
+}
 if(_DOMImageElement.CPDOMDisplayContext){
 _DOMImageElement.CPDOMDisplayContext[0]=-1;
 }
@@ -221,6 +225,10 @@ _DOMImageElement.style.position="absolute";
 _DOMImageElement.style.left="0px";
 _DOMImageElement.style.top="0px";
 _DOMImageElement.style.visibility="hidden";
+if(objj_msgSend(CPPlatform,"supportsDragAndDrop")){
+_DOMImageElement.setAttribute("draggable","true");
+_DOMImageElement.style["-khtml-user-drag"]="element";
+}
 _4b=objj_msgSendSuper({receiver:_4b,super_class:objj_getClass("CPControl")},"initWithCoder:",_4d);
 if(_4b){
 _DOMElement.appendChild(_DOMImageElement);

@@ -1,6 +1,6 @@
-I;20;Foundation/CPArray.jI;19;Foundation/CPData.jI;23;Foundation/CPIndexSet.jI;28;Foundation/CPKeyedArchiver.jI;30;Foundation/CPKeyedUnarchiver.jI;15;AppKit/CPView.jc;19233;
+I;20;Foundation/CPArray.jI;19;Foundation/CPData.jI;23;Foundation/CPIndexSet.jI;28;Foundation/CPKeyedArchiver.jI;30;Foundation/CPKeyedUnarchiver.jI;15;AppKit/CPView.jc;20083;
 {var the_class = objj_allocateClassPair(CPView, "CPCollectionView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_content"), new objj_ivar("_items"), new objj_ivar("_itemData"), new objj_ivar("_itemPrototype"), new objj_ivar("_itemForDragging"), new objj_ivar("_cachedItems"), new objj_ivar("_maxNumberOfRows"), new objj_ivar("_maxNumberOfColumns"), new objj_ivar("_minItemSize"), new objj_ivar("_maxItemSize"), new objj_ivar("_tileWidth"), new objj_ivar("_isSelectable"), new objj_ivar("_allowsMultipleSelection"), new objj_ivar("_allowsEmptySelection"), new objj_ivar("_selectionIndexes"), new objj_ivar("_itemSize"), new objj_ivar("_horizontalMargin"), new objj_ivar("_verticalMargin"), new objj_ivar("_numberOfRows"), new objj_ivar("_numberOfColumns"), new objj_ivar("_delegate")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_content"), new objj_ivar("_items"), new objj_ivar("_itemData"), new objj_ivar("_itemPrototype"), new objj_ivar("_itemForDragging"), new objj_ivar("_cachedItems"), new objj_ivar("_maxNumberOfRows"), new objj_ivar("_maxNumberOfColumns"), new objj_ivar("_minItemSize"), new objj_ivar("_maxItemSize"), new objj_ivar("_tileWidth"), new objj_ivar("_isSelectable"), new objj_ivar("_allowsMultipleSelection"), new objj_ivar("_allowsEmptySelection"), new objj_ivar("_selectionIndexes"), new objj_ivar("_itemSize"), new objj_ivar("_horizontalMargin"), new objj_ivar("_verticalMargin"), new objj_ivar("_numberOfRows"), new objj_ivar("_numberOfColumns"), new objj_ivar("_delegate"), new objj_ivar("_mouseDownEvent")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $CPCollectionView__initWithFrame_(self, _cmd, aFrame)
@@ -23,7 +23,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setItemPrototype:"), function $CPCollectionView__setItemPrototype_(self, _cmd, anItem)
+},["id","CGRect"]), new objj_method(sel_getUid("setItemPrototype:"), function $CPCollectionView__setItemPrototype_(self, _cmd, anItem)
 { with(self)
 {
     _itemData = objj_msgSend(CPKeyedArchiver, "archivedDataWithRootObject:", anItem);
@@ -31,12 +31,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _itemPrototype = anItem;
     objj_msgSend(self, "reloadContent");
 }
-}), new objj_method(sel_getUid("itemPrototype"), function $CPCollectionView__itemPrototype(self, _cmd)
+},["void","CPCollectionViewItem"]), new objj_method(sel_getUid("itemPrototype"), function $CPCollectionView__itemPrototype(self, _cmd)
 { with(self)
 {
     return _itemPrototype;
 }
-}), new objj_method(sel_getUid("newItemForRepresentedObject:"), function $CPCollectionView__newItemForRepresentedObject_(self, _cmd, anObject)
+},["CPCollectionViewItem"]), new objj_method(sel_getUid("newItemForRepresentedObject:"), function $CPCollectionView__newItemForRepresentedObject_(self, _cmd, anObject)
 { with(self)
 {
     var item = nil;
@@ -48,17 +48,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(objj_msgSend(item, "view"), "setFrameSize:", _itemSize);
     return item;
 }
-}), new objj_method(sel_getUid("acceptsFirstResponder"), function $CPCollectionView__acceptsFirstResponder(self, _cmd)
+},["CPCollectionViewItem","id"]), new objj_method(sel_getUid("acceptsFirstResponder"), function $CPCollectionView__acceptsFirstResponder(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("isFirstResponder"), function $CPCollectionView__isFirstResponder(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("isFirstResponder"), function $CPCollectionView__isFirstResponder(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "window"), "firstResponder") == self;
 }
-}), new objj_method(sel_getUid("setContent:"), function $CPCollectionView__setContent_(self, _cmd, anArray)
+},["BOOL"]), new objj_method(sel_getUid("setContent:"), function $CPCollectionView__setContent_(self, _cmd, anArray)
 { with(self)
 {
     if (_content == anArray)
@@ -66,17 +66,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _content = anArray;
     objj_msgSend(self, "reloadContent");
 }
-}), new objj_method(sel_getUid("content"), function $CPCollectionView__content(self, _cmd)
+},["void","CPArray"]), new objj_method(sel_getUid("content"), function $CPCollectionView__content(self, _cmd)
 { with(self)
 {
     return _content;
 }
-}), new objj_method(sel_getUid("items"), function $CPCollectionView__items(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("items"), function $CPCollectionView__items(self, _cmd)
 { with(self)
 {
     return _items;
 }
-}), new objj_method(sel_getUid("setSelectable:"), function $CPCollectionView__setSelectable_(self, _cmd, isSelectable)
+},["CPArray"]), new objj_method(sel_getUid("setSelectable:"), function $CPCollectionView__setSelectable_(self, _cmd, isSelectable)
 { with(self)
 {
     if (_isSelectable == isSelectable)
@@ -89,32 +89,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             objj_msgSend(_items[index], "setSelected:", NO);
     }
 }
-}), new objj_method(sel_getUid("isSelected"), function $CPCollectionView__isSelected(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isSelected"), function $CPCollectionView__isSelected(self, _cmd)
 { with(self)
 {
     return _isSelected;
 }
-}), new objj_method(sel_getUid("setAllowsEmptySelection:"), function $CPCollectionView__setAllowsEmptySelection_(self, _cmd, shouldAllowEmptySelection)
+},["BOOL"]), new objj_method(sel_getUid("setAllowsEmptySelection:"), function $CPCollectionView__setAllowsEmptySelection_(self, _cmd, shouldAllowEmptySelection)
 { with(self)
 {
     _allowsEmptySelection = shouldAllowEmptySelection;
 }
-}), new objj_method(sel_getUid("allowsEmptySelection"), function $CPCollectionView__allowsEmptySelection(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("allowsEmptySelection"), function $CPCollectionView__allowsEmptySelection(self, _cmd)
 { with(self)
 {
     return _allowsEmptySelection;
 }
-}), new objj_method(sel_getUid("setAllowsMultipleSelection:"), function $CPCollectionView__setAllowsMultipleSelection_(self, _cmd, shouldAllowMultipleSelection)
+},["BOOL"]), new objj_method(sel_getUid("setAllowsMultipleSelection:"), function $CPCollectionView__setAllowsMultipleSelection_(self, _cmd, shouldAllowMultipleSelection)
 { with(self)
 {
     _allowsMultipleSelection = shouldAllowMultipleSelection;
 }
-}), new objj_method(sel_getUid("allowsMultipleSelection"), function $CPCollectionView__allowsMultipleSelection(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("allowsMultipleSelection"), function $CPCollectionView__allowsMultipleSelection(self, _cmd)
 { with(self)
 {
     return _allowsMultipleSelection;
 }
-}), new objj_method(sel_getUid("setSelectionIndexes:"), function $CPCollectionView__setSelectionIndexes_(self, _cmd, anIndexSet)
+},["BOOL"]), new objj_method(sel_getUid("setSelectionIndexes:"), function $CPCollectionView__setSelectionIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
     if (_selectionIndexes == anIndexSet || !_isSelectable)
@@ -129,12 +129,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("collectionViewDidChangeSelection:")))
         objj_msgSend(_delegate, "collectionViewDidChangeSelection:", self)
 }
-}), new objj_method(sel_getUid("selectionIndexes"), function $CPCollectionView__selectionIndexes(self, _cmd)
+},["void","CPIndexSet"]), new objj_method(sel_getUid("selectionIndexes"), function $CPCollectionView__selectionIndexes(self, _cmd)
 { with(self)
 {
     return _selectionIndexes;
 }
-}), new objj_method(sel_getUid("reloadContent"), function $CPCollectionView__reloadContent(self, _cmd)
+},["CPIndexSet"]), new objj_method(sel_getUid("reloadContent"), function $CPCollectionView__reloadContent(self, _cmd)
 { with(self)
 {
     var count = _items.length;
@@ -155,7 +155,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("tile"), function $CPCollectionView__tile(self, _cmd)
+},["void"]), new objj_method(sel_getUid("tile"), function $CPCollectionView__tile(self, _cmd)
 { with(self)
 {
     var width = CGRectGetWidth(objj_msgSend(self, "bounds"));
@@ -201,12 +201,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setFrameSize:", CGSizeMake(width, y + itemSize.height + _verticalMargin));
     _tileWidth = -1.0;
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPCollectionView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
+},["void"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPCollectionView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("setMaxNumberOfRows:"), function $CPCollectionView__setMaxNumberOfRows_(self, _cmd, aMaxNumberOfRows)
+},["void","CGSize"]), new objj_method(sel_getUid("setMaxNumberOfRows:"), function $CPCollectionView__setMaxNumberOfRows_(self, _cmd, aMaxNumberOfRows)
 { with(self)
 {
     if (_maxNumberOfRows == aMaxNumberOfRows)
@@ -214,12 +214,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _maxNumberOfRows = aMaxNumberOfRows;
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("maxNumberOfRows"), function $CPCollectionView__maxNumberOfRows(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("maxNumberOfRows"), function $CPCollectionView__maxNumberOfRows(self, _cmd)
 { with(self)
 {
     return _maxNumberOfRows;
 }
-}), new objj_method(sel_getUid("setMaxNumberOfColumns:"), function $CPCollectionView__setMaxNumberOfColumns_(self, _cmd, aMaxNumberOfColumns)
+},["unsigned"]), new objj_method(sel_getUid("setMaxNumberOfColumns:"), function $CPCollectionView__setMaxNumberOfColumns_(self, _cmd, aMaxNumberOfColumns)
 { with(self)
 {
     if (_maxNumberOfColumns == aMaxNumberOfColumns)
@@ -227,22 +227,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _maxNumberOfColumns = aMaxNumberOfColumns;
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("maxNumberOfColumns"), function $CPCollectionView__maxNumberOfColumns(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("maxNumberOfColumns"), function $CPCollectionView__maxNumberOfColumns(self, _cmd)
 { with(self)
 {
     return _maxNumberOfColumns;
 }
-}), new objj_method(sel_getUid("numberOfRows"), function $CPCollectionView__numberOfRows(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("numberOfRows"), function $CPCollectionView__numberOfRows(self, _cmd)
 { with(self)
 {
     return _numberOfRows;
 }
-}), new objj_method(sel_getUid("numberOfColumns"), function $CPCollectionView__numberOfColumns(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("numberOfColumns"), function $CPCollectionView__numberOfColumns(self, _cmd)
 { with(self)
 {
     return _numberOfColumns;
 }
-}), new objj_method(sel_getUid("setMinItemSize:"), function $CPCollectionView__setMinItemSize_(self, _cmd, aSize)
+},["unsigned"]), new objj_method(sel_getUid("setMinItemSize:"), function $CPCollectionView__setMinItemSize_(self, _cmd, aSize)
 { with(self)
 {
     if (CGSizeEqualToSize(_minItemSize, aSize))
@@ -250,12 +250,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _minItemSize = CGSizeMakeCopy(aSize);
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("minItemSize"), function $CPCollectionView__minItemSize(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("minItemSize"), function $CPCollectionView__minItemSize(self, _cmd)
 { with(self)
 {
     return _minItemSize;
 }
-}), new objj_method(sel_getUid("setMaxItemSize:"), function $CPCollectionView__setMaxItemSize_(self, _cmd, aSize)
+},["CGSize"]), new objj_method(sel_getUid("setMaxItemSize:"), function $CPCollectionView__setMaxItemSize_(self, _cmd, aSize)
 { with(self)
 {
     if (CGSizeEqualToSize(_maxItemSize, aSize))
@@ -263,20 +263,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _maxItemSize = CGSizeMakeCopy(aSize);
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("maxItemSize"), function $CPCollectionView__maxItemSize(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("maxItemSize"), function $CPCollectionView__maxItemSize(self, _cmd)
 { with(self)
 {
     return _maxItemSize;
 }
-}), new objj_method(sel_getUid("mouseUp:"), function $CPCollectionView__mouseUp_(self, _cmd, anEvent)
+},["CGSize"]), new objj_method(sel_getUid("mouseUp:"), function $CPCollectionView__mouseUp_(self, _cmd, anEvent)
 { with(self)
 {
     if (objj_msgSend(_selectionIndexes, "count") && objj_msgSend(anEvent, "clickCount") == 2 && objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("collectionView:didDoubleClickOnItemAtIndex:")))
         objj_msgSend(_delegate, "collectionView:didDoubleClickOnItemAtIndex:", self, objj_msgSend(_selectionIndexes, "firstIndex"));
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPCollectionView__mouseDown_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseDown:"), function $CPCollectionView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
+    _mouseDownEvent = anEvent;
     var location = objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil),
         row = FLOOR(location.y / (_itemSize.height + _verticalMargin)),
         column = FLOOR(location.x / (_itemSize.width + _horizontalMargin)),
@@ -286,7 +287,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else if (_allowsEmptySelection)
         objj_msgSend(self, "setSelectionIndexes:", objj_msgSend(CPIndexSet, "indexSet"));
 }
-}), new objj_method(sel_getUid("mouseDragged:"), function $CPCollectionView__mouseDragged_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseDragged:"), function $CPCollectionView__mouseDragged_(self, _cmd, anEvent)
 { with(self)
 {
     if (!objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("collectionView:dragTypesForItemsAtIndexes:")))
@@ -301,14 +302,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         frame = objj_msgSend(view, "frame");
     objj_msgSend(view, "setFrameSize:", _itemSize);
     objj_msgSend(view, "setAlphaValue:", 0.7);
-    objj_msgSend(self, "dragView:at:offset:event:pasteboard:source:slideBack:", view, objj_msgSend(objj_msgSend(_items[objj_msgSend(_selectionIndexes, "firstIndex")], "view"), "frame").origin, CGPointMakeZero(), anEvent, nil, self, YES);
+    objj_msgSend(self, "dragView:at:offset:event:pasteboard:source:slideBack:", view, objj_msgSend(objj_msgSend(_items[objj_msgSend(_selectionIndexes, "firstIndex")], "view"), "frame").origin, CGPointMakeZero(), _mouseDownEvent, nil, self, YES);
 }
-}), new objj_method(sel_getUid("pasteboard:provideDataForType:"), function $CPCollectionView__pasteboard_provideDataForType_(self, _cmd, aPasteboard, aType)
+},["void","CPEvent"]), new objj_method(sel_getUid("pasteboard:provideDataForType:"), function $CPCollectionView__pasteboard_provideDataForType_(self, _cmd, aPasteboard, aType)
 { with(self)
 {
     objj_msgSend(aPasteboard, "setData:forType:", objj_msgSend(_delegate, "collectionView:dataForItemsAtIndexes:forType:", self, _selectionIndexes, aType), aType);
 }
-}), new objj_method(sel_getUid("setVerticalMargin:"), function $CPCollectionView__setVerticalMargin_(self, _cmd, aVerticalMargin)
+},["void","CPPasteboard","CPString"]), new objj_method(sel_getUid("setVerticalMargin:"), function $CPCollectionView__setVerticalMargin_(self, _cmd, aVerticalMargin)
 { with(self)
 {
     if (_verticalMargin == aVerticalMargin)
@@ -316,22 +317,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _verticalMargin = aVerticalMargin;
     objj_msgSend(self, "tile");
 }
-}), new objj_method(sel_getUid("verticalMargin"), function $CPCollectionView__verticalMargin(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("verticalMargin"), function $CPCollectionView__verticalMargin(self, _cmd)
 { with(self)
 {
     return _verticalMargin;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPCollectionView__setDelegate_(self, _cmd, aDelegate)
+},["float"]), new objj_method(sel_getUid("setDelegate:"), function $CPCollectionView__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     _delegate = aDelegate;
 }
-}), new objj_method(sel_getUid("delegate"), function $CPCollectionView__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $CPCollectionView__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-})]);
+},["id"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPCollectionViewItem"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_representedObject"), new objj_ivar("_view"), new objj_ivar("_isSelected")]);
@@ -345,22 +346,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setRepresentedObject:")
     _representedObject = anObject;
     objj_msgSend(_view, "setRepresentedObject:", anObject);
 }
-}), new objj_method(sel_getUid("representedObject"), function $CPCollectionViewItem__representedObject(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("representedObject"), function $CPCollectionViewItem__representedObject(self, _cmd)
 { with(self)
 {
     return _representedObject;
 }
-}), new objj_method(sel_getUid("setView:"), function $CPCollectionViewItem__setView_(self, _cmd, aView)
+},["id"]), new objj_method(sel_getUid("setView:"), function $CPCollectionViewItem__setView_(self, _cmd, aView)
 { with(self)
 {
     _view = aView;
 }
-}), new objj_method(sel_getUid("view"), function $CPCollectionViewItem__view(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("view"), function $CPCollectionViewItem__view(self, _cmd)
 { with(self)
 {
     return _view;
 }
-}), new objj_method(sel_getUid("setSelected:"), function $CPCollectionViewItem__setSelected_(self, _cmd, shouldBeSelected)
+},["CPView"]), new objj_method(sel_getUid("setSelected:"), function $CPCollectionViewItem__setSelected_(self, _cmd, shouldBeSelected)
 { with(self)
 {
     if (_isSelected == shouldBeSelected)
@@ -368,17 +369,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setRepresentedObject:")
     _isSelected = shouldBeSelected;
     objj_msgSend(_view, "setSelected:", _isSelected);
 }
-}), new objj_method(sel_getUid("isSelected"), function $CPCollectionViewItem__isSelected(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isSelected"), function $CPCollectionViewItem__isSelected(self, _cmd)
 { with(self)
 {
     return _isSelected;
 }
-}), new objj_method(sel_getUid("collectionView"), function $CPCollectionViewItem__collectionView(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("collectionView"), function $CPCollectionViewItem__collectionView(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_view, "superview");
 }
-})]);
+},["CPCollectionView"])]);
 }
 var CPCollectionViewMinItemSizeKey = "CPCollectionViewMinItemSizeKey",
     CPCollectionViewMaxItemSizeKey = "CPCollectionViewMaxItemSizeKey",
@@ -406,7 +407,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPCollectionView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPCollectionView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
@@ -416,7 +417,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
       objj_msgSend(aCoder, "encodeSize:forKey:", _maxItemSize, CPCollectionViewMaxItemSizeKey);
     objj_msgSend(aCoder, "encodeFloat:forKey:", _verticalMargin, CPCollectionViewVerticalMarginKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 var CPCollectionViewItemViewKey = "CPCollectionViewItemViewKey";
 {
@@ -426,7 +427,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 { with(self)
 {
 }
-})]);
+},["id"])]);
 }
 var CPCollectionViewItemViewKey = "CPCollectionViewItemViewKey";
 {
@@ -440,11 +441,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _view = objj_msgSend(aCoder, "decodeObjectForKey:", CPCollectionViewItemViewKey);
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPCollectionViewItem__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPCollectionViewItem__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _view, CPCollectionViewItemViewKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

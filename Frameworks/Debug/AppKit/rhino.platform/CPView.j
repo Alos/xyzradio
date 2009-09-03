@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;20;CPDOMDisplayServer.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.jc;58920;
+I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;20;CPDOMDisplayServer.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.jc;61331;
 CPViewNotSizable = 0;
 CPViewMinXMargin = 1;
 CPViewWidthSizable = 2;
@@ -19,7 +19,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 {
     return objj_msgSend(self, "initWithFrame:", CGRectMakeZero());
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $CPView__initWithFrame_(self, _cmd, aFrame)
+},["id"]), new objj_method(sel_getUid("initWithFrame:"), function $CPView__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPResponder") }, "init");
@@ -44,27 +44,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     }
     return self;
 }
-}), new objj_method(sel_getUid("superview"), function $CPView__superview(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("superview"), function $CPView__superview(self, _cmd)
 { with(self)
 {
     return _superview;
 }
-}), new objj_method(sel_getUid("subviews"), function $CPView__subviews(self, _cmd)
+},["CPView"]), new objj_method(sel_getUid("subviews"), function $CPView__subviews(self, _cmd)
 { with(self)
 {
     return _subviews;
 }
-}), new objj_method(sel_getUid("window"), function $CPView__window(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("window"), function $CPView__window(self, _cmd)
 { with(self)
 {
     return _window;
 }
-}), new objj_method(sel_getUid("addSubview:"), function $CPView__addSubview_(self, _cmd, aSubview)
+},["CPWindow"]), new objj_method(sel_getUid("addSubview:"), function $CPView__addSubview_(self, _cmd, aSubview)
 { with(self)
 {
     objj_msgSend(self, "_insertSubview:atIndex:", aSubview, CPNotFound);
 }
-}), new objj_method(sel_getUid("addSubview:positioned:relativeTo:"), function $CPView__addSubview_positioned_relativeTo_(self, _cmd, aSubview, anOrderingMode, anotherView)
+},["void","CPView"]), new objj_method(sel_getUid("addSubview:positioned:relativeTo:"), function $CPView__addSubview_positioned_relativeTo_(self, _cmd, aSubview, anOrderingMode, anotherView)
 { with(self)
 {
     var index = anotherView ? objj_msgSend(_subviews, "indexOfObjectIdenticalTo:", anotherView) : CPNotFound;
@@ -74,7 +74,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         ++index;
     objj_msgSend(self, "_insertSubview:atIndex:", aSubview, index);
 }
-}), new objj_method(sel_getUid("_insertSubview:atIndex:"), function $CPView___insertSubview_atIndex_(self, _cmd, aSubview, anIndex)
+},["void","CPView","CPWindowOrderingMode","CPView"]), new objj_method(sel_getUid("_insertSubview:atIndex:"), function $CPView___insertSubview_atIndex_(self, _cmd, aSubview, anIndex)
 { with(self)
 {
     var count = _subviews.length;
@@ -108,11 +108,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(aSubview, "viewDidMoveToSuperview");
     objj_msgSend(self, "didAddSubview:", aSubview);
 }
-}), new objj_method(sel_getUid("didAddSubview:"), function $CPView__didAddSubview_(self, _cmd, aSubview)
+},["void","CPView","int"]), new objj_method(sel_getUid("didAddSubview:"), function $CPView__didAddSubview_(self, _cmd, aSubview)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("removeFromSuperview"), function $CPView__removeFromSuperview(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("removeFromSuperview"), function $CPView__removeFromSuperview(self, _cmd)
 { with(self)
 {
     if (!_superview)
@@ -123,7 +123,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     _superview = nil;
     objj_msgSend(self, "_setWindow:", nil);
 }
-}), new objj_method(sel_getUid("replaceSubview:with:"), function $CPView__replaceSubview_with_(self, _cmd, aSubview, aView)
+},["void"]), new objj_method(sel_getUid("replaceSubview:with:"), function $CPView__replaceSubview_with_(self, _cmd, aSubview, aView)
 { with(self)
 {
     if (aSubview._superview != self)
@@ -132,7 +132,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(aSubview, "removeFromSuperview");
     objj_msgSend(self, "_insertSubview:atIndex:", aView, index);
 }
-}), new objj_method(sel_getUid("_setWindow:"), function $CPView___setWindow_(self, _cmd, aWindow)
+},["void","CPView","CPView"]), new objj_method(sel_getUid("_setWindow:"), function $CPView___setWindow_(self, _cmd, aWindow)
 { with(self)
 {
     if (_window === aWindow)
@@ -153,7 +153,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(self, "viewDidMoveToWindow");
     objj_msgSend(objj_msgSend(self, "window"), "_dirtyKeyViewLoop");
 }
-}), new objj_method(sel_getUid("isDescendantOf:"), function $CPView__isDescendantOf_(self, _cmd, aView)
+},["void","CPWindow"]), new objj_method(sel_getUid("isDescendantOf:"), function $CPView__isDescendantOf_(self, _cmd, aView)
 { with(self)
 {
     var view = self;
@@ -164,28 +164,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     } while(view = objj_msgSend(view, "superview"))
     return NO;
 }
-}), new objj_method(sel_getUid("viewDidMoveToSuperview"), function $CPView__viewDidMoveToSuperview(self, _cmd)
+},["BOOL","CPView"]), new objj_method(sel_getUid("viewDidMoveToSuperview"), function $CPView__viewDidMoveToSuperview(self, _cmd)
 { with(self)
 {
         objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("viewDidMoveToWindow"), function $CPView__viewDidMoveToWindow(self, _cmd)
+},["void"]), new objj_method(sel_getUid("viewDidMoveToWindow"), function $CPView__viewDidMoveToWindow(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("viewWillMoveToSuperview:"), function $CPView__viewWillMoveToSuperview_(self, _cmd, aView)
+},["void"]), new objj_method(sel_getUid("viewWillMoveToSuperview:"), function $CPView__viewWillMoveToSuperview_(self, _cmd, aView)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("viewWillMoveToWindow:"), function $CPView__viewWillMoveToWindow_(self, _cmd, aWindow)
+},["void","CPView"]), new objj_method(sel_getUid("viewWillMoveToWindow:"), function $CPView__viewWillMoveToWindow_(self, _cmd, aWindow)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("willRemoveSubview:"), function $CPView__willRemoveSubview_(self, _cmd, aView)
+},["void","CPWindow"]), new objj_method(sel_getUid("willRemoveSubview:"), function $CPView__willRemoveSubview_(self, _cmd, aView)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("enclosingMenuItem"), function $CPView__enclosingMenuItem(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("enclosingMenuItem"), function $CPView__enclosingMenuItem(self, _cmd)
 { with(self)
 {
     var view = self;
@@ -195,17 +195,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         return view._menuItem;
     return nil;
 }
-}), new objj_method(sel_getUid("setTag:"), function $CPView__setTag_(self, _cmd, aTag)
+},["CPMenuItem"]), new objj_method(sel_getUid("setTag:"), function $CPView__setTag_(self, _cmd, aTag)
 { with(self)
 {
     _tag = aTag;
 }
-}), new objj_method(sel_getUid("tag"), function $CPView__tag(self, _cmd)
+},["void","CPInteger"]), new objj_method(sel_getUid("tag"), function $CPView__tag(self, _cmd)
 { with(self)
 {
     return _tag;
 }
-}), new objj_method(sel_getUid("viewWithTag:"), function $CPView__viewWithTag_(self, _cmd, aTag)
+},["CPInteger"]), new objj_method(sel_getUid("viewWithTag:"), function $CPView__viewWithTag_(self, _cmd, aTag)
 { with(self)
 {
     if (objj_msgSend(self, "tag") === aTag)
@@ -220,12 +220,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     }
     return nil;
 }
-}), new objj_method(sel_getUid("isFlipped"), function $CPView__isFlipped(self, _cmd)
+},["void","CPInteger"]), new objj_method(sel_getUid("isFlipped"), function $CPView__isFlipped(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("setFrame:"), function $CPView__setFrame_(self, _cmd, aFrame)
+},["BOOL"]), new objj_method(sel_getUid("setFrame:"), function $CPView__setFrame_(self, _cmd, aFrame)
 { with(self)
 {
     if (((_frame.origin.x == aFrame.origin.x && _frame.origin.y == aFrame.origin.y) && (_frame.size.width == aFrame.size.width && _frame.size.height == aFrame.size.height)))
@@ -237,32 +237,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsFrameChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewFrameDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("frame"), function $CPView__frame(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("frame"), function $CPView__frame(self, _cmd)
 { with(self)
 {
     return { origin: { x:_frame.origin.x, y:_frame.origin.y }, size: { width:_frame.size.width, height:_frame.size.height } };
 }
-}), new objj_method(sel_getUid("frameOrigin"), function $CPView__frameOrigin(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("frameOrigin"), function $CPView__frameOrigin(self, _cmd)
 { with(self)
 {
     return { x:_frame.origin.x, y:_frame.origin.y };
 }
-}), new objj_method(sel_getUid("frameSize"), function $CPView__frameSize(self, _cmd)
+},["CGPoint"]), new objj_method(sel_getUid("frameSize"), function $CPView__frameSize(self, _cmd)
 { with(self)
 {
     return { width:_frame.size.width, height:_frame.size.height };
 }
-}), new objj_method(sel_getUid("setCenter:"), function $CPView__setCenter_(self, _cmd, aPoint)
+},["CGSize"]), new objj_method(sel_getUid("setCenter:"), function $CPView__setCenter_(self, _cmd, aPoint)
 { with(self)
 {
     objj_msgSend(self, "setFrameOrigin:", CGPointMake(aPoint.x - _frame.size.width / 2.0, aPoint.y - _frame.size.height / 2.0));
 }
-}), new objj_method(sel_getUid("center"), function $CPView__center(self, _cmd)
+},["void","CGPoint"]), new objj_method(sel_getUid("center"), function $CPView__center(self, _cmd)
 { with(self)
 {
     return CGPointMake(_frame.size.width / 2.0 + _frame.origin.x, _frame.size.height / 2.0 + _frame.origin.y);
 }
-}), new objj_method(sel_getUid("setFrameOrigin:"), function $CPView__setFrameOrigin_(self, _cmd, aPoint)
+},["CGPoint"]), new objj_method(sel_getUid("setFrameOrigin:"), function $CPView__setFrameOrigin_(self, _cmd, aPoint)
 { with(self)
 {
     var origin = _frame.origin;
@@ -273,7 +273,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsFrameChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewFrameDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $CPView__setFrameSize_(self, _cmd, aSize)
+},["void","CGPoint"]), new objj_method(sel_getUid("setFrameSize:"), function $CPView__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     var size = _frame.size;
@@ -296,7 +296,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsFrameChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewFrameDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("setBounds:"), function $CPView__setBounds_(self, _cmd, bounds)
+},["void","CGSize"]), new objj_method(sel_getUid("setBounds:"), function $CPView__setBounds_(self, _cmd, bounds)
 { with(self)
 {
     if (((_bounds.origin.x == bounds.origin.x && _bounds.origin.y == bounds.origin.y) && (_bounds.size.width == bounds.size.width && _bounds.size.height == bounds.size.height)))
@@ -308,12 +308,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewBoundsDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("bounds"), function $CPView__bounds(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("bounds"), function $CPView__bounds(self, _cmd)
 { with(self)
 {
     return { origin: { x:_bounds.origin.x, y:_bounds.origin.y }, size: { width:_bounds.size.width, height:_bounds.size.height } };
 }
-}), new objj_method(sel_getUid("setBoundsOrigin:"), function $CPView__setBoundsOrigin_(self, _cmd, aPoint)
+},["CGRect"]), new objj_method(sel_getUid("setBoundsOrigin:"), function $CPView__setBoundsOrigin_(self, _cmd, aPoint)
 { with(self)
 {
     var origin = _bounds.origin;
@@ -334,7 +334,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsBoundsChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewBoundsDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("setBoundsSize:"), function $CPView__setBoundsSize_(self, _cmd, aSize)
+},["void","CGPoint"]), new objj_method(sel_getUid("setBoundsSize:"), function $CPView__setBoundsSize_(self, _cmd, aSize)
 { with(self)
 {
     var size = _bounds.size;
@@ -358,7 +358,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsBoundsChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewBoundsDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("resizeWithOldSuperviewSize:"), function $CPView__resizeWithOldSuperviewSize_(self, _cmd, aSize)
+},["void","CGSize"]), new objj_method(sel_getUid("resizeWithOldSuperviewSize:"), function $CPView__resizeWithOldSuperviewSize_(self, _cmd, aSize)
 { with(self)
 {
     var mask = objj_msgSend(self, "autoresizingMask");
@@ -380,39 +380,39 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         newFrame.size.height += dY;
     objj_msgSend(self, "setFrame:", newFrame);
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
+},["void","CGSize"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
 { with(self)
 {
     var count = _subviews.length;
     while (count--)
         objj_msgSend(_subviews[count], "resizeWithOldSuperviewSize:", aSize);
 }
-}), new objj_method(sel_getUid("setAutoresizesSubviews:"), function $CPView__setAutoresizesSubviews_(self, _cmd, aFlag)
+},["void","CGSize"]), new objj_method(sel_getUid("setAutoresizesSubviews:"), function $CPView__setAutoresizesSubviews_(self, _cmd, aFlag)
 { with(self)
 {
     _autoresizesSubviews = !!aFlag;
 }
-}), new objj_method(sel_getUid("autoresizesSubviews"), function $CPView__autoresizesSubviews(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("autoresizesSubviews"), function $CPView__autoresizesSubviews(self, _cmd)
 { with(self)
 {
     return _autoresizesSubviews;
 }
-}), new objj_method(sel_getUid("setAutoresizingMask:"), function $CPView__setAutoresizingMask_(self, _cmd, aMask)
+},["BOOL"]), new objj_method(sel_getUid("setAutoresizingMask:"), function $CPView__setAutoresizingMask_(self, _cmd, aMask)
 { with(self)
 {
     _autoresizingMask = aMask;
 }
-}), new objj_method(sel_getUid("autoresizingMask"), function $CPView__autoresizingMask(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("autoresizingMask"), function $CPView__autoresizingMask(self, _cmd)
 { with(self)
 {
     return _autoresizingMask;
 }
-}), new objj_method(sel_getUid("enterFullScreenMode"), function $CPView__enterFullScreenMode(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("enterFullScreenMode"), function $CPView__enterFullScreenMode(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "enterFullScreenMode:withOptions:", nil, nil);
 }
-}), new objj_method(sel_getUid("enterFullScreenMode:withOptions:"), function $CPView__enterFullScreenMode_withOptions_(self, _cmd, aScreen, options)
+},["BOOL"]), new objj_method(sel_getUid("enterFullScreenMode:withOptions:"), function $CPView__enterFullScreenMode_withOptions_(self, _cmd, aScreen, options)
 { with(self)
 {
     _fullScreenModeState = _CPViewFullScreenModeStateMake(self);
@@ -429,12 +429,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     _isInFullScreenMode = YES;
     return YES;
 }
-}), new objj_method(sel_getUid("exitFullScreenMode"), function $CPView__exitFullScreenMode(self, _cmd)
+},["BOOL","CPScreen","CPDictionary"]), new objj_method(sel_getUid("exitFullScreenMode"), function $CPView__exitFullScreenMode(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "exitFullScreenModeWithOptions:", nil);
 }
-}), new objj_method(sel_getUid("exitFullScreenModeWithOptions:"), function $CPView__exitFullScreenModeWithOptions_(self, _cmd, options)
+},["void"]), new objj_method(sel_getUid("exitFullScreenModeWithOptions:"), function $CPView__exitFullScreenModeWithOptions_(self, _cmd, options)
 { with(self)
 {
     if (!_isInFullScreenMode)
@@ -445,12 +445,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(_fullScreenModeState.superview, "_insertSubview:atIndex:", self, _fullScreenModeState.index);
     objj_msgSend(objj_msgSend(self, "window"), "orderOut:", self);
 }
-}), new objj_method(sel_getUid("isInFullScreenMode"), function $CPView__isInFullScreenMode(self, _cmd)
+},["void","CPDictionary"]), new objj_method(sel_getUid("isInFullScreenMode"), function $CPView__isInFullScreenMode(self, _cmd)
 { with(self)
 {
     return _isInFullScreenMode;
 }
-}), new objj_method(sel_getUid("setHidden:"), function $CPView__setHidden_(self, _cmd, aFlag)
+},["BOOL"]), new objj_method(sel_getUid("setHidden:"), function $CPView__setHidden_(self, _cmd, aFlag)
 { with(self)
 {
     aFlag = !!aFlag;
@@ -474,24 +474,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         }
     }
 }
-}), new objj_method(sel_getUid("isHidden"), function $CPView__isHidden(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isHidden"), function $CPView__isHidden(self, _cmd)
 { with(self)
 {
     return _isHidden;
 }
-}), new objj_method(sel_getUid("setAlphaValue:"), function $CPView__setAlphaValue_(self, _cmd, anAlphaValue)
+},["BOOL"]), new objj_method(sel_getUid("setAlphaValue:"), function $CPView__setAlphaValue_(self, _cmd, anAlphaValue)
 { with(self)
 {
     if (_opacity == anAlphaValue)
         return;
     _opacity = anAlphaValue;
 }
-}), new objj_method(sel_getUid("alphaValue"), function $CPView__alphaValue(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("alphaValue"), function $CPView__alphaValue(self, _cmd)
 { with(self)
 {
     return _opacity;
 }
-}), new objj_method(sel_getUid("isHiddenOrHasHiddenAncestor"), function $CPView__isHiddenOrHasHiddenAncestor(self, _cmd)
+},["float"]), new objj_method(sel_getUid("isHiddenOrHasHiddenAncestor"), function $CPView__isHiddenOrHasHiddenAncestor(self, _cmd)
 { with(self)
 {
     var view = self;
@@ -499,22 +499,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         view = objj_msgSend(view, "superview");
     return view !== nil;
 }
-}), new objj_method(sel_getUid("acceptsFirstMouse:"), function $CPView__acceptsFirstMouse_(self, _cmd, anEvent)
+},["BOOL"]), new objj_method(sel_getUid("acceptsFirstMouse:"), function $CPView__acceptsFirstMouse_(self, _cmd, anEvent)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("hitTests"), function $CPView__hitTests(self, _cmd)
+},["BOOL","CPEvent"]), new objj_method(sel_getUid("hitTests"), function $CPView__hitTests(self, _cmd)
 { with(self)
 {
     return _hitTests;
 }
-}), new objj_method(sel_getUid("setHitTests:"), function $CPView__setHitTests_(self, _cmd, shouldHitTest)
+},["BOOL"]), new objj_method(sel_getUid("setHitTests:"), function $CPView__setHitTests_(self, _cmd, shouldHitTest)
 { with(self)
 {
     _hitTests = !!shouldHitTest;
 }
-}), new objj_method(sel_getUid("hitTest:"), function $CPView__hitTest_(self, _cmd, aPoint)
+},["void","BOOL"]), new objj_method(sel_getUid("hitTest:"), function $CPView__hitTest_(self, _cmd, aPoint)
 { with(self)
 {
     if(_isHidden || !_hitTests || !CPRectContainsPoint(_frame, aPoint))
@@ -529,60 +529,60 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
             return view;
     return self;
 }
-}), new objj_method(sel_getUid("mouseDownCanMoveWindow"), function $CPView__mouseDownCanMoveWindow(self, _cmd)
+},["CPView","CPPoint"]), new objj_method(sel_getUid("mouseDownCanMoveWindow"), function $CPView__mouseDownCanMoveWindow(self, _cmd)
 { with(self)
 {
     return !objj_msgSend(self, "isOpaque");
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPView__mouseDown_(self, _cmd, anEvent)
+},["BOOL"]), new objj_method(sel_getUid("mouseDown:"), function $CPView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     if (objj_msgSend(self, "mouseDownCanMoveWindow"))
         objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPResponder") }, "mouseDown:", anEvent);
 }
-}), new objj_method(sel_getUid("setBackgroundColor:"), function $CPView__setBackgroundColor_(self, _cmd, aColor)
+},["void","CPEvent"]), new objj_method(sel_getUid("setBackgroundColor:"), function $CPView__setBackgroundColor_(self, _cmd, aColor)
 { with(self)
 {
     if (_backgroundColor == aColor)
         return;
     _backgroundColor = aColor;
 }
-}), new objj_method(sel_getUid("backgroundColor"), function $CPView__backgroundColor(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("backgroundColor"), function $CPView__backgroundColor(self, _cmd)
 { with(self)
 {
     return _backgroundColor;
 }
-}), new objj_method(sel_getUid("convertPoint:fromView:"), function $CPView__convertPoint_fromView_(self, _cmd, aPoint, aView)
+},["CPColor"]), new objj_method(sel_getUid("convertPoint:fromView:"), function $CPView__convertPoint_fromView_(self, _cmd, aPoint, aView)
 { with(self)
 {
     return CGPointApplyAffineTransform(aPoint, _CPViewGetTransform(aView, self));
 }
-}), new objj_method(sel_getUid("convertPoint:toView:"), function $CPView__convertPoint_toView_(self, _cmd, aPoint, aView)
+},["CGPoint","CGPoint","CPView"]), new objj_method(sel_getUid("convertPoint:toView:"), function $CPView__convertPoint_toView_(self, _cmd, aPoint, aView)
 { with(self)
 {
     return CGPointApplyAffineTransform(aPoint, _CPViewGetTransform(self, aView));
 }
-}), new objj_method(sel_getUid("convertSize:fromView:"), function $CPView__convertSize_fromView_(self, _cmd, aSize, aView)
+},["CGPoint","CGPoint","CPView"]), new objj_method(sel_getUid("convertSize:fromView:"), function $CPView__convertSize_fromView_(self, _cmd, aSize, aView)
 { with(self)
 {
     return CGSizeApplyAffineTransform(aSize, _CPViewGetTransform(aView, self));
 }
-}), new objj_method(sel_getUid("convertSize:toView:"), function $CPView__convertSize_toView_(self, _cmd, aSize, aView)
+},["CGSize","CGSize","CPView"]), new objj_method(sel_getUid("convertSize:toView:"), function $CPView__convertSize_toView_(self, _cmd, aSize, aView)
 { with(self)
 {
     return CGSizeApplyAffineTransform(aSize, _CPViewGetTransform(self, aView));
 }
-}), new objj_method(sel_getUid("convertRect:fromView:"), function $CPView__convertRect_fromView_(self, _cmd, aRect, aView)
+},["CGSize","CGSize","CPView"]), new objj_method(sel_getUid("convertRect:fromView:"), function $CPView__convertRect_fromView_(self, _cmd, aRect, aView)
 { with(self)
 {
     return CGRectApplyAffineTransform(aRect, _CPViewGetTransform(aView, self));
 }
-}), new objj_method(sel_getUid("convertRect:toView:"), function $CPView__convertRect_toView_(self, _cmd, aRect, aView)
+},["CGRect","CGRect","CPView"]), new objj_method(sel_getUid("convertRect:toView:"), function $CPView__convertRect_toView_(self, _cmd, aRect, aView)
 { with(self)
 {
     return CGRectApplyAffineTransform(aRect, _CPViewGetTransform(self, aView));
 }
-}), new objj_method(sel_getUid("setPostsFrameChangedNotifications:"), function $CPView__setPostsFrameChangedNotifications_(self, _cmd, shouldPostFrameChangedNotifications)
+},["CGRect","CGRect","CPView"]), new objj_method(sel_getUid("setPostsFrameChangedNotifications:"), function $CPView__setPostsFrameChangedNotifications_(self, _cmd, shouldPostFrameChangedNotifications)
 { with(self)
 {
     shouldPostFrameChangedNotifications = !!shouldPostFrameChangedNotifications;
@@ -592,12 +592,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsFrameChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewFrameDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("postsFrameChangedNotifications"), function $CPView__postsFrameChangedNotifications(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("postsFrameChangedNotifications"), function $CPView__postsFrameChangedNotifications(self, _cmd)
 { with(self)
 {
     return _postsFrameChangedNotifications;
 }
-}), new objj_method(sel_getUid("setPostsBoundsChangedNotifications:"), function $CPView__setPostsBoundsChangedNotifications_(self, _cmd, shouldPostBoundsChangedNotifications)
+},["BOOL"]), new objj_method(sel_getUid("setPostsBoundsChangedNotifications:"), function $CPView__setPostsBoundsChangedNotifications_(self, _cmd, shouldPostBoundsChangedNotifications)
 { with(self)
 {
     shouldPostBoundsChangedNotifications = !!shouldPostBoundsChangedNotifications;
@@ -607,22 +607,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (_postsBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewBoundsDidChangeNotification, self);
 }
-}), new objj_method(sel_getUid("postsBoundsChangedNotifications"), function $CPView__postsBoundsChangedNotifications(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("postsBoundsChangedNotifications"), function $CPView__postsBoundsChangedNotifications(self, _cmd)
 { with(self)
 {
     return _postsBoundsChangedNotifications;
 }
-}), new objj_method(sel_getUid("dragImage:at:offset:event:pasteboard:source:slideBack:"), function $CPView__dragImage_at_offset_event_pasteboard_source_slideBack_(self, _cmd, anImage, aLocation, mouseOffset, anEvent, aPasteboard, aSourceObject, slideBack)
+},["BOOL"]), new objj_method(sel_getUid("dragImage:at:offset:event:pasteboard:source:slideBack:"), function $CPView__dragImage_at_offset_event_pasteboard_source_slideBack_(self, _cmd, anImage, aLocation, mouseOffset, anEvent, aPasteboard, aSourceObject, slideBack)
 { with(self)
 {
     objj_msgSend(_window, "dragImage:at:offset:event:pasteboard:source:slideBack:", anImage, objj_msgSend(self, "convertPoint:toView:", aLocation, nil), mouseOffset, anEvent, aPasteboard, aSourceObject, slideBack);
 }
-}), new objj_method(sel_getUid("dragView:at:offset:event:pasteboard:source:slideBack:"), function $CPView__dragView_at_offset_event_pasteboard_source_slideBack_(self, _cmd, aView, aLocation, mouseOffset, anEvent, aPasteboard, aSourceObject, slideBack)
+},["void","CPImage","CGPoint","CGSize","CPEvent","CPPasteboard","id","BOOL"]), new objj_method(sel_getUid("dragView:at:offset:event:pasteboard:source:slideBack:"), function $CPView__dragView_at_offset_event_pasteboard_source_slideBack_(self, _cmd, aView, aLocation, mouseOffset, anEvent, aPasteboard, aSourceObject, slideBack)
 { with(self)
 {
     objj_msgSend(_window, "dragView:at:offset:event:pasteboard:source:slideBack:", aView, objj_msgSend(self, "convertPoint:toView:", aLocation, nil), mouseOffset, anEvent, aPasteboard, aSourceObject, slideBack);
 }
-}), new objj_method(sel_getUid("registerForDraggedTypes:"), function $CPView__registerForDraggedTypes_(self, _cmd, pasteboardTypes)
+},["void","CPView","CPPoint","CPSize","CPEvent","CPPasteboard","id","BOOL"]), new objj_method(sel_getUid("registerForDraggedTypes:"), function $CPView__registerForDraggedTypes_(self, _cmd, pasteboardTypes)
 { with(self)
 {
     if (!pasteboardTypes || !objj_msgSend(pasteboardTypes, "count"))
@@ -633,31 +633,31 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(theWindow, "_noteRegisteredDraggedTypes:", _registeredDraggedTypes);
     _registeredDraggedTypesArray = nil;
 }
-}), new objj_method(sel_getUid("registeredDraggedTypes"), function $CPView__registeredDraggedTypes(self, _cmd)
+},["void","CPArray"]), new objj_method(sel_getUid("registeredDraggedTypes"), function $CPView__registeredDraggedTypes(self, _cmd)
 { with(self)
 {
     if (!_registeredDraggedTypesArray)
         _registeredDraggedTypesArray = objj_msgSend(_registeredDraggedTypes, "allObjects");
     return _registeredDraggedTypesArray;
 }
-}), new objj_method(sel_getUid("unregisterDraggedTypes"), function $CPView__unregisterDraggedTypes(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("unregisterDraggedTypes"), function $CPView__unregisterDraggedTypes(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(self, "window"), "_noteUnregisteredDraggedTypes:", _registeredDraggedTypes);
     _registeredDraggedTypes = objj_msgSend(CPSet, "set");
     _registeredDraggedTypesArray = [];
 }
-}), new objj_method(sel_getUid("drawRect:"), function $CPView__drawRect_(self, _cmd, aRect)
+},["void"]), new objj_method(sel_getUid("drawRect:"), function $CPView__drawRect_(self, _cmd, aRect)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("setNeedsDisplay:"), function $CPView__setNeedsDisplay_(self, _cmd, aFlag)
+},["void","CPRect"]), new objj_method(sel_getUid("setNeedsDisplay:"), function $CPView__setNeedsDisplay_(self, _cmd, aFlag)
 { with(self)
 {
     if (aFlag)
         objj_msgSend(self, "setNeedsDisplayInRect:", objj_msgSend(self, "bounds"));
 }
-}), new objj_method(sel_getUid("setNeedsDisplayInRect:"), function $CPView__setNeedsDisplayInRect_(self, _cmd, aRect)
+},["void","BOOL"]), new objj_method(sel_getUid("setNeedsDisplayInRect:"), function $CPView__setNeedsDisplayInRect_(self, _cmd, aRect)
 { with(self)
 {
     if ((aRect.size.width <= 0.0 || aRect.size.height <= 0.0))
@@ -667,36 +667,36 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     else
         _dirtyRect = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
 }
-}), new objj_method(sel_getUid("needsDisplay"), function $CPView__needsDisplay(self, _cmd)
+},["void","CPRect"]), new objj_method(sel_getUid("needsDisplay"), function $CPView__needsDisplay(self, _cmd)
 { with(self)
 {
     return _dirtyRect && !(_dirtyRect.size.width <= 0.0 || _dirtyRect.size.height <= 0.0);
 }
-}), new objj_method(sel_getUid("displayIfNeeded"), function $CPView__displayIfNeeded(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("displayIfNeeded"), function $CPView__displayIfNeeded(self, _cmd)
 { with(self)
 {
     if (objj_msgSend(self, "needsDisplay"))
         objj_msgSend(self, "displayRect:", _dirtyRect);
 }
-}), new objj_method(sel_getUid("display"), function $CPView__display(self, _cmd)
+},["void"]), new objj_method(sel_getUid("display"), function $CPView__display(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "displayRect:", objj_msgSend(self, "visibleRect"));
 }
-}), new objj_method(sel_getUid("displayIfNeededInRect:"), function $CPView__displayIfNeededInRect_(self, _cmd, aRect)
+},["void"]), new objj_method(sel_getUid("displayIfNeededInRect:"), function $CPView__displayIfNeededInRect_(self, _cmd, aRect)
 { with(self)
 {
     if (objj_msgSend(self, "needsDisplay"))
         objj_msgSend(self, "displayRect:", aRect);
 }
-}), new objj_method(sel_getUid("displayRect:"), function $CPView__displayRect_(self, _cmd, aRect)
+},["void","CGRect"]), new objj_method(sel_getUid("displayRect:"), function $CPView__displayRect_(self, _cmd, aRect)
 { with(self)
 {
     objj_msgSend(self, "viewWillDraw");
     objj_msgSend(self, "displayRectIgnoringOpacity:inContext:", aRect, nil);
     _dirtyRect = NULL;
 }
-}), new objj_method(sel_getUid("displayRectIgnoringOpacity:inContext:"), function $CPView__displayRectIgnoringOpacity_inContext_(self, _cmd, aRect, aGraphicsContext)
+},["void","CPRect"]), new objj_method(sel_getUid("displayRectIgnoringOpacity:inContext:"), function $CPView__displayRectIgnoringOpacity_inContext_(self, _cmd, aRect, aGraphicsContext)
 { with(self)
 {
     objj_msgSend(self, "lockFocus");
@@ -704,11 +704,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(self, "drawRect:", aRect);
     objj_msgSend(self, "unlockFocus");
 }
-}), new objj_method(sel_getUid("viewWillDraw"), function $CPView__viewWillDraw(self, _cmd)
+},["void","CGRect","CPGraphicsContext"]), new objj_method(sel_getUid("viewWillDraw"), function $CPView__viewWillDraw(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("lockFocus"), function $CPView__lockFocus(self, _cmd)
+},["void"]), new objj_method(sel_getUid("lockFocus"), function $CPView__lockFocus(self, _cmd)
 { with(self)
 {
     if (!_graphicsContext)
@@ -731,18 +731,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(CPGraphicsContext, "setCurrentContext:", _graphicsContext);
     CGContextSaveGState(objj_msgSend(_graphicsContext, "graphicsPort"));
 }
-}), new objj_method(sel_getUid("unlockFocus"), function $CPView__unlockFocus(self, _cmd)
+},["void"]), new objj_method(sel_getUid("unlockFocus"), function $CPView__unlockFocus(self, _cmd)
 { with(self)
 {
     CGContextRestoreGState(objj_msgSend(_graphicsContext, "graphicsPort"));
     objj_msgSend(CPGraphicsContext, "setCurrentContext:", nil);
 }
-}), new objj_method(sel_getUid("setNeedsLayout"), function $CPView__setNeedsLayout(self, _cmd)
+},["void"]), new objj_method(sel_getUid("setNeedsLayout"), function $CPView__setNeedsLayout(self, _cmd)
 { with(self)
 {
     _needsLayout = YES;
 }
-}), new objj_method(sel_getUid("layoutIfNeeded"), function $CPView__layoutIfNeeded(self, _cmd)
+},["void"]), new objj_method(sel_getUid("layoutIfNeeded"), function $CPView__layoutIfNeeded(self, _cmd)
 { with(self)
 {
     if (_needsLayout)
@@ -751,23 +751,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         objj_msgSend(self, "layoutSubviews");
     }
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPView__layoutSubviews(self, _cmd)
+},["void"]), new objj_method(sel_getUid("layoutSubviews"), function $CPView__layoutSubviews(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("isOpaque"), function $CPView__isOpaque(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isOpaque"), function $CPView__isOpaque(self, _cmd)
 { with(self)
 {
     return NO;
 }
-}), new objj_method(sel_getUid("visibleRect"), function $CPView__visibleRect(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("visibleRect"), function $CPView__visibleRect(self, _cmd)
 { with(self)
 {
     if (!_superview)
         return _bounds;
     return CGRectIntersection(objj_msgSend(self, "convertRect:fromView:", objj_msgSend(_superview, "visibleRect"), _superview), _bounds);
 }
-}), new objj_method(sel_getUid("_enclosingClipView"), function $CPView___enclosingClipView(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("_enclosingClipView"), function $CPView___enclosingClipView(self, _cmd)
 { with(self)
 {
     var superview = _superview,
@@ -776,7 +776,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         superview = superview._superview;
     return superview;
 }
-}), new objj_method(sel_getUid("scrollPoint:"), function $CPView__scrollPoint_(self, _cmd, aPoint)
+},["CPScrollView"]), new objj_method(sel_getUid("scrollPoint:"), function $CPView__scrollPoint_(self, _cmd, aPoint)
 { with(self)
 {
     var clipView = objj_msgSend(self, "_enclosingClipView");
@@ -784,7 +784,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         return;
     objj_msgSend(clipView, "scrollToPoint:", objj_msgSend(self, "convertPoint:toView:", aPoint, clipView));
 }
-}), new objj_method(sel_getUid("scrollRectToVisible:"), function $CPView__scrollRectToVisible_(self, _cmd, aRect)
+},["void","CGPoint"]), new objj_method(sel_getUid("scrollRectToVisible:"), function $CPView__scrollRectToVisible_(self, _cmd, aRect)
 { with(self)
 {
     var visibleRect = objj_msgSend(self, "visibleRect");
@@ -806,21 +806,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(enclosingClipView, "scrollToPoint:", CGPointMake(scrollPoint.x, scrollPoint.y));
     return YES;
 }
-}), new objj_method(sel_getUid("autoscroll:"), function $CPView__autoscroll_(self, _cmd, anEvent)
+},["BOOL","CGRect"]), new objj_method(sel_getUid("autoscroll:"), function $CPView__autoscroll_(self, _cmd, anEvent)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "superview"), "autoscroll:", anEvent);
 }
-}), new objj_method(sel_getUid("adjustScroll:"), function $CPView__adjustScroll_(self, _cmd, proposedVisibleRect)
+},["BOOL","CPEvent"]), new objj_method(sel_getUid("adjustScroll:"), function $CPView__adjustScroll_(self, _cmd, proposedVisibleRect)
 { with(self)
 {
     return proposedVisibleRect;
 }
-}), new objj_method(sel_getUid("scrollRect:by:"), function $CPView__scrollRect_by_(self, _cmd, aRect, anAmount)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("scrollRect:by:"), function $CPView__scrollRect_by_(self, _cmd, aRect, anAmount)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("enclosingScrollView"), function $CPView__enclosingScrollView(self, _cmd)
+},["void","CGRect","float"]), new objj_method(sel_getUid("enclosingScrollView"), function $CPView__enclosingScrollView(self, _cmd)
 { with(self)
 {
     var superview = _superview,
@@ -829,16 +829,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         superview = superview._superview;
     return superview;
 }
-}), new objj_method(sel_getUid("scrollClipView:toPoint:"), function $CPView__scrollClipView_toPoint_(self, _cmd, aClipView, aPoint)
+},["CPScrollView"]), new objj_method(sel_getUid("scrollClipView:toPoint:"), function $CPView__scrollClipView_toPoint_(self, _cmd, aClipView, aPoint)
 { with(self)
 {
     objj_msgSend(aClipView, "scrollToPoint:", aPoint);
 }
-}), new objj_method(sel_getUid("reflectScrolledClipView:"), function $CPView__reflectScrolledClipView_(self, _cmd, aClipView)
+},["void","CPClipView","CGPoint"]), new objj_method(sel_getUid("reflectScrolledClipView:"), function $CPView__reflectScrolledClipView_(self, _cmd, aClipView)
 { with(self)
 {
 }
-})]);
+},["void","CPClipView"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPView__initialize(self, _cmd)
 { with(self)
 {
@@ -846,12 +846,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
         return;
     CachedNotificationCenter = objj_msgSend(CPNotificationCenter, "defaultCenter");
 }
-}), new objj_method(sel_getUid("keyPathsForValuesAffectingFrame"), function $CPView__keyPathsForValuesAffectingFrame(self, _cmd)
+},["void"]), new objj_method(sel_getUid("keyPathsForValuesAffectingFrame"), function $CPView__keyPathsForValuesAffectingFrame(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPSet, "setWithObjects:", "frameOrigin", "frameSize");
 }
-})]);
+},["CPSet"])]);
 }
 {
 var the_class = objj_getClass("CPView")
@@ -861,12 +861,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(self, "acceptsFirstResponder") && !objj_msgSend(self, "isHiddenOrHasHiddenAncestor");
 }
-}), new objj_method(sel_getUid("nextKeyView"), function $CPView__nextKeyView(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("nextKeyView"), function $CPView__nextKeyView(self, _cmd)
 { with(self)
 {
     return _nextKeyView;
 }
-}), new objj_method(sel_getUid("nextValidKeyView"), function $CPView__nextValidKeyView(self, _cmd)
+},["CPView"]), new objj_method(sel_getUid("nextValidKeyView"), function $CPView__nextValidKeyView(self, _cmd)
 { with(self)
 {
     var result = objj_msgSend(self, "nextKeyView");
@@ -874,12 +874,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         result = objj_msgSend(result, "nextKeyView");
     return result;
 }
-}), new objj_method(sel_getUid("previousKeyView"), function $CPView__previousKeyView(self, _cmd)
+},["CPView"]), new objj_method(sel_getUid("previousKeyView"), function $CPView__previousKeyView(self, _cmd)
 { with(self)
 {
     return _previousKeyView;
 }
-}), new objj_method(sel_getUid("previousValidKeyView"), function $CPView__previousValidKeyView(self, _cmd)
+},["CPView"]), new objj_method(sel_getUid("previousValidKeyView"), function $CPView__previousValidKeyView(self, _cmd)
 { with(self)
 {
     var result = objj_msgSend(self, "previousKeyView");
@@ -887,18 +887,18 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         result = objj_msgSend(result, "previousKeyView");
     return result;
 }
-}), new objj_method(sel_getUid("_setPreviousKeyView:"), function $CPView___setPreviousKeyView_(self, _cmd, previous)
+},["CPView"]), new objj_method(sel_getUid("_setPreviousKeyView:"), function $CPView___setPreviousKeyView_(self, _cmd, previous)
 { with(self)
 {
     _previousKeyView = previous;
 }
-}), new objj_method(sel_getUid("setNextKeyView:"), function $CPView__setNextKeyView_(self, _cmd, next)
+},["void","CPView"]), new objj_method(sel_getUid("setNextKeyView:"), function $CPView__setNextKeyView_(self, _cmd, next)
 { with(self)
 {
     _nextKeyView = next;
     objj_msgSend(_nextKeyView, "_setPreviousKeyView:", self);
 }
-})]);
+},["void","CPView"])]);
 }
 {
 var the_class = objj_getClass("CPView")
@@ -919,22 +919,22 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         objj_msgSend(_layer, "_setOwningView:", self);
     }
 }
-}), new objj_method(sel_getUid("layer"), function $CPView__layer(self, _cmd)
+},["void","CALayer"]), new objj_method(sel_getUid("layer"), function $CPView__layer(self, _cmd)
 { with(self)
 {
     return _layer;
 }
-}), new objj_method(sel_getUid("setWantsLayer:"), function $CPView__setWantsLayer_(self, _cmd, aFlag)
+},["CALayer"]), new objj_method(sel_getUid("setWantsLayer:"), function $CPView__setWantsLayer_(self, _cmd, aFlag)
 { with(self)
 {
     _wantsLayer = !!aFlag;
 }
-}), new objj_method(sel_getUid("wantsLayer"), function $CPView__wantsLayer(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("wantsLayer"), function $CPView__wantsLayer(self, _cmd)
 { with(self)
 {
     return _wantsLayer;
 }
-})]);
+},["BOOL"])]);
 }
 {
 var the_class = objj_getClass("CPView")
@@ -944,12 +944,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return _themeState;
 }
-}), new objj_method(sel_getUid("hasThemeState:"), function $CPView__hasThemeState_(self, _cmd, aState)
+},["unsigned"]), new objj_method(sel_getUid("hasThemeState:"), function $CPView__hasThemeState_(self, _cmd, aState)
 { with(self)
 {
     return !!(_themeState & ((typeof aState === "string") ? CPThemeState(aState) : aState));
 }
-}), new objj_method(sel_getUid("setThemeState:"), function $CPView__setThemeState_(self, _cmd, aState)
+},["BOOL","CPThemeState"]), new objj_method(sel_getUid("setThemeState:"), function $CPView__setThemeState_(self, _cmd, aState)
 { with(self)
 {
     var newState = (typeof aState === "string") ? CPThemeState(aState) : aState;
@@ -960,7 +960,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setNeedsDisplay:", YES);
     return YES;
 }
-}), new objj_method(sel_getUid("unsetThemeState:"), function $CPView__unsetThemeState_(self, _cmd, aState)
+},["BOOL","CPThemeState"]), new objj_method(sel_getUid("unsetThemeState:"), function $CPView__unsetThemeState_(self, _cmd, aState)
 { with(self)
 {
     var newState = ((typeof aState === "string") ? CPThemeState(aState) : aState);
@@ -971,7 +971,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setNeedsDisplay:", YES);
     return YES;
 }
-}), new objj_method(sel_getUid("_loadThemeAttributes"), function $CPView___loadThemeAttributes(self, _cmd)
+},["BOOL","CPThemeState"]), new objj_method(sel_getUid("_loadThemeAttributes"), function $CPView___loadThemeAttributes(self, _cmd)
 { with(self)
 {
     var theClass = objj_msgSend(self, "class"),
@@ -990,7 +990,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _themeAttributes[attributeName] = attribute;
     }
 }
-}), new objj_method(sel_getUid("setTheme:"), function $CPView__setTheme_(self, _cmd, aTheme)
+},["void"]), new objj_method(sel_getUid("setTheme:"), function $CPView__setTheme_(self, _cmd, aTheme)
 { with(self)
 {
     if (_theme === aTheme)
@@ -998,12 +998,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     _theme = aTheme;
     objj_msgSend(self, "viewDidChangeTheme");
 }
-}), new objj_method(sel_getUid("theme"), function $CPView__theme(self, _cmd)
+},["void","CPTheme"]), new objj_method(sel_getUid("theme"), function $CPView__theme(self, _cmd)
 { with(self)
 {
     return _theme;
 }
-}), new objj_method(sel_getUid("viewDidChangeTheme"), function $CPView__viewDidChangeTheme(self, _cmd)
+},["CPTheme"]), new objj_method(sel_getUid("viewDidChangeTheme"), function $CPView__viewDidChangeTheme(self, _cmd)
 { with(self)
 {
     if (!_themeAttributes)
@@ -1016,7 +1016,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("_themeAttributeDictionary"), function $CPView___themeAttributeDictionary(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_themeAttributeDictionary"), function $CPView___themeAttributeDictionary(self, _cmd)
 { with(self)
 {
     var dictionary = objj_msgSend(CPDictionary, "dictionary");
@@ -1029,7 +1029,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return dictionary;
 }
-}), new objj_method(sel_getUid("setValue:forThemeAttribute:inState:"), function $CPView__setValue_forThemeAttribute_inState_(self, _cmd, aValue, aName, aState)
+},["CPDictionary"]), new objj_method(sel_getUid("setValue:forThemeAttribute:inState:"), function $CPView__setValue_forThemeAttribute_inState_(self, _cmd, aValue, aName, aState)
 { with(self)
 {
     if (!_themeAttributes || !_themeAttributes[aName])
@@ -1041,7 +1041,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setNeedsDisplay:", YES);
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("setValue:forThemeAttribute:"), function $CPView__setValue_forThemeAttribute_(self, _cmd, aValue, aName)
+},["void","id","CPString","CPThemeState"]), new objj_method(sel_getUid("setValue:forThemeAttribute:"), function $CPView__setValue_forThemeAttribute_(self, _cmd, aValue, aName)
 { with(self)
 {
     if (!_themeAttributes || !_themeAttributes[aName])
@@ -1053,38 +1053,38 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setNeedsDisplay:", YES);
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("valueForThemeAttribute:inState:"), function $CPView__valueForThemeAttribute_inState_(self, _cmd, aName, aState)
+},["void","id","CPString"]), new objj_method(sel_getUid("valueForThemeAttribute:inState:"), function $CPView__valueForThemeAttribute_inState_(self, _cmd, aName, aState)
 { with(self)
 {
     if (!_themeAttributes || !_themeAttributes[aName])
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, objj_msgSend(self, "className") + " does not contain theme attribute '" + aName + "'");
     return objj_msgSend(_themeAttributes[aName], "valueForState:", aState);
 }
-}), new objj_method(sel_getUid("valueForThemeAttribute:"), function $CPView__valueForThemeAttribute_(self, _cmd, aName)
+},["id","CPString","CPThemeState"]), new objj_method(sel_getUid("valueForThemeAttribute:"), function $CPView__valueForThemeAttribute_(self, _cmd, aName)
 { with(self)
 {
     if (!_themeAttributes || !_themeAttributes[aName])
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, objj_msgSend(self, "className") + " does not contain theme attribute '" + aName + "'");
     return objj_msgSend(_themeAttributes[aName], "value");
 }
-}), new objj_method(sel_getUid("currentValueForThemeAttribute:"), function $CPView__currentValueForThemeAttribute_(self, _cmd, aName)
+},["id","CPString"]), new objj_method(sel_getUid("currentValueForThemeAttribute:"), function $CPView__currentValueForThemeAttribute_(self, _cmd, aName)
 { with(self)
 {
     if (!_themeAttributes || !_themeAttributes[aName])
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, objj_msgSend(self, "className") + " does not contain theme attribute '" + aName + "'");
     return objj_msgSend(_themeAttributes[aName], "valueForState:", _themeState);
 }
-}), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPView__createEphemeralSubviewNamed_(self, _cmd, aViewName)
+},["void","CPString"]), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPView__createEphemeralSubviewNamed_(self, _cmd, aViewName)
 { with(self)
 {
     return nil;
 }
-}), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPView__rectForEphemeralSubviewNamed_(self, _cmd, aViewName)
+},["CPView","CPString"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPView__rectForEphemeralSubviewNamed_(self, _cmd, aViewName)
 { with(self)
 {
     return { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } };
 }
-}), new objj_method(sel_getUid("layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:"), function $CPView__layoutEphemeralSubviewNamed_positioned_relativeToEphemeralSubviewNamed_(self, _cmd, aViewName, anOrderingMode, relativeToViewName)
+},["CGRect","CPString"]), new objj_method(sel_getUid("layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:"), function $CPView__layoutEphemeralSubviewNamed_positioned_relativeToEphemeralSubviewNamed_(self, _cmd, aViewName, anOrderingMode, relativeToViewName)
 { with(self)
 {
     if (!_ephemeralSubviewsForNames)
@@ -1113,18 +1113,18 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return _ephemeralSubviewsForNames[aViewName];
 }
-})]);
+},["CPView","CPString","CPWindowOrderingMode","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("themeClass"), function $CPView__themeClass(self, _cmd)
 { with(self)
 {
     return nil;
 }
-}), new objj_method(sel_getUid("themeAttributes"), function $CPView__themeAttributes(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("themeAttributes"), function $CPView__themeAttributes(self, _cmd)
 { with(self)
 {
     return nil;
 }
-}), new objj_method(sel_getUid("_themeAttributes"), function $CPView___themeAttributes(self, _cmd)
+},["CPDictionary"]), new objj_method(sel_getUid("_themeAttributes"), function $CPView___themeAttributes(self, _cmd)
 { with(self)
 {
     if (!CachedThemeAttributes)
@@ -1155,7 +1155,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("themeClass"), function
     }
     return attributes;
 }
-})]);
+},["CPArray"])]);
 }
 var CPViewAutoresizingMaskKey = "CPViewAutoresizingMask",
     CPViewAutoresizesSubviewsKey = "CPViewAutoresizesSubviews",
@@ -1218,7 +1218,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPResponder") }, "encodeWithCoder:", aCoder);
@@ -1264,7 +1264,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         if (_themeAttributes.hasOwnProperty(attributeName))
             CPThemeAttributeEncode(aCoder, _themeAttributes[attributeName]);
 }
-})]);
+},["void","CPCoder"])]);
 }
 var _CPViewFullScreenModeStateMake = function(aView)
 {

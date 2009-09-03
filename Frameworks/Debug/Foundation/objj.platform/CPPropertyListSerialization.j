@@ -1,4 +1,5 @@
-i;10;CPObject.jc;1089;
+i;10;CPObject.jc;1226;
+CPPropertyListUnknownFormat = 0;
 CPPropertyListOpenStepFormat = kCFPropertyListOpenStepFormat;
 CPPropertyListXMLFormat_v1_0 = kCFPropertyListXMLFormat_v1_0;
 CPPropertyListBinaryFormat_v1_0 = kCFPropertyListBinaryFormat_v1_0;
@@ -11,11 +12,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("dataFromPropertyList:f
 {
     return CPPropertyListCreateData(aPlist, aFormat);
 }
-}), new objj_method(sel_getUid("propertyListFromData:format:errorDescription:"), function $CPPropertyListSerialization__propertyListFromData_format_errorDescription_(self, _cmd, data, aFormat, errorString)
+},["CPData","id","CPPropertyListFormat","{CPString}"]), new objj_method(sel_getUid("propertyListFromData:format:errorDescription:"), function $CPPropertyListSerialization__propertyListFromData_format_errorDescription_(self, _cmd, data, aFormat, errorString)
 { with(self)
 {
     return CPPropertyListCreateFromData(data, aFormat);
 }
-})]);
+},["id","CPData","CSPropertyListFormat","{CPString}"])]);
 }
 

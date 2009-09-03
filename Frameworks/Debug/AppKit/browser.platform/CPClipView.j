@@ -1,4 +1,4 @@
-i;8;CPView.jc;5648;
+i;8;CPView.jc;5867;
 {var the_class = objj_allocateClassPair(CPView, "CPClipView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_documentView")]);
 objj_registerClassPair(the_class);
@@ -25,12 +25,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setDocumentView:"), fun
   objj_msgSend(defaultCenter, "addObserver:selector:name:object:", self, sel_getUid("viewBoundsChanged:"), CPViewBoundsDidChangeNotification, _documentView);
     }
 }
-}), new objj_method(sel_getUid("documentView"), function $CPClipView__documentView(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("documentView"), function $CPClipView__documentView(self, _cmd)
 { with(self)
 {
     return _documentView;
 }
-}), new objj_method(sel_getUid("constrainScrollPoint:"), function $CPClipView__constrainScrollPoint_(self, _cmd, aPoint)
+},["id"]), new objj_method(sel_getUid("constrainScrollPoint:"), function $CPClipView__constrainScrollPoint_(self, _cmd, aPoint)
 { with(self)
 {
     if (!_documentView)
@@ -40,7 +40,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setDocumentView:"), fun
     aPoint.y = MAX(0.0, MIN(aPoint.y, MAX((documentFrame.size.height) - (_bounds.size.height), 0.0)));
     return aPoint;
 }
-}), new objj_method(sel_getUid("setBoundsOrigin:"), function $CPClipView__setBoundsOrigin_(self, _cmd, aPoint)
+},["CGPoint","CGPoint"]), new objj_method(sel_getUid("setBoundsOrigin:"), function $CPClipView__setBoundsOrigin_(self, _cmd, aPoint)
 { with(self)
 {
     if ((_bounds.origin.x == aPoint.x && _bounds.origin.y == aPoint.y))
@@ -50,28 +50,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setDocumentView:"), fun
     if(objj_msgSend(superview, "isKindOfClass:", objj_msgSend(CPScrollView, "class")))
         objj_msgSend(superview, "reflectScrolledClipView:", self);
 }
-}), new objj_method(sel_getUid("scrollToPoint:"), function $CPClipView__scrollToPoint_(self, _cmd, aPoint)
+},["void","CGPoint"]), new objj_method(sel_getUid("scrollToPoint:"), function $CPClipView__scrollToPoint_(self, _cmd, aPoint)
 { with(self)
 {
     objj_msgSend(self, "setBoundsOrigin:", objj_msgSend(self, "constrainScrollPoint:", aPoint));
 }
-}), new objj_method(sel_getUid("viewBoundsChanged:"), function $CPClipView__viewBoundsChanged_(self, _cmd, aNotification)
+},["void","CGPoint"]), new objj_method(sel_getUid("viewBoundsChanged:"), function $CPClipView__viewBoundsChanged_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "_constrainScrollPoint");
 }
-}), new objj_method(sel_getUid("viewFrameChanged:"), function $CPClipView__viewFrameChanged_(self, _cmd, aNotification)
+},["void","CPNotification"]), new objj_method(sel_getUid("viewFrameChanged:"), function $CPClipView__viewFrameChanged_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "_constrainScrollPoint");
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPClipView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
+},["void","CPNotification"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPClipView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "resizeSubviewsWithOldSize:", aSize);
     objj_msgSend(self, "_constrainScrollPoint");
 }
-}), new objj_method(sel_getUid("_constrainScrollPoint"), function $CPClipView___constrainScrollPoint(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("_constrainScrollPoint"), function $CPClipView___constrainScrollPoint(self, _cmd)
 { with(self)
 {
     var oldScrollPoint = objj_msgSend(self, "bounds").origin;
@@ -82,7 +82,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setDocumentView:"), fun
     if (objj_msgSend(superview, "isKindOfClass:", objj_msgSend(CPScrollView, "class")))
         objj_msgSend(superview, "reflectScrolledClipView:", self);
 }
-}), new objj_method(sel_getUid("autoscroll:"), function $CPClipView__autoscroll_(self, _cmd, anEvent)
+},["void"]), new objj_method(sel_getUid("autoscroll:"), function $CPClipView__autoscroll_(self, _cmd, anEvent)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds"),
@@ -94,7 +94,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setDocumentView:"), fun
     newRect.size = CPSizeMake(10, 10);
  return objj_msgSend(_documentView, "scrollRectToVisible:", newRect);
 }
-})]);
+},["BOOL","CPEvent"])]);
 }
 var CPClipViewDocumentViewKey = "CPScrollViewDocumentView";
 {
@@ -107,12 +107,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         objj_msgSend(self, "setDocumentView:", objj_msgSend(aCoder, "decodeObjectForKey:", CPClipViewDocumentViewKey));
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPClipView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPClipView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
     objj_msgSend(aCoder, "encodeObject:forKey:", _documentView, CPClipViewDocumentViewKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

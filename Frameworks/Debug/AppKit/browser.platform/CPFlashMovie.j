@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;844;
+I;21;Foundation/CPObject.jc;880;
 {var the_class = objj_allocateClassPair(CPObject, "CPFlashMovie"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_fileName")]);
 objj_registerClassPair(the_class);
@@ -11,12 +11,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFile:"), functi
         _fileName = aFileName;
     return self;
 }
-})]);
+},["id","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("flashMovieWithFile:"), function $CPFlashMovie__flashMovieWithFile_(self, _cmd, aFileName)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithFile:", aFileName);
 }
-})]);
+},["id","CPString"])]);
 }
 

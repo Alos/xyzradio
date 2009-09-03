@@ -1,4 +1,4 @@
-i;10;CPObject.ji;15;CPObjJRuntime.jc;2123;
+i;10;CPObject.ji;15;CPObjJRuntime.jc;2249;
 CPOrderedAscending = -1;
 CPOrderedSame = 0;
 CPOrderedDescending = 1;
@@ -11,7 +11,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:ascending:"
 {
     return objj_msgSend(self, "initWithKey:ascending:selector:", aKey, isAscending, sel_getUid("compare:"));
 }
-}), new objj_method(sel_getUid("initWithKey:ascending:selector:"), function $CPSortDescriptor__initWithKey_ascending_selector_(self, _cmd, aKey, isAscending, aSelector)
+},["id","CPString","BOOL"]), new objj_method(sel_getUid("initWithKey:ascending:selector:"), function $CPSortDescriptor__initWithKey_ascending_selector_(self, _cmd, aKey, isAscending, aSelector)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -23,31 +23,31 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:ascending:"
     }
     return self;
 }
-}), new objj_method(sel_getUid("ascending"), function $CPSortDescriptor__ascending(self, _cmd)
+},["id","CPString","BOOL","SEL"]), new objj_method(sel_getUid("ascending"), function $CPSortDescriptor__ascending(self, _cmd)
 { with(self)
 {
     return _ascending;
 }
-}), new objj_method(sel_getUid("key"), function $CPSortDescriptor__key(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("key"), function $CPSortDescriptor__key(self, _cmd)
 { with(self)
 {
     return _key;
 }
-}), new objj_method(sel_getUid("selector"), function $CPSortDescriptor__selector(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("selector"), function $CPSortDescriptor__selector(self, _cmd)
 { with(self)
 {
     return _selector;
 }
-}), new objj_method(sel_getUid("compareObject:withObject:"), function $CPSortDescriptor__compareObject_withObject_(self, _cmd, lhsObject, rhsObject)
+},["SEL"]), new objj_method(sel_getUid("compareObject:withObject:"), function $CPSortDescriptor__compareObject_withObject_(self, _cmd, lhsObject, rhsObject)
 { with(self)
 {
     return (_ascending ? 1 : -1) * objj_msgSend(objj_msgSend(lhsObject, "valueForKey:", _key), "performSelector:withObject:", _selector, objj_msgSend(rhsObject, "valueForKey:", _key));
 }
-}), new objj_method(sel_getUid("reversedSortDescriptor"), function $CPSortDescriptor__reversedSortDescriptor(self, _cmd)
+},["CPComparisonResult","id","id"]), new objj_method(sel_getUid("reversedSortDescriptor"), function $CPSortDescriptor__reversedSortDescriptor(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithKey:ascending:selector:", _key, !_ascending, _selector);
 }
-})]);
+},["id"])]);
 }
 

@@ -1,4 +1,4 @@
-i;13;CPTextField.jc;23982;
+i;13;CPTextField.jc;24651;
 CPSearchFieldRecentsTitleMenuItemTag = 1000;
 CPSearchFieldRecentsMenuItemTag = 1001;
 CPSearchFieldClearRecentsMenuItemTag = 1002;
@@ -41,7 +41,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
        }
     return self;
 }
-}), new objj_method(sel_getUid("copy"), function $CPSearchField__copy(self, _cmd)
+},["id","CPRect"]), new objj_method(sel_getUid("copy"), function $CPSearchField__copy(self, _cmd)
 { with(self)
 {
     var copy = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "copy");
@@ -54,17 +54,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(copy, "setSearchMenutemplate:", objj_msgSend(_searchMenuTemplate, "copy"));
     return copy;
 }
-}), new objj_method(sel_getUid("setSearchButton:"), function $CPSearchField__setSearchButton_(self, _cmd, button)
+},["id"]), new objj_method(sel_getUid("setSearchButton:"), function $CPSearchField__setSearchButton_(self, _cmd, button)
 { with(self)
 {
     _searchButton = button;
 }
-}), new objj_method(sel_getUid("searchButton"), function $CPSearchField__searchButton(self, _cmd)
+},["void","CPButton"]), new objj_method(sel_getUid("searchButton"), function $CPSearchField__searchButton(self, _cmd)
 { with(self)
 {
     return _searchButton;
 }
-}), new objj_method(sel_getUid("resetSearchButton"), function $CPSearchField__resetSearchButton(self, _cmd)
+},["CPButton"]), new objj_method(sel_getUid("resetSearchButton"), function $CPSearchField__resetSearchButton(self, _cmd)
 { with(self)
 {
     var searchButtonImage,
@@ -87,17 +87,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(button, "setTarget:", target);
     objj_msgSend(button, "setAction:", action);
 }
-}), new objj_method(sel_getUid("setCancelButton:"), function $CPSearchField__setCancelButton_(self, _cmd, button)
+},["void"]), new objj_method(sel_getUid("setCancelButton:"), function $CPSearchField__setCancelButton_(self, _cmd, button)
 { with(self)
 {
     _cancelButton = button;
 }
-}), new objj_method(sel_getUid("cancelButton"), function $CPSearchField__cancelButton(self, _cmd)
+},["void","CPButton"]), new objj_method(sel_getUid("cancelButton"), function $CPSearchField__cancelButton(self, _cmd)
 { with(self)
 {
     return _cancelButton;
 }
-}), new objj_method(sel_getUid("resetCancelButton"), function $CPSearchField__resetCancelButton(self, _cmd)
+},["CPButton"]), new objj_method(sel_getUid("resetCancelButton"), function $CPSearchField__resetCancelButton(self, _cmd)
 { with(self)
 {
     var button = objj_msgSend(self, "cancelButton");
@@ -109,7 +109,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(button, "setTarget:", self);
     objj_msgSend(button, "setAction:", sel_getUid("_searchFieldCancel:"));
 }
-}), new objj_method(sel_getUid("searchTextRectForBounds:"), function $CPSearchField__searchTextRectForBounds_(self, _cmd, rect)
+},["void"]), new objj_method(sel_getUid("searchTextRectForBounds:"), function $CPSearchField__searchTextRectForBounds_(self, _cmd, rect)
 { with(self)
 {
     var leftOffset = 0, width = rect.size.width;
@@ -125,54 +125,54 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return CPMakeRect(leftOffset,rect.origin.y,width,rect.size.height);
 }
-}), new objj_method(sel_getUid("searchButtonRectForBounds:"), function $CPSearchField__searchButtonRectForBounds_(self, _cmd, rect)
+},["CPRect","CPRect"]), new objj_method(sel_getUid("searchButtonRectForBounds:"), function $CPSearchField__searchButtonRectForBounds_(self, _cmd, rect)
 { with(self)
 {
     return objj_msgSend(_searchButton, "frame");
 }
-}), new objj_method(sel_getUid("cancelButtonRectForBounds:"), function $CPSearchField__cancelButtonRectForBounds_(self, _cmd, rect)
+},["CPRect","CPRect"]), new objj_method(sel_getUid("cancelButtonRectForBounds:"), function $CPSearchField__cancelButtonRectForBounds_(self, _cmd, rect)
 { with(self)
 {
     return objj_msgSend(_cancelButton, "frame");
 }
-}), new objj_method(sel_getUid("searchMenuTemplate"), function $CPSearchField__searchMenuTemplate(self, _cmd)
+},["CPRect","CPRect"]), new objj_method(sel_getUid("searchMenuTemplate"), function $CPSearchField__searchMenuTemplate(self, _cmd)
 { with(self)
 {
     return _searchMenuTemplate;
 }
-}), new objj_method(sel_getUid("setSearchMenuTemplate:"), function $CPSearchField__setSearchMenuTemplate_(self, _cmd, menu)
+},["CPMenu"]), new objj_method(sel_getUid("setSearchMenuTemplate:"), function $CPSearchField__setSearchMenuTemplate_(self, _cmd, menu)
 { with(self)
 {
     _searchMenuTemplate = menu;
     objj_msgSend(self, "resetSearchButton");
     objj_msgSend(self, "_updateSearchMenu");
 }
-}), new objj_method(sel_getUid("sendsWholeSearchString"), function $CPSearchField__sendsWholeSearchString(self, _cmd)
+},["void","CPMenu"]), new objj_method(sel_getUid("sendsWholeSearchString"), function $CPSearchField__sendsWholeSearchString(self, _cmd)
 { with(self)
 {
     return _sendsWholeSearchString;
 }
-}), new objj_method(sel_getUid("setSendsWholeSearchString:"), function $CPSearchField__setSendsWholeSearchString_(self, _cmd, flag)
+},["BOOL"]), new objj_method(sel_getUid("setSendsWholeSearchString:"), function $CPSearchField__setSendsWholeSearchString_(self, _cmd, flag)
 { with(self)
 {
     _sendsWholeSearchString = flag;
 }
-}), new objj_method(sel_getUid("sendsSearchStringImmediately"), function $CPSearchField__sendsSearchStringImmediately(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("sendsSearchStringImmediately"), function $CPSearchField__sendsSearchStringImmediately(self, _cmd)
 { with(self)
 {
     return _sendsSearchStringImmediately;
 }
-}), new objj_method(sel_getUid("setSendsSearchStringImmediately:"), function $CPSearchField__setSendsSearchStringImmediately_(self, _cmd, flag)
+},["BOOL"]), new objj_method(sel_getUid("setSendsSearchStringImmediately:"), function $CPSearchField__setSendsSearchStringImmediately_(self, _cmd, flag)
 { with(self)
 {
     _sendsSearchStringImmediately = flag;
 }
-}), new objj_method(sel_getUid("maximumRecents"), function $CPSearchField__maximumRecents(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("maximumRecents"), function $CPSearchField__maximumRecents(self, _cmd)
 { with(self)
 {
     return _maximumRecents;
 }
-}), new objj_method(sel_getUid("setMaximumRecents:"), function $CPSearchField__setMaximumRecents_(self, _cmd, max)
+},["int"]), new objj_method(sel_getUid("setMaximumRecents:"), function $CPSearchField__setMaximumRecents_(self, _cmd, max)
 { with(self)
 {
     if (max > 254)
@@ -181,12 +181,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         max = 10;
     _maximumRecents = max;
 }
-}), new objj_method(sel_getUid("recentSearches"), function $CPSearchField__recentSearches(self, _cmd)
+},["void","int"]), new objj_method(sel_getUid("recentSearches"), function $CPSearchField__recentSearches(self, _cmd)
 { with(self)
 {
     return _recentSearches;
 }
-}), new objj_method(sel_getUid("setRecentSearches:"), function $CPSearchField__setRecentSearches_(self, _cmd, searches)
+},["CPArray"]), new objj_method(sel_getUid("setRecentSearches:"), function $CPSearchField__setRecentSearches_(self, _cmd, searches)
 { with(self)
 {
     var max = MIN(objj_msgSend(self, "maximumRecents"),objj_msgSend(searches, "count"));
@@ -194,12 +194,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _recentSearches = searches;
     objj_msgSend(self, "_autosaveRecentSearchList");
 }
-}), new objj_method(sel_getUid("recentsAutosaveName"), function $CPSearchField__recentsAutosaveName(self, _cmd)
+},["void","CPArray"]), new objj_method(sel_getUid("recentsAutosaveName"), function $CPSearchField__recentsAutosaveName(self, _cmd)
 { with(self)
 {
     return _recentsAutosaveName;
 }
-}), new objj_method(sel_getUid("setRecentsAutosaveName:"), function $CPSearchField__setRecentsAutosaveName_(self, _cmd, name)
+},["CPString"]), new objj_method(sel_getUid("setRecentsAutosaveName:"), function $CPSearchField__setRecentsAutosaveName_(self, _cmd, name)
 { with(self)
 {
     _recentsAutosaveName = name;
@@ -208,28 +208,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
       objj_msgSend(self, "_deregisterForAutosaveNotification");
 }
-}), new objj_method(sel_getUid("contentRectForBounds:"), function $CPSearchField__contentRectForBounds_(self, _cmd, bounds)
+},["void","CPString"]), new objj_method(sel_getUid("contentRectForBounds:"), function $CPSearchField__contentRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     var superbounds = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "contentRectForBounds:", bounds);
     return objj_msgSend(self, "searchTextRectForBounds:", superbounds);
 }
-}), new objj_method(sel_getUid("menu"), function $CPSearchField__menu(self, _cmd)
+},["CPRect","CPRect"]), new objj_method(sel_getUid("menu"), function $CPSearchField__menu(self, _cmd)
 { with(self)
 {
     return _searchMenu;
 }
-}), new objj_method(sel_getUid("isOpaque"), function $CPSearchField__isOpaque(self, _cmd)
+},["CPMenu"]), new objj_method(sel_getUid("isOpaque"), function $CPSearchField__isOpaque(self, _cmd)
 { with(self)
 {
   return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "isOpaque") && objj_msgSend(_cancelButton, "isOpaque") && objj_msgSend(_searchButton, "isOpaque");
 }
-}), new objj_method(sel_getUid("_updateCancelButtonVisibility"), function $CPSearchField___updateCancelButtonVisibility(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("_updateCancelButtonVisibility"), function $CPSearchField___updateCancelButtonVisibility(self, _cmd)
 { with(self)
 {
     objj_msgSend(_cancelButton, "setHidden:", (objj_msgSend(objj_msgSend(self, "stringValue"), "length") == 0));
 }
-}), new objj_method(sel_getUid("controlTextDidChange:"), function $CPSearchField__controlTextDidChange_(self, _cmd, aNotification)
+},["void"]), new objj_method(sel_getUid("controlTextDidChange:"), function $CPSearchField__controlTextDidChange_(self, _cmd, aNotification)
 { with(self)
 {
     if(!_sendsWholeSearchString)
@@ -245,7 +245,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "_updateCancelButtonVisibility");
 }
-}), new objj_method(sel_getUid("sendAction:to:"), function $CPSearchField__sendAction_to_(self, _cmd, anAction, anObject)
+},["void","CPNotification"]), new objj_method(sel_getUid("sendAction:to:"), function $CPSearchField__sendAction_to_(self, _cmd, anAction, anObject)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "sendAction:to:", anAction, anObject);
@@ -258,14 +258,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "_updateCancelButtonVisibility");
 }
-}), new objj_method(sel_getUid("_addStringToRecentSearches:"), function $CPSearchField___addStringToRecentSearches_(self, _cmd, string)
+},["void","SEL","id"]), new objj_method(sel_getUid("_addStringToRecentSearches:"), function $CPSearchField___addStringToRecentSearches_(self, _cmd, string)
 { with(self)
 {
     var newSearches = objj_msgSend(CPMutableArray, "arrayWithArray:", _recentSearches);
     objj_msgSend(newSearches, "addObject:", string);
     objj_msgSend(self, "setRecentSearches:", newSearches);
 }
-}), new objj_method(sel_getUid("trackMouse:"), function $CPSearchField__trackMouse_(self, _cmd, event)
+},["void","CPString"]), new objj_method(sel_getUid("trackMouse:"), function $CPSearchField__trackMouse_(self, _cmd, event)
 { with(self)
 {
     var rect;
@@ -284,7 +284,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
       }
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "trackMouse:", event);
 }
-}), new objj_method(sel_getUid("_searchMenuTemplate"), function $CPSearchField___searchMenuTemplate(self, _cmd)
+},["BOOL","CPEvent"]), new objj_method(sel_getUid("_searchMenuTemplate"), function $CPSearchField___searchMenuTemplate(self, _cmd)
 { with(self)
 {
     var template, item;
@@ -307,7 +307,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(template, "addItem:", item);
     return template;
 }
-}), new objj_method(sel_getUid("_updateSearchMenu"), function $CPSearchField___updateSearchMenu(self, _cmd)
+},["CPMenu"]), new objj_method(sel_getUid("_updateSearchMenu"), function $CPSearchField___updateSearchMenu(self, _cmd)
 { with(self)
 {
     if(_searchMenuTemplate == nil)
@@ -347,7 +347,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     _searchMenu = menu;
 }
-}), new objj_method(sel_getUid("_showMenu:"), function $CPSearchField___showMenu_(self, _cmd, sender)
+},["void"]), new objj_method(sel_getUid("_showMenu:"), function $CPSearchField___showMenu_(self, _cmd, sender)
 { with(self)
 {
     if(_searchMenu == nil || !objj_msgSend(self, "isEnabled"))
@@ -357,12 +357,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     var anEvent = objj_msgSend(CPEvent, "keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:", CPRightMouseDown, origin, 0, objj_msgSend(CPDate, "date"), 1, objj_msgSend(objj_msgSend(CPGraphicsContext, "currentContext"), "graphicsPort"), "", "", NO, 0);
     objj_msgSend(CPMenu, "popUpContextMenu:withEvent:forView:", _searchMenu, anEvent, sender);
 }
-}), new objj_method(sel_getUid("_sendPartialString"), function $CPSearchField___sendPartialString(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_sendPartialString"), function $CPSearchField___sendPartialString(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(self, "target"), "performSelector:withObject:", objj_msgSend(self, "action"), self);
 }
-}), new objj_method(sel_getUid("_searchFieldCancel:"), function $CPSearchField___searchFieldCancel_(self, _cmd, sender)
+},["void"]), new objj_method(sel_getUid("_searchFieldCancel:"), function $CPSearchField___searchFieldCancel_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", nil);
@@ -370,43 +370,43 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "_updateCancelButtonVisibility");
     objj_msgSend(sender, "setHidden:", YES);
 }
-}), new objj_method(sel_getUid("_searchFieldSearch:"), function $CPSearchField___searchFieldSearch_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("_searchFieldSearch:"), function $CPSearchField___searchFieldSearch_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", objj_msgSend(sender, "title"));
     objj_msgSend(self, "_sendPartialString");
     objj_msgSend(self, "_updateCancelButtonVisibility");
 }
-}), new objj_method(sel_getUid("_searchFieldClearRecents:"), function $CPSearchField___searchFieldClearRecents_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("_searchFieldClearRecents:"), function $CPSearchField___searchFieldClearRecents_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "setRecentSearches:", objj_msgSend(CPArray, "array"));
     objj_msgSend(self, "_updateSearchMenu");
  }
-}), new objj_method(sel_getUid("_registerForAutosaveNotification"), function $CPSearchField___registerForAutosaveNotification(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_registerForAutosaveNotification"), function $CPSearchField___registerForAutosaveNotification(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("_updateAutosavedRecents:"), "CPAutosavedRecentsChangedNotification", nil);
 }
-}), new objj_method(sel_getUid("_deregisterForAutosaveNotification"), function $CPSearchField___deregisterForAutosaveNotification(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_deregisterForAutosaveNotification"), function $CPSearchField___deregisterForAutosaveNotification(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "removeObserver:name:object:", self, "CPAutosavedRecentsChangedNotification", nil);
 }
-}), new objj_method(sel_getUid("_updateAutosavedRecents:"), function $CPSearchField___updateAutosavedRecents_(self, _cmd, notification)
+},["void"]), new objj_method(sel_getUid("_updateAutosavedRecents:"), function $CPSearchField___updateAutosavedRecents_(self, _cmd, notification)
 { with(self)
 {
     var name = objj_msgSend(notification, "object");
     var list = objj_msgSend(self, "recentSearches");
     objj_msgSend(objj_msgSend(CPUserDefaults, "standardUserDefaults"), "setObject:forKey:", list, name);
 }
-}), new objj_method(sel_getUid("_autosaveRecentSearchList"), function $CPSearchField___autosaveRecentSearchList(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_autosaveRecentSearchList"), function $CPSearchField___autosaveRecentSearchList(self, _cmd)
 { with(self)
 {
     if(_recentsAutosaveName != nil)
         objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "CPAutosavedRecentsChangedNotification", _recentsAutosaveName);
 }
-}), new objj_method(sel_getUid("_loadRecentSearchList"), function $CPSearchField___loadRecentSearchList(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_loadRecentSearchList"), function $CPSearchField___loadRecentSearchList(self, _cmd)
 { with(self)
 {
     var list,
@@ -414,7 +414,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     list = objj_msgSend(objj_msgSend(CPUserDefaults, "standardUserDefaults"), "objectForKey:", name);
     _recentSearches = list;
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPSearchField__initialize(self, _cmd)
 { with(self)
 {
@@ -426,12 +426,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     CPSearchFieldCancelImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:", objj_msgSend(bundle, "pathForResource:", "CPSearchField/CPSearchFieldCancel.png"));
     CPSearchFieldCancelPressedImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:", objj_msgSend(bundle, "pathForResource:", "CPSearchField/CPSearchFieldCancelPressed.png"));
 }
-}), new objj_method(sel_getUid("_keyboardDelayForPartialSearchString:"), function $CPSearchField___keyboardDelayForPartialSearchString_(self, _cmd, string)
+},["void"]), new objj_method(sel_getUid("_keyboardDelayForPartialSearchString:"), function $CPSearchField___keyboardDelayForPartialSearchString_(self, _cmd, string)
 { with(self)
 {
     return (6 - MIN(objj_msgSend(string, "length"),4))/10;
 }
-})]);
+},["double","CPString"])]);
 }
 var CPSearchButtonKey = "CPSearchButtonKey",
     CPCancelButtonKey = "CPCancelButtonKey",
@@ -455,7 +455,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(coder, "encodeInt:forKey:", _maximumRecents, CPMaximumRecentsKey);
     objj_msgSend(coder, "encodeObject:forKey:", _searchMenuTemplate, CPSearchMenuTemplateKey);
 }
-}), new objj_method(sel_getUid("initWithCoder:"), function $CPSearchField__initWithCoder_(self, _cmd, coder)
+},["void","CPCoder"]), new objj_method(sel_getUid("initWithCoder:"), function $CPSearchField__initWithCoder_(self, _cmd, coder)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPTextField") }, "initWithCoder:", coder);
@@ -470,6 +470,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setDelegate:", self);
     return self;
 }
-})]);
+},["id","CPCoder"])]);
 }
 

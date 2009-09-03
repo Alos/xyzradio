@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPString.jc;1831;
+I;21;Foundation/CPObject.jI;21;Foundation/CPString.jc;1941;
 {var the_class = objj_allocateClassPair(CPObject, "CPCookie"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_cookieName"), new objj_ivar("_cookieValue"), new objj_ivar("_expires")]);
 objj_registerClassPair(the_class);
@@ -11,22 +11,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithName:"), functi
     _cookieValue = objj_msgSend(self, "_readCookieValue");
     return self;
 }
-}), new objj_method(sel_getUid("value"), function $CPCookie__value(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("value"), function $CPCookie__value(self, _cmd)
 { with(self)
 {
     return _cookieValue;
 }
-}), new objj_method(sel_getUid("name"), function $CPCookie__name(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("name"), function $CPCookie__name(self, _cmd)
 { with(self)
 {
     return _cookieName;
 }
-}), new objj_method(sel_getUid("expires"), function $CPCookie__expires(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("expires"), function $CPCookie__expires(self, _cmd)
 { with(self)
 {
     return _expires;
 }
-}), new objj_method(sel_getUid("setValue:expires:domain:"), function $CPCookie__setValue_expires_domain_(self, _cmd, value, date, domain)
+},["CPString"]), new objj_method(sel_getUid("setValue:expires:domain:"), function $CPCookie__setValue_expires_domain_(self, _cmd, value, date, domain)
 { with(self)
 {
     if(date)
@@ -39,7 +39,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithName:"), functi
         domain = "";
  document.cookie = _cookieName+"="+value+expires+"; path=/"+domain;
 }
-}), new objj_method(sel_getUid("_readCookieValue"), function $CPCookie___readCookieValue(self, _cmd)
+},["void","CPString","CPDate","CPString"]), new objj_method(sel_getUid("_readCookieValue"), function $CPCookie___readCookieValue(self, _cmd)
 { with(self)
 {
  var nameEQ = _cookieName + "=";
@@ -51,6 +51,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithName:"), functi
  }
  return "";
 }
-})]);
+},["CPString"])]);
 }
 

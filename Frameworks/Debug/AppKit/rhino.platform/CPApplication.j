@@ -1,4 +1,4 @@
-I;21;Foundation/CPBundle.ji;17;CPCompatibility.ji;9;CPEvent.ji;8;CPMenu.ji;13;CPResponder.ji;22;CPDocumentController.ji;14;CPThemeBlend.ji;14;CPCibLoading.ji;12;CPPlatform.jc;24118;
+I;21;Foundation/CPBundle.ji;17;CPCompatibility.ji;9;CPEvent.ji;8;CPMenu.ji;13;CPResponder.ji;22;CPDocumentController.ji;14;CPThemeBlend.ji;14;CPCibLoading.ji;12;CPPlatform.jc;25102;
 var CPMainCibFile = "CPMainCibFile",
     CPMainCibFileHumanFriendly = "Main cib file base name";
 CPApp = nil;
@@ -57,7 +57,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     }
     return self;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPApplication__setDelegate_(self, _cmd, aDelegate)
+},["id"]), new objj_method(sel_getUid("setDelegate:"), function $CPApplication__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     if (_delegate == aDelegate)
@@ -74,12 +74,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("applicationDidFinishLaunching:")))
         objj_msgSend(defaultCenter, "addObserver:selector:name:object:", _delegate, sel_getUid("applicationDidFinishLaunching:"), CPApplicationDidFinishLaunchingNotification, self);
 }
-}), new objj_method(sel_getUid("delegate"), function $CPApplication__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $CPApplication__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("finishLaunching"), function $CPApplication__finishLaunching(self, _cmd)
+},["id"]), new objj_method(sel_getUid("finishLaunching"), function $CPApplication__finishLaunching(self, _cmd)
 { with(self)
 {
     var bundle = objj_msgSend(CPBundle, "mainBundle"),
@@ -103,17 +103,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     objj_msgSend(defaultCenter, "postNotificationName:object:", CPApplicationDidFinishLaunchingNotification, self);
     objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "limitDateForMode:", CPDefaultRunLoopMode);
 }
-}), new objj_method(sel_getUid("run"), function $CPApplication__run(self, _cmd)
+},["void"]), new objj_method(sel_getUid("run"), function $CPApplication__run(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "finishLaunching");
 }
-}), new objj_method(sel_getUid("runModalForWindow:"), function $CPApplication__runModalForWindow_(self, _cmd, aWindow)
+},["void"]), new objj_method(sel_getUid("runModalForWindow:"), function $CPApplication__runModalForWindow_(self, _cmd, aWindow)
 { with(self)
 {
     objj_msgSend(self, "runModalSession:", objj_msgSend(self, "beginModalSessionForWindow:", aWindow));
 }
-}), new objj_method(sel_getUid("stopModalWithCode:"), function $CPApplication__stopModalWithCode_(self, _cmd, aCode)
+},["void","CPWindow"]), new objj_method(sel_getUid("stopModalWithCode:"), function $CPApplication__stopModalWithCode_(self, _cmd, aCode)
 { with(self)
 {
     if (!_currentSession)
@@ -124,7 +124,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     _currentSession = _currentSession._previous;
         objj_msgSend(self, "_removeRunModalLoop");
 }
-}), new objj_method(sel_getUid("_removeRunModalLoop"), function $CPApplication___removeRunModalLoop(self, _cmd)
+},["void","int"]), new objj_method(sel_getUid("_removeRunModalLoop"), function $CPApplication___removeRunModalLoop(self, _cmd)
 { with(self)
 {
     var count = _eventListeners.length;
@@ -135,22 +135,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
             return;
         }
 }
-}), new objj_method(sel_getUid("stopModal"), function $CPApplication__stopModal(self, _cmd)
+},["void"]), new objj_method(sel_getUid("stopModal"), function $CPApplication__stopModal(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "stopModalWithCode:", CPRunStoppedResponse)
 }
-}), new objj_method(sel_getUid("abortModal"), function $CPApplication__abortModal(self, _cmd)
+},["void"]), new objj_method(sel_getUid("abortModal"), function $CPApplication__abortModal(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "stopModalWithCode:", CPRunAbortedResponse);
 }
-}), new objj_method(sel_getUid("beginModalSessionForWindow:"), function $CPApplication__beginModalSessionForWindow_(self, _cmd, aWindow)
+},["void"]), new objj_method(sel_getUid("beginModalSessionForWindow:"), function $CPApplication__beginModalSessionForWindow_(self, _cmd, aWindow)
 { with(self)
 {
     return _CPModalSessionMake(aWindow, 0);
 }
-}), new objj_method(sel_getUid("runModalSession:"), function $CPApplication__runModalSession_(self, _cmd, aModalSession)
+},["CPModalSession","CPWindow"]), new objj_method(sel_getUid("runModalSession:"), function $CPApplication__runModalSession_(self, _cmd, aModalSession)
 { with(self)
 {
     aModalSession._previous = _currentSession;
@@ -160,23 +160,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     objj_msgSend(theWindow, "makeKeyAndOrderFront:", self);
     objj_msgSend(CPApp, "setCallback:forNextEventMatchingMask:untilDate:inMode:dequeue:", _CPRunModalLoop, CPAnyEventMask, nil, 0, NO);
 }
-}), new objj_method(sel_getUid("modalWindow"), function $CPApplication__modalWindow(self, _cmd)
+},["void","CPModalSession"]), new objj_method(sel_getUid("modalWindow"), function $CPApplication__modalWindow(self, _cmd)
 { with(self)
 {
     if (!_currentSession)
         return nil;
     return _currentSession._window;
 }
-}), new objj_method(sel_getUid("_handleKeyEquivalent:"), function $CPApplication___handleKeyEquivalent_(self, _cmd, anEvent)
+},["CPWindow"]), new objj_method(sel_getUid("_handleKeyEquivalent:"), function $CPApplication___handleKeyEquivalent_(self, _cmd, anEvent)
 { with(self)
 {
     if (objj_msgSend(_mainMenu, "performKeyEquivalent:", anEvent))
         return YES;
     return NO;
 }
-}), new objj_method(sel_getUid("sendEvent:"), function $CPApplication__sendEvent_(self, _cmd, anEvent)
+},["BOOL","CPEvent"]), new objj_method(sel_getUid("sendEvent:"), function $CPApplication__sendEvent_(self, _cmd, anEvent)
 { with(self)
 {
+    _currentEvent = anEvent;
     if (objj_msgSend(anEvent, "type") == CPKeyDown &&
         objj_msgSend(anEvent, "modifierFlags") & (CPCommandKeyMask | CPControlKeyMask) &&
         objj_msgSend(objj_msgSend(anEvent, "characters"), "length") > 0 &&
@@ -190,7 +191,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     }
     objj_msgSend(objj_msgSend(anEvent, "window"), "sendEvent:", anEvent);
 }
-}), new objj_method(sel_getUid("doCommandBySelector:"), function $CPApplication__doCommandBySelector_(self, _cmd, aSelector)
+},["void","CPEvent"]), new objj_method(sel_getUid("doCommandBySelector:"), function $CPApplication__doCommandBySelector_(self, _cmd, aSelector)
 { with(self)
 {
     if (objj_msgSend(_delegate, "respondsToSelector:", aSelector))
@@ -198,51 +199,51 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     else
         objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPResponder") }, "doCommandBySelector:", aSelector);
 }
-}), new objj_method(sel_getUid("keyWindow"), function $CPApplication__keyWindow(self, _cmd)
+},["void","SEL"]), new objj_method(sel_getUid("keyWindow"), function $CPApplication__keyWindow(self, _cmd)
 { with(self)
 {
     return _keyWindow;
 }
-}), new objj_method(sel_getUid("mainWindow"), function $CPApplication__mainWindow(self, _cmd)
+},["CPWindow"]), new objj_method(sel_getUid("mainWindow"), function $CPApplication__mainWindow(self, _cmd)
 { with(self)
 {
     return _mainWindow;
 }
-}), new objj_method(sel_getUid("windowWithWindowNumber:"), function $CPApplication__windowWithWindowNumber_(self, _cmd, aWindowNumber)
+},["CPWindow"]), new objj_method(sel_getUid("windowWithWindowNumber:"), function $CPApplication__windowWithWindowNumber_(self, _cmd, aWindowNumber)
 { with(self)
 {
     return _windows[aWindowNumber];
 }
-}), new objj_method(sel_getUid("windows"), function $CPApplication__windows(self, _cmd)
+},["CPWindow","int"]), new objj_method(sel_getUid("windows"), function $CPApplication__windows(self, _cmd)
 { with(self)
 {
     return _windows;
 }
-}), new objj_method(sel_getUid("mainMenu"), function $CPApplication__mainMenu(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("mainMenu"), function $CPApplication__mainMenu(self, _cmd)
 { with(self)
 {
     return _mainMenu;
 }
-}), new objj_method(sel_getUid("setMainMenu:"), function $CPApplication__setMainMenu_(self, _cmd, aMenu)
+},["CPMenu"]), new objj_method(sel_getUid("setMainMenu:"), function $CPApplication__setMainMenu_(self, _cmd, aMenu)
 { with(self)
 {
     _mainMenu = aMenu;
 }
-}), new objj_method(sel_getUid("orderFrontColorPanel:"), function $CPApplication__orderFrontColorPanel_(self, _cmd, aSender)
+},["void","CPMenu"]), new objj_method(sel_getUid("orderFrontColorPanel:"), function $CPApplication__orderFrontColorPanel_(self, _cmd, aSender)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPColorPanel, "sharedColorPanel"), "orderFront:", self);
 }
-}), new objj_method(sel_getUid("orderFrontStandardAboutPanel:"), function $CPApplication__orderFrontStandardAboutPanel_(self, _cmd, aSender)
+},["void","id"]), new objj_method(sel_getUid("orderFrontStandardAboutPanel:"), function $CPApplication__orderFrontStandardAboutPanel_(self, _cmd, aSender)
 { with(self)
 {
     objj_msgSend(self, "orderFrontStandardAboutPanelWithOptions:", nil);
 }
-}), new objj_method(sel_getUid("orderFrontStandardAboutPanelWithOptions:"), function $CPApplication__orderFrontStandardAboutPanelWithOptions_(self, _cmd, aDictionary)
+},["void","id"]), new objj_method(sel_getUid("orderFrontStandardAboutPanelWithOptions:"), function $CPApplication__orderFrontStandardAboutPanelWithOptions_(self, _cmd, aDictionary)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("tryToPerform:with:"), function $CPApplication__tryToPerform_with_(self, _cmd, anAction, anObject)
+},["void","CPDictionary"]), new objj_method(sel_getUid("tryToPerform:with:"), function $CPApplication__tryToPerform_with_(self, _cmd, anAction, anObject)
 { with(self)
 {
     if (!anAction)
@@ -256,7 +257,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     }
     return NO;
 }
-}), new objj_method(sel_getUid("sendAction:to:from:"), function $CPApplication__sendAction_to_from_(self, _cmd, anAction, aTarget, aSender)
+},["BOOL","SEL","id"]), new objj_method(sel_getUid("sendAction:to:from:"), function $CPApplication__sendAction_to_from_(self, _cmd, anAction, aTarget, aSender)
 { with(self)
 {
     var target = objj_msgSend(self, "targetForAction:to:from:", anAction, aTarget, aSender);
@@ -265,7 +266,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     objj_msgSend(target, "performSelector:withObject:", anAction, aSender);
     return YES;
 }
-}), new objj_method(sel_getUid("targetForAction:to:from:"), function $CPApplication__targetForAction_to_from_(self, _cmd, anAction, aTarget, aSender)
+},["BOOL","SEL","id","id"]), new objj_method(sel_getUid("targetForAction:to:from:"), function $CPApplication__targetForAction_to_from_(self, _cmd, anAction, aTarget, aSender)
 { with(self)
 {
     if (!anAction)
@@ -274,7 +275,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
         return aTarget;
     return objj_msgSend(self, "targetForAction:", anAction);
 }
-}), new objj_method(sel_getUid("_targetForWindow:action:"), function $CPApplication___targetForWindow_action_(self, _cmd, aWindow, anAction)
+},["id","SEL","id","id"]), new objj_method(sel_getUid("_targetForWindow:action:"), function $CPApplication___targetForWindow_action_(self, _cmd, aWindow, anAction)
 { with(self)
 {
     var responder = objj_msgSend(aWindow, "firstResponder"),
@@ -300,7 +301,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
         return theDocument;
     return nil;
 }
-}), new objj_method(sel_getUid("targetForAction:"), function $CPApplication__targetForAction_(self, _cmd, anAction)
+},["id","CPWindow","SEL"]), new objj_method(sel_getUid("targetForAction:"), function $CPApplication__targetForAction_(self, _cmd, anAction)
 { with(self)
 {
     if (!anAction)
@@ -319,30 +320,35 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
         return _documentController;
     return nil;
 }
-}), new objj_method(sel_getUid("setCallback:forNextEventMatchingMask:untilDate:inMode:dequeue:"), function $CPApplication__setCallback_forNextEventMatchingMask_untilDate_inMode_dequeue_(self, _cmd, aCallback, aMask, anExpiration, aMode, shouldDequeue)
+},["id","SEL"]), new objj_method(sel_getUid("setCallback:forNextEventMatchingMask:untilDate:inMode:dequeue:"), function $CPApplication__setCallback_forNextEventMatchingMask_untilDate_inMode_dequeue_(self, _cmd, aCallback, aMask, anExpiration, aMode, shouldDequeue)
 { with(self)
 {
     _eventListeners.push(_CPEventListenerMake(aMask, aCallback));
     if (_eventListeners.length == 3) objj_debug_print_backtrace();
 }
-}), new objj_method(sel_getUid("setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:"), function $CPApplication__setTarget_selector_forNextEventMatchingMask_untilDate_inMode_dequeue_(self, _cmd, aTarget, aSelector, aMask, anExpiration, aMode, shouldDequeue)
+},["void","Function","unsignedint","CPDate","CPString","BOOL"]), new objj_method(sel_getUid("setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:"), function $CPApplication__setTarget_selector_forNextEventMatchingMask_untilDate_inMode_dequeue_(self, _cmd, aTarget, aSelector, aMask, anExpiration, aMode, shouldDequeue)
 { with(self)
 {
     _eventListeners.push(_CPEventListenerMake(aMask, function (anEvent) { objj_msgSend(aTarget, aSelector, anEvent); }));
 }
-}), new objj_method(sel_getUid("beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:"), function $CPApplication__beginSheet_modalForWindow_modalDelegate_didEndSelector_contextInfo_(self, _cmd, aSheet, aWindow, aModalDelegate, aDidEndSelector, aContextInfo)
+},["CPEvent","id","SEL","unsignedint","CPDate","CPString","BOOL"]), new objj_method(sel_getUid("currentEvent"), function $CPApplication__currentEvent(self, _cmd)
+{ with(self)
+{
+    return _currentEvent;
+}
+},["CPEvent"]), new objj_method(sel_getUid("beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:"), function $CPApplication__beginSheet_modalForWindow_modalDelegate_didEndSelector_contextInfo_(self, _cmd, aSheet, aWindow, aModalDelegate, aDidEndSelector, aContextInfo)
 { with(self)
 {
     objj_msgSend(aWindow, "_attachSheet:modalDelegate:didEndSelector:contextInfo:", aSheet, aModalDelegate, aDidEndSelector, aContextInfo);
 }
-}), new objj_method(sel_getUid("arguments"), function $CPApplication__arguments(self, _cmd)
+},["void","CPWindow","CPWindow","id","SEL","id"]), new objj_method(sel_getUid("arguments"), function $CPApplication__arguments(self, _cmd)
 { with(self)
 {
     if(_fullArgsString != window.location.hash)
         objj_msgSend(self, "_reloadArguments");
     return _args;
 }
-}), new objj_method(sel_getUid("setArguments:"), function $CPApplication__setArguments_(self, _cmd, args)
+},["CPArray"]), new objj_method(sel_getUid("setArguments:"), function $CPApplication__setArguments_(self, _cmd, args)
 { with(self)
 {
     if(!args || args.length == 0)
@@ -360,7 +366,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     var hash = objj_msgSend(toEncode, "componentsJoinedByString:", "/");
     window.location.hash = "#" + hash;
 }
-}), new objj_method(sel_getUid("_reloadArguments"), function $CPApplication___reloadArguments(self, _cmd)
+},["void","CPArray"]), new objj_method(sel_getUid("_reloadArguments"), function $CPApplication___reloadArguments(self, _cmd)
 { with(self)
 {
     _fullArgsString = window.location.hash;
@@ -369,12 +375,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
         args[i] = decodeURIComponent(args[i]);
     _args = args;
 }
-}), new objj_method(sel_getUid("namedArguments"), function $CPApplication__namedArguments(self, _cmd)
+},["void"]), new objj_method(sel_getUid("namedArguments"), function $CPApplication__namedArguments(self, _cmd)
 { with(self)
 {
     return _namedArgs;
 }
-})]);
+},["CPDictionary"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("sharedApplication"), function $CPApplication__sharedApplication(self, _cmd)
 { with(self)
 {
@@ -382,7 +388,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("sharedApplication"), f
         CPApp = objj_msgSend(objj_msgSend(CPApplication, "alloc"), "init");
     return CPApp;
 }
-})]);
+},["CPApplication"])]);
 }
 var _CPModalSessionMake = function(aWindow, aStopCode)
 {
@@ -439,7 +445,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("actions"), function $_
 {
     return [sel_getUid("bootstrapPlatform"), sel_getUid("loadDefaultTheme"), sel_getUid("loadMainCibFile")];
 }
-}), new objj_method(sel_getUid("performActions"), function $_CPAppBootstrapper__performActions(self, _cmd)
+},["void"]), new objj_method(sel_getUid("performActions"), function $_CPAppBootstrapper__performActions(self, _cmd)
 { with(self)
 {
     if (!_CPAppBootstrapperActions)
@@ -452,25 +458,25 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("actions"), function $_
     }
     objj_msgSend(CPApp, "run");
 }
-}), new objj_method(sel_getUid("bootstrapPlatform"), function $_CPAppBootstrapper__bootstrapPlatform(self, _cmd)
+},["void"]), new objj_method(sel_getUid("bootstrapPlatform"), function $_CPAppBootstrapper__bootstrapPlatform(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPPlatform, "bootstrap");
 }
-}), new objj_method(sel_getUid("loadDefaultTheme"), function $_CPAppBootstrapper__loadDefaultTheme(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("loadDefaultTheme"), function $_CPAppBootstrapper__loadDefaultTheme(self, _cmd)
 { with(self)
 {
     var blend = objj_msgSend(objj_msgSend(CPThemeBlend, "alloc"), "initWithContentsOfURL:", objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", objj_msgSend(CPApplication, "class")), "pathForResource:", "Aristo.blend"));
     objj_msgSend(blend, "loadWithDelegate:", self);
     return YES;
 }
-}), new objj_method(sel_getUid("blendDidFinishLoading:"), function $_CPAppBootstrapper__blendDidFinishLoading_(self, _cmd, aBundle)
+},["BOOL"]), new objj_method(sel_getUid("blendDidFinishLoading:"), function $_CPAppBootstrapper__blendDidFinishLoading_(self, _cmd, aBundle)
 { with(self)
 {
     objj_msgSend(CPTheme, "setDefaultTheme:", objj_msgSend(CPTheme, "themeNamed:", "Aristo"));
     objj_msgSend(self, "performActions");
 }
-}), new objj_method(sel_getUid("loadMainCibFile"), function $_CPAppBootstrapper__loadMainCibFile(self, _cmd)
+},["void","CPBundle"]), new objj_method(sel_getUid("loadMainCibFile"), function $_CPAppBootstrapper__loadMainCibFile(self, _cmd)
 { with(self)
 {
     var mainBundle = objj_msgSend(CPBundle, "mainBundle"),
@@ -482,11 +488,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("actions"), function $_
     }
     return NO;
 }
-}), new objj_method(sel_getUid("cibDidFinishLoading:"), function $_CPAppBootstrapper__cibDidFinishLoading_(self, _cmd, aCib)
+},["BOOL"]), new objj_method(sel_getUid("cibDidFinishLoading:"), function $_CPAppBootstrapper__cibDidFinishLoading_(self, _cmd, aCib)
 { with(self)
 {
     objj_msgSend(self, "performActions");
 }
-})]);
+},["void","CPCib"])]);
 }
 

@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;536;
+I;21;Foundation/CPObject.jc;909;
 
 
 
@@ -12,6 +12,16 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bootstrap"), function 
     objj_msgSend(CPPlatformString, "bootstrap");
     objj_msgSend(CPPlatformWindow, "setPrimaryPlatformWindow:", objj_msgSend(objj_msgSend(CPPlatformWindow, "alloc"), "_init"));
 }
-})]);
+},["void"]), new objj_method(sel_getUid("isBrowser"), function $CPPlatform__isBrowser(self, _cmd)
+{ with(self)
+{
+    return typeof window.cpIsDesktop === "undefined";
+}
+},["BOOL"]), new objj_method(sel_getUid("supportsDragAndDrop"), function $CPPlatform__supportsDragAndDrop(self, _cmd)
+{ with(self)
+{
+    return CPFeatureIsCompatible(CPHTMLDragAndDropFeature);
+}
+},["BOOL"])]);
 }
 

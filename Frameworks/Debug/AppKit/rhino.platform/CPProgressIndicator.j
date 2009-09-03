@@ -1,4 +1,4 @@
-I;19;AppKit/CGGeometry.jI;20;AppKit/CPImageView.jI;15;AppKit/CPView.jc;13151;
+I;19;AppKit/CGGeometry.jI;20;AppKit/CPImageView.jI;15;AppKit/CPView.jc;13585;
 CPProgressIndicatorBarStyle = 0;
 CPProgressIndicatorSpinningStyle = 1;
 CPProgressIndicatorHUDBarStyle = 2;
@@ -27,64 +27,64 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setUsesThreadedAnimation:"), function $CPProgressIndicator__setUsesThreadedAnimation_(self, _cmd, aFlag)
+},["id","CGRect"]), new objj_method(sel_getUid("setUsesThreadedAnimation:"), function $CPProgressIndicator__setUsesThreadedAnimation_(self, _cmd, aFlag)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("startAnimation:"), function $CPProgressIndicator__startAnimation_(self, _cmd, aSender)
+},["void","BOOL"]), new objj_method(sel_getUid("startAnimation:"), function $CPProgressIndicator__startAnimation_(self, _cmd, aSender)
 { with(self)
 {
     _isAnimating = YES;
     objj_msgSend(self, "_hideOrDisplay");
 }
-}), new objj_method(sel_getUid("stopAnimation:"), function $CPProgressIndicator__stopAnimation_(self, _cmd, aSender)
+},["void","id"]), new objj_method(sel_getUid("stopAnimation:"), function $CPProgressIndicator__stopAnimation_(self, _cmd, aSender)
 { with(self)
 {
     _isAnimating = NO;
     objj_msgSend(self, "_hideOrDisplay");
 }
-}), new objj_method(sel_getUid("usesThreadedAnimation"), function $CPProgressIndicator__usesThreadedAnimation(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("usesThreadedAnimation"), function $CPProgressIndicator__usesThreadedAnimation(self, _cmd)
 { with(self)
 {
     return NO;
 }
-}), new objj_method(sel_getUid("incrementBy:"), function $CPProgressIndicator__incrementBy_(self, _cmd, aValue)
+},["BOOL"]), new objj_method(sel_getUid("incrementBy:"), function $CPProgressIndicator__incrementBy_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSend(self, "setDoubleValue:", _doubleValue + aValue);
 }
-}), new objj_method(sel_getUid("setDoubleValue:"), function $CPProgressIndicator__setDoubleValue_(self, _cmd, aValue)
+},["void","double"]), new objj_method(sel_getUid("setDoubleValue:"), function $CPProgressIndicator__setDoubleValue_(self, _cmd, aValue)
 { with(self)
 {
     _doubleValue = MIN(MAX(aValue, _minValue), _maxValue);
     objj_msgSend(self, "drawBar");
 }
-}), new objj_method(sel_getUid("doubleValue"), function $CPProgressIndicator__doubleValue(self, _cmd)
+},["void","double"]), new objj_method(sel_getUid("doubleValue"), function $CPProgressIndicator__doubleValue(self, _cmd)
 { with(self)
 {
     return _doubleValue;
 }
-}), new objj_method(sel_getUid("setMinValue:"), function $CPProgressIndicator__setMinValue_(self, _cmd, aValue)
+},["double"]), new objj_method(sel_getUid("setMinValue:"), function $CPProgressIndicator__setMinValue_(self, _cmd, aValue)
 { with(self)
 {
     _minValue = aValue;
 }
-}), new objj_method(sel_getUid("minValue"), function $CPProgressIndicator__minValue(self, _cmd)
+},["void","double"]), new objj_method(sel_getUid("minValue"), function $CPProgressIndicator__minValue(self, _cmd)
 { with(self)
 {
     return _minValue;
 }
-}), new objj_method(sel_getUid("setMaxValue:"), function $CPProgressIndicator__setMaxValue_(self, _cmd, aValue)
+},["double"]), new objj_method(sel_getUid("setMaxValue:"), function $CPProgressIndicator__setMaxValue_(self, _cmd, aValue)
 { with(self)
 {
     _maxValue = aValue;
 }
-}), new objj_method(sel_getUid("maxValue"), function $CPProgressIndicator__maxValue(self, _cmd)
+},["void","double"]), new objj_method(sel_getUid("maxValue"), function $CPProgressIndicator__maxValue(self, _cmd)
 { with(self)
 {
     return _maxValue;
 }
-}), new objj_method(sel_getUid("setControlSize:"), function $CPProgressIndicator__setControlSize_(self, _cmd, aControlSize)
+},["double"]), new objj_method(sel_getUid("setControlSize:"), function $CPProgressIndicator__setControlSize_(self, _cmd, aControlSize)
 { with(self)
 {
     if (_controlSize == aControlSize)
@@ -92,30 +92,30 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _controlSize = aControlSize;
     objj_msgSend(self, "updateBackgroundColor");
 }
-}), new objj_method(sel_getUid("controlSize"), function $CPProgressIndicator__controlSize(self, _cmd)
+},["void","CPControlSize"]), new objj_method(sel_getUid("controlSize"), function $CPProgressIndicator__controlSize(self, _cmd)
 { with(self)
 {
     return _controlSize;
 }
-}), new objj_method(sel_getUid("setControlTint:"), function $CPProgressIndicator__setControlTint_(self, _cmd, aControlTint)
+},["CPControlSize"]), new objj_method(sel_getUid("setControlTint:"), function $CPProgressIndicator__setControlTint_(self, _cmd, aControlTint)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("controlTint"), function $CPProgressIndicator__controlTint(self, _cmd)
+},["void","CPControlTint"]), new objj_method(sel_getUid("controlTint"), function $CPProgressIndicator__controlTint(self, _cmd)
 { with(self)
 {
     return 0;
 }
-}), new objj_method(sel_getUid("setBezeled:"), function $CPProgressIndicator__setBezeled_(self, _cmd, isBezeled)
+},["CPControlTint"]), new objj_method(sel_getUid("setBezeled:"), function $CPProgressIndicator__setBezeled_(self, _cmd, isBezeled)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("isBezeled"), function $CPProgressIndicator__isBezeled(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isBezeled"), function $CPProgressIndicator__isBezeled(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("setIndeterminate:"), function $CPProgressIndicator__setIndeterminate_(self, _cmd, isIndeterminate)
+},["BOOL"]), new objj_method(sel_getUid("setIndeterminate:"), function $CPProgressIndicator__setIndeterminate_(self, _cmd, isIndeterminate)
 { with(self)
 {
     if (_isIndeterminate == isIndeterminate)
@@ -123,12 +123,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _isIndeterminate = isIndeterminate;
     objj_msgSend(self, "updateBackgroundColor");
 }
-}), new objj_method(sel_getUid("isIndeterminate"), function $CPProgressIndicator__isIndeterminate(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isIndeterminate"), function $CPProgressIndicator__isIndeterminate(self, _cmd)
 { with(self)
 {
     return _isIndeterminate;
 }
-}), new objj_method(sel_getUid("setStyle:"), function $CPProgressIndicator__setStyle_(self, _cmd, aStyle)
+},["BOOL"]), new objj_method(sel_getUid("setStyle:"), function $CPProgressIndicator__setStyle_(self, _cmd, aStyle)
 { with(self)
 {
     if (_style == aStyle)
@@ -136,7 +136,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _style = aStyle;
     objj_msgSend(self, "updateBackgroundColor");
 }
-}), new objj_method(sel_getUid("sizeToFit"), function $CPProgressIndicator__sizeToFit(self, _cmd)
+},["void","CPProgressIndicatorStyle"]), new objj_method(sel_getUid("sizeToFit"), function $CPProgressIndicator__sizeToFit(self, _cmd)
 { with(self)
 {
     if (_style == CPProgressIndicatorSpinningStyle)
@@ -146,7 +146,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             CPProgressIndicatorClassName + "BezelBorder" + CPProgressIndicatorStyleIdentifiers[CPProgressIndicatorBarStyle] +
             _CPControlIdentifierForControlSize(_controlSize)][0].height));
 }
-}), new objj_method(sel_getUid("setDisplayedWhenStopped:"), function $CPProgressIndicator__setDisplayedWhenStopped_(self, _cmd, isDisplayedWhenStopped)
+},["void"]), new objj_method(sel_getUid("setDisplayedWhenStopped:"), function $CPProgressIndicator__setDisplayedWhenStopped_(self, _cmd, isDisplayedWhenStopped)
 { with(self)
 {
     if (_isDisplayedWhenStoppedSet && _isDisplayedWhenStopped == isDisplayedWhenStopped)
@@ -155,7 +155,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _isDisplayedWhenStopped = isDisplayedWhenStopped;
     objj_msgSend(self, "_hideOrDisplay");
 }
-}), new objj_method(sel_getUid("isDisplayedWhenStopped"), function $CPProgressIndicator__isDisplayedWhenStopped(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isDisplayedWhenStopped"), function $CPProgressIndicator__isDisplayedWhenStopped(self, _cmd)
 { with(self)
 {
     if (_isDisplayedWhenStoppedSet)
@@ -164,18 +164,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return YES;
     return NO;
 }
-}), new objj_method(sel_getUid("_hideOrDisplay"), function $CPProgressIndicator___hideOrDisplay(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("_hideOrDisplay"), function $CPProgressIndicator___hideOrDisplay(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "setHidden:", !_isAnimating && !objj_msgSend(self, "isDisplayedWhenStopped"));
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $CPProgressIndicator__setFrameSize_(self, _cmd, aSize)
+},["void"]), new objj_method(sel_getUid("setFrameSize:"), function $CPProgressIndicator__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "setFrameSize:", aSize);
     objj_msgSend(self, "drawBar");
 }
-}), new objj_method(sel_getUid("drawBar"), function $CPProgressIndicator__drawBar(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("drawBar"), function $CPProgressIndicator__drawBar(self, _cmd)
 { with(self)
 {
     if (_style == CPProgressIndicatorSpinningStyle)
@@ -194,7 +194,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         _CPControlIdentifierForControlSize(_controlSize)));
     objj_msgSend(_barView, "setFrameSize:", CGSizeMake(CGRectGetWidth(objj_msgSend(self, "bounds")) * (_doubleValue - _minValue) / (_maxValue - _minValue) - 4.0, 9.0));
 }
-}), new objj_method(sel_getUid("updateBackgroundColor"), function $CPProgressIndicator__updateBackgroundColor(self, _cmd)
+},["void"]), new objj_method(sel_getUid("updateBackgroundColor"), function $CPProgressIndicator__updateBackgroundColor(self, _cmd)
 { with(self)
 {
     if (YES)
@@ -220,7 +220,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "setBackgroundColor:", nil);
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPProgressIndicator__initialize(self, _cmd)
 { with(self)
 {
@@ -270,6 +270,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     CPProgressIndicatorStyleSizes[prefix + smallIdentifier] = { width:1.0, height:9.0 };
     CPProgressIndicatorStyleSizes[prefix + miniIdentifier] = { width:1.0, height:9.0 };
 }
-})]);
+},["void"])]);
 }
 

@@ -1,7 +1,7 @@
-I;21;Foundation/CPObject.jc;2832;
+I;21;Foundation/CPObject.jc;3687;
 var _1=NULL;
 var _2=objj_allocateClassPair(CPObject,"CPPlatformWindow"),_3=_2.isa;
-class_addIvars(_2,[new objj_ivar("_contentRect")]);
+class_addIvars(_2,[new objj_ivar("_contentRect"),new objj_ivar("_level"),new objj_ivar("_hasShadow")]);
 objj_registerClassPair(_2);
 objj_addClassForBundle(_2,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(_2,[new objj_method(sel_getUid("initWithContentRect:"),function(_4,_5,_6){
@@ -26,7 +26,7 @@ var _d=objj_msgSend(_b,"contentRect");
 _d.origin={x:0,y:0};
 return _d;
 }
-}),new objj_method(sel_getUid("usableContentFrame"),function(_e,_f){
+}),new objj_method(sel_getUid("visibleFrame"),function(_e,_f){
 with(_e){
 var _10=objj_msgSend(_e,"contentBounds");
 _10.origin=CGPointMakeZero();
@@ -37,50 +37,76 @@ _10.size.height-=_11;
 }
 return _10;
 }
-}),new objj_method(sel_getUid("setContentRect:"),function(_12,_13,_14){
+}),new objj_method(sel_getUid("usableContentFrame"),function(_12,_13){
 with(_12){
-if(!_14||((_contentRect.origin.x==_14.origin.x&&_contentRect.origin.y==_14.origin.y)&&(_contentRect.size.width==_14.size.width&&_contentRect.size.height==_14.size.height))){
+return objj_msgSend(_12,"visibleFrame");
+}
+}),new objj_method(sel_getUid("setContentRect:"),function(_14,_15,_16){
+with(_14){
+if(!_16||((_contentRect.origin.x==_16.origin.x&&_contentRect.origin.y==_16.origin.y)&&(_contentRect.size.width==_16.size.width&&_contentRect.size.height==_16.size.height))){
 return;
 }
-objj_msgSend(_12,"setContentOrigin:",_14.origin);
-objj_msgSend(_12,"setContentSize:",_14.size);
+objj_msgSend(_14,"setContentOrigin:",_16.origin);
+objj_msgSend(_14,"setContentSize:",_16.size);
 }
-}),new objj_method(sel_getUid("setContentOrigin:"),function(_15,_16,_17){
-with(_15){
-var _18=_contentRect.origin;
-if(!_17||(_18.x==_17.x&&_18.y==_17.y)){
+}),new objj_method(sel_getUid("setContentOrigin:"),function(_17,_18,_19){
+with(_17){
+var _1a=_contentRect.origin;
+if(!_19||(_1a.x==_19.x&&_1a.y==_19.y)){
 return;
 }
-_18.x=_17.x;
-_18.y=_17.y;
-objj_msgSend(_15,"updateNativeContentOrigin");
+_1a.x=_19.x;
+_1a.y=_19.y;
+objj_msgSend(_17,"updateNativeContentOrigin");
 }
-}),new objj_method(sel_getUid("setContentSize:"),function(_19,_1a,_1b){
-with(_19){
-var _1c=_contentRect.size;
-if(!_1b||(_1c.width==_1b.width&&_1c.height==_1b.height)){
+}),new objj_method(sel_getUid("setContentSize:"),function(_1b,_1c,_1d){
+with(_1b){
+var _1e=_contentRect.size;
+if(!_1d||(_1e.width==_1d.width&&_1e.height==_1d.height)){
 return;
 }
-var _1d={width:_1b.width-_1c.width,height:_1b.height-_1c.height};
-_1c.width=_1b.width;
-_1c.height=_1b.height;
-objj_msgSend(_19,"updateNativeContentSize");
+var _1f={width:_1d.width-_1e.width,height:_1d.height-_1e.height};
+_1e.width=_1d.width;
+_1e.height=_1d.height;
+objj_msgSend(_1b,"updateNativeContentSize");
 }
-}),new objj_method(sel_getUid("updateFromNativeContentRect"),function(_1e,_1f){
-with(_1e){
-objj_msgSend(_1e,"setContentRect:",objj_msgSend(_1e,"nativeContentRect"));
-}
-}),new objj_method(sel_getUid("supportsFullPlatformWindows"),function(_20,_21){
+}),new objj_method(sel_getUid("updateFromNativeContentRect"),function(_20,_21){
 with(_20){
+objj_msgSend(_20,"setContentRect:",objj_msgSend(_20,"nativeContentRect"));
+}
+}),new objj_method(sel_getUid("convertBaseToScreen:"),function(_22,_23,_24){
+with(_22){
+var _25=objj_msgSend(_22,"contentRect");
+return {x:_24.x+(_25.origin.x),y:_24.y+(_25.origin.y)};
+}
+}),new objj_method(sel_getUid("convertScreenToBase:"),function(_26,_27,_28){
+with(_26){
+var _29=objj_msgSend(_26,"contentRect");
+return {x:_28.x-(_29.origin.x),y:_28.y-(_29.origin.y)};
+}
+}),new objj_method(sel_getUid("isVisible"),function(_2a,_2b){
+with(_2a){
 return NO;
 }
+}),new objj_method(sel_getUid("setLevel:"),function(_2c,_2d,_2e){
+with(_2c){
+_level=_2e;
+}
+}),new objj_method(sel_getUid("setHasShadow:"),function(_2f,_30,_31){
+with(_2f){
+_hasShadow=_31;
+}
+}),new objj_method(sel_getUid("supportsFullPlatformWindows"),function(_32,_33){
+with(_32){
+return objj_msgSend(CPPlatform,"isBrowser");
+}
 })]);
-class_addMethods(_3,[new objj_method(sel_getUid("primaryPlatformWindow"),function(_22,_23){
-with(_22){
+class_addMethods(_3,[new objj_method(sel_getUid("primaryPlatformWindow"),function(_34,_35){
+with(_34){
 return _1;
 }
-}),new objj_method(sel_getUid("setPrimaryPlatformWindow:"),function(_24,_25,_26){
-with(_24){
-_1=_26;
+}),new objj_method(sel_getUid("setPrimaryPlatformWindow:"),function(_36,_37,_38){
+with(_36){
+_1=_38;
 }
 })]);

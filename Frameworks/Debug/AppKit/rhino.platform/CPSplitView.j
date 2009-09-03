@@ -1,4 +1,4 @@
-i;9;CPImage.ji;8;CPView.jc;22832;
+i;9;CPImage.ji;8;CPView.jc;23361;
 CPSplitViewDidResizeSubviewsNotification = "CPSplitViewDidResizeSubviewsNotification";
 CPSplitViewWillResizeSubviewsNotification = "CPSplitViewWillResizeSubviewsNotification";
 var CPSplitViewHorizontalImage = nil,
@@ -18,17 +18,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("dividerThickness"), function $CPSplitView__dividerThickness(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("dividerThickness"), function $CPSplitView__dividerThickness(self, _cmd)
 { with(self)
 {
     return _isPaneSplitter ? 1.0 : 10.0;
 }
-}), new objj_method(sel_getUid("isVertical"), function $CPSplitView__isVertical(self, _cmd)
+},["float"]), new objj_method(sel_getUid("isVertical"), function $CPSplitView__isVertical(self, _cmd)
 { with(self)
 {
     return _isVertical;
 }
-}), new objj_method(sel_getUid("setVertical:"), function $CPSplitView__setVertical_(self, _cmd, shouldBeVertical)
+},["BOOL"]), new objj_method(sel_getUid("setVertical:"), function $CPSplitView__setVertical_(self, _cmd, shouldBeVertical)
 { with(self)
 {
     if (!objj_msgSend(self, "_setVertical:", shouldBeVertical))
@@ -48,7 +48,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsDisplay:", YES);
     objj_msgSend(self, "_postNotificationDidResize");
 }
-}), new objj_method(sel_getUid("_setVertical:"), function $CPSplitView___setVertical_(self, _cmd, shouldBeVertical)
+},["void","BOOL"]), new objj_method(sel_getUid("_setVertical:"), function $CPSplitView___setVertical_(self, _cmd, shouldBeVertical)
 { with(self)
 {
     var changed = (_isVertical != shouldBeVertical);
@@ -58,12 +58,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _dividerImagePath = objj_msgSend(self, "isVertical") ? objj_msgSend(CPSplitViewVerticalImage, "filename") : objj_msgSend(CPSplitViewHorizontalImage, "filename");
     return changed;
 }
-}), new objj_method(sel_getUid("isPaneSplitter"), function $CPSplitView__isPaneSplitter(self, _cmd)
+},["BOOL","BOOL"]), new objj_method(sel_getUid("isPaneSplitter"), function $CPSplitView__isPaneSplitter(self, _cmd)
 { with(self)
 {
     return _isPaneSplitter;
 }
-}), new objj_method(sel_getUid("setIsPaneSplitter:"), function $CPSplitView__setIsPaneSplitter_(self, _cmd, shouldBePaneSplitter)
+},["BOOL"]), new objj_method(sel_getUid("setIsPaneSplitter:"), function $CPSplitView__setIsPaneSplitter_(self, _cmd, shouldBePaneSplitter)
 { with(self)
 {
     if (_isPaneSplitter == shouldBePaneSplitter)
@@ -71,17 +71,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _isPaneSplitter = shouldBePaneSplitter;
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("didAddSubview:"), function $CPSplitView__didAddSubview_(self, _cmd, aSubview)
+},["void","BOOL"]), new objj_method(sel_getUid("didAddSubview:"), function $CPSplitView__didAddSubview_(self, _cmd, aSubview)
 { with(self)
 {
     _needsResizeSubviews = YES;
 }
-}), new objj_method(sel_getUid("isSubviewCollapsed:"), function $CPSplitView__isSubviewCollapsed_(self, _cmd, subview)
+},["void","CPView"]), new objj_method(sel_getUid("isSubviewCollapsed:"), function $CPSplitView__isSubviewCollapsed_(self, _cmd, subview)
 { with(self)
 {
     return objj_msgSend(subview, "frame").size[_sizeComponent] < 1 ? YES : NO;
 }
-}), new objj_method(sel_getUid("rectOfDividerAtIndex:"), function $CPSplitView__rectOfDividerAtIndex_(self, _cmd, aDivider)
+},["BOOL","CPView"]), new objj_method(sel_getUid("rectOfDividerAtIndex:"), function $CPSplitView__rectOfDividerAtIndex_(self, _cmd, aDivider)
 { with(self)
 {
     var frame = objj_msgSend(_subviews[aDivider], "frame"),
@@ -91,7 +91,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     rect.origin[_originComponent] = frame.origin[_originComponent] + frame.size[_sizeComponent];
     return rect;
 }
-}), new objj_method(sel_getUid("effectiveRectOfDividerAtIndex:"), function $CPSplitView__effectiveRectOfDividerAtIndex_(self, _cmd, aDivider)
+},["CGRect","int"]), new objj_method(sel_getUid("effectiveRectOfDividerAtIndex:"), function $CPSplitView__effectiveRectOfDividerAtIndex_(self, _cmd, aDivider)
 { with(self)
 {
     var realRect = objj_msgSend(self, "rectOfDividerAtIndex:", aDivider);
@@ -100,7 +100,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     realRect.origin[_originComponent] -= padding;
     return realRect;
 }
-}), new objj_method(sel_getUid("drawRect:"), function $CPSplitView__drawRect_(self, _cmd, rect)
+},["CGRect","int"]), new objj_method(sel_getUid("drawRect:"), function $CPSplitView__drawRect_(self, _cmd, rect)
 { with(self)
 {
     var count = objj_msgSend(_subviews, "count") - 1;
@@ -110,16 +110,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "drawDividerInRect:", objj_msgSend(self, "rectOfDividerAtIndex:", count));
     }
 }
-}), new objj_method(sel_getUid("drawDividerInRect:"), function $CPSplitView__drawDividerInRect_(self, _cmd, aRect)
+},["void","CGRect"]), new objj_method(sel_getUid("drawDividerInRect:"), function $CPSplitView__drawDividerInRect_(self, _cmd, aRect)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("viewWillDraw"), function $CPSplitView__viewWillDraw(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("viewWillDraw"), function $CPSplitView__viewWillDraw(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "_adjustSubviewsWithCalculatedSize");
 }
-}), new objj_method(sel_getUid("_adjustSubviewsWithCalculatedSize"), function $CPSplitView___adjustSubviewsWithCalculatedSize(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_adjustSubviewsWithCalculatedSize"), function $CPSplitView___adjustSubviewsWithCalculatedSize(self, _cmd)
 { with(self)
 {
     if (!_needsResizeSubviews)
@@ -142,7 +142,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         oldSize[_sizeComponent] += objj_msgSend(subviews[count], "frame").size[_sizeComponent];
     objj_msgSend(self, "resizeSubviewsWithOldSize:", oldSize);
 }
-}), new objj_method(sel_getUid("cursorAtPoint:hitDividerAtIndex:"), function $CPSplitView__cursorAtPoint_hitDividerAtIndex_(self, _cmd, aPoint, anIndex)
+},["void"]), new objj_method(sel_getUid("cursorAtPoint:hitDividerAtIndex:"), function $CPSplitView__cursorAtPoint_hitDividerAtIndex_(self, _cmd, aPoint, anIndex)
 { with(self)
 {
     var frame = objj_msgSend(_subviews[anIndex], "frame"),
@@ -155,7 +155,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         additionalRect = objj_msgSend(_delegate, "splitView:additionalEffectiveRectOfDividerAtIndex:", self, anIndex);
     return CGRectContainsPoint(effectiveRect, aPoint) || (additionalRect && CGRectContainsPoint(additionalRect, aPoint));
 }
-}), new objj_method(sel_getUid("hitTest:"), function $CPSplitView__hitTest_(self, _cmd, aPoint)
+},["BOOL","CPPoint","int"]), new objj_method(sel_getUid("hitTest:"), function $CPSplitView__hitTest_(self, _cmd, aPoint)
 { with(self)
 {
     if (objj_msgSend(self, "isHidden") || !objj_msgSend(self, "hitTests") || !CGRectContainsPoint(objj_msgSend(self, "frame"), aPoint))
@@ -169,7 +169,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "hitTest:", aPoint);
 }
-}), new objj_method(sel_getUid("trackDivider:"), function $CPSplitView__trackDivider_(self, _cmd, anEvent)
+},["CPView","CGPoint"]), new objj_method(sel_getUid("trackDivider:"), function $CPSplitView__trackDivider_(self, _cmd, anEvent)
 { with(self)
 {
     var type = objj_msgSend(anEvent, "type");
@@ -230,12 +230,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackDivider:"), CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPSplitView__mouseDown_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseDown:"), function $CPSplitView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "trackDivider:", anEvent);
 }
-}), new objj_method(sel_getUid("maxPossiblePositionOfDividerAtIndex:"), function $CPSplitView__maxPossiblePositionOfDividerAtIndex_(self, _cmd, dividerIndex)
+},["void","CPEvent"]), new objj_method(sel_getUid("maxPossiblePositionOfDividerAtIndex:"), function $CPSplitView__maxPossiblePositionOfDividerAtIndex_(self, _cmd, dividerIndex)
 { with(self)
 {
     var frame = objj_msgSend(_subviews[dividerIndex + 1], "frame");
@@ -244,7 +244,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         return objj_msgSend(self, "frame").size[_sizeComponent] - objj_msgSend(self, "dividerThickness");
 }
-}), new objj_method(sel_getUid("minPossiblePositionOfDividerAtIndex:"), function $CPSplitView__minPossiblePositionOfDividerAtIndex_(self, _cmd, dividerIndex)
+},["float","int"]), new objj_method(sel_getUid("minPossiblePositionOfDividerAtIndex:"), function $CPSplitView__minPossiblePositionOfDividerAtIndex_(self, _cmd, dividerIndex)
 { with(self)
 {
     if (dividerIndex > 0)
@@ -255,7 +255,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         return 0;
 }
-}), new objj_method(sel_getUid("setPosition:ofDividerAtIndex:"), function $CPSplitView__setPosition_ofDividerAtIndex_(self, _cmd, position, dividerIndex)
+},["float","int"]), new objj_method(sel_getUid("setPosition:ofDividerAtIndex:"), function $CPSplitView__setPosition_ofDividerAtIndex_(self, _cmd, position, dividerIndex)
 { with(self)
 {
     objj_msgSend(self, "_adjustSubviewsWithCalculatedSize");
@@ -286,14 +286,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(_subviews[dividerIndex + 1], "setFrame:", frameB);
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $CPSplitView__setFrameSize_(self, _cmd, aSize)
+},["void","float","int"]), new objj_method(sel_getUid("setFrameSize:"), function $CPSplitView__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSend(self, "_adjustSubviewsWithCalculatedSize");
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "setFrameSize:", aSize);
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPSplitView__resizeSubviewsWithOldSize_(self, _cmd, oldSize)
+},["void","CGSize"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPSplitView__resizeSubviewsWithOldSize_(self, _cmd, oldSize)
 { with(self)
 {
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("splitView:resizeSubviewsWithOldSize:")))
@@ -326,8 +326,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (totalSizablePanes === count)
         totalSizableSpace = 0;
     var nonSizableSpace = totalSizableSpace ? bounds.size[_sizeComponent] - totalSizableSpace : 0,
-        ratio = (bounds.size[_sizeComponent] - totalDividers*dividerThickness - nonSizableSpace) / (oldSize[_sizeComponent]- totalDividers*dividerThickness - nonSizableSpace),
-        remainingFlexibleSpace = bounds.size[_sizeComponent] - oldSize[_sizeComponent];
+        remainingFlexibleSpace = bounds.size[_sizeComponent] - oldSize[_sizeComponent],
+        oldDimension = (oldSize[_sizeComponent]- totalDividers*dividerThickness - nonSizableSpace),
+        ratio = oldDimension <= 0 ? 0 : (bounds.size[_sizeComponent] - totalDividers*dividerThickness - nonSizableSpace) / oldDimension;
     for (index = 0; index < count; ++index)
     {
         var view = _subviews[index],
@@ -351,7 +352,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "_postNotificationDidResize");
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPSplitView__setDelegate_(self, _cmd, delegate)
+},["void","CPSize"]), new objj_method(sel_getUid("setDelegate:"), function $CPSplitView__setDelegate_(self, _cmd, delegate)
 { with(self)
 {
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("splitViewDidResizeSubviews:")))
@@ -364,17 +365,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
    if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("splitViewWillResizeSubviews:")))
        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", _delegate, sel_getUid("splitViewWillResizeSubviews:"), CPSplitViewWillResizeSubviewsNotification, self);
 }
-}), new objj_method(sel_getUid("_postNotificationWillResize"), function $CPSplitView___postNotificationWillResize(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_postNotificationWillResize"), function $CPSplitView___postNotificationWillResize(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPSplitViewWillResizeSubviewsNotification, self);
 }
-}), new objj_method(sel_getUid("_postNotificationDidResize"), function $CPSplitView___postNotificationDidResize(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_postNotificationDidResize"), function $CPSplitView___postNotificationDidResize(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPSplitViewDidResizeSubviewsNotification, self);
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPSplitView__initialize(self, _cmd)
 { with(self)
 {
@@ -384,7 +385,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     CPSplitViewHorizontalImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPSplitView/CPSplitViewHorizontal.png"), CPSizeMake(5.0, 10.0));
     CPSplitViewVerticalImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPSplitView/CPSplitViewVertical.png"), CPSizeMake(10.0, 5.0));
 }
-})]);
+},["void"])]);
 }
 var CPSplitViewDelegateKey = "CPSplitViewDelegateKey",
     CPSplitViewIsVerticalKey = "CPSplitViewIsVerticalKey",
@@ -406,7 +407,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSplitView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSplitView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
@@ -414,6 +415,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeBool:forKey:", _isVertical, CPSplitViewIsVerticalKey);
     objj_msgSend(aCoder, "encodeBool:forKey:", _isPaneSplitter, CPSplitViewIsPaneSplitterKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

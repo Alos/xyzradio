@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;23;AppKit/CABackingStore.jI;18;AppKit/CGContext.jI;19;AppKit/CGGeometry.ji;12;CGGeometry.jc;36409;
+I;21;Foundation/CPObject.jI;23;AppKit/CABackingStore.jI;18;AppKit/CGContext.jI;19;AppKit/CGGeometry.ji;12;CGGeometry.jc;37375;
 CGAffineTransformMake= function(a, b, c, d, tx, ty) { return { a:a, b:b, c:c, d:d, tx:tx, ty:ty }; }
 CGAffineTransformMakeIdentity= function() { return { a:1.0, b:0.0, c:0.0, d:1.0, tx:0.0, ty:0.0 }; }
 CGAffineTransformMakeCopy= function(anAffineTransform) { return { a:anAffineTransform.a, b:anAffineTransform.b, c:anAffineTransform.c, d:anAffineTransform.d, tx:anAffineTransform.tx, ty:anAffineTransform.ty }; }
@@ -126,7 +126,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
 
     return self;
 }
-}), new objj_method(sel_getUid("setBounds:"), function $CALayer__setBounds_(self, _cmd, aBounds)
+},["id"]), new objj_method(sel_getUid("setBounds:"), function $CALayer__setBounds_(self, _cmd, aBounds)
 { with(self)
 {
     if (CGRectEqualToRect(_bounds, aBounds))
@@ -140,12 +140,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
         _CALayerUpdateSublayerTransformForSublayers(self);
     _CALayerRecalculateGeometry(self, CALayerGeometryBoundsMask);
 }
-}), new objj_method(sel_getUid("bounds"), function $CALayer__bounds(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("bounds"), function $CALayer__bounds(self, _cmd)
 { with(self)
 {
     return _bounds;
 }
-}), new objj_method(sel_getUid("setPosition:"), function $CALayer__setPosition_(self, _cmd, aPosition)
+},["CGRect"]), new objj_method(sel_getUid("setPosition:"), function $CALayer__setPosition_(self, _cmd, aPosition)
 { with(self)
 {
     if (CGPointEqualToPoint(_position, aPosition))
@@ -153,12 +153,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _position = { x:aPosition.x, y:aPosition.y };
     _CALayerRecalculateGeometry(self, CALayerGeometryPositionMask);
 }
-}), new objj_method(sel_getUid("position"), function $CALayer__position(self, _cmd)
+},["void","CGPoint"]), new objj_method(sel_getUid("position"), function $CALayer__position(self, _cmd)
 { with(self)
 {
     return _position;
 }
-}), new objj_method(sel_getUid("setZPosition:"), function $CALayer__setZPosition_(self, _cmd, aZPosition)
+},["CGPoint"]), new objj_method(sel_getUid("setZPosition:"), function $CALayer__setZPosition_(self, _cmd, aZPosition)
 { with(self)
 {
     if (_zPosition == aZPosition)
@@ -166,7 +166,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _zPosition = aZPosition;
     objj_msgSend(self, "registerRunLoopUpdateWithMask:", CALayerZPositionUpdateMask);
 }
-}), new objj_method(sel_getUid("setAnchorPoint:"), function $CALayer__setAnchorPoint_(self, _cmd, anAnchorPoint)
+},["void","int"]), new objj_method(sel_getUid("setAnchorPoint:"), function $CALayer__setAnchorPoint_(self, _cmd, anAnchorPoint)
 { with(self)
 {
     anAnchorPoint = { x:anAnchorPoint.x, y:anAnchorPoint.y };
@@ -181,12 +181,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
         _position = CGPointMake((_bounds.size.width) * _anchorPoint.x, (_bounds.size.height) * _anchorPoint.y);
     _CALayerRecalculateGeometry(self, CALayerGeometryAnchorPointMask);
 }
-}), new objj_method(sel_getUid("anchorPoint"), function $CALayer__anchorPoint(self, _cmd)
+},["void","CGPoint"]), new objj_method(sel_getUid("anchorPoint"), function $CALayer__anchorPoint(self, _cmd)
 { with(self)
 {
     return _anchorPoint;
 }
-}), new objj_method(sel_getUid("setAffineTransform:"), function $CALayer__setAffineTransform_(self, _cmd, anAffineTransform)
+},["CGPoint"]), new objj_method(sel_getUid("setAffineTransform:"), function $CALayer__setAffineTransform_(self, _cmd, anAffineTransform)
 { with(self)
 {
     if (CGAffineTransformEqualToTransform(_affineTransform, anAffineTransform))
@@ -194,12 +194,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _affineTransform = { a:anAffineTransform.a, b:anAffineTransform.b, c:anAffineTransform.c, d:anAffineTransform.d, tx:anAffineTransform.tx, ty:anAffineTransform.ty };
     _CALayerRecalculateGeometry(self, CALayerGeometryAffineTransformMask);
 }
-}), new objj_method(sel_getUid("affineTransform"), function $CALayer__affineTransform(self, _cmd)
+},["void","CGAffineTransform"]), new objj_method(sel_getUid("affineTransform"), function $CALayer__affineTransform(self, _cmd)
 { with(self)
 {
     return _affineTransform;
 }
-}), new objj_method(sel_getUid("setSublayerTransform:"), function $CALayer__setSublayerTransform_(self, _cmd, anAffineTransform)
+},["CGAffineTransform"]), new objj_method(sel_getUid("setSublayerTransform:"), function $CALayer__setSublayerTransform_(self, _cmd, anAffineTransform)
 { with(self)
 {
     if (CGAffineTransformEqualToTransform(_sublayerTransform, anAffineTransform))
@@ -215,34 +215,34 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
             _CALayerRecalculateGeometry(_sublayers[index], CALayerGeometryParentSublayerTransformMask);
     }
 }
-}), new objj_method(sel_getUid("sublayerTransform"), function $CALayer__sublayerTransform(self, _cmd)
+},["void","CGAffineTransform"]), new objj_method(sel_getUid("sublayerTransform"), function $CALayer__sublayerTransform(self, _cmd)
 { with(self)
 {
     return _sublayerTransform;
 }
-}), new objj_method(sel_getUid("transformToLayer"), function $CALayer__transformToLayer(self, _cmd)
+},["CGAffineTransform"]), new objj_method(sel_getUid("transformToLayer"), function $CALayer__transformToLayer(self, _cmd)
 { with(self)
 {
     return _transformToLayer;
 }
-}), new objj_method(sel_getUid("setFrame:"), function $CALayer__setFrame_(self, _cmd, aFrame)
+},["CGAffineTransform"]), new objj_method(sel_getUid("setFrame:"), function $CALayer__setFrame_(self, _cmd, aFrame)
 { with(self)
 {
     alert("FIXME IMPLEMENT");
 }
-}), new objj_method(sel_getUid("frame"), function $CALayer__frame(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("frame"), function $CALayer__frame(self, _cmd)
 { with(self)
 {
     if (!_frame)
         _frame = objj_msgSend(self, "convertRect:toLayer:", _bounds, _superlayer);
     return _frame;
 }
-}), new objj_method(sel_getUid("backingStoreFrame"), function $CALayer__backingStoreFrame(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("backingStoreFrame"), function $CALayer__backingStoreFrame(self, _cmd)
 { with(self)
 {
     return _backingStoreFrame;
 }
-}), new objj_method(sel_getUid("setBackingStoreFrame:"), function $CALayer__setBackingStoreFrame_(self, _cmd, aFrame)
+},["CGRect"]), new objj_method(sel_getUid("setBackingStoreFrame:"), function $CALayer__setBackingStoreFrame_(self, _cmd, aFrame)
 { with(self)
 {
     _hasCustomBackingStoreFrame = (aFrame != nil);
@@ -267,12 +267,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
         objj_msgSend(self, "registerRunLoopUpdateWithMask:", CALayerFrameSizeUpdateMask);
     _backingStoreFrame = aFrame;
 }
-}), new objj_method(sel_getUid("contents"), function $CALayer__contents(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("contents"), function $CALayer__contents(self, _cmd)
 { with(self)
 {
     return _contents;
 }
-}), new objj_method(sel_getUid("setContents:"), function $CALayer__setContents_(self, _cmd, contents)
+},["CGImage"]), new objj_method(sel_getUid("setContents:"), function $CALayer__setContents_(self, _cmd, contents)
 { with(self)
 {
     if (_contents == contents)
@@ -280,7 +280,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _contents = contents;
     objj_msgSend(self, "composite");
 }
-}), new objj_method(sel_getUid("composite"), function $CALayer__composite(self, _cmd)
+},["void","CGImage"]), new objj_method(sel_getUid("composite"), function $CALayer__composite(self, _cmd)
 { with(self)
 {
     if (USE_BUFFER && !_contents || !_context)
@@ -307,7 +307,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
         objj_msgSend(self, "drawInContext:", _context);
     CGContextRestoreGState(_context);
 }
-}), new objj_method(sel_getUid("display"), function $CALayer__display(self, _cmd)
+},["void"]), new objj_method(sel_getUid("display"), function $CALayer__display(self, _cmd)
 { with(self)
 {
     if (!_context)
@@ -339,7 +339,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     }
     objj_msgSend(self, "composite");
 }
-}), new objj_method(sel_getUid("drawInContext:"), function $CALayer__drawInContext_(self, _cmd, aContext)
+},["void"]), new objj_method(sel_getUid("drawInContext:"), function $CALayer__drawInContext_(self, _cmd, aContext)
 { with(self)
 {
     if (_backgroundColor)
@@ -350,12 +350,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     if (_delegateRespondsToDrawLayerInContextSelector)
         objj_msgSend(_delegate, "drawLayer:inContext:", self, aContext);
 }
-}), new objj_method(sel_getUid("opacity"), function $CALayer__opacity(self, _cmd)
+},["void","CGContext"]), new objj_method(sel_getUid("opacity"), function $CALayer__opacity(self, _cmd)
 { with(self)
 {
     return _opacity;
 }
-}), new objj_method(sel_getUid("setOpacity:"), function $CALayer__setOpacity_(self, _cmd, anOpacity)
+},["float"]), new objj_method(sel_getUid("setOpacity:"), function $CALayer__setOpacity_(self, _cmd, anOpacity)
 { with(self)
 {
     if (_opacity == anOpacity)
@@ -364,23 +364,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _DOMElement.style.opacity = anOpacity;
     _DOMElement.style.filter = "alpha(opacity=" + anOpacity * 100 + ")";
 }
-}), new objj_method(sel_getUid("setHidden:"), function $CALayer__setHidden_(self, _cmd, isHidden)
+},["void","float"]), new objj_method(sel_getUid("setHidden:"), function $CALayer__setHidden_(self, _cmd, isHidden)
 { with(self)
 {
     _isHidden = isHidden;
     _DOMElement.style.display = isHidden ? "none" : "block";
 }
-}), new objj_method(sel_getUid("hidden"), function $CALayer__hidden(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("hidden"), function $CALayer__hidden(self, _cmd)
 { with(self)
 {
     return _isHidden;
 }
-}), new objj_method(sel_getUid("isHidden"), function $CALayer__isHidden(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("isHidden"), function $CALayer__isHidden(self, _cmd)
 { with(self)
 {
     return _isHidden;
 }
-}), new objj_method(sel_getUid("setMasksToBounds:"), function $CALayer__setMasksToBounds_(self, _cmd, masksToBounds)
+},["BOOL"]), new objj_method(sel_getUid("setMasksToBounds:"), function $CALayer__setMasksToBounds_(self, _cmd, masksToBounds)
 { with(self)
 {
     if (_masksToBounds == masksToBounds)
@@ -388,28 +388,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _masksToBounds = masksToBounds;
     _DOMElement.style.overflow = _masksToBounds ? "hidden" : "visible";
 }
-}), new objj_method(sel_getUid("setBackgroundColor:"), function $CALayer__setBackgroundColor_(self, _cmd, aColor)
+},["void","BOOL"]), new objj_method(sel_getUid("setBackgroundColor:"), function $CALayer__setBackgroundColor_(self, _cmd, aColor)
 { with(self)
 {
     _backgroundColor = aColor;
     objj_msgSend(self, "setNeedsDisplay");
 }
-}), new objj_method(sel_getUid("backgroundColor"), function $CALayer__backgroundColor(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("backgroundColor"), function $CALayer__backgroundColor(self, _cmd)
 { with(self)
 {
     return _backgroundColor;
 }
-}), new objj_method(sel_getUid("sublayers"), function $CALayer__sublayers(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("sublayers"), function $CALayer__sublayers(self, _cmd)
 { with(self)
 {
     return _sublayers;
 }
-}), new objj_method(sel_getUid("superlayer"), function $CALayer__superlayer(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("superlayer"), function $CALayer__superlayer(self, _cmd)
 { with(self)
 {
     return _superlayer;
 }
-}), new objj_method(sel_getUid("addSublayer:"), function $CALayer__addSublayer_(self, _cmd, aLayer)
+},["CALayer"]), new objj_method(sel_getUid("addSublayer:"), function $CALayer__addSublayer_(self, _cmd, aLayer)
 { with(self)
 {
     objj_msgSend(self, "insertSublayer:atIndex:", aLayer, _sublayers.length);
@@ -418,7 +418,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     objj_msgSend(_sublayers, "addObject:", aLayer);
     _DOMElement.appendChild(aLayer._DOMElement);
 }
-}), new objj_method(sel_getUid("removeFromSuperlayer"), function $CALayer__removeFromSuperlayer(self, _cmd)
+},["void","CALayer"]), new objj_method(sel_getUid("removeFromSuperlayer"), function $CALayer__removeFromSuperlayer(self, _cmd)
 { with(self)
 {
     if (_owningView)
@@ -429,7 +429,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     objj_msgSend(_superlayer._sublayers, "removeObject:", self);
     _superlayer = nil;
 }
-}), new objj_method(sel_getUid("insertSublayer:atIndex:"), function $CALayer__insertSublayer_atIndex_(self, _cmd, aLayer, anIndex)
+},["void"]), new objj_method(sel_getUid("insertSublayer:atIndex:"), function $CALayer__insertSublayer_atIndex_(self, _cmd, aLayer, anIndex)
 { with(self)
 {
     if (!aLayer)
@@ -456,13 +456,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     if (self != superlayer)
         _CALayerRecalculateGeometry(aLayer, 0xFFFFFFF);
 }
-}), new objj_method(sel_getUid("insertSublayer:below:"), function $CALayer__insertSublayer_below_(self, _cmd, aLayer, aSublayer)
+},["void","CALayer","unsigned"]), new objj_method(sel_getUid("insertSublayer:below:"), function $CALayer__insertSublayer_below_(self, _cmd, aLayer, aSublayer)
 { with(self)
 {
     var index = aSublayer ? objj_msgSend(_sublayers, "indexOfObjectIdenticalTo:", aSublayer) : 0;
     objj_msgSend(self, "insertSublayer:atIndex:", aLayer, index == CPNotFound ? _sublayers.length : index);
 }
-}), new objj_method(sel_getUid("insertSublayer:above:"), function $CALayer__insertSublayer_above_(self, _cmd, aLayer, aSublayer)
+},["void","CALayer","CALayer"]), new objj_method(sel_getUid("insertSublayer:above:"), function $CALayer__insertSublayer_above_(self, _cmd, aLayer, aSublayer)
 { with(self)
 {
     var index = aSublayer ? objj_msgSend(_sublayers, "indexOfObjectIdenticalTo:", aSublayer) : _sublayers.length;
@@ -470,7 +470,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
         objj_msgSend(CPException, "raise:reason:", "CALayerNotFoundException", "aSublayer is not a sublayer of this layer");
     objj_msgSend(_sublayers, "insertObject:atIndex:", aLayer, index == CPNotFound ? _sublayers.length : index + 1);
 }
-}), new objj_method(sel_getUid("replaceSublayer:with:"), function $CALayer__replaceSublayer_with_(self, _cmd, aSublayer, aLayer)
+},["void","CALayer","CALayer"]), new objj_method(sel_getUid("replaceSublayer:with:"), function $CALayer__replaceSublayer_with_(self, _cmd, aSublayer, aLayer)
 { with(self)
 {
     if (aSublayer == aLayer)
@@ -484,7 +484,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     objj_msgSend(_sublayers, "replaceObjectAtIndex:withObject:", objj_msgSend(_sublayers, "indexOfObjectIdenticalTo:", aSublayer), aLayer);
     _DOMElement.replaceChild(aSublayer._DOMElement, aLayer._DOMElement);
 }
-}), new objj_method(sel_getUid("registerRunLoopUpdateWithMask:"), function $CALayer__registerRunLoopUpdateWithMask_(self, _cmd, anUpdateMask)
+},["void","CALayer","CALayer"]), new objj_method(sel_getUid("registerRunLoopUpdateWithMask:"), function $CALayer__registerRunLoopUpdateWithMask_(self, _cmd, anUpdateMask)
 { with(self)
 {
     if (CALayerRegisteredRunLoopUpdates == nil)
@@ -495,58 +495,58 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _runLoopUpdateMask |= anUpdateMask;
     CALayerRegisteredRunLoopUpdates[objj_msgSend(self, "UID")] = self;
 }
-}), new objj_method(sel_getUid("setNeedsComposite"), function $CALayer__setNeedsComposite(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("setNeedsComposite"), function $CALayer__setNeedsComposite(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "registerRunLoopUpdateWithMask:", CALayerCompositeUpdateMask);
 }
-}), new objj_method(sel_getUid("setNeedsDisplay"), function $CALayer__setNeedsDisplay(self, _cmd)
+},["void"]), new objj_method(sel_getUid("setNeedsDisplay"), function $CALayer__setNeedsDisplay(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "registerRunLoopUpdateWithMask:", CALayerDisplayUpdateMask);
 }
-}), new objj_method(sel_getUid("setNeedsDisplayOnBoundsChange:"), function $CALayer__setNeedsDisplayOnBoundsChange_(self, _cmd, needsDisplayOnBoundsChange)
+},["void"]), new objj_method(sel_getUid("setNeedsDisplayOnBoundsChange:"), function $CALayer__setNeedsDisplayOnBoundsChange_(self, _cmd, needsDisplayOnBoundsChange)
 { with(self)
 {
     _needsDisplayOnBoundsChange = needsDisplayOnBoundsChange;
 }
-}), new objj_method(sel_getUid("needsDisplayOnBoundsChange"), function $CALayer__needsDisplayOnBoundsChange(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("needsDisplayOnBoundsChange"), function $CALayer__needsDisplayOnBoundsChange(self, _cmd)
 { with(self)
 {
     return _needsDisplayOnBoundsChange;
 }
-}), new objj_method(sel_getUid("setNeedsDisplayInRect:"), function $CALayer__setNeedsDisplayInRect_(self, _cmd, aRect)
+},["BOOL"]), new objj_method(sel_getUid("setNeedsDisplayInRect:"), function $CALayer__setNeedsDisplayInRect_(self, _cmd, aRect)
 { with(self)
 {
     _dirtyRect = aRect;
     objj_msgSend(self, "display");
 }
-}), new objj_method(sel_getUid("convertPoint:fromLayer:"), function $CALayer__convertPoint_fromLayer_(self, _cmd, aPoint, aLayer)
+},["void","CGRect"]), new objj_method(sel_getUid("convertPoint:fromLayer:"), function $CALayer__convertPoint_fromLayer_(self, _cmd, aPoint, aLayer)
 { with(self)
 {
     return CGPointApplyAffineTransform(aPoint, _CALayerGetTransform(aLayer, self));
 }
-}), new objj_method(sel_getUid("convertPoint:toLayer:"), function $CALayer__convertPoint_toLayer_(self, _cmd, aPoint, aLayer)
+},["CGPoint","CGPoint","CALayer"]), new objj_method(sel_getUid("convertPoint:toLayer:"), function $CALayer__convertPoint_toLayer_(self, _cmd, aPoint, aLayer)
 { with(self)
 {
     return CGPointApplyAffineTransform(aPoint, _CALayerGetTransform(self, aLayer));
 }
-}), new objj_method(sel_getUid("convertRect:fromLayer:"), function $CALayer__convertRect_fromLayer_(self, _cmd, aRect, aLayer)
+},["CGPoint","CGPoint","CALayer"]), new objj_method(sel_getUid("convertRect:fromLayer:"), function $CALayer__convertRect_fromLayer_(self, _cmd, aRect, aLayer)
 { with(self)
 {
     return CGRectApplyAffineTransform(aRect, _CALayerGetTransform(aLayer, self));
 }
-}), new objj_method(sel_getUid("convertRect:toLayer:"), function $CALayer__convertRect_toLayer_(self, _cmd, aRect, aLayer)
+},["CGRect","CGRect","CALayer"]), new objj_method(sel_getUid("convertRect:toLayer:"), function $CALayer__convertRect_toLayer_(self, _cmd, aRect, aLayer)
 { with(self)
 {
     return CGRectApplyAffineTransform(aRect, _CALayerGetTransform(self, aLayer));
 }
-}), new objj_method(sel_getUid("containsPoint:"), function $CALayer__containsPoint_(self, _cmd, aPoint)
+},["CGRect","CGRect","CALayer"]), new objj_method(sel_getUid("containsPoint:"), function $CALayer__containsPoint_(self, _cmd, aPoint)
 { with(self)
 {
     return (aPoint.x >= (_bounds.origin.x) && aPoint.y >= (_bounds.origin.y) && aPoint.x < (_bounds.origin.x + _bounds.size.width) && aPoint.y < (_bounds.origin.y + _bounds.size.height));
 }
-}), new objj_method(sel_getUid("hitTest:"), function $CALayer__hitTest_(self, _cmd, aPoint)
+},["BOOL","CGPoint"]), new objj_method(sel_getUid("hitTest:"), function $CALayer__hitTest_(self, _cmd, aPoint)
 { with(self)
 {
     if (_isHidden)
@@ -561,7 +561,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
             return layer;
     return self;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CALayer__setDelegate_(self, _cmd, aDelegate)
+},["CALayer","CGPoint"]), new objj_method(sel_getUid("setDelegate:"), function $CALayer__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     if (_delegate == aDelegate)
@@ -572,12 +572,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     if (_delegateRespondsToDisplayLayerSelector || _delegateRespondsToDrawLayerInContextSelector)
         objj_msgSend(self, "setNeedsDisplay");
 }
-}), new objj_method(sel_getUid("delegate"), function $CALayer__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $CALayer__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("_setOwningView:"), function $CALayer___setOwningView_(self, _cmd, anOwningView)
+},["id"]), new objj_method(sel_getUid("_setOwningView:"), function $CALayer___setOwningView_(self, _cmd, anOwningView)
 { with(self)
 {
     _owningView = anOwningView;
@@ -589,14 +589,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     }
     _CALayerRecalculateGeometry(self, CALayerGeometryPositionMask | CALayerGeometryBoundsMask);
 }
-}), new objj_method(sel_getUid("_owningViewBoundsChanged"), function $CALayer___owningViewBoundsChanged(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("_owningViewBoundsChanged"), function $CALayer___owningViewBoundsChanged(self, _cmd)
 { with(self)
 {
     _bounds.size = CGSizeMakeCopy(objj_msgSend(_owningView, "bounds").size);
     _position = CGPointMake((_bounds.size.width) * _anchorPoint.x, (_bounds.size.height) * _anchorPoint.y);
     _CALayerRecalculateGeometry(self, CALayerGeometryPositionMask | CALayerGeometryBoundsMask);
 }
-}), new objj_method(sel_getUid("_update"), function $CALayer___update(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_update"), function $CALayer___update(self, _cmd)
 { with(self)
 {
     window.loop = true;
@@ -610,13 +610,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CALay
     _runLoopUpdateMask = 0;
     window.loop = false;
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("layer"), function $CALayer__layer(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "init");
 }
-}), new objj_method(sel_getUid("runLoopUpdateLayers"), function $CALayer__runLoopUpdateLayers(self, _cmd)
+},["CALayer"]), new objj_method(sel_getUid("runLoopUpdateLayers"), function $CALayer__runLoopUpdateLayers(self, _cmd)
 { with(self)
 {if (window.oops) {alert(window.latest); objj_debug_print_backtrace();}
     window.loop = true;
@@ -635,7 +635,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("layer"), function $CAL
     window.loop= false;
     CALayerRegisteredRunLoopUpdates = nil;
 }
-})]);
+},["void"])]);
 }
 _CALayerUpdateSublayerTransformForSublayers= function(aLayer)
 {

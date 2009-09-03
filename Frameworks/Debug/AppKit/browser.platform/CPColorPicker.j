@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;14;CPColorPanel.jc;13205;
+I;21;Foundation/CPObject.ji;14;CPColorPanel.jc;13708;
 {var the_class = objj_allocateClassPair(CPObject, "CPColorPicker"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_panel"), new objj_ivar("_mask")]);
 objj_registerClassPair(the_class);
@@ -11,27 +11,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     _mask = aMask;
     return self;
 }
-}), new objj_method(sel_getUid("colorPanel"), function $CPColorPicker__colorPanel(self, _cmd)
+},["id","int","CPColorPanel"]), new objj_method(sel_getUid("colorPanel"), function $CPColorPicker__colorPanel(self, _cmd)
 { with(self)
 {
     return _panel;
 }
-}), new objj_method(sel_getUid("provideNewButtonImage"), function $CPColorPicker__provideNewButtonImage(self, _cmd)
+},["CPColorPanel"]), new objj_method(sel_getUid("provideNewButtonImage"), function $CPColorPicker__provideNewButtonImage(self, _cmd)
 { with(self)
 {
     return nil;
 }
-}), new objj_method(sel_getUid("setMode:"), function $CPColorPicker__setMode_(self, _cmd, mode)
+},["CPImage"]), new objj_method(sel_getUid("setMode:"), function $CPColorPicker__setMode_(self, _cmd, mode)
 { with(self)
 {
     return;
 }
-}), new objj_method(sel_getUid("setColor:"), function $CPColorPicker__setColor_(self, _cmd, aColor)
+},["void","CPColorPanelMode"]), new objj_method(sel_getUid("setColor:"), function $CPColorPicker__setColor_(self, _cmd, aColor)
 { with(self)
 {
     return;
 }
-})]);
+},["void","CPColor"])]);
 }
 {var the_class = objj_allocateClassPair(CPColorPicker, "CPColorWheelColorPicker"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_pickerView"), new objj_ivar("_brightnessSlider"), new objj_ivar("_hueSaturationView"), new objj_ivar("_cachedColor")]);
@@ -42,7 +42,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPColorPicker") }, "initWithPickerMask:colorPanel:", mask,  owningColorPanel);
 }
-}), new objj_method(sel_getUid("initView"), function $CPColorWheelColorPicker__initView(self, _cmd)
+},["id","int","CPColorPanel"]), new objj_method(sel_getUid("initView"), function $CPColorWheelColorPicker__initView(self, _cmd)
 { with(self)
 {
     aFrame = CPRectMake(0, 0, CPColorPickerViewWidth, CPColorPickerViewHeight);
@@ -63,17 +63,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(_pickerView, "addSubview:", _hueSaturationView);
     objj_msgSend(_pickerView, "addSubview:", _brightnessSlider);
 }
-}), new objj_method(sel_getUid("brightnessSliderDidChange:"), function $CPColorWheelColorPicker__brightnessSliderDidChange_(self, _cmd, sender)
+},["id"]), new objj_method(sel_getUid("brightnessSliderDidChange:"), function $CPColorWheelColorPicker__brightnessSliderDidChange_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "updateColor");
 }
-}), new objj_method(sel_getUid("colorWheelDidChange:"), function $CPColorWheelColorPicker__colorWheelDidChange_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("colorWheelDidChange:"), function $CPColorWheelColorPicker__colorWheelDidChange_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "updateColor");
 }
-}), new objj_method(sel_getUid("updateColor"), function $CPColorWheelColorPicker__updateColor(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("updateColor"), function $CPColorWheelColorPicker__updateColor(self, _cmd)
 { with(self)
 {
     var hue = objj_msgSend(_hueSaturationView, "angle"),
@@ -86,24 +86,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     _cachedColor = objj_msgSend(CPColor, "colorWithHue:saturation:brightness:alpha:", hue, saturation, brightness, opacity);
     objj_msgSend(objj_msgSend(self, "colorPanel"), "setColor:", _cachedColor);
 }
-}), new objj_method(sel_getUid("supportsMode:"), function $CPColorWheelColorPicker__supportsMode_(self, _cmd, mode)
+},["void"]), new objj_method(sel_getUid("supportsMode:"), function $CPColorWheelColorPicker__supportsMode_(self, _cmd, mode)
 { with(self)
 {
     return (mode == CPWheelColorPickerMode) ? YES : NO;
 }
-}), new objj_method(sel_getUid("currentMode"), function $CPColorWheelColorPicker__currentMode(self, _cmd)
+},["BOOL","int"]), new objj_method(sel_getUid("currentMode"), function $CPColorWheelColorPicker__currentMode(self, _cmd)
 { with(self)
 {
     return CPWheelColorPickerMode;
 }
-}), new objj_method(sel_getUid("provideNewView:"), function $CPColorWheelColorPicker__provideNewView_(self, _cmd, initialRequest)
+},["int"]), new objj_method(sel_getUid("provideNewView:"), function $CPColorWheelColorPicker__provideNewView_(self, _cmd, initialRequest)
 { with(self)
 {
     if (initialRequest)
         objj_msgSend(self, "initView");
     return _pickerView;
 }
-}), new objj_method(sel_getUid("setColor:"), function $CPColorWheelColorPicker__setColor_(self, _cmd, newColor)
+},["CPView","BOOL"]), new objj_method(sel_getUid("setColor:"), function $CPColorWheelColorPicker__setColor_(self, _cmd, newColor)
 { with(self)
 {
     if (objj_msgSend(newColor, "isEqual:", _cachedColor))
@@ -114,17 +114,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(_hueSaturationView, "setWheelBrightness:", hsb[2] / 100.0);
     objj_msgSend(_brightnessSlider, "setBackgroundColor:", objj_msgSend(CPColor, "colorWithHue:saturation:brightness:", hsb[0], hsb[1], 100));
 }
-}), new objj_method(sel_getUid("provideNewButtonImage"), function $CPColorWheelColorPicker__provideNewButtonImage(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("provideNewButtonImage"), function $CPColorWheelColorPicker__provideNewButtonImage(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", CPColorPicker), "pathForResource:", "wheel_button.png"), CGSizeMake(32, 32));
 }
-}), new objj_method(sel_getUid("provideNewAlternateButtonImage"), function $CPColorWheelColorPicker__provideNewAlternateButtonImage(self, _cmd)
+},["CPImage"]), new objj_method(sel_getUid("provideNewAlternateButtonImage"), function $CPColorWheelColorPicker__provideNewAlternateButtonImage(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", CPColorPicker), "pathForResource:", "wheel_button_h.png"), CGSizeMake(32, 32));
 }
-})]);
+},["CPImage"])]);
 }
 {var the_class = objj_allocateClassPair(CPView, "__CPColorWheel"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_wheelImage"), new objj_ivar("_blackWheelImage"), new objj_ivar("_crosshair"), new objj_ivar("_delegate"), new objj_ivar("_angle"), new objj_ivar("_distance"), new objj_ivar("_radius")]);
@@ -155,19 +155,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "addSubview:", _crosshair);
     return self;
 }
-}), new objj_method(sel_getUid("setWheelBrightness:"), function $__CPColorWheel__setWheelBrightness_(self, _cmd, brightness)
+},["id","CPRect"]), new objj_method(sel_getUid("setWheelBrightness:"), function $__CPColorWheel__setWheelBrightness_(self, _cmd, brightness)
 { with(self)
 {
     _blackWheelImage.style.opacity = 1.0 - brightness;
     _blackWheelImage.style.filter = "alpha(opacity=" + (1.0 - brightness)*100 + ")"
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $__CPColorWheel__setFrameSize_(self, _cmd, aSize)
+},["void","float"]), new objj_method(sel_getUid("setFrameSize:"), function $__CPColorWheel__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "setFrameSize:", aSize);
     objj_msgSend(self, "setWheelSize:", aSize);
 }
-}), new objj_method(sel_getUid("setWheelSize:"), function $__CPColorWheel__setWheelSize_(self, _cmd, aSize)
+},["void","CPSize"]), new objj_method(sel_getUid("setWheelSize:"), function $__CPColorWheel__setWheelSize_(self, _cmd, aSize)
 { with(self)
 {
     var min = MIN(aSize.width, aSize.height);
@@ -186,37 +186,37 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _radius = min / 2.0;
     objj_msgSend(self, "setAngle:distance:", objj_msgSend(self, "degreesToRadians:", _angle), (_distance / 100.0) * _radius);
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $__CPColorWheel__setDelegate_(self, _cmd, aDelegate)
+},["void","CPSize"]), new objj_method(sel_getUid("setDelegate:"), function $__CPColorWheel__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     _delegate = aDelegate;
 }
-}), new objj_method(sel_getUid("delegate"), function $__CPColorWheel__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $__CPColorWheel__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("angle"), function $__CPColorWheel__angle(self, _cmd)
+},["id"]), new objj_method(sel_getUid("angle"), function $__CPColorWheel__angle(self, _cmd)
 { with(self)
 {
     return _angle;
 }
-}), new objj_method(sel_getUid("distance"), function $__CPColorWheel__distance(self, _cmd)
+},["float"]), new objj_method(sel_getUid("distance"), function $__CPColorWheel__distance(self, _cmd)
 { with(self)
 {
     return _distance;
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $__CPColorWheel__mouseDown_(self, _cmd, anEvent)
+},["float"]), new objj_method(sel_getUid("mouseDown:"), function $__CPColorWheel__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "reposition:", anEvent);
 }
-}), new objj_method(sel_getUid("mouseDragged:"), function $__CPColorWheel__mouseDragged_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseDragged:"), function $__CPColorWheel__mouseDragged_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "reposition:", anEvent);
 }
-}), new objj_method(sel_getUid("reposition:"), function $__CPColorWheel__reposition_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("reposition:"), function $__CPColorWheel__reposition_(self, _cmd, anEvent)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds"),
@@ -228,7 +228,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setAngle:distance:", angle, distance);
     objj_msgSend(_delegate, "colorWheelDidChange:", self);
 }
-}), new objj_method(sel_getUid("setAngle:distance:"), function $__CPColorWheel__setAngle_distance_(self, _cmd, angle, distance)
+},["void","CPEvent"]), new objj_method(sel_getUid("setAngle:distance:"), function $__CPColorWheel__setAngle_distance_(self, _cmd, angle, distance)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds");
@@ -238,7 +238,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _distance = (distance / _radius) * 100.0;
     objj_msgSend(_crosshair, "setFrameOrigin:", CPPointMake(COS(angle) * distance + midX - 2.0, SIN(angle) * distance + midY - 2.0));
 }
-}), new objj_method(sel_getUid("setPositionToColor:"), function $__CPColorWheel__setPositionToColor_(self, _cmd, aColor)
+},["void","int","float"]), new objj_method(sel_getUid("setPositionToColor:"), function $__CPColorWheel__setPositionToColor_(self, _cmd, aColor)
 { with(self)
 {
     var hsb = objj_msgSend(aColor, "hsbComponents"),
@@ -247,16 +247,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         distance = (hsb[1] / 100.0) * _radius;
     objj_msgSend(self, "setAngle:distance:", angle, distance);
 }
-}), new objj_method(sel_getUid("radiansToDegrees:"), function $__CPColorWheel__radiansToDegrees_(self, _cmd, radians)
+},["void","CPColor"]), new objj_method(sel_getUid("radiansToDegrees:"), function $__CPColorWheel__radiansToDegrees_(self, _cmd, radians)
 { with(self)
 {
     return ((-radians / PI) * 180 + 360) % 360;
 }
-}), new objj_method(sel_getUid("degreesToRadians:"), function $__CPColorWheel__degreesToRadians_(self, _cmd, degrees)
+},["int","float"]), new objj_method(sel_getUid("degreesToRadians:"), function $__CPColorWheel__degreesToRadians_(self, _cmd, degrees)
 { with(self)
 {
     return -(((degrees - 360) / 180) * PI);
 }
-})]);
+},["float","float"])]);
 }
 

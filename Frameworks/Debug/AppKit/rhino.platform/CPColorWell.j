@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.ji;8;CPView.ji;9;CPColor.ji;14;CPColorPanel.jc;7936;
+I;21;Foundation/CPString.ji;8;CPView.ji;9;CPColor.ji;14;CPColorPanel.jc;8270;
 var _CPColorWellDidBecomeExclusiveNotification = "_CPColorWellDidBecomeExclusiveNotification";
 {var the_class = objj_allocateClassPair(CPControl, "CPColorWell"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_active"), new objj_ivar("_bordered"), new objj_ivar("_color"), new objj_ivar("_wellView")]);
@@ -19,19 +19,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("_registerForNotifications"), function $CPColorWell___registerForNotifications(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("_registerForNotifications"), function $CPColorWell___registerForNotifications(self, _cmd)
 { with(self)
 {
     var defaultCenter = objj_msgSend(CPNotificationCenter, "defaultCenter");
     objj_msgSend(defaultCenter, "addObserver:selector:name:object:", self, sel_getUid("colorWellDidBecomeExclusive:"), _CPColorWellDidBecomeExclusiveNotification, nil);
     objj_msgSend(defaultCenter, "addObserver:selector:name:object:", self, sel_getUid("colorPanelWillClose:"), CPWindowWillCloseNotification, objj_msgSend(CPColorPanel, "sharedColorPanel"));
 }
-}), new objj_method(sel_getUid("isBordered"), function $CPColorWell__isBordered(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isBordered"), function $CPColorWell__isBordered(self, _cmd)
 { with(self)
 {
     return _bordered;
 }
-}), new objj_method(sel_getUid("setBordered:"), function $CPColorWell__setBordered_(self, _cmd, bordered)
+},["BOOL"]), new objj_method(sel_getUid("setBordered:"), function $CPColorWell__setBordered_(self, _cmd, bordered)
 { with(self)
 {
     if (_bordered == bordered)
@@ -39,12 +39,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _bordered = bordered;
     objj_msgSend(self, "drawWellInside:", CGRectInset(objj_msgSend(self, "bounds"), 3.0, 3.0));
 }
-}), new objj_method(sel_getUid("color"), function $CPColorWell__color(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("color"), function $CPColorWell__color(self, _cmd)
 { with(self)
 {
     return _color;
 }
-}), new objj_method(sel_getUid("setColor:"), function $CPColorWell__setColor_(self, _cmd, aColor)
+},["CPColor"]), new objj_method(sel_getUid("setColor:"), function $CPColorWell__setColor_(self, _cmd, aColor)
 { with(self)
 {
     if (_color == aColor)
@@ -52,12 +52,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _color = aColor;
     objj_msgSend(self, "drawWellInside:", CGRectInset(objj_msgSend(self, "bounds"), 3.0, 3.0));
 }
-}), new objj_method(sel_getUid("takeColorFrom:"), function $CPColorWell__takeColorFrom_(self, _cmd, aSender)
+},["void","CPColor"]), new objj_method(sel_getUid("takeColorFrom:"), function $CPColorWell__takeColorFrom_(self, _cmd, aSender)
 { with(self)
 {
     objj_msgSend(self, "setColor:", objj_msgSend(aSender, "color"));
 }
-}), new objj_method(sel_getUid("activate:"), function $CPColorWell__activate_(self, _cmd, shouldBeExclusive)
+},["void","id"]), new objj_method(sel_getUid("activate:"), function $CPColorWell__activate_(self, _cmd, shouldBeExclusive)
 { with(self)
 {
     if (shouldBeExclusive)
@@ -67,7 +67,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _active = YES;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("colorPanelDidChangeColor:"), CPColorPanelColorDidChangeNotification, objj_msgSend(CPColorPanel, "sharedColorPanel"));
 }
-}), new objj_method(sel_getUid("deactivate"), function $CPColorWell__deactivate(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("deactivate"), function $CPColorWell__deactivate(self, _cmd)
 { with(self)
 {
     if (!objj_msgSend(self, "isActive"))
@@ -75,16 +75,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _active = NO;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "removeObserver:name:object:", self, CPColorPanelColorDidChangeNotification, objj_msgSend(CPColorPanel, "sharedColorPanel"));
 }
-}), new objj_method(sel_getUid("isActive"), function $CPColorWell__isActive(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isActive"), function $CPColorWell__isActive(self, _cmd)
 { with(self)
 {
     return _active;
 }
-}), new objj_method(sel_getUid("drawBezelWithHighlight:"), function $CPColorWell__drawBezelWithHighlight_(self, _cmd, shouldHighlight)
+},["BOOL"]), new objj_method(sel_getUid("drawBezelWithHighlight:"), function $CPColorWell__drawBezelWithHighlight_(self, _cmd, shouldHighlight)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("drawWellInside:"), function $CPColorWell__drawWellInside_(self, _cmd, aRect)
+},["void","BOOL"]), new objj_method(sel_getUid("drawWellInside:"), function $CPColorWell__drawWellInside_(self, _cmd, aRect)
 { with(self)
 {
     if (!_wellView)
@@ -97,34 +97,34 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(_wellView, "setFrame:", aRect);
     objj_msgSend(_wellView, "setBackgroundColor:", _color);
 }
-}), new objj_method(sel_getUid("colorPanelDidChangeColor:"), function $CPColorWell__colorPanelDidChangeColor_(self, _cmd, aNotification)
+},["void","CGRect"]), new objj_method(sel_getUid("colorPanelDidChangeColor:"), function $CPColorWell__colorPanelDidChangeColor_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "takeColorFrom:", objj_msgSend(aNotification, "object"));
     objj_msgSend(self, "sendAction:to:", objj_msgSend(self, "action"), objj_msgSend(self, "target"));
 }
-}), new objj_method(sel_getUid("colorWellDidBecomeExclusive:"), function $CPColorWell__colorWellDidBecomeExclusive_(self, _cmd, aNotification)
+},["void","CPNotification"]), new objj_method(sel_getUid("colorWellDidBecomeExclusive:"), function $CPColorWell__colorWellDidBecomeExclusive_(self, _cmd, aNotification)
 { with(self)
 {
     if (self != objj_msgSend(aNotification, "object"))
         objj_msgSend(self, "deactivate");
 }
-}), new objj_method(sel_getUid("colorPanelWillClose:"), function $CPColorWell__colorPanelWillClose_(self, _cmd, aNotification)
+},["void","CPNotification"]), new objj_method(sel_getUid("colorPanelWillClose:"), function $CPColorWell__colorPanelWillClose_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "deactivate");
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPColorWell__mouseDown_(self, _cmd, anEvent)
+},["void","CPNotification"]), new objj_method(sel_getUid("mouseDown:"), function $CPColorWell__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "drawBezelWithHighlight:", YES);
 }
-}), new objj_method(sel_getUid("mouseDragged:"), function $CPColorWell__mouseDragged_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseDragged:"), function $CPColorWell__mouseDragged_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "drawBezelWithHighlight:", CGRectContainsPoint(objj_msgSend(self, "bounds"), objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil)));
 }
-}), new objj_method(sel_getUid("mouseUp:"), function $CPColorWell__mouseUp_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseUp:"), function $CPColorWell__mouseUp_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "drawBezelWithHighlight:", NO);
@@ -135,7 +135,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(colorPanel, "setColor:", _color);
     objj_msgSend(colorPanel, "orderFront:", self);
 }
-})]);
+},["void","CPEvent"])]);
 }
 var CPColorWellColorKey = "CPColorWellColorKey",
     CPColorWellBorderedKey = "CPColorWellBorderedKey";
@@ -157,7 +157,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPColorWell__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPColorWell__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     var actualSubviews = _subviews;
@@ -168,6 +168,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _color, CPColorWellColorKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _bordered, CPColorWellBorderedKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

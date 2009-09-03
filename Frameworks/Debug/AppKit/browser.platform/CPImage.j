@@ -1,4 +1,4 @@
-I;21;Foundation/CPBundle.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.jI;21;Foundation/CPString.ji;12;CPGeometry.jc;12167;
+I;21;Foundation/CPBundle.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.jI;21;Foundation/CPString.ji;12;CPGeometry.jc;12661;
 CPImageLoadStatusInitialized = 0;
 CPImageLoadStatusLoading = 1;
 CPImageLoadStatusCompleted = 2;
@@ -23,7 +23,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(self, "resourcePath") + '/' + aFilename;
 }
-})]);
+},["CPString","CPString"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPImage"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_size"), new objj_ivar("_filename"), new objj_ivar("_delegate"), new objj_ivar("_loadStatus"), new objj_ivar("_image")]);
@@ -41,7 +41,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithContentsOfFile:size:"), function $CPImage__initWithContentsOfFile_size_(self, _cmd, aFilename, aSize)
+},["CPImage","CPString","CGSize"]), new objj_method(sel_getUid("initWithContentsOfFile:size:"), function $CPImage__initWithContentsOfFile_size_(self, _cmd, aFilename, aSize)
 { with(self)
 {
     self = objj_msgSend(self, "initByReferencingFile:size:", aFilename, aSize);
@@ -49,7 +49,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
         objj_msgSend(self, "load");
     return self;
 }
-}), new objj_method(sel_getUid("initWithContentsOfFile:"), function $CPImage__initWithContentsOfFile_(self, _cmd, aFilename)
+},["CPImage","CPString","CGSize"]), new objj_method(sel_getUid("initWithContentsOfFile:"), function $CPImage__initWithContentsOfFile_(self, _cmd, aFilename)
 { with(self)
 {
     self = objj_msgSend(self, "initByReferencingFile:size:", aFilename,  CGSizeMake(-1, -1));
@@ -57,37 +57,37 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
         objj_msgSend(self, "load");
     return self;
 }
-}), new objj_method(sel_getUid("filename"), function $CPImage__filename(self, _cmd)
+},["CPImage","CPString"]), new objj_method(sel_getUid("filename"), function $CPImage__filename(self, _cmd)
 { with(self)
 {
     return _filename;
 }
-}), new objj_method(sel_getUid("setSize:"), function $CPImage__setSize_(self, _cmd, aSize)
+},["CPString"]), new objj_method(sel_getUid("setSize:"), function $CPImage__setSize_(self, _cmd, aSize)
 { with(self)
 {
     _size = CGSizeMakeCopy(aSize);
 }
-}), new objj_method(sel_getUid("size"), function $CPImage__size(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("size"), function $CPImage__size(self, _cmd)
 { with(self)
 {
     return _size;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPImage__setDelegate_(self, _cmd, aDelegate)
+},["CGSize"]), new objj_method(sel_getUid("setDelegate:"), function $CPImage__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     _delegate = aDelegate;
 }
-}), new objj_method(sel_getUid("delegate"), function $CPImage__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $CPImage__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("loadStatus"), function $CPImage__loadStatus(self, _cmd)
+},["id"]), new objj_method(sel_getUid("loadStatus"), function $CPImage__loadStatus(self, _cmd)
 { with(self)
 {
     return _loadStatus;
 }
-}), new objj_method(sel_getUid("load"), function $CPImage__load(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("load"), function $CPImage__load(self, _cmd)
 { with(self)
 {
     if (_loadStatus == CPImageLoadStatusLoading || _loadStatus == CPImageLoadStatusCompleted)
@@ -131,24 +131,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
     _image.src = _filename;
     isSynchronous = NO;
 }
-}), new objj_method(sel_getUid("isThreePartImage"), function $CPImage__isThreePartImage(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isThreePartImage"), function $CPImage__isThreePartImage(self, _cmd)
 { with(self)
 {
     return NO;
 }
-}), new objj_method(sel_getUid("isNinePartImage"), function $CPImage__isNinePartImage(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("isNinePartImage"), function $CPImage__isNinePartImage(self, _cmd)
 { with(self)
 {
     return NO;
 }
-}), new objj_method(sel_getUid("_derefFromImage"), function $CPImage___derefFromImage(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("_derefFromImage"), function $CPImage___derefFromImage(self, _cmd)
 { with(self)
 {
     _image.onload = null;
     _image.onerror = null;
     _image.onabort = null;
 }
-}), new objj_method(sel_getUid("_imageDidLoad"), function $CPImage___imageDidLoad(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_imageDidLoad"), function $CPImage___imageDidLoad(self, _cmd)
 { with(self)
 {
     _loadStatus = CPImageLoadStatusCompleted;
@@ -158,21 +158,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("imageDidLoad:")))
         objj_msgSend(_delegate, "imageDidLoad:", self);
 }
-}), new objj_method(sel_getUid("_imageDidError"), function $CPImage___imageDidError(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_imageDidError"), function $CPImage___imageDidError(self, _cmd)
 { with(self)
 {
     _loadStatus = CPImageLoadStatusReadError;
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("imageDidError:")))
         objj_msgSend(_delegate, "imageDidError:", self);
 }
-}), new objj_method(sel_getUid("_imageDidAbort"), function $CPImage___imageDidAbort(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_imageDidAbort"), function $CPImage___imageDidAbort(self, _cmd)
 { with(self)
 {
     _loadStatus = CPImageLoadStatusCancelled;
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("imageDidAbort:")))
         objj_msgSend(_delegate, "imageDidAbort:", self);
 }
-})]);
+},["void"])]);
 }
 {
 var the_class = objj_getClass("CPImage")
@@ -182,13 +182,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(self, "initWithContentsOfFile:size:", objj_msgSend(aCoder, "decodeObjectForKey:", "CPFilename"), objj_msgSend(aCoder, "decodeSizeForKey:", "CPSize"));
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPImage__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPImage__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _filename, "CPFilename");
     objj_msgSend(aCoder, "encodeSize:forKey:", _size, "CPSize");
 }
-})]);
+},["void","CPCoder"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPThreePartImage"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_imageSlices"), new objj_ivar("_isVertical")]);
@@ -205,32 +205,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithImageSlices:isV
     }
     return self;
 }
-}), new objj_method(sel_getUid("filename"), function $CPThreePartImage__filename(self, _cmd)
+},["id","CPArray","BOOL"]), new objj_method(sel_getUid("filename"), function $CPThreePartImage__filename(self, _cmd)
 { with(self)
 {
     return "";
 }
-}), new objj_method(sel_getUid("imageSlices"), function $CPThreePartImage__imageSlices(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("imageSlices"), function $CPThreePartImage__imageSlices(self, _cmd)
 { with(self)
 {
     return _imageSlices;
 }
-}), new objj_method(sel_getUid("isVertical"), function $CPThreePartImage__isVertical(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("isVertical"), function $CPThreePartImage__isVertical(self, _cmd)
 { with(self)
 {
     return _isVertical;
 }
-}), new objj_method(sel_getUid("isThreePartImage"), function $CPThreePartImage__isThreePartImage(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("isThreePartImage"), function $CPThreePartImage__isThreePartImage(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("isNinePartImage"), function $CPThreePartImage__isNinePartImage(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("isNinePartImage"), function $CPThreePartImage__isNinePartImage(self, _cmd)
 { with(self)
 {
     return NO;
 }
-})]);
+},["BOOL"])]);
 }
 var CPThreePartImageImageSlicesKey = "CPThreePartImageImageSlicesKey",
     CPThreePartImageIsVerticalKey = "CPThreePartImageIsVerticalKey";
@@ -248,13 +248,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPThreePartImage__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPThreePartImage__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _imageSlices, CPThreePartImageImageSlicesKey);
     objj_msgSend(aCoder, "encodeBool:forKey:", _isVertical, CPThreePartImageIsVerticalKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPNinePartImage"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_imageSlices")]);
@@ -268,27 +268,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithImageSlices:"),
         _imageSlices = imageSlices;
     return self;
 }
-}), new objj_method(sel_getUid("filename"), function $CPNinePartImage__filename(self, _cmd)
+},["id","CPArray"]), new objj_method(sel_getUid("filename"), function $CPNinePartImage__filename(self, _cmd)
 { with(self)
 {
     return "";
 }
-}), new objj_method(sel_getUid("imageSlices"), function $CPNinePartImage__imageSlices(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("imageSlices"), function $CPNinePartImage__imageSlices(self, _cmd)
 { with(self)
 {
     return _imageSlices;
 }
-}), new objj_method(sel_getUid("isThreePartImage"), function $CPNinePartImage__isThreePartImage(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("isThreePartImage"), function $CPNinePartImage__isThreePartImage(self, _cmd)
 { with(self)
 {
     return NO;
 }
-}), new objj_method(sel_getUid("isNinePartImage"), function $CPNinePartImage__isNinePartImage(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("isNinePartImage"), function $CPNinePartImage__isNinePartImage(self, _cmd)
 { with(self)
 {
     return YES;
 }
-})]);
+},["BOOL"])]);
 }
 var CPNinePartImageImageSlicesKey = "CPNinePartImageImageSlicesKey";
 {
@@ -302,11 +302,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _imageSlices = objj_msgSend(aCoder, "decodeObjectForKey:", CPNinePartImageImageSlicesKey);
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPNinePartImage__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPNinePartImage__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _imageSlices, CPNinePartImageImageSlicesKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

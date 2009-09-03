@@ -1,4 +1,4 @@
-i;8;CPView.jc;3313;
+i;8;CPView.jc;3402;
 {var the_class = objj_allocateClassPair(CPView, "_CPCibCustomView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_className")]);
 objj_registerClassPair(the_class);
@@ -8,12 +8,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("customClassName"), func
 {
     return _className;
 }
-}), new objj_method(sel_getUid("setCustomClassName:"), function $_CPCibCustomView__setCustomClassName_(self, _cmd, aClassName)
+},["CPString"]), new objj_method(sel_getUid("setCustomClassName:"), function $_CPCibCustomView__setCustomClassName_(self, _cmd, aClassName)
 { with(self)
 {
     _className = aClassName;
 }
-})]);
+},["void","CPString"])]);
 }
 var _CPCibCustomViewClassNameKey = "_CPCibCustomViewClassNameKey";
 {
@@ -27,18 +27,18 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _className = objj_msgSend(aCoder, "decodeObjectForKey:", _CPCibCustomViewClassNameKey);
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibCustomView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibCustomView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
     objj_msgSend(aCoder, "encodeObject:forKey:", _className, _CPCibCustomViewClassNameKey);
 }
-}), new objj_method(sel_getUid("customClassName"), function $_CPCibCustomView__customClassName(self, _cmd)
+},["void","CPCoder"]), new objj_method(sel_getUid("customClassName"), function $_CPCibCustomView__customClassName(self, _cmd)
 { with(self)
 {
     return _className;
 }
-}), new objj_method(sel_getUid("_cibInstantiate"), function $_CPCibCustomView___cibInstantiate(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("_cibInstantiate"), function $_CPCibCustomView___cibInstantiate(self, _cmd)
 { with(self)
 {
     var theClass = CPClassFromString(_className);
@@ -71,6 +71,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return view;
 }
-})]);
+},["id"])]);
 }
 

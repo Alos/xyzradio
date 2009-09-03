@@ -1,4 +1,4 @@
-i;11;CPControl.jc;22090;
+i;11;CPControl.jc;22655;
 CPScrollerNoPart = 0;
 CPScrollerDecrementPage = 1;
 CPScrollerKnob = 2;
@@ -27,7 +27,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("isVertical"), function 
 {
 return _isVertical;
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $CPScroller__initWithFrame_(self, _cmd, aFrame)
+},["id"]), new objj_method(sel_getUid("initWithFrame:"), function $CPScroller__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "initWithFrame:", aFrame);
@@ -41,7 +41,7 @@ return _isVertical;
     }
     return self;
 }
-}), new objj_method(sel_getUid("setControlSize:"), function $CPScroller__setControlSize_(self, _cmd, aControlSize)
+},["id","CGRect"]), new objj_method(sel_getUid("setControlSize:"), function $CPScroller__setControlSize_(self, _cmd, aControlSize)
 { with(self)
 {
     if (_controlSize == aControlSize)
@@ -50,29 +50,29 @@ return _isVertical;
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("controlSize"), function $CPScroller__controlSize(self, _cmd)
+},["void","CPControlSize"]), new objj_method(sel_getUid("controlSize"), function $CPScroller__controlSize(self, _cmd)
 { with(self)
 {
     return _controlSize;
 }
-}), new objj_method(sel_getUid("setFloatValue:"), function $CPScroller__setFloatValue_(self, _cmd, aValue)
+},["CPControlSize"]), new objj_method(sel_getUid("setFloatValue:"), function $CPScroller__setFloatValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setFloatValue:", MIN(1.0, MAX(0.0, aValue)));
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("setFloatValue:knobProportion:"), function $CPScroller__setFloatValue_knobProportion_(self, _cmd, aValue, aProportion)
+},["void","float"]), new objj_method(sel_getUid("setFloatValue:knobProportion:"), function $CPScroller__setFloatValue_knobProportion_(self, _cmd, aValue, aProportion)
 { with(self)
 {
     _knobProportion = MIN(1.0, MAX(0.0001, aProportion));
     objj_msgSend(self, "setFloatValue:", aValue);
 }
-}), new objj_method(sel_getUid("knobProportion"), function $CPScroller__knobProportion(self, _cmd)
+},["void","float","float"]), new objj_method(sel_getUid("knobProportion"), function $CPScroller__knobProportion(self, _cmd)
 { with(self)
 {
     return _knobProportion;
 }
-}), new objj_method(sel_getUid("currentValueForThemeAttribute:"), function $CPScroller__currentValueForThemeAttribute_(self, _cmd, anAttributeName)
+},["float"]), new objj_method(sel_getUid("currentValueForThemeAttribute:"), function $CPScroller__currentValueForThemeAttribute_(self, _cmd, anAttributeName)
 { with(self)
 {
     var themeState = _themeState;
@@ -80,14 +80,14 @@ return _isVertical;
         themeState &= ~CPThemeStateHighlighted;
     return objj_msgSend(self, "valueForThemeAttribute:inState:", anAttributeName, themeState);
 }
-}), new objj_method(sel_getUid("rectForPart:"), function $CPScroller__rectForPart_(self, _cmd, aPart)
+},["id","CPString"]), new objj_method(sel_getUid("rectForPart:"), function $CPScroller__rectForPart_(self, _cmd, aPart)
 { with(self)
 {
     if (aPart == CPScrollerNoPart)
         return { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } };
     return _partRects[aPart];
 }
-}), new objj_method(sel_getUid("testPart:"), function $CPScroller__testPart_(self, _cmd, aPoint)
+},["CGRect","CPScrollerPart"]), new objj_method(sel_getUid("testPart:"), function $CPScroller__testPart_(self, _cmd, aPoint)
 { with(self)
 {
     aPoint = objj_msgSend(self, "convertPoint:fromView:", aPoint, nil);
@@ -105,7 +105,7 @@ return _isVertical;
         return CPScrollerKnobSlot;
     return CPScrollerNoPart;
 }
-}), new objj_method(sel_getUid("checkSpaceForParts"), function $CPScroller__checkSpaceForParts(self, _cmd)
+},["CPScrollerPart","CGPoint"]), new objj_method(sel_getUid("checkSpaceForParts"), function $CPScroller__checkSpaceForParts(self, _cmd)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds");
@@ -162,43 +162,43 @@ return _isVertical;
         _partRects[CPScrollerIncrementLine] = { origin: { x:width - incrementLineSize.width, y:0.0 }, size: { width:incrementLineSize.width, height:incrementLineSize.height } };
     }
 }
-}), new objj_method(sel_getUid("usableParts"), function $CPScroller__usableParts(self, _cmd)
+},["void"]), new objj_method(sel_getUid("usableParts"), function $CPScroller__usableParts(self, _cmd)
 { with(self)
 {
     return _usableParts;
 }
-}), new objj_method(sel_getUid("drawArrow:highlight:"), function $CPScroller__drawArrow_highlight_(self, _cmd, anArrow, shouldHighlight)
+},["CPUsableScrollerParts"]), new objj_method(sel_getUid("drawArrow:highlight:"), function $CPScroller__drawArrow_highlight_(self, _cmd, anArrow, shouldHighlight)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("drawKnob"), function $CPScroller__drawKnob(self, _cmd)
+},["void","CPScrollerArrow","BOOL"]), new objj_method(sel_getUid("drawKnob"), function $CPScroller__drawKnob(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("drawKnobSlot"), function $CPScroller__drawKnobSlot(self, _cmd)
+},["void"]), new objj_method(sel_getUid("drawKnobSlot"), function $CPScroller__drawKnobSlot(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("createViewForPart:"), function $CPScroller__createViewForPart_(self, _cmd, aPart)
+},["void"]), new objj_method(sel_getUid("createViewForPart:"), function $CPScroller__createViewForPart_(self, _cmd, aPart)
 { with(self)
 {
     var view = objj_msgSend(objj_msgSend(CPView, "alloc"), "initWithFrame:", { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } });
     objj_msgSend(view, "setHitTests:", NO);
     return view;
 }
-}), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPScroller__rectForEphemeralSubviewNamed_(self, _cmd, aName)
+},["CPView","CPScrollerPart"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPScroller__rectForEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     return _partRects[aName];
 }
-}), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPScroller__createEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CPString"]), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPScroller__createEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     var view = objj_msgSend(objj_msgSend(CPView, "alloc"), "initWithFrame:", { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } });
     objj_msgSend(view, "setHitTests:", NO);
     return view;
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPScroller__layoutSubviews(self, _cmd)
+},["CPView","CPString"]), new objj_method(sel_getUid("layoutSubviews"), function $CPScroller__layoutSubviews(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "checkSpaceForParts");
@@ -215,7 +215,7 @@ return _isVertical;
             objj_msgSend(view, "setBackgroundColor:", objj_msgSend(self, "currentValueForThemeAttribute:", NAMES_FOR_PARTS[part] + "-color"));
     }
 }
-}), new objj_method(sel_getUid("drawParts"), function $CPScroller__drawParts(self, _cmd)
+},["void"]), new objj_method(sel_getUid("drawParts"), function $CPScroller__drawParts(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "drawKnobSlot");
@@ -223,12 +223,12 @@ return _isVertical;
     objj_msgSend(self, "drawArrow:highlight:", CPScrollerDecrementArrow, NO);
     objj_msgSend(self, "drawArrow:highlight:", CPScrollerIncrementArrow, NO);
 }
-}), new objj_method(sel_getUid("hitPart"), function $CPScroller__hitPart(self, _cmd)
+},["void"]), new objj_method(sel_getUid("hitPart"), function $CPScroller__hitPart(self, _cmd)
 { with(self)
 {
     return _hitPart;
 }
-}), new objj_method(sel_getUid("trackKnob:"), function $CPScroller__trackKnob_(self, _cmd, anEvent)
+},["CPScrollerPart"]), new objj_method(sel_getUid("trackKnob:"), function $CPScroller__trackKnob_(self, _cmd, anEvent)
 { with(self)
 {
     var type = objj_msgSend(anEvent, "type");
@@ -259,7 +259,7 @@ return _isVertical;
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackKnob:"), CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
     objj_msgSend(self, "sendAction:to:", objj_msgSend(self, "action"), objj_msgSend(self, "target"));
 }
-}), new objj_method(sel_getUid("trackScrollButtons:"), function $CPScroller__trackScrollButtons_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("trackScrollButtons:"), function $CPScroller__trackScrollButtons_(self, _cmd, anEvent)
 { with(self)
 {
     var type = objj_msgSend(anEvent, "type");
@@ -314,7 +314,7 @@ return _isVertical;
         objj_msgSend(self, "sendAction:to:", objj_msgSend(self, "action"), objj_msgSend(self, "target"));
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackScrollButtons:"), CPPeriodicMask | CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
 }
-}), new objj_method(sel_getUid("_recalculateIsVertical"), function $CPScroller___recalculateIsVertical(self, _cmd)
+},["void","CPEvent"]), new objj_method(sel_getUid("_recalculateIsVertical"), function $CPScroller___recalculateIsVertical(self, _cmd)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds"),
@@ -326,7 +326,7 @@ return _isVertical;
     else if (_isVertical === 0)
         objj_msgSend(self, "unsetThemeState:", CPThemeStateVertical);
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $CPScroller__setFrameSize_(self, _cmd, aSize)
+},["void"]), new objj_method(sel_getUid("setFrameSize:"), function $CPScroller__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setFrameSize:", aSize);
@@ -334,7 +334,7 @@ return _isVertical;
     objj_msgSend(self, "checkSpaceForParts");
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPScroller__mouseDown_(self, _cmd, anEvent)
+},["void","CGSize"]), new objj_method(sel_getUid("mouseDown:"), function $CPScroller__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     if (!objj_msgSend(self, "isEnabled"))
@@ -349,13 +349,13 @@ return _isVertical;
         case CPScrollerIncrementPage: return objj_msgSend(self, "trackScrollButtons:", anEvent);
     }
 }
-})]);
+},["void","CPEvent"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("themeClass"), function $CPScroller__themeClass(self, _cmd)
 { with(self)
 {
     return "scroller";
 }
-}), new objj_method(sel_getUid("themeAttributes"), function $CPScroller__themeAttributes(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("themeAttributes"), function $CPScroller__themeAttributes(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [ nil, nil, nil, nil,
@@ -369,17 +369,17 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("themeClass"), function
                                                     "knob-inset",
                                                     "minimum-knob-length"]);
 }
-}), new objj_method(sel_getUid("scrollerWidth"), function $CPScroller__scrollerWidth(self, _cmd)
+},["id"]), new objj_method(sel_getUid("scrollerWidth"), function $CPScroller__scrollerWidth(self, _cmd)
 { with(self)
 {
     return 17.0;
 }
-}), new objj_method(sel_getUid("scrollerWidthForControlSize:"), function $CPScroller__scrollerWidthForControlSize_(self, _cmd, aControlSize)
+},["float"]), new objj_method(sel_getUid("scrollerWidthForControlSize:"), function $CPScroller__scrollerWidthForControlSize_(self, _cmd, aControlSize)
 { with(self)
 {
     return 17.0;
 }
-})]);
+},["float","CPControlSize"])]);
 }
 var CPScrollerControlSizeKey = "CPScrollerControlSize",
     CPScrollerKnobProportionKey = "CPScrollerKnobProportion";
@@ -403,13 +403,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPScroller__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPScroller__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "encodeWithCoder:", aCoder);
     objj_msgSend(aCoder, "encodeInt:forKey:", _controlSize, CPScrollerControlSizeKey);
     objj_msgSend(aCoder, "encodeFloat:forKey:", _knobProportion, CPScrollerKnobProportionKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

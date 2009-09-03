@@ -96,6 +96,7 @@
 		<string>CPProgressIndicator.j</string>
 		<string>CPRadio.j</string>
 		<string>CPResponder.j</string>
+		<string>CPScreen.j</string>
 		<string>CPScroller.j</string>
 		<string>CPScrollView.j</string>
 		<string>CPSearchField.j</string>

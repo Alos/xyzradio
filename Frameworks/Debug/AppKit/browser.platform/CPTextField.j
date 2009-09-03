@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;31432;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;32286;
 CPLineBreakByWordWrapping = 0;
 CPLineBreakByCharWrapping = 1;
 CPLineBreakByClipping = 2;
@@ -30,7 +30,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return self;
 }
-})]);
+},["CPString"])]);
 }
 CPTextFieldStateRounded = CPThemeState("rounded");
 CPTextFieldStatePlaceholder = CPThemeState("placeholder");
@@ -161,7 +161,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     }
     return CPTextFieldDOMInputElement;
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $CPTextField__initWithFrame_(self, _cmd, aFrame)
+},["DOMElement"]), new objj_method(sel_getUid("initWithFrame:"), function $CPTextField__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "initWithFrame:", aFrame);
@@ -174,37 +174,37 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     }
     return self;
 }
-}), new objj_method(sel_getUid("setEditable:"), function $CPTextField__setEditable_(self, _cmd, shouldBeEditable)
+},["id","CGRect"]), new objj_method(sel_getUid("setEditable:"), function $CPTextField__setEditable_(self, _cmd, shouldBeEditable)
 { with(self)
 {
     _isEditable = shouldBeEditable;
 }
-}), new objj_method(sel_getUid("isEditable"), function $CPTextField__isEditable(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isEditable"), function $CPTextField__isEditable(self, _cmd)
 { with(self)
 {
     return _isEditable;
 }
-}), new objj_method(sel_getUid("setSelectable:"), function $CPTextField__setSelectable_(self, _cmd, aFlag)
+},["BOOL"]), new objj_method(sel_getUid("setSelectable:"), function $CPTextField__setSelectable_(self, _cmd, aFlag)
 { with(self)
 {
     _isSelectable = aFlag;
 }
-}), new objj_method(sel_getUid("isSelectable"), function $CPTextField__isSelectable(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isSelectable"), function $CPTextField__isSelectable(self, _cmd)
 { with(self)
 {
     return _isSelectable;
 }
-}), new objj_method(sel_getUid("setSecure:"), function $CPTextField__setSecure_(self, _cmd, aFlag)
+},["BOOL"]), new objj_method(sel_getUid("setSecure:"), function $CPTextField__setSecure_(self, _cmd, aFlag)
 { with(self)
 {
     _isSecure = aFlag;
 }
-}), new objj_method(sel_getUid("isSecure"), function $CPTextField__isSecure(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isSecure"), function $CPTextField__isSecure(self, _cmd)
 { with(self)
 {
     return _isSecure;
 }
-}), new objj_method(sel_getUid("setBezeled:"), function $CPTextField__setBezeled_(self, _cmd, shouldBeBezeled)
+},["BOOL"]), new objj_method(sel_getUid("setBezeled:"), function $CPTextField__setBezeled_(self, _cmd, shouldBeBezeled)
 { with(self)
 {
     if (shouldBeBezeled)
@@ -212,12 +212,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     else
         objj_msgSend(self, "unsetThemeState:", CPThemeStateBezeled);
 }
-}), new objj_method(sel_getUid("isBezeled"), function $CPTextField__isBezeled(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isBezeled"), function $CPTextField__isBezeled(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "hasThemeState:", CPThemeStateBezeled);
 }
-}), new objj_method(sel_getUid("setBezelStyle:"), function $CPTextField__setBezelStyle_(self, _cmd, aBezelStyle)
+},["BOOL"]), new objj_method(sel_getUid("setBezelStyle:"), function $CPTextField__setBezelStyle_(self, _cmd, aBezelStyle)
 { with(self)
 {
     var shouldBeRounded = aBezelStyle === CPTextFieldRoundedBezel;
@@ -226,14 +226,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     else
         objj_msgSend(self, "unsetThemeState:", CPTextFieldStateRounded);
 }
-}), new objj_method(sel_getUid("bezelStyle"), function $CPTextField__bezelStyle(self, _cmd)
+},["void","CPTextFieldBezelStyle"]), new objj_method(sel_getUid("bezelStyle"), function $CPTextField__bezelStyle(self, _cmd)
 { with(self)
 {
     if (objj_msgSend(self, "hasThemeState:", CPTextFieldStateRounded))
         return CPTextFieldRoundedBezel;
     return CPTextFieldSquareBezel;
 }
-}), new objj_method(sel_getUid("setBordered:"), function $CPTextField__setBordered_(self, _cmd, shouldBeBordered)
+},["CPTextFieldBezelStyle"]), new objj_method(sel_getUid("setBordered:"), function $CPTextField__setBordered_(self, _cmd, shouldBeBordered)
 { with(self)
 {
     if (shouldBeBordered)
@@ -241,12 +241,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     else
         objj_msgSend(self, "unsetThemeState:", CPThemeStateBordered);
 }
-}), new objj_method(sel_getUid("isBordered"), function $CPTextField__isBordered(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isBordered"), function $CPTextField__isBordered(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "hasThemeState:", CPThemeStateBordered);
 }
-}), new objj_method(sel_getUid("setDrawsBackground:"), function $CPTextField__setDrawsBackground_(self, _cmd, shouldDrawBackground)
+},["BOOL"]), new objj_method(sel_getUid("setDrawsBackground:"), function $CPTextField__setDrawsBackground_(self, _cmd, shouldDrawBackground)
 { with(self)
 {
     if (_drawsBackground == shouldDrawBackground)
@@ -255,12 +255,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("drawsBackground"), function $CPTextField__drawsBackground(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("drawsBackground"), function $CPTextField__drawsBackground(self, _cmd)
 { with(self)
 {
     return _drawsBackground;
 }
-}), new objj_method(sel_getUid("setTextFieldBackgroundColor:"), function $CPTextField__setTextFieldBackgroundColor_(self, _cmd, aColor)
+},["BOOL"]), new objj_method(sel_getUid("setTextFieldBackgroundColor:"), function $CPTextField__setTextFieldBackgroundColor_(self, _cmd, aColor)
 { with(self)
 {
     if (_textFieldBackgroundColor == aColor)
@@ -269,17 +269,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("textFieldBackgroundColor"), function $CPTextField__textFieldBackgroundColor(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("textFieldBackgroundColor"), function $CPTextField__textFieldBackgroundColor(self, _cmd)
 { with(self)
 {
     return _textFieldBackgroundColor;
 }
-}), new objj_method(sel_getUid("acceptsFirstResponder"), function $CPTextField__acceptsFirstResponder(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("acceptsFirstResponder"), function $CPTextField__acceptsFirstResponder(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "isEditable") && objj_msgSend(self, "isEnabled");
 }
-}), new objj_method(sel_getUid("becomeFirstResponder"), function $CPTextField__becomeFirstResponder(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("becomeFirstResponder"), function $CPTextField__becomeFirstResponder(self, _cmd)
 { with(self)
 {
     if (CPTextFieldInputOwner && objj_msgSend(CPTextFieldInputOwner, "window") !== objj_msgSend(self, "window"))
@@ -324,7 +324,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     }
     return YES;
 }
-}), new objj_method(sel_getUid("resignFirstResponder"), function $CPTextField__resignFirstResponder(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("resignFirstResponder"), function $CPTextField__resignFirstResponder(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "unsetThemeState:", CPThemeStateEditing);
@@ -351,7 +351,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     objj_msgSend(self, "textDidEndEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidBeginEditingNotification, self, nil));
     return YES;
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPTextField__mouseDown_(self, _cmd, anEvent)
+},["BOOL"]), new objj_method(sel_getUid("mouseDown:"), function $CPTextField__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     if (objj_msgSend(self, "isEditable") && objj_msgSend(self, "isEnabled"))
@@ -359,18 +359,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     else
         return objj_msgSend(objj_msgSend(self, "nextResponder"), "mouseDown:", anEvent);
 }
-}), new objj_method(sel_getUid("objectValue"), function $CPTextField__objectValue(self, _cmd)
+},["void","CPEvent"]), new objj_method(sel_getUid("objectValue"), function $CPTextField__objectValue(self, _cmd)
 { with(self)
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "objectValue");
 }
-}), new objj_method(sel_getUid("setObjectValue:"), function $CPTextField__setObjectValue_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setObjectValue:"), function $CPTextField__setObjectValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setObjectValue:", aValue);
     objj_msgSend(self, "_updatePlaceholderState");
 }
-}), new objj_method(sel_getUid("_updatePlaceholderState"), function $CPTextField___updatePlaceholderState(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_updatePlaceholderState"), function $CPTextField___updatePlaceholderState(self, _cmd)
 { with(self)
 {
     var string = objj_msgSend(self, "stringValue");
@@ -379,7 +379,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     else
         objj_msgSend(self, "unsetThemeState:", CPTextFieldStatePlaceholder);
 }
-}), new objj_method(sel_getUid("setPlaceholderString:"), function $CPTextField__setPlaceholderString_(self, _cmd, aStringValue)
+},["void"]), new objj_method(sel_getUid("setPlaceholderString:"), function $CPTextField__setPlaceholderString_(self, _cmd, aStringValue)
 { with(self)
 {
     if (_placeholderString === aStringValue)
@@ -391,12 +391,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         objj_msgSend(self, "setNeedsDisplay:", YES);
     }
 }
-}), new objj_method(sel_getUid("placeholderString"), function $CPTextField__placeholderString(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("placeholderString"), function $CPTextField__placeholderString(self, _cmd)
 { with(self)
 {
     return _placeholderString;
 }
-}), new objj_method(sel_getUid("sizeToFit"), function $CPTextField__sizeToFit(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("sizeToFit"), function $CPTextField__sizeToFit(self, _cmd)
 { with(self)
 {
     var size = objj_msgSend((objj_msgSend(self, "stringValue") || " "), "sizeWithFont:", objj_msgSend(self, "currentValueForThemeAttribute:", "font")),
@@ -413,14 +413,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         size.width = CGRectGetWidth(objj_msgSend(self, "frame"));
     objj_msgSend(self, "setFrameSize:", size);
 }
-}), new objj_method(sel_getUid("selectText:"), function $CPTextField__selectText_(self, _cmd, sender)
+},["void"]), new objj_method(sel_getUid("selectText:"), function $CPTextField__selectText_(self, _cmd, sender)
 { with(self)
 {
     var element = objj_msgSend(self, "_inputElement");
     if (element.parentNode === _DOMElement && (objj_msgSend(self, "isEditable") || objj_msgSend(self, "isSelectable")))
         window.setTimeout(function() { element.select(); }, 0);
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPTextField__setDelegate_(self, _cmd, aDelegate)
+},["void","id"]), new objj_method(sel_getUid("setDelegate:"), function $CPTextField__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     var defaultCenter = objj_msgSend(CPNotificationCenter, "defaultCenter");
@@ -438,12 +438,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("controlTextDidEndEditing:")))
         objj_msgSend(defaultCenter, "addObserver:selector:name:object:", _delegate, sel_getUid("controlTextDidEndEditing:"), CPControlTextDidEndEditingNotification, self);
 }
-}), new objj_method(sel_getUid("delegate"), function $CPTextField__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $CPTextField__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("contentRectForBounds:"), function $CPTextField__contentRectForBounds_(self, _cmd, bounds)
+},["id"]), new objj_method(sel_getUid("contentRectForBounds:"), function $CPTextField__contentRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     var contentInset = objj_msgSend(self, "currentValueForThemeAttribute:", "content-inset");
@@ -455,7 +455,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     bounds.size.height -= contentInset.top + contentInset.bottom;
     return bounds;
 }
-}), new objj_method(sel_getUid("bezelRectForBounds:"), function $CPTextField__bezelRectForBounds_(self, _cmd, bounds)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("bezelRectForBounds:"), function $CPTextField__bezelRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     var bezelInset = objj_msgSend(self, "currentValueForThemeAttribute:", "bezel-inset");
@@ -467,7 +467,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     bounds.size.height -= bezelInset.top + bezelInset.bottom;
     return bounds;
 }
-}), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPTextField__rectForEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CFRect"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPTextField__rectForEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "bezel-view")
@@ -476,7 +476,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         return objj_msgSend(self, "contentRectForBounds:", objj_msgSend(self, "bounds"));
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "rectForEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPTextField__createEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CPString"]), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPTextField__createEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "bezel-view")
@@ -492,7 +492,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
     }
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "createEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPTextField__layoutSubviews(self, _cmd)
+},["CPView","CPString"]), new objj_method(sel_getUid("layoutSubviews"), function $CPTextField__layoutSubviews(self, _cmd)
 { with(self)
 {
     var bezelView = objj_msgSend(self, "layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:", "bezel-view", CPWindowBelow, "content-view");
@@ -521,13 +521,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         objj_msgSend(contentView, "setTextShadowOffset:", objj_msgSend(self, "currentValueForThemeAttribute:", "text-shadow-offset"));
     }
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("textFieldWithStringValue:placeholder:width:"), function $CPTextField__textFieldWithStringValue_placeholder_width_(self, _cmd, aStringValue, aPlaceholder, aWidth)
 { with(self)
 {
     return objj_msgSend(self, "textFieldWithStringValue:placeholder:width:theme:", aStringValue, aPlaceholder, aWidth, objj_msgSend(CPTheme, "defaultTheme"));
 }
-}), new objj_method(sel_getUid("textFieldWithStringValue:placeholder:width:theme:"), function $CPTextField__textFieldWithStringValue_placeholder_width_theme_(self, _cmd, aStringValue, aPlaceholder, aWidth, aTheme)
+},["CPTextField","CPString","CPString","float"]), new objj_method(sel_getUid("textFieldWithStringValue:placeholder:width:theme:"), function $CPTextField__textFieldWithStringValue_placeholder_width_theme_(self, _cmd, aStringValue, aPlaceholder, aWidth, aTheme)
 { with(self)
 {
     var textField = objj_msgSend(objj_msgSend(self, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, aWidth, 29.0));
@@ -540,12 +540,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("textFieldWithStringVal
     objj_msgSend(textField, "sizeToFit");
     return textField;
 }
-}), new objj_method(sel_getUid("roundedTextFieldWithStringValue:placeholder:width:"), function $CPTextField__roundedTextFieldWithStringValue_placeholder_width_(self, _cmd, aStringValue, aPlaceholder, aWidth)
+},["CPTextField","CPString","CPString","float","CPTheme"]), new objj_method(sel_getUid("roundedTextFieldWithStringValue:placeholder:width:"), function $CPTextField__roundedTextFieldWithStringValue_placeholder_width_(self, _cmd, aStringValue, aPlaceholder, aWidth)
 { with(self)
 {
     return objj_msgSend(self, "roundedTextFieldWithStringValue:placeholder:width:theme:", aStringValue, aPlaceholder, aWidth, objj_msgSend(CPTheme, "defaultTheme"));
 }
-}), new objj_method(sel_getUid("roundedTextFieldWithStringValue:placeholder:width:theme:"), function $CPTextField__roundedTextFieldWithStringValue_placeholder_width_theme_(self, _cmd, aStringValue, aPlaceholder, aWidth, aTheme)
+},["CPTextField","CPString","CPString","float"]), new objj_method(sel_getUid("roundedTextFieldWithStringValue:placeholder:width:theme:"), function $CPTextField__roundedTextFieldWithStringValue_placeholder_width_theme_(self, _cmd, aStringValue, aPlaceholder, aWidth, aTheme)
 { with(self)
 {
     var textField = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:", CGRectMake(0.0, 0.0, aWidth, 29.0));
@@ -559,12 +559,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("textFieldWithStringVal
     objj_msgSend(textField, "sizeToFit");
     return textField;
 }
-}), new objj_method(sel_getUid("labelWithTitle:"), function $CPTextField__labelWithTitle_(self, _cmd, aTitle)
+},["CPTextField","CPString","CPString","float","CPTheme"]), new objj_method(sel_getUid("labelWithTitle:"), function $CPTextField__labelWithTitle_(self, _cmd, aTitle)
 { with(self)
 {
     return objj_msgSend(self, "labelWithTitle:theme:", aTitle, objj_msgSend(CPTheme, "defaultTheme"));
 }
-}), new objj_method(sel_getUid("labelWithTitle:theme:"), function $CPTextField__labelWithTitle_theme_(self, _cmd, aTitle, aTheme)
+},["CPTextField","CPString"]), new objj_method(sel_getUid("labelWithTitle:theme:"), function $CPTextField__labelWithTitle_theme_(self, _cmd, aTitle, aTheme)
 { with(self)
 {
     var textField = objj_msgSend(objj_msgSend(self, "alloc"), "init");
@@ -572,17 +572,17 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("textFieldWithStringVal
     objj_msgSend(textField, "sizeToFit");
     return textField;
 }
-}), new objj_method(sel_getUid("themeClass"), function $CPTextField__themeClass(self, _cmd)
+},["CPTextField","CPString","CPTheme"]), new objj_method(sel_getUid("themeClass"), function $CPTextField__themeClass(self, _cmd)
 { with(self)
 {
     return "textfield";
 }
-}), new objj_method(sel_getUid("themeAttributes"), function $CPTextField__themeAttributes(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("themeAttributes"), function $CPTextField__themeAttributes(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [{ top:(0), right:(0), bottom:(0), left:(0) }, { top:(2.0), right:(2.0), bottom:(2.0), left:(2.0) }, nil], ["bezel-inset", "content-inset", "bezel-color"]);
 }
-})]);
+},["id"])]);
 }
 var secureStringForString = function(aString)
 {
@@ -620,7 +620,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTextField__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTextField__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "encodeWithCoder:", aCoder);
@@ -630,6 +630,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _textFieldBackgroundColor, CPTextFieldBackgroundColorKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _placeholderString, CPTextFieldPlaceholderStringKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

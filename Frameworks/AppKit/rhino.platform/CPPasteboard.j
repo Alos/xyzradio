@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;40;Foundation/CPPropertyListSerialization.jc;4575;
+I;21;Foundation/CPObject.jI;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;40;Foundation/CPPropertyListSerialization.jc;4594;
 CPGeneralPboard="CPGeneralPboard";
 CPFontPboard="CPFontPboard";
 CPRulerPboard="CPRulerPboard";
@@ -69,7 +69,7 @@ return objj_msgSend(_1b,"setPropertyList:forType:",_1d,_1e);
 }
 }),new objj_method(sel_getUid("availableTypeFromArray:"),function(_1f,_20,_21){
 with(_1f){
-return objj_msgSend(_types,"firstObjectCommonWithArray:",_21);
+return objj_msgSend(objj_msgSend(_1f,"types"),"firstObjectCommonWithArray:",_21);
 }
 }),new objj_method(sel_getUid("types"),function(_22,_23){
 with(_22){

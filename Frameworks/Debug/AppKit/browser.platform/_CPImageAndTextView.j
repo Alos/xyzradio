@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;22447;
+I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;23158;
 CPTopVerticalTextAlignment = 1,
 CPCenterVerticalTextAlignment = 2,
 CPBottomVerticalTextAlignment = 3;
@@ -49,12 +49,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $_CPImageAndTextView__initWithFrame_(self, _cmd, aFrame)
+},["id","CGRect","CPControl"]), new objj_method(sel_getUid("initWithFrame:"), function $_CPImageAndTextView__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     return objj_msgSend(self, "initWithFrame:control:", aFrame, nil);
 }
-}), new objj_method(sel_getUid("setAlignment:"), function $_CPImageAndTextView__setAlignment_(self, _cmd, anAlignment)
+},["id","CGRect"]), new objj_method(sel_getUid("setAlignment:"), function $_CPImageAndTextView__setAlignment_(self, _cmd, anAlignment)
 { with(self)
 {
     if (_alignment === anAlignment)
@@ -74,12 +74,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
                                         break;
     }
 }
-}), new objj_method(sel_getUid("alignment"), function $_CPImageAndTextView__alignment(self, _cmd)
+},["void","CPTextAlignment"]), new objj_method(sel_getUid("alignment"), function $_CPImageAndTextView__alignment(self, _cmd)
 { with(self)
 {
     return _alignment;
 }
-}), new objj_method(sel_getUid("setVerticalAlignment:"), function $_CPImageAndTextView__setVerticalAlignment_(self, _cmd, anAlignment)
+},["CPTextAlignment"]), new objj_method(sel_getUid("setVerticalAlignment:"), function $_CPImageAndTextView__setVerticalAlignment_(self, _cmd, anAlignment)
 { with(self)
 {
     if (_verticalAlignment === anAlignment)
@@ -88,12 +88,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _flags |= _CPImageAndTextViewVerticalAlignmentChangedFlag;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("verticalAlignment"), function $_CPImageAndTextView__verticalAlignment(self, _cmd)
+},["void","CPVerticalTextAlignment"]), new objj_method(sel_getUid("verticalAlignment"), function $_CPImageAndTextView__verticalAlignment(self, _cmd)
 { with(self)
 {
     return _verticalAlignment;
 }
-}), new objj_method(sel_getUid("setLineBreakMode:"), function $_CPImageAndTextView__setLineBreakMode_(self, _cmd, aLineBreakMode)
+},["unsigned"]), new objj_method(sel_getUid("setLineBreakMode:"), function $_CPImageAndTextView__setLineBreakMode_(self, _cmd, aLineBreakMode)
 { with(self)
 {
     if (_lineBreakMode === aLineBreakMode)
@@ -102,12 +102,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _flags |= _CPImageAndTextViewLineBreakModeChangedFlag;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("lineBreakMode"), function $_CPImageAndTextView__lineBreakMode(self, _cmd)
+},["void","CPLineBreakMode"]), new objj_method(sel_getUid("lineBreakMode"), function $_CPImageAndTextView__lineBreakMode(self, _cmd)
 { with(self)
 {
     return _lineBreakMode;
 }
-}), new objj_method(sel_getUid("setImagePosition:"), function $_CPImageAndTextView__setImagePosition_(self, _cmd, anImagePosition)
+},["CPLineBreakMode"]), new objj_method(sel_getUid("setImagePosition:"), function $_CPImageAndTextView__setImagePosition_(self, _cmd, anImagePosition)
 { with(self)
 {
     if (_imagePosition == anImagePosition)
@@ -116,12 +116,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _flags |= _CPImageAndTextViewImagePositionChangedFlag;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("imagePosition"), function $_CPImageAndTextView__imagePosition(self, _cmd)
+},["void","CPCellImagePosition"]), new objj_method(sel_getUid("imagePosition"), function $_CPImageAndTextView__imagePosition(self, _cmd)
 { with(self)
 {
     return _imagePosition;
 }
-}), new objj_method(sel_getUid("setImageScaling:"), function $_CPImageAndTextView__setImageScaling_(self, _cmd, anImageScaling)
+},["CPCellImagePosition"]), new objj_method(sel_getUid("setImageScaling:"), function $_CPImageAndTextView__setImageScaling_(self, _cmd, anImageScaling)
 { with(self)
 {
     if (_imageScaling == anImageScaling)
@@ -130,12 +130,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _flags |= _CPImageAndTextViewImageScalingChangedFlag;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("imageScaling"), function $_CPImageAndTextView__imageScaling(self, _cmd)
+},["void","CPImageScaling"]), new objj_method(sel_getUid("imageScaling"), function $_CPImageAndTextView__imageScaling(self, _cmd)
 { with(self)
 {
     return _imageScaling;
 }
-}), new objj_method(sel_getUid("setTextColor:"), function $_CPImageAndTextView__setTextColor_(self, _cmd, aTextColor)
+},["void"]), new objj_method(sel_getUid("setTextColor:"), function $_CPImageAndTextView__setTextColor_(self, _cmd, aTextColor)
 { with(self)
 {
     if (_textColor === aTextColor)
@@ -143,12 +143,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _textColor = aTextColor;
     _DOMElement.style.color = objj_msgSend(_textColor, "cssString");
 }
-}), new objj_method(sel_getUid("textColor"), function $_CPImageAndTextView__textColor(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("textColor"), function $_CPImageAndTextView__textColor(self, _cmd)
 { with(self)
 {
     return _textColor;
 }
-}), new objj_method(sel_getUid("setFont:"), function $_CPImageAndTextView__setFont_(self, _cmd, aFont)
+},["CPColor"]), new objj_method(sel_getUid("setFont:"), function $_CPImageAndTextView__setFont_(self, _cmd, aFont)
 { with(self)
 {
     if (_font === aFont)
@@ -158,12 +158,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _textSize = NULL;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("font"), function $_CPImageAndTextView__font(self, _cmd)
+},["void","CPFont"]), new objj_method(sel_getUid("font"), function $_CPImageAndTextView__font(self, _cmd)
 { with(self)
 {
     return _font;
 }
-}), new objj_method(sel_getUid("setTextShadowColor:"), function $_CPImageAndTextView__setTextShadowColor_(self, _cmd, aColor)
+},["CPFont"]), new objj_method(sel_getUid("setTextShadowColor:"), function $_CPImageAndTextView__setTextShadowColor_(self, _cmd, aColor)
 { with(self)
 {
     if (_textShadowColor === aColor)
@@ -172,12 +172,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _flags |= _CPImageAndTextViewTextShadowColorChangedFlag;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("textShadowColor"), function $_CPImageAndTextView__textShadowColor(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("textShadowColor"), function $_CPImageAndTextView__textShadowColor(self, _cmd)
 { with(self)
 {
     return _textShadowColor;
 }
-}), new objj_method(sel_getUid("setTextShadowOffset:"), function $_CPImageAndTextView__setTextShadowOffset_(self, _cmd, anOffset)
+},["CPColor"]), new objj_method(sel_getUid("setTextShadowOffset:"), function $_CPImageAndTextView__setTextShadowOffset_(self, _cmd, anOffset)
 { with(self)
 {
     if ((_textShadowOffset.width == anOffset.width && _textShadowOffset.height == anOffset.height))
@@ -185,12 +185,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _textShadowOffset = { width:anOffset.width, height:anOffset.height };
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("textShadowOffset"), function $_CPImageAndTextView__textShadowOffset(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("textShadowOffset"), function $_CPImageAndTextView__textShadowOffset(self, _cmd)
 { with(self)
 {
     return _textShadowOffset;
 }
-}), new objj_method(sel_getUid("setImage:"), function $_CPImageAndTextView__setImage_(self, _cmd, anImage)
+},["CGSize"]), new objj_method(sel_getUid("setImage:"), function $_CPImageAndTextView__setImage_(self, _cmd, anImage)
 { with(self)
 {
     if (_image == anImage)
@@ -199,12 +199,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _flags |= _CPImageAndTextViewImageChangedFlag;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("image"), function $_CPImageAndTextView__image(self, _cmd)
+},["void","CPImage"]), new objj_method(sel_getUid("image"), function $_CPImageAndTextView__image(self, _cmd)
 { with(self)
 {
     return _image;
 }
-}), new objj_method(sel_getUid("setText:"), function $_CPImageAndTextView__setText_(self, _cmd, text)
+},["CPImage"]), new objj_method(sel_getUid("setText:"), function $_CPImageAndTextView__setText_(self, _cmd, text)
 { with(self)
 {
     if (_text === text)
@@ -214,12 +214,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     _textSize = NULL;
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("text"), function $_CPImageAndTextView__text(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("text"), function $_CPImageAndTextView__text(self, _cmd)
 { with(self)
 {
     return _text;
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $_CPImageAndTextView__layoutSubviews(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("layoutSubviews"), function $_CPImageAndTextView__layoutSubviews(self, _cmd)
 { with(self)
 {
     var needsDOMTextElement = _imagePosition !== CPImageOnly && (objj_msgSend(_text, "length") > 0),
@@ -365,6 +365,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
         else
         {
             _DOMImageElement = document.createElement("img");
+            if (objj_msgSend(CPPlatform, "supportsDragAndDrop"))
+            {
+                _DOMImageElement.setAttribute("draggable", "true");
+                _DOMImageElement.style["-khtml-user-drag"] = "element";
+            }
             var imageStyle = _DOMImageElement.style;
             imageStyle.top = "0px";
             imageStyle.left = "0px";
@@ -475,7 +480,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     }
     _flags = 0;
 }
-}), new objj_method(sel_getUid("sizeToFit"), function $_CPImageAndTextView__sizeToFit(self, _cmd)
+},["void"]), new objj_method(sel_getUid("sizeToFit"), function $_CPImageAndTextView__sizeToFit(self, _cmd)
 { with(self)
 {
     var size = CGSizeMakeZero();
@@ -507,6 +512,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
     }
     objj_msgSend(self, "setFrameSize:", size);
 }
-})]);
+},["void"])]);
 }
 

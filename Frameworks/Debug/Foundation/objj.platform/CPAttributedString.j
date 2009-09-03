@@ -1,4 +1,4 @@
-i;10;CPObject.ji;10;CPString.ji;14;CPDictionary.ji;9;CPRange.jc;19869;
+i;10;CPObject.ji;10;CPString.ji;14;CPDictionary.ji;9;CPRange.jc;20689;
 {var the_class = objj_allocateClassPair(CPObject, "CPAttributedString"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_string"), new objj_ivar("_rangeEntries")]);
 objj_registerClassPair(the_class);
@@ -8,14 +8,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
 {
     return objj_msgSend(self, "initWithString:attributes:", aString, nil);
 }
-}), new objj_method(sel_getUid("initWithAttributedString:"), function $CPAttributedString__initWithAttributedString_(self, _cmd, aString)
+},["id","CPString"]), new objj_method(sel_getUid("initWithAttributedString:"), function $CPAttributedString__initWithAttributedString_(self, _cmd, aString)
 { with(self)
 {
     var string = objj_msgSend(self, "initWithString:attributes:", "", nil);
     objj_msgSend(string, "setAttributedString:", aString);
     return string;
 }
-}), new objj_method(sel_getUid("initWithString:attributes:"), function $CPAttributedString__initWithString_attributes_(self, _cmd, aString, attributes)
+},["id","CPAttributedString"]), new objj_method(sel_getUid("initWithString:attributes:"), function $CPAttributedString__initWithString_attributes_(self, _cmd, aString, attributes)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -25,22 +25,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     _rangeEntries = [makeRangeEntry(CPMakeRange(0, _string.length), attributes)];
     return self;
 }
-}), new objj_method(sel_getUid("string"), function $CPAttributedString__string(self, _cmd)
+},["id","CPString","CPDictionary"]), new objj_method(sel_getUid("string"), function $CPAttributedString__string(self, _cmd)
 { with(self)
 {
     return _string;
 }
-}), new objj_method(sel_getUid("mutableString"), function $CPAttributedString__mutableString(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("mutableString"), function $CPAttributedString__mutableString(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "string");
 }
-}), new objj_method(sel_getUid("length"), function $CPAttributedString__length(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("length"), function $CPAttributedString__length(self, _cmd)
 { with(self)
 {
     return _string.length;
 }
-}), new objj_method(sel_getUid("_indexOfEntryWithIndex:"), function $CPAttributedString___indexOfEntryWithIndex_(self, _cmd, anIndex)
+},["unsigned"]), new objj_method(sel_getUid("_indexOfEntryWithIndex:"), function $CPAttributedString___indexOfEntryWithIndex_(self, _cmd, anIndex)
 { with(self)
 {
     if (anIndex < 0 || anIndex > _string.length || anIndex === undefined)
@@ -56,7 +56,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return objj_msgSend(_rangeEntries, "indexOfObject:sortedByFunction:", anIndex, sortFunction);
 }
-}), new objj_method(sel_getUid("attributesAtIndex:effectiveRange:"), function $CPAttributedString__attributesAtIndex_effectiveRange_(self, _cmd, anIndex, aRange)
+},["unsigned","unsigned"]), new objj_method(sel_getUid("attributesAtIndex:effectiveRange:"), function $CPAttributedString__attributesAtIndex_effectiveRange_(self, _cmd, anIndex, aRange)
 { with(self)
 {
     var entryIndex = objj_msgSend(self, "_indexOfEntryWithIndex:", anIndex);
@@ -70,7 +70,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return matchingRange.attributes;
 }
-}), new objj_method(sel_getUid("attributesAtIndex:longestEffectiveRange:inRange:"), function $CPAttributedString__attributesAtIndex_longestEffectiveRange_inRange_(self, _cmd, anIndex, aRange, rangeLimit)
+},["CPDictionary","unsigned","CPRangePointer"]), new objj_method(sel_getUid("attributesAtIndex:longestEffectiveRange:inRange:"), function $CPAttributedString__attributesAtIndex_longestEffectiveRange_inRange_(self, _cmd, anIndex, aRange, rangeLimit)
 { with(self)
 {
     var startingEntryIndex = objj_msgSend(self, "_indexOfEntryWithIndex:", anIndex);
@@ -115,7 +115,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     aRange.length = MIN(CPMaxRange(currentEntry.range), CPMaxRange(rangeLimit)) - aRange.location;
     return comparisonDict;
 }
-}), new objj_method(sel_getUid("attribute:atIndex:effectiveRange:"), function $CPAttributedString__attribute_atIndex_effectiveRange_(self, _cmd, attribute, index, aRange)
+},["CPDictionary","unsigned","CPRangePointer","CPRange"]), new objj_method(sel_getUid("attribute:atIndex:effectiveRange:"), function $CPAttributedString__attribute_atIndex_effectiveRange_(self, _cmd, attribute, index, aRange)
 { with(self)
 {
     if (!attribute)
@@ -129,7 +129,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return objj_msgSend(objj_msgSend(self, "attributesAtIndex:effectiveRange:", index, aRange), "valueForKey:", attribute);
 }
-}), new objj_method(sel_getUid("attribute:atIndex:longestEffectiveRange:inRange:"), function $CPAttributedString__attribute_atIndex_longestEffectiveRange_inRange_(self, _cmd, attribute, anIndex, aRange, rangeLimit)
+},["id","CPString","unsigned","CPRangePointer"]), new objj_method(sel_getUid("attribute:atIndex:longestEffectiveRange:inRange:"), function $CPAttributedString__attribute_atIndex_longestEffectiveRange_inRange_(self, _cmd, attribute, anIndex, aRange, rangeLimit)
 { with(self)
 {
     var startingEntryIndex = objj_msgSend(self, "_indexOfEntryWithIndex:", anIndex);
@@ -174,7 +174,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     aRange.length = MIN(CPMaxRange(currentEntry.range), CPMaxRange(rangeLimit)) - aRange.location;
     return comparisonAttribute;
 }
-}), new objj_method(sel_getUid("isEqualToAttributedString:"), function $CPAttributedString__isEqualToAttributedString_(self, _cmd, aString)
+},["id","CPString","unsigned","CPRangePointer","CPRange"]), new objj_method(sel_getUid("isEqualToAttributedString:"), function $CPAttributedString__isEqualToAttributedString_(self, _cmd, aString)
 { with(self)
 {
  if(!aString)
@@ -197,7 +197,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return YES;
 }
-}), new objj_method(sel_getUid("isEqual:"), function $CPAttributedString__isEqual_(self, _cmd, anObject)
+},["BOOL","CPAttributedString"]), new objj_method(sel_getUid("isEqual:"), function $CPAttributedString__isEqual_(self, _cmd, anObject)
 { with(self)
 {
  if (anObject == self)
@@ -206,7 +206,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
   return objj_msgSend(self, "isEqualToAttributedString:", anObject);
  return NO;
 }
-}), new objj_method(sel_getUid("attributedSubstringFromRange:"), function $CPAttributedString__attributedSubstringFromRange_(self, _cmd, aRange)
+},["BOOL","id"]), new objj_method(sel_getUid("attributedSubstringFromRange:"), function $CPAttributedString__attributedSubstringFromRange_(self, _cmd, aRange)
 { with(self)
 {
     if (!aRange || CPMaxRange(aRange) > _string.length || aRange.location < 0)
@@ -242,7 +242,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return newString;
 }
-}), new objj_method(sel_getUid("replaceCharactersInRange:withString:"), function $CPAttributedString__replaceCharactersInRange_withString_(self, _cmd, aRange, aString)
+},["CPAttributedString","CPRange"]), new objj_method(sel_getUid("replaceCharactersInRange:withString:"), function $CPAttributedString__replaceCharactersInRange_withString_(self, _cmd, aRange, aString)
 { with(self)
 {
     objj_msgSend(self, "beginEditing");
@@ -268,12 +268,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         _rangeEntries[endingIndex++].range.location+=additionalLength;
     objj_msgSend(self, "endEditing");
 }
-}), new objj_method(sel_getUid("deleteCharactersInRange:"), function $CPAttributedString__deleteCharactersInRange_(self, _cmd, aRange)
+},["void","CPRange","CPString"]), new objj_method(sel_getUid("deleteCharactersInRange:"), function $CPAttributedString__deleteCharactersInRange_(self, _cmd, aRange)
 { with(self)
 {
     objj_msgSend(self, "replaceCharactersInRange:withString:", aRange, nil);
 }
-}), new objj_method(sel_getUid("setAttributes:range:"), function $CPAttributedString__setAttributes_range_(self, _cmd, aDictionary, aRange)
+},["void","CPRange"]), new objj_method(sel_getUid("setAttributes:range:"), function $CPAttributedString__setAttributes_range_(self, _cmd, aDictionary, aRange)
 { with(self)
 {
     objj_msgSend(self, "beginEditing");
@@ -287,7 +287,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     objj_msgSend(self, "_coalesceRangeEntriesFromIndex:toIndex:", startingEntryIndex, endingEntryIndex);
     objj_msgSend(self, "endEditing");
 }
-}), new objj_method(sel_getUid("addAttributes:range:"), function $CPAttributedString__addAttributes_range_(self, _cmd, aDictionary, aRange)
+},["void","CPDictionary","CPRange"]), new objj_method(sel_getUid("addAttributes:range:"), function $CPAttributedString__addAttributes_range_(self, _cmd, aDictionary, aRange)
 { with(self)
 {
     objj_msgSend(self, "beginEditing");
@@ -307,22 +307,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     objj_msgSend(self, "_coalesceRangeEntriesFromIndex:toIndex:", startingEntryIndex, endingEntryIndex);
     objj_msgSend(self, "endEditing");
 }
-}), new objj_method(sel_getUid("addAttribute:value:range:"), function $CPAttributedString__addAttribute_value_range_(self, _cmd, anAttribute, aValue, aRange)
+},["void","CPDictionary","CPRange"]), new objj_method(sel_getUid("addAttribute:value:range:"), function $CPAttributedString__addAttribute_value_range_(self, _cmd, anAttribute, aValue, aRange)
 { with(self)
 {
     objj_msgSend(self, "addAttributes:range:", objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", aValue, anAttribute), aRange);
 }
-}), new objj_method(sel_getUid("removeAttribute:range:"), function $CPAttributedString__removeAttribute_range_(self, _cmd, anAttribute, aRange)
+},["void","CPString","id","CPRange"]), new objj_method(sel_getUid("removeAttribute:range:"), function $CPAttributedString__removeAttribute_range_(self, _cmd, anAttribute, aRange)
 { with(self)
 {
     objj_msgSend(self, "addAttribute:value:range:", anAttribute, nil, aRange);
 }
-}), new objj_method(sel_getUid("appendAttributedString:"), function $CPAttributedString__appendAttributedString_(self, _cmd, aString)
+},["void","CPString","CPRange"]), new objj_method(sel_getUid("appendAttributedString:"), function $CPAttributedString__appendAttributedString_(self, _cmd, aString)
 { with(self)
 {
     objj_msgSend(self, "insertAttributedString:atIndex:", aString, _string.length);
 }
-}), new objj_method(sel_getUid("insertAttributedString:atIndex:"), function $CPAttributedString__insertAttributedString_atIndex_(self, _cmd, aString, anIndex)
+},["void","CPAttributedString"]), new objj_method(sel_getUid("insertAttributedString:atIndex:"), function $CPAttributedString__insertAttributedString_atIndex_(self, _cmd, aString, anIndex)
 { with(self)
 {
     objj_msgSend(self, "beginEditing");
@@ -347,7 +347,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     objj_msgSend(self, "endEditing");
 }
-}), new objj_method(sel_getUid("replaceCharactersInRange:withAttributedString:"), function $CPAttributedString__replaceCharactersInRange_withAttributedString_(self, _cmd, aRange, aString)
+},["void","CPAttributedString","unsigned"]), new objj_method(sel_getUid("replaceCharactersInRange:withAttributedString:"), function $CPAttributedString__replaceCharactersInRange_withAttributedString_(self, _cmd, aRange, aString)
 { with(self)
 {
     objj_msgSend(self, "beginEditing");
@@ -355,7 +355,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     objj_msgSend(self, "insertAttributedString:atIndex:", aString, aRange.location);
     objj_msgSend(self, "endEditing");
 }
-}), new objj_method(sel_getUid("setAttributedString:"), function $CPAttributedString__setAttributedString_(self, _cmd, aString)
+},["void","CPRange","CPAttributedString"]), new objj_method(sel_getUid("setAttributedString:"), function $CPAttributedString__setAttributedString_(self, _cmd, aString)
 { with(self)
 {
     objj_msgSend(self, "beginEditing");
@@ -365,7 +365,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         _rangeEntries.push(copyRangeEntry(aString._rangeEntries[i]));
     objj_msgSend(self, "endEditing");
 }
-}), new objj_method(sel_getUid("_indexOfRangeEntryForIndex:splitOnMaxIndex:"), function $CPAttributedString___indexOfRangeEntryForIndex_splitOnMaxIndex_(self, _cmd, characterIndex, split)
+},["void","CPAttributedString"]), new objj_method(sel_getUid("_indexOfRangeEntryForIndex:splitOnMaxIndex:"), function $CPAttributedString___indexOfRangeEntryForIndex_splitOnMaxIndex_(self, _cmd, characterIndex, split)
 { with(self)
 {
     var index = objj_msgSend(self, "_indexOfEntryWithIndex:", characterIndex);
@@ -379,7 +379,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     index++;
     return index;
 }
-}), new objj_method(sel_getUid("_coalesceRangeEntriesFromIndex:toIndex:"), function $CPAttributedString___coalesceRangeEntriesFromIndex_toIndex_(self, _cmd, start, end)
+},["void","unsigned","BOOL"]), new objj_method(sel_getUid("_coalesceRangeEntriesFromIndex:toIndex:"), function $CPAttributedString___coalesceRangeEntriesFromIndex_toIndex_(self, _cmd, start, end)
 { with(self)
 {
     var current = start;
@@ -399,15 +399,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
             current++;
     }
 }
-}), new objj_method(sel_getUid("beginEditing"), function $CPAttributedString__beginEditing(self, _cmd)
+},["void","unsigned","unsigned"]), new objj_method(sel_getUid("beginEditing"), function $CPAttributedString__beginEditing(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("endEditing"), function $CPAttributedString__endEditing(self, _cmd)
+},["void"]), new objj_method(sel_getUid("endEditing"), function $CPAttributedString__endEditing(self, _cmd)
 { with(self)
 {
 }
-})]);
+},["void"])]);
 }
 {var the_class = objj_allocateClassPair(CPAttributedString, "CPMutableAttributedString"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);

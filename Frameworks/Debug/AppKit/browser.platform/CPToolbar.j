@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;15;CPPopUpButton.ji;15;CPToolbarItem.jc;25018;
+I;21;Foundation/CPObject.ji;15;CPPopUpButton.ji;15;CPToolbarItem.jc;25570;
 CPToolbarDisplayModeDefault = 0;
 CPToolbarDisplayModeIconAndLabel = 1;
 CPToolbarDisplayModeIconOnly = 2;
@@ -22,26 +22,26 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("setDisplayMode:"), function $CPToolbar__setDisplayMode_(self, _cmd, aDisplayMode)
+},["id","CPString"]), new objj_method(sel_getUid("setDisplayMode:"), function $CPToolbar__setDisplayMode_(self, _cmd, aDisplayMode)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("identifier"), function $CPToolbar__identifier(self, _cmd)
+},["void","CPToolbarDisplayMode"]), new objj_method(sel_getUid("identifier"), function $CPToolbar__identifier(self, _cmd)
 { with(self)
 {
     return _identifier;
 }
-}), new objj_method(sel_getUid("delegate"), function $CPToolbar__delegate(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("delegate"), function $CPToolbar__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("isVisible"), function $CPToolbar__isVisible(self, _cmd)
+},["id"]), new objj_method(sel_getUid("isVisible"), function $CPToolbar__isVisible(self, _cmd)
 { with(self)
 {
     return _isVisible;
 }
-}), new objj_method(sel_getUid("setVisible:"), function $CPToolbar__setVisible_(self, _cmd, aFlag)
+},["BOOL"]), new objj_method(sel_getUid("setVisible:"), function $CPToolbar__setVisible_(self, _cmd, aFlag)
 { with(self)
 {
     if (_isVisible === aFlag)
@@ -49,17 +49,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     _isVisible = aFlag;
     objj_msgSend(_window, "_noteToolbarChanged");
 }
-}), new objj_method(sel_getUid("_window"), function $CPToolbar___window(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("_window"), function $CPToolbar___window(self, _cmd)
 { with(self)
 {
     return _window;
 }
-}), new objj_method(sel_getUid("_setWindow:"), function $CPToolbar___setWindow_(self, _cmd, aWindow)
+},["CPWindow"]), new objj_method(sel_getUid("_setWindow:"), function $CPToolbar___setWindow_(self, _cmd, aWindow)
 { with(self)
 {
     _window = aWindow;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPToolbar__setDelegate_(self, _cmd, aDelegate)
+},["void","CPWindow"]), new objj_method(sel_getUid("setDelegate:"), function $CPToolbar__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     if (_delegate == aDelegate)
@@ -67,11 +67,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     _delegate = aDelegate;
     objj_msgSend(self, "_reloadToolbarItems");
 }
-}), new objj_method(sel_getUid("_loadConfiguration"), function $CPToolbar___loadConfiguration(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_loadConfiguration"), function $CPToolbar___loadConfiguration(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("_toolbarView"), function $CPToolbar___toolbarView(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_toolbarView"), function $CPToolbar___toolbarView(self, _cmd)
 { with(self)
 {
     if (!_toolbarView)
@@ -83,7 +83,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     }
     return _toolbarView;
 }
-}), new objj_method(sel_getUid("_reloadToolbarItems"), function $CPToolbar___reloadToolbarItems(self, _cmd)
+},["CPView"]), new objj_method(sel_getUid("_reloadToolbarItems"), function $CPToolbar___reloadToolbarItems(self, _cmd)
 { with(self)
 {
     if (!_delegate)
@@ -110,22 +110,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     _itemsSortedByVisibilityPriority = objj_msgSend(_items, "sortedArrayUsingFunction:context:", _CPToolbarItemVisibilityPriorityCompare, NULL);
     objj_msgSend(_toolbarView, "reloadToolbarItems");
 }
-}), new objj_method(sel_getUid("items"), function $CPToolbar__items(self, _cmd)
+},["void"]), new objj_method(sel_getUid("items"), function $CPToolbar__items(self, _cmd)
 { with(self)
 {
     return _items;
 }
-}), new objj_method(sel_getUid("visibleItems"), function $CPToolbar__visibleItems(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("visibleItems"), function $CPToolbar__visibleItems(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_toolbarView, "visibleItems");
 }
-}), new objj_method(sel_getUid("itemsSortedByVisibilityPriority"), function $CPToolbar__itemsSortedByVisibilityPriority(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("itemsSortedByVisibilityPriority"), function $CPToolbar__itemsSortedByVisibilityPriority(self, _cmd)
 { with(self)
 {
     return _itemsSortedByVisibilityPriority;
 }
-}), new objj_method(sel_getUid("_itemForItemIdentifier:willBeInsertedIntoToolbar:"), function $CPToolbar___itemForItemIdentifier_willBeInsertedIntoToolbar_(self, _cmd, identifier, toolbar)
+},["CPArray"]), new objj_method(sel_getUid("_itemForItemIdentifier:willBeInsertedIntoToolbar:"), function $CPToolbar___itemForItemIdentifier_willBeInsertedIntoToolbar_(self, _cmd, identifier, toolbar)
 { with(self)
 {
     var item = objj_msgSend(_identifiedItems, "objectForKey:", identifier);
@@ -142,7 +142,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     }
     return item;
 }
-}), new objj_method(sel_getUid("_itemsWithIdentifiers:"), function $CPToolbar___itemsWithIdentifiers_(self, _cmd, identifiers)
+},["id","CPString","BOOL"]), new objj_method(sel_getUid("_itemsWithIdentifiers:"), function $CPToolbar___itemsWithIdentifiers_(self, _cmd, identifiers)
 { with(self)
 {
     var items = [];
@@ -150,7 +150,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
         objj_msgSend(items, "addObject:", objj_msgSend(self, "_itemForItemIdentifier:willBeInsertedIntoToolbar:", identifiers[i], NO));
     return items;
 }
-}), new objj_method(sel_getUid("_defaultToolbarItems"), function $CPToolbar___defaultToolbarItems(self, _cmd)
+},["id","CPArray"]), new objj_method(sel_getUid("_defaultToolbarItems"), function $CPToolbar___defaultToolbarItems(self, _cmd)
 { with(self)
 {
     if (!_defaultItems)
@@ -158,7 +158,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
             _defaultItems = objj_msgSend(self, "_itemsWithIdentifiers:", objj_msgSend(_delegate, "toolbarDefaultItemIdentifiers:", self));
     return _defaultItems;
 }
-})]);
+},["id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPToolbar__initialize(self, _cmd)
 { with(self)
 {
@@ -167,7 +167,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     CPToolbarsByIdentifier = objj_msgSend(CPDictionary, "dictionary");
     CPToolbarConfigurationsByIdentifier = objj_msgSend(CPDictionary, "dictionary");
 }
-}), new objj_method(sel_getUid("_addToolbar:forIdentifier:"), function $CPToolbar___addToolbar_forIdentifier_(self, _cmd, toolbar, identifier)
+},["void"]), new objj_method(sel_getUid("_addToolbar:forIdentifier:"), function $CPToolbar___addToolbar_forIdentifier_(self, _cmd, toolbar, identifier)
 { with(self)
 {
     var toolbarsSharingIdentifier = objj_msgSend(CPToolbarsByIdentifier, "objectForKey:", identifier);
@@ -178,7 +178,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     }
     objj_msgSend(toolbarsSharingIdentifier, "addObject:", toolbar);
 }
-})]);
+},["void","CPToolbar","CPString"])]);
 }
 var CPToolbarIdentifierKey = "CPToolbarIdentifierKey",
     CPToolbarDisplayModeKey = "CPToolbarDisplayModeKey",
@@ -214,7 +214,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPToolbar__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPToolbar__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _identifier, CPToolbarIdentifierKey);
@@ -228,7 +228,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _selectableItems, CPToolbarSelectableItemsKey);
     objj_msgSend(aCoder, "encodeConditionalObject:forKey:", _delegate, CPToolbarDelegateKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 var _CPToolbarViewBackgroundColor = nil,
     _CPToolbarViewExtraItemsImage = nil,
@@ -261,17 +261,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setToolbar:"), function $_CPToolbarView__setToolbar_(self, _cmd, aToolbar)
+},["id","CGRect"]), new objj_method(sel_getUid("setToolbar:"), function $_CPToolbarView__setToolbar_(self, _cmd, aToolbar)
 { with(self)
 {
     _toolbar = aToolbar;
 }
-}), new objj_method(sel_getUid("toolbar"), function $_CPToolbarView__toolbar(self, _cmd)
+},["void","CPToolbar"]), new objj_method(sel_getUid("toolbar"), function $_CPToolbarView__toolbar(self, _cmd)
 { with(self)
 {
     return _toolbar;
 }
-}), new objj_method(sel_getUid("setLabelColor:"), function $_CPToolbarView__setLabelColor_(self, _cmd, aColor)
+},["CPToolbar"]), new objj_method(sel_getUid("setLabelColor:"), function $_CPToolbarView__setLabelColor_(self, _cmd, aColor)
 { with(self)
 {
     if (_labelColor === aColor)
@@ -282,7 +282,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     while (count--)
         objj_msgSend(objj_msgSend(self, "labelForItem:", items[count]), "setTextColor:", _labelColor);
 }
-}), new objj_method(sel_getUid("setLabelShadowColor:"), function $_CPToolbarView__setLabelShadowColor_(self, _cmd, aColor)
+},["void","CPColor"]), new objj_method(sel_getUid("setLabelShadowColor:"), function $_CPToolbarView__setLabelShadowColor_(self, _cmd, aColor)
 { with(self)
 {
     if (_labelShadowColor === aColor)
@@ -293,12 +293,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     while (count--)
         objj_msgSend(objj_msgSend(self, "labelForItem:", items[count]), "setTextShadowColor:", _labelShadowColor);
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $_CPToolbarView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
+},["void","CPColor"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $_CPToolbarView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSend(self, "layoutSubviews");
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $_CPToolbarView__layoutSubviews(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("layoutSubviews"), function $_CPToolbarView__layoutSubviews(self, _cmd)
 { with(self)
 {
     var items = objj_msgSend(_toolbar, "items"),
@@ -418,7 +418,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(_additionalItemsButton, "removeFromSuperview");
 }
-}), new objj_method(sel_getUid("viewForItem:"), function $_CPToolbarView__viewForItem_(self, _cmd, anItem)
+},["void"]), new objj_method(sel_getUid("viewForItem:"), function $_CPToolbarView__viewForItem_(self, _cmd, anItem)
 { with(self)
 {
     var info = objj_msgSend(_itemInfos, "objectForKey:", objj_msgSend(anItem, "UID"));
@@ -426,7 +426,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return nil;
     return info.view;
 }
-}), new objj_method(sel_getUid("labelForItem:"), function $_CPToolbarView__labelForItem_(self, _cmd, anItem)
+},["CPView","CPToolbarItem"]), new objj_method(sel_getUid("labelForItem:"), function $_CPToolbarView__labelForItem_(self, _cmd, anItem)
 { with(self)
 {
     var info = objj_msgSend(_itemInfos, "objectForKey:", objj_msgSend(anItem, "UID"));
@@ -434,7 +434,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return nil;
     return info.label;
 }
-}), new objj_method(sel_getUid("minWidthForItem:"), function $_CPToolbarView__minWidthForItem_(self, _cmd, anItem)
+},["CPTextField","CPToolbarItem"]), new objj_method(sel_getUid("minWidthForItem:"), function $_CPToolbarView__minWidthForItem_(self, _cmd, anItem)
 { with(self)
 {
     var info = objj_msgSend(_itemInfos, "objectForKey:", objj_msgSend(anItem, "UID"));
@@ -442,7 +442,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return 0;
     return info.minWidth;
 }
-}), new objj_method(sel_getUid("reloadToolbarItems"), function $_CPToolbarView__reloadToolbarItems(self, _cmd)
+},["float","CPToolbarItem"]), new objj_method(sel_getUid("reloadToolbarItems"), function $_CPToolbarView__reloadToolbarItems(self, _cmd)
 { with(self)
 {
     var subviews = objj_msgSend(self, "subviews"),
@@ -487,7 +487,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "layoutSubviews");
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $_CPToolbarView__initialize(self, _cmd)
 { with(self)
 {
@@ -497,7 +497,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     _CPToolbarViewExtraItemsImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:",  objj_msgSend(bundle, "pathForResource:", "_CPToolbarView/_CPToolbarViewExtraItemsImage.png"),  CPSizeMake(10.0, 15.0));
     _CPToolbarViewExtraItemsAlternateImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:",  objj_msgSend(bundle, "pathForResource:", "_CPToolbarView/_CPToolbarViewExtraItemsAlternateImage.png"), CGSizeMake(10.0, 15.0));
 }
-})]);
+},["void"])]);
 }
 var _CPToolbarItemVisibilityPriorityCompare = function(lhs, rhs)
 {

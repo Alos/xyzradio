@@ -1,4 +1,4 @@
-i;9;CPRange.ji;10;CPObject.jc;18435;
+i;9;CPRange.ji;10;CPObject.jc;19024;
 {var the_class = objj_allocateClassPair(CPObject, "CPIndexSet"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_count"), new objj_ivar("_cachedRangeIndex"), new objj_ivar("_ranges")]);
 objj_registerClassPair(the_class);
@@ -15,7 +15,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithIndex:"), function $CPIndexSet__initWithIndex_(self, _cmd, anIndex)
+},["id"]), new objj_method(sel_getUid("initWithIndex:"), function $CPIndexSet__initWithIndex_(self, _cmd, anIndex)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -27,7 +27,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithIndexesInRange:"), function $CPIndexSet__initWithIndexesInRange_(self, _cmd, aRange)
+},["id","int"]), new objj_method(sel_getUid("initWithIndexesInRange:"), function $CPIndexSet__initWithIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -39,7 +39,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithIndexSet:"), function $CPIndexSet__initWithIndexSet_(self, _cmd, anIndexSet)
+},["id","CPRange"]), new objj_method(sel_getUid("initWithIndexSet:"), function $CPIndexSet__initWithIndexSet_(self, _cmd, anIndexSet)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -55,7 +55,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     }
     return self;
 }
-}), new objj_method(sel_getUid("isEqualToIndexSet:"), function $CPIndexSet__isEqualToIndexSet_(self, _cmd, anIndexSet)
+},["id","CPIndexSet"]), new objj_method(sel_getUid("isEqualToIndexSet:"), function $CPIndexSet__isEqualToIndexSet_(self, _cmd, anIndexSet)
 { with(self)
 {
  if (self == anIndexSet)
@@ -70,12 +70,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
    return NO;
  return YES;
 }
-}), new objj_method(sel_getUid("containsIndex:"), function $CPIndexSet__containsIndex_(self, _cmd, anIndex)
+},["BOOL","CPIndexSet"]), new objj_method(sel_getUid("containsIndex:"), function $CPIndexSet__containsIndex_(self, _cmd, anIndex)
 { with(self)
 {
     return objj_msgSend(self, "containsIndexesInRange:", CPMakeRange(anIndex, 1));
 }
-}), new objj_method(sel_getUid("containsIndexesInRange:"), function $CPIndexSet__containsIndexesInRange_(self, _cmd, aRange)
+},["BOOL","unsigned"]), new objj_method(sel_getUid("containsIndexesInRange:"), function $CPIndexSet__containsIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
     if(!_count)
@@ -93,7 +93,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     _cachedRangeIndex = i;
     return NO;
 }
-}), new objj_method(sel_getUid("containsIndexes:"), function $CPIndexSet__containsIndexes_(self, _cmd, anIndexSet)
+},["BOOL","CPRange"]), new objj_method(sel_getUid("containsIndexes:"), function $CPIndexSet__containsIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
     if(!objj_msgSend(anIndexSet, "count"))
@@ -107,7 +107,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
             return NO;
     return YES;
 }
-}), new objj_method(sel_getUid("intersectsIndexesInRange:"), function $CPIndexSet__intersectsIndexesInRange_(self, _cmd, aRange)
+},["BOOL","CPIndexSet"]), new objj_method(sel_getUid("intersectsIndexesInRange:"), function $CPIndexSet__intersectsIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
     if(!_count)
@@ -120,22 +120,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
             return YES;
     return NO;
 }
-}), new objj_method(sel_getUid("count"), function $CPIndexSet__count(self, _cmd)
+},["BOOL","CPRange"]), new objj_method(sel_getUid("count"), function $CPIndexSet__count(self, _cmd)
 { with(self)
 {
     return _count;
 }
-}), new objj_method(sel_getUid("firstIndex"), function $CPIndexSet__firstIndex(self, _cmd)
+},["int"]), new objj_method(sel_getUid("firstIndex"), function $CPIndexSet__firstIndex(self, _cmd)
 { with(self)
 {
     return _count ? _ranges[0].location : CPNotFound;
 }
-}), new objj_method(sel_getUid("lastIndex"), function $CPIndexSet__lastIndex(self, _cmd)
+},["int"]), new objj_method(sel_getUid("lastIndex"), function $CPIndexSet__lastIndex(self, _cmd)
 { with(self)
 {
     return _count ? CPMaxRange(_ranges[_ranges.length - 1]) - 1 : CPNotFound;
 }
-}), new objj_method(sel_getUid("indexGreaterThanIndex:"), function $CPIndexSet__indexGreaterThanIndex_(self, _cmd, anIndex)
+},["int"]), new objj_method(sel_getUid("indexGreaterThanIndex:"), function $CPIndexSet__indexGreaterThanIndex_(self, _cmd, anIndex)
 { with(self)
 {
     if(!_count)
@@ -150,7 +150,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
         return _ranges[i].location;
     return anIndex;
 }
-}), new objj_method(sel_getUid("indexLessThanIndex:"), function $CPIndexSet__indexLessThanIndex_(self, _cmd, anIndex)
+},["unsigned","unsigned"]), new objj_method(sel_getUid("indexLessThanIndex:"), function $CPIndexSet__indexLessThanIndex_(self, _cmd, anIndex)
 { with(self)
 {
     if (!_count)
@@ -166,17 +166,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
         return CPMaxRange(_ranges[i]) - 1;
     return CPNotFound;
 }
-}), new objj_method(sel_getUid("indexGreaterThanOrEqualToIndex:"), function $CPIndexSet__indexGreaterThanOrEqualToIndex_(self, _cmd, anIndex)
+},["unsigned","unsigned"]), new objj_method(sel_getUid("indexGreaterThanOrEqualToIndex:"), function $CPIndexSet__indexGreaterThanOrEqualToIndex_(self, _cmd, anIndex)
 { with(self)
 {
  return objj_msgSend(self, "indexGreaterThanIndex:", anIndex - 1);
 }
-}), new objj_method(sel_getUid("indexLessThanOrEqualToIndex:"), function $CPIndexSet__indexLessThanOrEqualToIndex_(self, _cmd, anIndex)
+},["unsignedint","unsigned"]), new objj_method(sel_getUid("indexLessThanOrEqualToIndex:"), function $CPIndexSet__indexLessThanOrEqualToIndex_(self, _cmd, anIndex)
 { with(self)
 {
  return objj_msgSend(self, "indexLessThanIndex:", anIndex + 1);
 }
-}), new objj_method(sel_getUid("getIndexes:maxCount:inIndexRange:"), function $CPIndexSet__getIndexes_maxCount_inIndexRange_(self, _cmd, anArray, aMaxCount, aRangePointer)
+},["unsignedint","unsigned"]), new objj_method(sel_getUid("getIndexes:maxCount:inIndexRange:"), function $CPIndexSet__getIndexes_maxCount_inIndexRange_(self, _cmd, anArray, aMaxCount, aRangePointer)
 { with(self)
 {
     if (!_count || aMaxCount <= 0 || aRangePointer && !aRangePointer.length)
@@ -211,7 +211,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     }
     return total;
 }
-}), new objj_method(sel_getUid("description"), function $CPIndexSet__description(self, _cmd)
+},["unsigned","CPArray","unsigned","CPRange"]), new objj_method(sel_getUid("description"), function $CPIndexSet__description(self, _cmd)
 { with(self)
 {
     var desc = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "description") + " ";
@@ -230,23 +230,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
   desc += "(no indexes)";
  return desc;
 }
-})]);
+},["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("indexSet"), function $CPIndexSet__indexSet(self, _cmd)
 { with(self)
 {
  return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
-}), new objj_method(sel_getUid("indexSetWithIndex:"), function $CPIndexSet__indexSetWithIndex_(self, _cmd, anIndex)
+},["id"]), new objj_method(sel_getUid("indexSetWithIndex:"), function $CPIndexSet__indexSetWithIndex_(self, _cmd, anIndex)
 { with(self)
 {
  return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndex:", anIndex);
 }
-}), new objj_method(sel_getUid("indexSetWithIndexesInRange:"), function $CPIndexSet__indexSetWithIndexesInRange_(self, _cmd, aRange)
+},["id","int"]), new objj_method(sel_getUid("indexSetWithIndexesInRange:"), function $CPIndexSet__indexSetWithIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
  return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndexesInRange:", aRange);
 }
-})]);
+},["id","CPRange"])]);
 }
 {
 var the_class = objj_getClass("CPIndexSet")
@@ -256,7 +256,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     objj_msgSend(self, "addIndexesInRange:", CPMakeRange(anIndex, 1));
 }
-}), new objj_method(sel_getUid("addIndexes:"), function $CPIndexSet__addIndexes_(self, _cmd, anIndexSet)
+},["void","unsigned"]), new objj_method(sel_getUid("addIndexes:"), function $CPIndexSet__addIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
     var i = 0,
@@ -265,7 +265,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     for(; i < count; ++i)
         objj_msgSend(self, "addIndexesInRange:", ranges[i]);
 }
-}), new objj_method(sel_getUid("addIndexesInRange:"), function $CPIndexSet__addIndexesInRange_(self, _cmd, aRange)
+},["void","CPIndexSet"]), new objj_method(sel_getUid("addIndexesInRange:"), function $CPIndexSet__addIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
     if (_ranges.length == 0)
@@ -316,12 +316,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         }
     _count += aRange.length;
 }
-}), new objj_method(sel_getUid("removeIndex:"), function $CPIndexSet__removeIndex_(self, _cmd, anIndex)
+},["void","CPRange"]), new objj_method(sel_getUid("removeIndex:"), function $CPIndexSet__removeIndex_(self, _cmd, anIndex)
 { with(self)
 {
     objj_msgSend(self, "removeIndexesInRange:", CPMakeRange(anIndex, 1));
 }
-}), new objj_method(sel_getUid("removeIndexes:"), function $CPIndexSet__removeIndexes_(self, _cmd, anIndexSet)
+},["void","unsignedint"]), new objj_method(sel_getUid("removeIndexes:"), function $CPIndexSet__removeIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
     var i = 0,
@@ -330,14 +330,14 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     for(; i < count; ++i)
         objj_msgSend(self, "removeIndexesInRange:", ranges[i]);
 }
-}), new objj_method(sel_getUid("removeAllIndexes"), function $CPIndexSet__removeAllIndexes(self, _cmd)
+},["void","CPIndexSet"]), new objj_method(sel_getUid("removeAllIndexes"), function $CPIndexSet__removeAllIndexes(self, _cmd)
 { with(self)
 {
     _ranges = [];
  _count = 0;
     _cachedRangeIndex = 0;
 }
-}), new objj_method(sel_getUid("removeIndexesInRange:"), function $CPIndexSet__removeIndexesInRange_(self, _cmd, aRange)
+},["void"]), new objj_method(sel_getUid("removeIndexesInRange:"), function $CPIndexSet__removeIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
     var i = SOERangeIndex(self, aRange.location),
@@ -377,7 +377,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     if (removal.length)
         objj_msgSend(_ranges, "removeObjectsInRange:", removal);
 }
-}), new objj_method(sel_getUid("shiftIndexesStartingAtIndex:by:"), function $CPIndexSet__shiftIndexesStartingAtIndex_by_(self, _cmd, anIndex, aDelta)
+},["void","CPRange"]), new objj_method(sel_getUid("shiftIndexesStartingAtIndex:by:"), function $CPIndexSet__shiftIndexesStartingAtIndex_by_(self, _cmd, anIndex, aDelta)
 { with(self)
 {
  if (!_count || aDelta == 0)
@@ -426,7 +426,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
             objj_msgSend(self, "addIndexesInRange:", shifted);
     }
 }
-})]);
+},["void","unsigned","int"])]);
 }
 var CPIndexSetCountKey = "CPIndexSetCountKey",
     CPIndexSetCachedRangeIndexKey = "CPIndexSetCachedRangeIndexKey",
@@ -451,7 +451,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPIndexSet__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPIndexSet__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeInt:forKey:", _count, CPIndexSetCountKey);
@@ -463,7 +463,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         rangeStrings[index] = CPStringFromRange(_ranges[index]);
     objj_msgSend(aCoder, "encodeObject:forKey:", rangeStrings, CPIndexSetRangeStringsKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 {
 var the_class = objj_getClass("CPIndexSet")
@@ -473,12 +473,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithIndexSet:", self);
 }
-}), new objj_method(sel_getUid("mutableCopy"), function $CPIndexSet__mutableCopy(self, _cmd)
+},["id"]), new objj_method(sel_getUid("mutableCopy"), function $CPIndexSet__mutableCopy(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithIndexSet:", self);
 }
-})]);
+},["id"])]);
 }
 {var the_class = objj_allocateClassPair(CPIndexSet, "CPMutableIndexSet"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);

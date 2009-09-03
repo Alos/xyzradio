@@ -1,4 +1,4 @@
-i;8;CPView.ji;13;CPImageView.jc;9049;
+i;8;CPView.ji;13;CPImageView.jc;9094;
 var _1=nil;
 var _2=objj_allocateClassPair(CPView,"_CPWindowView"),_3=_2.isa;
 class_addIvars(_2,[new objj_ivar("_styleMask"),new objj_ivar("_resizeIndicator"),new objj_ivar("_resizeIndicatorOffset"),new objj_ivar("_toolbarView"),new objj_ivar("_resizeFrame"),new objj_ivar("_mouseDraggedPoint"),new objj_ivar("_cachedScreenFrame")]);
@@ -64,9 +64,12 @@ objj_msgSend(CPApp,"setTarget:selector:forNextEventMatchingMask:untilDate:inMode
 }
 }),new objj_method(sel_getUid("_pointWithinScreenFrame:"),function(_20,_21,_22){
 with(_20){
+if(!objj_msgSend(CPPlatform,"isBrowser")){
+return _22;
+}
 var _23=_cachedScreenFrame;
 if(!_23){
-_23=objj_msgSend(objj_msgSend(CPPlatformWindow,"primaryPlatformWindow"),"usableContentFrame");
+_23=objj_msgSend(objj_msgSend(CPPlatformWindow,"primaryPlatformWindow"),"visibleFrame");
 }
 var _24=CGPointMake(0,0);
 _24.x=MIN(MAX(_22.x,-_frame.size.width+4),CGRectGetMaxX(_23)-4);
@@ -81,11 +84,11 @@ _cachedScreenFrame=nil;
 return;
 }else{
 if(_28===CPLeftMouseDown){
-_mouseDraggedPoint=objj_msgSend(objj_msgSend(_25,"window"),"convertBaseToBridge:",objj_msgSend(_27,"locationInWindow"));
-_cachedScreenFrame=objj_msgSend(objj_msgSend(CPPlatformWindow,"primaryPlatformWindow"),"usableContentFrame");
+_mouseDraggedPoint=objj_msgSend(objj_msgSend(_25,"window"),"convertBaseToGlobal:",objj_msgSend(_27,"locationInWindow"));
+_cachedScreenFrame=objj_msgSend(objj_msgSend(CPPlatformWindow,"primaryPlatformWindow"),"visibleFrame");
 }else{
 if(_28===CPLeftMouseDragged){
-var _29=objj_msgSend(_25,"window"),_2a=objj_msgSend(_29,"frame"),_2b=objj_msgSend(_29,"convertBaseToBridge:",objj_msgSend(_27,"locationInWindow")),_2c=objj_msgSend(_25,"_pointWithinScreenFrame:",CGPointMake((_2a.origin.x)+(_2b.x-_mouseDraggedPoint.x),(_2a.origin.y)+(_2b.y-_mouseDraggedPoint.y)));
+var _29=objj_msgSend(_25,"window"),_2a=objj_msgSend(_29,"frame"),_2b=objj_msgSend(_29,"convertBaseToGlobal:",objj_msgSend(_27,"locationInWindow")),_2c=objj_msgSend(_25,"_pointWithinScreenFrame:",CGPointMake((_2a.origin.x)+(_2b.x-_mouseDraggedPoint.x),(_2a.origin.y)+(_2b.y-_mouseDraggedPoint.y)));
 objj_msgSend(_29,"setFrameOrigin:",_2c);
 _mouseDraggedPoint=objj_msgSend(_25,"_pointWithinScreenFrame:",_2b);
 }
@@ -185,7 +188,7 @@ _toolbarView=_56;
 objj_msgSend(_56,"setHidden:",!objj_msgSend(_52,"showsToolbar")||!objj_msgSend(_55,"isVisible"));
 if(_54){
 var _57=objj_msgSend(_52,"convertRect:toView:",objj_msgSend(objj_msgSend(_54,"contentView"),"frame"),nil);
-_57.origin=objj_msgSend(_54,"convertBaseToBridge:",_57.origin);
+_57.origin=objj_msgSend(_54,"convertBaseToGlobal:",_57.origin);
 objj_msgSend(_52,"setAutoresizesSubviews:",NO);
 objj_msgSend(_54,"setFrame:",objj_msgSend(_54,"frameRectForContentRect:",_57));
 objj_msgSend(_52,"setAutoresizesSubviews:",YES);

@@ -1,4 +1,4 @@
-i;21;_CPImageAndTextView.ji;12;CGGeometry.ji;11;CPControl.jc;21256;
+i;21;_CPImageAndTextView.ji;12;CGGeometry.ji;11;CPControl.jc;21935;
 CPScaleProportionally = 0;
 CPScaleToFit = 1;
 CPScaleNone = 2;
@@ -67,12 +67,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("allowsMixedState"), function $CPButton__allowsMixedState(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("allowsMixedState"), function $CPButton__allowsMixedState(self, _cmd)
 { with(self)
 {
     return _allowsMixedState;
 }
-}), new objj_method(sel_getUid("setAllowsMixedState:"), function $CPButton__setAllowsMixedState_(self, _cmd, aFlag)
+},["BOOL"]), new objj_method(sel_getUid("setAllowsMixedState:"), function $CPButton__setAllowsMixedState_(self, _cmd, aFlag)
 { with(self)
 {
     aFlag = !!aFlag;
@@ -82,7 +82,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (!_allowsMixedState)
         objj_msgSend(self, "unsetThemeState:", CPButtonStateMixed);
 }
-}), new objj_method(sel_getUid("setObjectValue:"), function $CPButton__setObjectValue_(self, _cmd, anObjectValue)
+},["void","BOOL"]), new objj_method(sel_getUid("setObjectValue:"), function $CPButton__setObjectValue_(self, _cmd, anObjectValue)
 { with(self)
 {
     if (!anObjectValue || anObjectValue === "" || (objj_msgSend(anObjectValue, "intValue") === 0))
@@ -108,7 +108,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         case CPOffState: objj_msgSend(self, "unsetThemeState:", CPThemeStateSelected | CPButtonStateMixed);
     }
 }
-}), new objj_method(sel_getUid("nextState"), function $CPButton__nextState(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("nextState"), function $CPButton__nextState(self, _cmd)
 { with(self)
 {
    if (objj_msgSend(self, "allowsMixedState"))
@@ -118,22 +118,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
    }
     return 1 - objj_msgSend(self, "state");
 }
-}), new objj_method(sel_getUid("setNextState"), function $CPButton__setNextState(self, _cmd)
+},["CPInteger"]), new objj_method(sel_getUid("setNextState"), function $CPButton__setNextState(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "setState:", objj_msgSend(self, "nextState"));
 }
-}), new objj_method(sel_getUid("setState:"), function $CPButton__setState_(self, _cmd, aState)
+},["void"]), new objj_method(sel_getUid("setState:"), function $CPButton__setState_(self, _cmd, aState)
 { with(self)
 {
     objj_msgSend(self, "setIntValue:", aState);
 }
-}), new objj_method(sel_getUid("state"), function $CPButton__state(self, _cmd)
+},["void","CPInteger"]), new objj_method(sel_getUid("state"), function $CPButton__state(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "intValue");
 }
-}), new objj_method(sel_getUid("setTitle:"), function $CPButton__setTitle_(self, _cmd, aTitle)
+},["CPInteger"]), new objj_method(sel_getUid("setTitle:"), function $CPButton__setTitle_(self, _cmd, aTitle)
 { with(self)
 {
     if (_title === aTitle)
@@ -142,12 +142,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("title"), function $CPButton__title(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("title"), function $CPButton__title(self, _cmd)
 { with(self)
 {
     return _title;
 }
-}), new objj_method(sel_getUid("setAlternateTitle:"), function $CPButton__setAlternateTitle_(self, _cmd, aTitle)
+},["CPString"]), new objj_method(sel_getUid("setAlternateTitle:"), function $CPButton__setAlternateTitle_(self, _cmd, aTitle)
 { with(self)
 {
     if (_alternateTitle === aTitle)
@@ -156,12 +156,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("alternateTitle"), function $CPButton__alternateTitle(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("alternateTitle"), function $CPButton__alternateTitle(self, _cmd)
 { with(self)
 {
     return _alternateTitle;
 }
-}), new objj_method(sel_getUid("setImage:"), function $CPButton__setImage_(self, _cmd, anImage)
+},["CPString"]), new objj_method(sel_getUid("setImage:"), function $CPButton__setImage_(self, _cmd, anImage)
 { with(self)
 {
     if (_image === anImage)
@@ -170,12 +170,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("image"), function $CPButton__image(self, _cmd)
+},["void","CPImage"]), new objj_method(sel_getUid("image"), function $CPButton__image(self, _cmd)
 { with(self)
 {
     return _image;
 }
-}), new objj_method(sel_getUid("setAlternateImage:"), function $CPButton__setAlternateImage_(self, _cmd, anImage)
+},["CPImage"]), new objj_method(sel_getUid("setAlternateImage:"), function $CPButton__setAlternateImage_(self, _cmd, anImage)
 { with(self)
 {
     if (_alternateImage === anImage)
@@ -184,12 +184,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("alternateImage"), function $CPButton__alternateImage(self, _cmd)
+},["void","CPImage"]), new objj_method(sel_getUid("alternateImage"), function $CPButton__alternateImage(self, _cmd)
 { with(self)
 {
     return _alternateImage;
 }
-}), new objj_method(sel_getUid("setShowsStateBy:"), function $CPButton__setShowsStateBy_(self, _cmd, aMask)
+},["CPImage"]), new objj_method(sel_getUid("setShowsStateBy:"), function $CPButton__setShowsStateBy_(self, _cmd, aMask)
 { with(self)
 {
     if (_showsStateBy === aMask)
@@ -198,12 +198,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsDisplay:", YES);
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("showsStateBy"), function $CPButton__showsStateBy(self, _cmd)
+},["void","CPInteger"]), new objj_method(sel_getUid("showsStateBy"), function $CPButton__showsStateBy(self, _cmd)
 { with(self)
 {
     return _showsStateBy;
 }
-}), new objj_method(sel_getUid("setHighlightsBy:"), function $CPButton__setHighlightsBy_(self, _cmd, aMask)
+},["CPInteger"]), new objj_method(sel_getUid("setHighlightsBy:"), function $CPButton__setHighlightsBy_(self, _cmd, aMask)
 { with(self)
 {
     if (_highlightsBy === aMask)
@@ -215,7 +215,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "setNeedsLayout");
     }
 }
-}), new objj_method(sel_getUid("setButtonType:"), function $CPButton__setButtonType_(self, _cmd, aButtonType)
+},["void","CPInteger"]), new objj_method(sel_getUid("setButtonType:"), function $CPButton__setButtonType_(self, _cmd, aButtonType)
 { with(self)
 {
     switch (aButtonType)
@@ -244,7 +244,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(self, "setImageDimsWhenDisabled:", YES);
 }
-}), new objj_method(sel_getUid("setImageDimsWhenDisabled:"), function $CPButton__setImageDimsWhenDisabled_(self, _cmd, imageShouldDimWhenDisabled)
+},["void","CPButtonType"]), new objj_method(sel_getUid("setImageDimsWhenDisabled:"), function $CPButton__setImageDimsWhenDisabled_(self, _cmd, imageShouldDimWhenDisabled)
 { with(self)
 {
     imageShouldDimWhenDisabled = !!imageShouldDimWhenDisabled;
@@ -257,18 +257,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "setNeedsLayout");
     }
 }
-}), new objj_method(sel_getUid("imageDimsWhenDisabled"), function $CPButton__imageDimsWhenDisabled(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("imageDimsWhenDisabled"), function $CPButton__imageDimsWhenDisabled(self, _cmd)
 { with(self)
 {
     return _imageDimsWhenDisabled;
 }
-}), new objj_method(sel_getUid("startTrackingAt:"), function $CPButton__startTrackingAt_(self, _cmd, aPoint)
+},["BOOL"]), new objj_method(sel_getUid("startTrackingAt:"), function $CPButton__startTrackingAt_(self, _cmd, aPoint)
 { with(self)
 {
     objj_msgSend(self, "highlight:", YES);
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "startTrackingAt:", aPoint);
 }
-}), new objj_method(sel_getUid("stopTracking:at:mouseIsUp:"), function $CPButton__stopTracking_at_mouseIsUp_(self, _cmd, lastPoint, aPoint, mouseIsUp)
+},["BOOL","CGPoint"]), new objj_method(sel_getUid("stopTracking:at:mouseIsUp:"), function $CPButton__stopTracking_at_mouseIsUp_(self, _cmd, lastPoint, aPoint, mouseIsUp)
 { with(self)
 {
     objj_msgSend(self, "highlight:", NO);
@@ -276,7 +276,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (mouseIsUp && CGRectContainsPoint(objj_msgSend(self, "bounds"), aPoint))
         objj_msgSend(self, "setNextState");
 }
-}), new objj_method(sel_getUid("contentRectForBounds:"), function $CPButton__contentRectForBounds_(self, _cmd, bounds)
+},["void","CGPoint","CGPoint","BOOL"]), new objj_method(sel_getUid("contentRectForBounds:"), function $CPButton__contentRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     var contentInset = objj_msgSend(self, "currentValueForThemeAttribute:", "content-inset");
@@ -288,7 +288,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     bounds.size.height -= contentInset.top + contentInset.bottom;
     return bounds;
 }
-}), new objj_method(sel_getUid("bezelRectForBounds:"), function $CPButton__bezelRectForBounds_(self, _cmd, bounds)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("bezelRectForBounds:"), function $CPButton__bezelRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     if (!objj_msgSend(self, "isBordered"))
@@ -302,7 +302,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     bounds.size.height -= bezelInset.top + bezelInset.bottom;
     return bounds;
 }
-}), new objj_method(sel_getUid("sizeToFit"), function $CPButton__sizeToFit(self, _cmd)
+},["CGRect","CFRect"]), new objj_method(sel_getUid("sizeToFit"), function $CPButton__sizeToFit(self, _cmd)
 { with(self)
 {
     var size = objj_msgSend((objj_msgSend(self, "title") || " "), "sizeWithFont:", objj_msgSend(self, "currentValueForThemeAttribute:", "font")),
@@ -317,7 +317,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         size.height = MIN(size.height, maxSize.height);
     objj_msgSend(self, "setFrameSize:", size);
 }
-}), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPButton__rectForEphemeralSubviewNamed_(self, _cmd, aName)
+},["void"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPButton__rectForEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "bezel-view")
@@ -326,7 +326,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return objj_msgSend(self, "contentRectForBounds:", objj_msgSend(self, "bounds"));
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "rectForEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPButton__createEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CPString"]), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPButton__createEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "bezel-view")
@@ -339,7 +339,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return objj_msgSend(objj_msgSend(_CPImageAndTextView, "alloc"), "initWithFrame:", { origin: { x:0.0, y:0.0 }, size: { width:0.0, height:0.0 } });
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "createEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPButton__layoutSubviews(self, _cmd)
+},["CPView","CPString"]), new objj_method(sel_getUid("layoutSubviews"), function $CPButton__layoutSubviews(self, _cmd)
 { with(self)
 {
     var bezelView = objj_msgSend(self, "layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:", "bezel-view", CPWindowBelow, "content-view");
@@ -361,7 +361,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(contentView, "setImageScaling:", objj_msgSend(self, "currentValueForThemeAttribute:", "image-scaling"));
     }
 }
-}), new objj_method(sel_getUid("setDefaultButton:"), function $CPButton__setDefaultButton_(self, _cmd, shouldBeDefaultButton)
+},["void"]), new objj_method(sel_getUid("setDefaultButton:"), function $CPButton__setDefaultButton_(self, _cmd, shouldBeDefaultButton)
 { with(self)
 {
     if (shouldBeDefaultButton)
@@ -369,7 +369,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "unsetThemeState:", CPThemeStateDefault);
 }
-}), new objj_method(sel_getUid("setBordered:"), function $CPButton__setBordered_(self, _cmd, shouldBeBordered)
+},["void","BOOL"]), new objj_method(sel_getUid("setBordered:"), function $CPButton__setBordered_(self, _cmd, shouldBeBordered)
 { with(self)
 {
     if (shouldBeBordered)
@@ -377,18 +377,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "unsetThemeState:", CPThemeStateBordered);
 }
-}), new objj_method(sel_getUid("isBordered"), function $CPButton__isBordered(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isBordered"), function $CPButton__isBordered(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "hasThemeState:", CPThemeStateBordered);
 }
-})]);
+},["BOOL"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("buttonWithTitle:"), function $CPButton__buttonWithTitle_(self, _cmd, aTitle)
 { with(self)
 {
     return objj_msgSend(self, "buttonWithTitle:theme:", aTitle, objj_msgSend(CPTheme, "defaultTheme"));
 }
-}), new objj_method(sel_getUid("buttonWithTitle:theme:"), function $CPButton__buttonWithTitle_theme_(self, _cmd, aTitle, aTheme)
+},["id","CPString"]), new objj_method(sel_getUid("buttonWithTitle:theme:"), function $CPButton__buttonWithTitle_theme_(self, _cmd, aTitle, aTheme)
 { with(self)
 {
     var button = objj_msgSend(objj_msgSend(self, "alloc"), "init");
@@ -397,17 +397,17 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("buttonWithTitle:"), fu
     objj_msgSend(button, "sizeToFit");
     return button;
 }
-}), new objj_method(sel_getUid("themeClass"), function $CPButton__themeClass(self, _cmd)
+},["id","CPString","CPTheme"]), new objj_method(sel_getUid("themeClass"), function $CPButton__themeClass(self, _cmd)
 { with(self)
 {
     return "button";
 }
-}), new objj_method(sel_getUid("themeAttributes"), function $CPButton__themeAttributes(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("themeAttributes"), function $CPButton__themeAttributes(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [{ top:(0), right:(0), bottom:(0), left:(0) }, { top:(0), right:(0), bottom:(0), left:(0) }, nil], ["bezel-inset", "content-inset", "bezel-color"]);
 }
-})]);
+},["id"])]);
 }
 {
 var the_class = objj_getClass("CPButton")
@@ -416,11 +416,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("bezelStyle"), function $CPButton__bezelStyle(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("bezelStyle"), function $CPButton__bezelStyle(self, _cmd)
 { with(self)
 {
 }
-})]);
+},["unsigned"])]);
 }
 var CPButtonImageKey = "CPButtonImageKey",
     CPButtonAlternateImageKey = "CPButtonAlternateImageKey",
@@ -446,7 +446,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPButton__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPButton__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "encodeWithCoder:", aCoder);
@@ -455,6 +455,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _title, CPButtonTitleKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _alternateTitle, CPButtonAlternateTitleKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 i;12;CPCheckBox.ji;9;CPRadio.j

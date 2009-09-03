@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;23;CAMediaTimingFunction.jc;5807;
+I;21;Foundation/CPObject.ji;23;CAMediaTimingFunction.jc;6066;
 CPAnimationEaseInOut = 0;
 CPAnimationEaseIn = 1;
 CPAnimationEaseOut = 2;
@@ -21,7 +21,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDuration:animat
     }
     return self;
 }
-}), new objj_method(sel_getUid("setAnimationCurve:"), function $CPAnimation__setAnimationCurve_(self, _cmd, anAnimationCurve)
+},["id","float","CPAnimationCurve"]), new objj_method(sel_getUid("setAnimationCurve:"), function $CPAnimation__setAnimationCurve_(self, _cmd, anAnimationCurve)
 { with(self)
 {
     switch (_animationCurve)
@@ -40,46 +40,46 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDuration:animat
     _animationCurve = anAnimationCurve;
     _timingFunction = objj_msgSend(CAMediaTimingFunction, "functionWithName:", timingFunctionName);
 }
-}), new objj_method(sel_getUid("animationCurve"), function $CPAnimation__animationCurve(self, _cmd)
+},["void","CPAnimationCurve"]), new objj_method(sel_getUid("animationCurve"), function $CPAnimation__animationCurve(self, _cmd)
 { with(self)
 {
     return _animationCurve;
 }
-}), new objj_method(sel_getUid("setDuration:"), function $CPAnimation__setDuration_(self, _cmd, aDuration)
+},["CPAnimationCurve"]), new objj_method(sel_getUid("setDuration:"), function $CPAnimation__setDuration_(self, _cmd, aDuration)
 { with(self)
 {
     if (aDuration < 0)
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "aDuration can't be negative");
     _duration = aDuration;
 }
-}), new objj_method(sel_getUid("duration"), function $CPAnimation__duration(self, _cmd)
+},["void","CPTimeInterval"]), new objj_method(sel_getUid("duration"), function $CPAnimation__duration(self, _cmd)
 { with(self)
 {
     return _duration;
 }
-}), new objj_method(sel_getUid("setFrameRate:"), function $CPAnimation__setFrameRate_(self, _cmd, frameRate)
+},["CPTimeInterval"]), new objj_method(sel_getUid("setFrameRate:"), function $CPAnimation__setFrameRate_(self, _cmd, frameRate)
 { with(self)
 {
     if (frameRate < 0)
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "frameRate can't be negative");
     _frameRate = frameRate;
 }
-}), new objj_method(sel_getUid("frameRate"), function $CPAnimation__frameRate(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("frameRate"), function $CPAnimation__frameRate(self, _cmd)
 { with(self)
 {
     return _frameRate;
 }
-}), new objj_method(sel_getUid("delegate"), function $CPAnimation__delegate(self, _cmd)
+},["float"]), new objj_method(sel_getUid("delegate"), function $CPAnimation__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPAnimation__setDelegate_(self, _cmd, aDelegate)
+},["id"]), new objj_method(sel_getUid("setDelegate:"), function $CPAnimation__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     _delegate = aDelegate;
 }
-}), new objj_method(sel_getUid("startAnimation"), function $CPAnimation__startAnimation(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("startAnimation"), function $CPAnimation__startAnimation(self, _cmd)
 { with(self)
 {
     if (_timer || _delegate && objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("animationShouldStart")) && !objj_msgSend(_delegate, "animationShouldStart:", self))
@@ -90,7 +90,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDuration:animat
     _lastTime = new Date();
     _timer = objj_msgSend(CPTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", 0.0, self, sel_getUid("animationTimerDidFire:"), nil, YES);
 }
-}), new objj_method(sel_getUid("animationTimerDidFire:"), function $CPAnimation__animationTimerDidFire_(self, _cmd, aTimer)
+},["void"]), new objj_method(sel_getUid("animationTimerDidFire:"), function $CPAnimation__animationTimerDidFire_(self, _cmd, aTimer)
 { with(self)
 {
     var currentTime = new Date(),
@@ -106,7 +106,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDuration:animat
             objj_msgSend(_delegate, "animationDidEnd:", self);
     }
 }
-}), new objj_method(sel_getUid("stopAnimation"), function $CPAnimation__stopAnimation(self, _cmd)
+},["void","CPTimer"]), new objj_method(sel_getUid("stopAnimation"), function $CPAnimation__stopAnimation(self, _cmd)
 { with(self)
 {
     if (!_timer)
@@ -116,22 +116,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDuration:animat
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("animationDidStop:")))
         objj_msgSend(_delegate, "animationDidStop:", self);
 }
-}), new objj_method(sel_getUid("isAnimating"), function $CPAnimation__isAnimating(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isAnimating"), function $CPAnimation__isAnimating(self, _cmd)
 { with(self)
 {
     return _timer;
 }
-}), new objj_method(sel_getUid("setCurrentProgress:"), function $CPAnimation__setCurrentProgress_(self, _cmd, aProgress)
+},["BOOL"]), new objj_method(sel_getUid("setCurrentProgress:"), function $CPAnimation__setCurrentProgress_(self, _cmd, aProgress)
 { with(self)
 {
     _progress = aProgress;
 }
-}), new objj_method(sel_getUid("currentProgress"), function $CPAnimation__currentProgress(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("currentProgress"), function $CPAnimation__currentProgress(self, _cmd)
 { with(self)
 {
     return _progress;
 }
-}), new objj_method(sel_getUid("currentValue"), function $CPAnimation__currentValue(self, _cmd)
+},["float"]), new objj_method(sel_getUid("currentValue"), function $CPAnimation__currentValue(self, _cmd)
 { with(self)
 {
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("animation:valueForProgress:")))
@@ -140,6 +140,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDuration:animat
         return _progress;
     alert("IMPLEMENT ANIMATION CURVES!!!");
 }
-})]);
+},["float"])]);
 }
 

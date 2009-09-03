@@ -1,4 +1,4 @@
-i;10;CPButton.ji;10;CPCookie.ji;9;CPPanel.ji;8;CPView.jc;21833;
+i;10;CPButton.ji;10;CPCookie.ji;9;CPPanel.ji;8;CPView.jc;22509;
 CPColorPanelColorDidChangeNotification = "CPColorPanelColorDidChangeNotification";
 var PREVIEW_HEIGHT = 20.0,
     TOOLBAR_HEIGHT = 32.0,
@@ -31,7 +31,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPCol
     }
     return self;
 }
-}), new objj_method(sel_getUid("setColor:"), function $CPColorPanel__setColor_(self, _cmd, aColor)
+},["id"]), new objj_method(sel_getUid("setColor:"), function $CPColorPanel__setColor_(self, _cmd, aColor)
 { with(self)
 {
     _color = aColor;
@@ -43,49 +43,49 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPCol
     objj_msgSend(_activePicker, "setColor:", _color);
     objj_msgSend(_opacitySlider, "setFloatValue:", objj_msgSend(_color, "alphaComponent"));
 }
-}), new objj_method(sel_getUid("setColor:updatePicker:"), function $CPColorPanel__setColor_updatePicker_(self, _cmd, aColor, bool)
+},["void","CPColor"]), new objj_method(sel_getUid("setColor:updatePicker:"), function $CPColorPanel__setColor_updatePicker_(self, _cmd, aColor, bool)
 { with(self)
 {
     objj_msgSend(self, "setColor:", aColor);
     if (bool)
         objj_msgSend(_activePicker, "setColor:", _color);
 }
-}), new objj_method(sel_getUid("color"), function $CPColorPanel__color(self, _cmd)
+},["void","CPColor","BOOL"]), new objj_method(sel_getUid("color"), function $CPColorPanel__color(self, _cmd)
 { with(self)
 {
     return _color;
 }
-}), new objj_method(sel_getUid("opacity"), function $CPColorPanel__opacity(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("opacity"), function $CPColorPanel__opacity(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_opacitySlider, "floatValue");
 }
-}), new objj_method(sel_getUid("setTarget:"), function $CPColorPanel__setTarget_(self, _cmd, aTarget)
+},["float"]), new objj_method(sel_getUid("setTarget:"), function $CPColorPanel__setTarget_(self, _cmd, aTarget)
 { with(self)
 {
     _target = aTarget;
 }
-}), new objj_method(sel_getUid("target"), function $CPColorPanel__target(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("target"), function $CPColorPanel__target(self, _cmd)
 { with(self)
 {
     return _target;
 }
-}), new objj_method(sel_getUid("setAction:"), function $CPColorPanel__setAction_(self, _cmd, anAction)
+},["id"]), new objj_method(sel_getUid("setAction:"), function $CPColorPanel__setAction_(self, _cmd, anAction)
 { with(self)
 {
     _action = anAction;
 }
-}), new objj_method(sel_getUid("action"), function $CPColorPanel__action(self, _cmd)
+},["void","selector"]), new objj_method(sel_getUid("action"), function $CPColorPanel__action(self, _cmd)
 { with(self)
 {
     return _action;
 }
-}), new objj_method(sel_getUid("setMode:"), function $CPColorPanel__setMode_(self, _cmd, mode)
+},["selector"]), new objj_method(sel_getUid("setMode:"), function $CPColorPanel__setMode_(self, _cmd, mode)
 { with(self)
 {
     _mode = mode;
 }
-}), new objj_method(sel_getUid("_setPicker:"), function $CPColorPanel___setPicker_(self, _cmd, sender)
+},["void","CPColorPanelMode"]), new objj_method(sel_getUid("_setPicker:"), function $CPColorPanel___setPicker_(self, _cmd, sender)
 { with(self)
 {
     var picker = _colorPickers[objj_msgSend(sender, "tag")],
@@ -109,18 +109,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPCol
     _activePicker = picker;
     objj_msgSend(picker, "setColor:", objj_msgSend(self, "color"));
 }
-}), new objj_method(sel_getUid("mode"), function $CPColorPanel__mode(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("mode"), function $CPColorPanel__mode(self, _cmd)
 { with(self)
 {
     return _mode;
 }
-}), new objj_method(sel_getUid("orderFront:"), function $CPColorPanel__orderFront_(self, _cmd, aSender)
+},["CPColorPanelMode"]), new objj_method(sel_getUid("orderFront:"), function $CPColorPanel__orderFront_(self, _cmd, aSender)
 { with(self)
 {
     objj_msgSend(self, "_loadContentsIfNecessary");
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPanel") }, "orderFront:", aSender);
 }
-}), new objj_method(sel_getUid("_loadContentsIfNecessary"), function $CPColorPanel___loadContentsIfNecessary(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("_loadContentsIfNecessary"), function $CPColorPanel___loadContentsIfNecessary(self, _cmd)
 { with(self)
 {
     if (_toolbar)
@@ -203,33 +203,33 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPCol
     if (buttonForLater)
         objj_msgSend(self, "_setPicker:", buttonForLater);
 }
-}), new objj_method(sel_getUid("setOpacity:"), function $CPColorPanel__setOpacity_(self, _cmd, sender)
+},["void"]), new objj_method(sel_getUid("setOpacity:"), function $CPColorPanel__setOpacity_(self, _cmd, sender)
 { with(self)
 {
     var components = objj_msgSend(objj_msgSend(self, "color"), "components"),
         alpha = objj_msgSend(sender, "floatValue");
     objj_msgSend(self, "setColor:updatePicker:", objj_msgSend(_color, "colorWithAlphaComponent:", alpha), YES);
 }
-})]);
+},["void","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("provideColorPickerClass:"), function $CPColorPanel__provideColorPickerClass_(self, _cmd, aColorPickerSubclass)
 { with(self)
 {
     ColorPickerClasses.push(aColorPickerSubclass);
 }
-}), new objj_method(sel_getUid("sharedColorPanel"), function $CPColorPanel__sharedColorPanel(self, _cmd)
+},["void","Class"]), new objj_method(sel_getUid("sharedColorPanel"), function $CPColorPanel__sharedColorPanel(self, _cmd)
 { with(self)
 {
     if (!SharedColorPanel)
         SharedColorPanel = objj_msgSend(objj_msgSend(CPColorPanel, "alloc"), "init");
     return SharedColorPanel;
 }
-}), new objj_method(sel_getUid("setPickerMode:"), function $CPColorPanel__setPickerMode_(self, _cmd, mode)
+},["CPColorPanel"]), new objj_method(sel_getUid("setPickerMode:"), function $CPColorPanel__setPickerMode_(self, _cmd, mode)
 { with(self)
 {
     var panel = objj_msgSend(CPColorPanel, "sharedColorPanel");
     objj_msgSend(panel, "setMode:",  mode);
 }
-})]);
+},["void","CPColorPanelMode"])]);
 }
 CPColorDragType = "CPColorDragType";
 var CPColorPanelSwatchesCookie = "CPColorPanelSwatchesCookie";
@@ -259,12 +259,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("isOpaque"), function $_CPColorPanelSwatches__isOpaque(self, _cmd)
+},["id","CPRect"]), new objj_method(sel_getUid("isOpaque"), function $_CPColorPanelSwatches__isOpaque(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("startingColorList"), function $_CPColorPanelSwatches__startingColorList(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("startingColorList"), function $_CPColorPanelSwatches__startingColorList(self, _cmd)
 { with(self)
 {
     var cookieValue = objj_msgSend(_swatchCookie, "value");
@@ -288,7 +288,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         result.push(objj_msgSend(CPColor, "colorWithHexString:",  cookieValue[i]));
     return result;
 }
-}), new objj_method(sel_getUid("saveColorList"), function $_CPColorPanelSwatches__saveColorList(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("saveColorList"), function $_CPColorPanelSwatches__saveColorList(self, _cmd)
 { with(self)
 {
     var result = [];
@@ -298,28 +298,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     future.setYear(2019);
     objj_msgSend(_swatchCookie, "setValue:expires:domain:",  JSON.stringify(result), future,  nil);
 }
-}), new objj_method(sel_getUid("setColorPanel:"), function $_CPColorPanelSwatches__setColorPanel_(self, _cmd, panel)
+},["CPArray"]), new objj_method(sel_getUid("setColorPanel:"), function $_CPColorPanelSwatches__setColorPanel_(self, _cmd, panel)
 { with(self)
 {
     _colorPanel = panel;
 }
-}), new objj_method(sel_getUid("colorPanel"), function $_CPColorPanelSwatches__colorPanel(self, _cmd)
+},["void","CPColorPanel"]), new objj_method(sel_getUid("colorPanel"), function $_CPColorPanelSwatches__colorPanel(self, _cmd)
 { with(self)
 {
     return _colorPanel;
 }
-}), new objj_method(sel_getUid("colorAtIndex:"), function $_CPColorPanelSwatches__colorAtIndex_(self, _cmd, index)
+},["CPColorPanel"]), new objj_method(sel_getUid("colorAtIndex:"), function $_CPColorPanelSwatches__colorAtIndex_(self, _cmd, index)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(_swatches[index], "subviews")[0], "backgroundColor");
 }
-}), new objj_method(sel_getUid("setColor:atIndex:"), function $_CPColorPanelSwatches__setColor_atIndex_(self, _cmd, aColor, index)
+},["CPColor","int"]), new objj_method(sel_getUid("setColor:atIndex:"), function $_CPColorPanelSwatches__setColor_atIndex_(self, _cmd, aColor, index)
 { with(self)
 {
     objj_msgSend(objj_msgSend(_swatches[index], "subviews")[0], "setBackgroundColor:", aColor);
     objj_msgSend(self, "saveColorList");
 }
-}), new objj_method(sel_getUid("mouseUp:"), function $_CPColorPanelSwatches__mouseUp_(self, _cmd, anEvent)
+},["void","CPColor","int"]), new objj_method(sel_getUid("mouseUp:"), function $_CPColorPanelSwatches__mouseUp_(self, _cmd, anEvent)
 { with(self)
 {
     var point = objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil);
@@ -327,7 +327,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return NO;
     objj_msgSend(_colorPanel, "setColor:updatePicker:",  objj_msgSend(self, "colorAtIndex:", FLOOR(point.x / 13)),  YES);
 }
-}), new objj_method(sel_getUid("mouseDragged:"), function $_CPColorPanelSwatches__mouseDragged_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("mouseDragged:"), function $_CPColorPanelSwatches__mouseDragged_(self, _cmd, anEvent)
 { with(self)
 {
     var point = objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil);
@@ -344,13 +344,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(dragView, "addSubview:", dragFillView);
     objj_msgSend(self, "dragView:at:offset:event:pasteboard:source:slideBack:",  dragView,  CPPointMake(point.x - bounds.size.width / 2.0, point.y - bounds.size.height / 2.0),  CPPointMake(0.0, 0.0),  anEvent,  nil,  self,  YES);
 }
-}), new objj_method(sel_getUid("pasteboard:provideDataForType:"), function $_CPColorPanelSwatches__pasteboard_provideDataForType_(self, _cmd, aPasteboard, aType)
+},["void","CPEvent"]), new objj_method(sel_getUid("pasteboard:provideDataForType:"), function $_CPColorPanelSwatches__pasteboard_provideDataForType_(self, _cmd, aPasteboard, aType)
 { with(self)
 {
     if(aType == CPColorDragType)
         objj_msgSend(aPasteboard, "setData:forType:", _dragColor, aType);
 }
-}), new objj_method(sel_getUid("performDragOperation:"), function $_CPColorPanelSwatches__performDragOperation_(self, _cmd, aSender)
+},["void","CPPasteboard","CPString"]), new objj_method(sel_getUid("performDragOperation:"), function $_CPColorPanelSwatches__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
     var location = objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(aSender, "draggingLocation"), nil),
@@ -360,7 +360,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return NO;
     objj_msgSend(self, "setColor:atIndex:", objj_msgSend(pasteboard, "dataForType:", CPColorDragType),  FLOOR(location.x / 13));
 }
-})]);
+},["void","id<CPDraggingInfo>"])]);
 }
 {var the_class = objj_allocateClassPair(CPView, "_CPColorPanelPreview"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_colorPanel")]);
@@ -373,17 +373,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "registerForDraggedTypes:", objj_msgSend(CPArray, "arrayWithObjects:", CPColorDragType));
     return self;
 }
-}), new objj_method(sel_getUid("setColorPanel:"), function $_CPColorPanelPreview__setColorPanel_(self, _cmd, aPanel)
+},["id","CPRect"]), new objj_method(sel_getUid("setColorPanel:"), function $_CPColorPanelPreview__setColorPanel_(self, _cmd, aPanel)
 { with(self)
 {
     _colorPanel = aPanel;
 }
-}), new objj_method(sel_getUid("colorPanel"), function $_CPColorPanelPreview__colorPanel(self, _cmd)
+},["void","CPColorPanel"]), new objj_method(sel_getUid("colorPanel"), function $_CPColorPanelPreview__colorPanel(self, _cmd)
 { with(self)
 {
     return _colorPanel;
 }
-}), new objj_method(sel_getUid("performDragOperation:"), function $_CPColorPanelPreview__performDragOperation_(self, _cmd, aSender)
+},["CPColorPanel"]), new objj_method(sel_getUid("performDragOperation:"), function $_CPColorPanelPreview__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
     var pasteboard = objj_msgSend(aSender, "draggingPasteboard");
@@ -392,12 +392,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     var color = objj_msgSend(pasteboard, "dataForType:", CPColorDragType);
     objj_msgSend(_colorPanel, "setColor:updatePicker:",  color,  YES);
 }
-}), new objj_method(sel_getUid("isOpaque"), function $_CPColorPanelPreview__isOpaque(self, _cmd)
+},["void","id<CPDraggingInfo>"]), new objj_method(sel_getUid("isOpaque"), function $_CPColorPanelPreview__isOpaque(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("mouseDragged:"), function $_CPColorPanelPreview__mouseDragged_(self, _cmd, anEvent)
+},["BOOL"]), new objj_method(sel_getUid("mouseDragged:"), function $_CPColorPanelPreview__mouseDragged_(self, _cmd, anEvent)
 { with(self)
 {
     var point = objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil);
@@ -410,13 +410,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(dragView, "addSubview:", dragFillView);
     objj_msgSend(self, "dragView:at:offset:event:pasteboard:source:slideBack:",  dragView,  CPPointMake(point.x - bounds.size.width / 2.0, point.y - bounds.size.height / 2.0),  CPPointMake(0.0, 0.0),  anEvent,  nil,  self,  YES);
 }
-}), new objj_method(sel_getUid("pasteboard:provideDataForType:"), function $_CPColorPanelPreview__pasteboard_provideDataForType_(self, _cmd, aPasteboard, aType)
+},["void","CPEvent"]), new objj_method(sel_getUid("pasteboard:provideDataForType:"), function $_CPColorPanelPreview__pasteboard_provideDataForType_(self, _cmd, aPasteboard, aType)
 { with(self)
 {
     if(aType == CPColorDragType)
         objj_msgSend(aPasteboard, "setData:forType:", objj_msgSend(self, "backgroundColor"), aType);
 }
-})]);
+},["void","CPPasteboard","CPString"])]);
 }
 i;15;CPColorPicker.ji;21;CPSliderColorPicker.jc;160;
 objj_msgSend(CPColorPanel, "provideColorPickerClass:", CPColorWheelColorPicker);

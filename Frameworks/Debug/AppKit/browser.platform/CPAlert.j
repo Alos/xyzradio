@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPString.jI;22;AppKit/CPApplication.jI;17;AppKit/CPButton.jI;16;AppKit/CPColor.jI;15;AppKit/CPFont.jI;16;AppKit/CPImage.jI;20;AppKit/CPImageView.jI;16;AppKit/CPPanel.jI;20;AppKit/CPTextField.jc;7353;
+I;21;Foundation/CPObject.jI;21;Foundation/CPString.jI;22;AppKit/CPApplication.jI;17;AppKit/CPButton.jI;16;AppKit/CPColor.jI;15;AppKit/CPFont.jI;16;AppKit/CPImage.jI;20;AppKit/CPImageView.jI;16;AppKit/CPPanel.jI;20;AppKit/CPTextField.jc;7565;
 CPWarningAlertStyle = 0;
 CPInformationalAlertStyle = 1;
 CPCriticalAlertStyle = 2;
@@ -27,7 +27,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
     }
     return self;
 }
-}), new objj_method(sel_getUid("setWindowStyle:"), function $CPAlert__setWindowStyle_(self, _cmd, styleMask)
+},["id"]), new objj_method(sel_getUid("setWindowStyle:"), function $CPAlert__setWindowStyle_(self, _cmd, styleMask)
 { with(self)
 {
     _windowStyle = styleMask;
@@ -46,52 +46,52 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
     objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "addSubview:", _messageLabel);
     objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "addSubview:", _alertImageView);
 }
-}), new objj_method(sel_getUid("setTitle:"), function $CPAlert__setTitle_(self, _cmd, aTitle)
+},["void","int"]), new objj_method(sel_getUid("setTitle:"), function $CPAlert__setTitle_(self, _cmd, aTitle)
 { with(self)
 {
     _windowTitle = aTitle;
 }
-}), new objj_method(sel_getUid("title"), function $CPAlert__title(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("title"), function $CPAlert__title(self, _cmd)
 { with(self)
 {
     return _windowTitle;
 }
-}), new objj_method(sel_getUid("windowStyle"), function $CPAlert__windowStyle(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("windowStyle"), function $CPAlert__windowStyle(self, _cmd)
 { with(self)
 {
     return _windowStyle;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPAlert__setDelegate_(self, _cmd, delegate)
+},["int"]), new objj_method(sel_getUid("setDelegate:"), function $CPAlert__setDelegate_(self, _cmd, delegate)
 { with(self)
 {
     _delegate = delegate;
 }
-}), new objj_method(sel_getUid("delegate"), function $CPAlert__delegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("delegate"), function $CPAlert__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("setAlertStyle:"), function $CPAlert__setAlertStyle_(self, _cmd, style)
+},["void"]), new objj_method(sel_getUid("setAlertStyle:"), function $CPAlert__setAlertStyle_(self, _cmd, style)
 { with(self)
 {
     _alertStyle = style;
 }
-}), new objj_method(sel_getUid("alertStyle"), function $CPAlert__alertStyle(self, _cmd)
+},["void","CPAlertStyle"]), new objj_method(sel_getUid("alertStyle"), function $CPAlert__alertStyle(self, _cmd)
 { with(self)
 {
     return _alertStyle;
 }
-}), new objj_method(sel_getUid("setMessageText:"), function $CPAlert__setMessageText_(self, _cmd, messageText)
+},["CPAlertStyle"]), new objj_method(sel_getUid("setMessageText:"), function $CPAlert__setMessageText_(self, _cmd, messageText)
 { with(self)
 {
     objj_msgSend(_messageLabel, "setStringValue:", messageText);
 }
-}), new objj_method(sel_getUid("messageText"), function $CPAlert__messageText(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("messageText"), function $CPAlert__messageText(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_messageLabel, "stringValue");
 }
-}), new objj_method(sel_getUid("addButtonWithTitle:"), function $CPAlert__addButtonWithTitle_(self, _cmd, title)
+},["CPString"]), new objj_method(sel_getUid("addButtonWithTitle:"), function $CPAlert__addButtonWithTitle_(self, _cmd, title)
 { with(self)
 {
     var button = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(200.0 - (_buttonCount * 90.0), 98.0, 80.0, (_windowStyle == CPHUDBackgroundWindowMask) ? 20.0 : 24.0));
@@ -106,7 +106,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
     _buttonCount++;
     objj_msgSend(_buttons, "addObject:", button);
 }
-}), new objj_method(sel_getUid("runModal"), function $CPAlert__runModal(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("runModal"), function $CPAlert__runModal(self, _cmd)
 { with(self)
 {
     var theTitle;
@@ -125,7 +125,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
     objj_msgSend(_alertPanel, "setTitle:", _windowTitle ? _windowTitle : theTitle);
     objj_msgSend(CPApp, "runModalForWindow:", _alertPanel);
 }
-}), new objj_method(sel_getUid("_notifyDelegate:"), function $CPAlert___notifyDelegate_(self, _cmd, button)
+},["void"]), new objj_method(sel_getUid("_notifyDelegate:"), function $CPAlert___notifyDelegate_(self, _cmd, button)
 { with(self)
 {
     if (_delegate && objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("alertDidEnd:returnCode:")))
@@ -133,7 +133,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
     objj_msgSend(CPApp, "abortModal");
     objj_msgSend(_alertPanel, "close");
 }
-})]);
+},["void","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPAlert__initialize(self, _cmd)
 { with(self)
 {
@@ -144,6 +144,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     CPAlertInformationImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPAlert/dialog-information.png"), CGSizeMake(32.0, 32.0));
     CPAlertErrorImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPAlert/dialog-error.png"), CGSizeMake(32.0, 32.0));
 }
-})]);
+},["void"])]);
 }
 

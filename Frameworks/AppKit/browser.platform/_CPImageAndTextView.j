@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;12437;
+I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;12596;
 CPTopVerticalTextAlignment=1,CPCenterVerticalTextAlignment=2,CPBottomVerticalTextAlignment=3;
 var _1=1<<0,_2=1<<1,_3=1<<2,_4=1<<3,_5=1<<4,_6=1<<5,_7=1<<6,_8=1<<7,_9=1<<8,_a=1<<9,_b=1<<10;
 var _c=3,_d=5;
@@ -322,6 +322,10 @@ _DOMImageElement=NULL;
 _58=NO;
 }else{
 _DOMImageElement=document.createElement("img");
+if(objj_msgSend(CPPlatform,"supportsDragAndDrop")){
+_DOMImageElement.setAttribute("draggable","true");
+_DOMImageElement.style["-khtml-user-drag"]="element";
+}
 var _59=_DOMImageElement.style;
 _59.top="0px";
 _59.left="0px";

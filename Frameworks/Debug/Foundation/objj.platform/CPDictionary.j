@@ -1,4 +1,4 @@
-i;10;CPObject.ji;14;CPEnumerator.ji;13;CPException.jc;10057;
+i;10;CPObject.ji;14;CPEnumerator.ji;13;CPException.jc;10541;
 {var the_class = objj_allocateClassPair(CPEnumerator, "_CPDictionaryValueEnumerator"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_keyEnumerator"), new objj_ivar("_dictionary")]);
 objj_registerClassPair(the_class);
@@ -14,7 +14,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("nextObject"), function $_CPDictionaryValueEnumerator__nextObject(self, _cmd)
+},["id","CPDictionary"]), new objj_method(sel_getUid("nextObject"), function $_CPDictionaryValueEnumerator__nextObject(self, _cmd)
 { with(self)
 {
     var key = objj_msgSend(_keyEnumerator, "nextObject");
@@ -22,7 +22,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
         return nil;
     return objj_msgSend(_dictionary, "objectForKey:", key);
 }
-})]);
+},["id"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPDictionary"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
@@ -36,7 +36,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
         objj_msgSend(dictionary, "setObject:forKey:", objj_msgSend(aDictionary, "objectForKey:", key), key);
     return dictionary;
 }
-}), new objj_method(sel_getUid("initWithObjects:forKeys:"), function $CPDictionary__initWithObjects_forKeys_(self, _cmd, objects, keyArray)
+},["id","CPDictionary"]), new objj_method(sel_getUid("initWithObjects:forKeys:"), function $CPDictionary__initWithObjects_forKeys_(self, _cmd, objects, keyArray)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -50,7 +50,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithObjectsAndKeys:"), function $CPDictionary__initWithObjectsAndKeys_(self, _cmd, firstObject)
+},["id","CPArray","CPArray"]), new objj_method(sel_getUid("initWithObjectsAndKeys:"), function $CPDictionary__initWithObjectsAndKeys_(self, _cmd, firstObject)
 { with(self)
 {
     var argCount = arguments.length;
@@ -70,22 +70,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("copy"), function $CPDictionary__copy(self, _cmd)
+},["id","id"]), new objj_method(sel_getUid("copy"), function $CPDictionary__copy(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPDictionary, "dictionaryWithDictionary:", self);
 }
-}), new objj_method(sel_getUid("count"), function $CPDictionary__count(self, _cmd)
+},["CPDictionary"]), new objj_method(sel_getUid("count"), function $CPDictionary__count(self, _cmd)
 { with(self)
 {
     return count;
 }
-}), new objj_method(sel_getUid("allKeys"), function $CPDictionary__allKeys(self, _cmd)
+},["int"]), new objj_method(sel_getUid("allKeys"), function $CPDictionary__allKeys(self, _cmd)
 { with(self)
 {
     return _keys;
 }
-}), new objj_method(sel_getUid("allValues"), function $CPDictionary__allValues(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("allValues"), function $CPDictionary__allValues(self, _cmd)
 { with(self)
 {
     var index = _keys.length,
@@ -94,17 +94,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
         values.push(dictionary_getValue(self, [_keys[index]]));
     return values;
 }
-}), new objj_method(sel_getUid("keyEnumerator"), function $CPDictionary__keyEnumerator(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("keyEnumerator"), function $CPDictionary__keyEnumerator(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_keys, "objectEnumerator");
 }
-}), new objj_method(sel_getUid("objectEnumerator"), function $CPDictionary__objectEnumerator(self, _cmd)
+},["CPEnumerator"]), new objj_method(sel_getUid("objectEnumerator"), function $CPDictionary__objectEnumerator(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(_CPDictionaryValueEnumerator, "alloc"), "initWithDictionary:", self);
 }
-}), new objj_method(sel_getUid("isEqualToDictionary:"), function $CPDictionary__isEqualToDictionary_(self, _cmd, aDictionary)
+},["CPEnumerator"]), new objj_method(sel_getUid("isEqualToDictionary:"), function $CPDictionary__isEqualToDictionary_(self, _cmd, aDictionary)
 { with(self)
 {
     if (count !== objj_msgSend(aDictionary, "count"))
@@ -123,37 +123,37 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
     }
     return YES;
 }
-}), new objj_method(sel_getUid("objectForKey:"), function $CPDictionary__objectForKey_(self, _cmd, aKey)
+},["BOOL","CPDictionary"]), new objj_method(sel_getUid("objectForKey:"), function $CPDictionary__objectForKey_(self, _cmd, aKey)
 { with(self)
 {
     var object = _buckets[aKey];
     return (object === undefined) ? nil : object;
 }
-}), new objj_method(sel_getUid("removeAllObjects"), function $CPDictionary__removeAllObjects(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("removeAllObjects"), function $CPDictionary__removeAllObjects(self, _cmd)
 { with(self)
 {
     _keys = [];
     count = 0;
     _buckets = {};
 }
-}), new objj_method(sel_getUid("removeObjectForKey:"), function $CPDictionary__removeObjectForKey_(self, _cmd, aKey)
+},["void"]), new objj_method(sel_getUid("removeObjectForKey:"), function $CPDictionary__removeObjectForKey_(self, _cmd, aKey)
 { with(self)
 {
     dictionary_removeValue(self, aKey);
 }
-}), new objj_method(sel_getUid("removeObjectsForKeys:"), function $CPDictionary__removeObjectsForKeys_(self, _cmd, allKeys)
+},["void","id"]), new objj_method(sel_getUid("removeObjectsForKeys:"), function $CPDictionary__removeObjectsForKeys_(self, _cmd, allKeys)
 { with(self)
 {
     var index = allKeys.length;
     while (index--)
         dictionary_removeValue(self, allKeys[index]);
 }
-}), new objj_method(sel_getUid("setObject:forKey:"), function $CPDictionary__setObject_forKey_(self, _cmd, anObject, aKey)
+},["void","CPArray"]), new objj_method(sel_getUid("setObject:forKey:"), function $CPDictionary__setObject_forKey_(self, _cmd, anObject, aKey)
 { with(self)
 {
     dictionary_setValue(self, aKey, anObject);
 }
-}), new objj_method(sel_getUid("addEntriesFromDictionary:"), function $CPDictionary__addEntriesFromDictionary_(self, _cmd, aDictionary)
+},["void","id","id"]), new objj_method(sel_getUid("addEntriesFromDictionary:"), function $CPDictionary__addEntriesFromDictionary_(self, _cmd, aDictionary)
 { with(self)
 {
     if (!aDictionary)
@@ -166,7 +166,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
         objj_msgSend(self, "setObject:forKey:", objj_msgSend(aDictionary, "objectForKey:", key), key);
     }
 }
-}), new objj_method(sel_getUid("description"), function $CPDictionary__description(self, _cmd)
+},["void","CPDictionary"]), new objj_method(sel_getUid("description"), function $CPDictionary__description(self, _cmd)
 { with(self)
 {
     var description = "CPDictionary {\n";
@@ -184,38 +184,38 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithDictionary:"), 
     description += "}";
     return description;
 }
-})]);
+},["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPDictionary__alloc(self, _cmd)
 { with(self)
 {
     return new objj_dictionary();
 }
-}), new objj_method(sel_getUid("dictionary"), function $CPDictionary__dictionary(self, _cmd)
+},["id"]), new objj_method(sel_getUid("dictionary"), function $CPDictionary__dictionary(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
-}), new objj_method(sel_getUid("dictionaryWithDictionary:"), function $CPDictionary__dictionaryWithDictionary_(self, _cmd, aDictionary)
+},["id"]), new objj_method(sel_getUid("dictionaryWithDictionary:"), function $CPDictionary__dictionaryWithDictionary_(self, _cmd, aDictionary)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithDictionary:", aDictionary);
 }
-}), new objj_method(sel_getUid("dictionaryWithObject:forKey:"), function $CPDictionary__dictionaryWithObject_forKey_(self, _cmd, anObject, aKey)
+},["id","CPDictionary"]), new objj_method(sel_getUid("dictionaryWithObject:forKey:"), function $CPDictionary__dictionaryWithObject_forKey_(self, _cmd, anObject, aKey)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithObjects:forKeys:", [anObject], [aKey]);
 }
-}), new objj_method(sel_getUid("dictionaryWithObjects:forKeys:"), function $CPDictionary__dictionaryWithObjects_forKeys_(self, _cmd, objects, keys)
+},["id","id","id"]), new objj_method(sel_getUid("dictionaryWithObjects:forKeys:"), function $CPDictionary__dictionaryWithObjects_forKeys_(self, _cmd, objects, keys)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithObjects:forKeys:", objects, keys);
 }
-}), new objj_method(sel_getUid("dictionaryWithJSObject:"), function $CPDictionary__dictionaryWithJSObject_(self, _cmd, object)
+},["id","CPArray","CPArray"]), new objj_method(sel_getUid("dictionaryWithJSObject:"), function $CPDictionary__dictionaryWithJSObject_(self, _cmd, object)
 { with(self)
 {
     return objj_msgSend(self, "dictionaryWithJSObject:recursively:", object, NO);
 }
-}), new objj_method(sel_getUid("dictionaryWithJSObject:recursively:"), function $CPDictionary__dictionaryWithJSObject_recursively_(self, _cmd, object, recursively)
+},["id","JSObject"]), new objj_method(sel_getUid("dictionaryWithJSObject:recursively:"), function $CPDictionary__dictionaryWithJSObject_recursively_(self, _cmd, object, recursively)
 { with(self)
 {
     var dictionary = objj_msgSend(objj_msgSend(self, "alloc"), "init");
@@ -228,14 +228,14 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPD
     }
     return dictionary;
 }
-}), new objj_method(sel_getUid("dictionaryWithObjectsAndKeys:"), function $CPDictionary__dictionaryWithObjectsAndKeys_(self, _cmd, firstObject)
+},["id","JSObject","BOOL"]), new objj_method(sel_getUid("dictionaryWithObjectsAndKeys:"), function $CPDictionary__dictionaryWithObjectsAndKeys_(self, _cmd, firstObject)
 { with(self)
 {
     arguments[0] = objj_msgSend(self, "alloc");
     arguments[1] = sel_getUid("initWithObjectsAndKeys:");
     return objj_msgSend.apply(this, arguments);
 }
-})]);
+},["id","id"])]);
 }
 {
 var the_class = objj_getClass("CPDictionary")
@@ -245,12 +245,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(aCoder, "_decodeDictionaryOfObjectsForKey:", "CP.objects");
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPDictionary__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPDictionary__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "_encodeDictionaryOfObjects:forKey:", self, "CP.objects");
 }
-})]);
+},["void","CPCoder"])]);
 }
 {var the_class = objj_allocateClassPair(CPDictionary, "CPMutableDictionary"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);

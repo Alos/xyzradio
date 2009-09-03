@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;17385;
+I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;18318;
 CPSaveOperation = 0;
 CPSaveAsOperation = 1;
 CPSaveToOperation = 2;
@@ -29,7 +29,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithType:error:"), function $CPDocument__initWithType_error_(self, _cmd, aType, anError)
+},["id"]), new objj_method(sel_getUid("initWithType:error:"), function $CPDocument__initWithType_error_(self, _cmd, aType, anError)
 { with(self)
 {
     self = objj_msgSend(self, "init");
@@ -37,7 +37,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         objj_msgSend(self, "setFileType:", aType);
     return self;
 }
-}), new objj_method(sel_getUid("initWithContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocument__initWithContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, aType, aDelegate, aDidReadSelector, aContextInfo)
+},["id","CPString","{CPError}"]), new objj_method(sel_getUid("initWithContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocument__initWithContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, aType, aDelegate, aDidReadSelector, aContextInfo)
 { with(self)
 {
     self = objj_msgSend(self, "init");
@@ -49,7 +49,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return self;
 }
-}), new objj_method(sel_getUid("initForURL:withContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocument__initForURL_withContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, absoluteContentsURL, aType, aDelegate, aDidReadSelector, aContextInfo)
+},["id","CPURL","CPString","id","SEL","id"]), new objj_method(sel_getUid("initForURL:withContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocument__initForURL_withContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, absoluteContentsURL, aType, aDelegate, aDidReadSelector, aContextInfo)
 { with(self)
 {
     self = objj_msgSend(self, "init");
@@ -61,29 +61,29 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return self;
 }
-}), new objj_method(sel_getUid("dataOfType:error:"), function $CPDocument__dataOfType_error_(self, _cmd, aType, anError)
+},["id","CPURL","CPURL","CPString","id","SEL","id"]), new objj_method(sel_getUid("dataOfType:error:"), function $CPDocument__dataOfType_error_(self, _cmd, aType, anError)
 { with(self)
 {
     objj_msgSend(CPException, "raise:reason:", CPUnsupportedMethodException, "dataOfType:error: must be overridden by the document subclass.");
 }
-}), new objj_method(sel_getUid("readFromData:ofType:error:"), function $CPDocument__readFromData_ofType_error_(self, _cmd, aData, aType, anError)
+},["CPData","CPString","{CPError}"]), new objj_method(sel_getUid("readFromData:ofType:error:"), function $CPDocument__readFromData_ofType_error_(self, _cmd, aData, aType, anError)
 { with(self)
 {
     objj_msgSend(CPException, "raise:reason:", CPUnsupportedMethodException, "readFromData:ofType: must be overridden by the document subclass.");
 }
-}), new objj_method(sel_getUid("makeWindowControllers"), function $CPDocument__makeWindowControllers(self, _cmd)
+},["void","CPData","CPString","CPError"]), new objj_method(sel_getUid("makeWindowControllers"), function $CPDocument__makeWindowControllers(self, _cmd)
 { with(self)
 {
     var windowCibName = objj_msgSend(self, "windowCibName");
     if (windowCibName)
         objj_msgSend(self, "addWindowController:", objj_msgSend(objj_msgSend(CPWindowController, "alloc"), "initWithWindowCibName:owner:", windowCibName, self));
 }
-}), new objj_method(sel_getUid("windowControllers"), function $CPDocument__windowControllers(self, _cmd)
+},["void"]), new objj_method(sel_getUid("windowControllers"), function $CPDocument__windowControllers(self, _cmd)
 { with(self)
 {
     return _windowControllers;
 }
-}), new objj_method(sel_getUid("addWindowController:"), function $CPDocument__addWindowController_(self, _cmd, aWindowController)
+},["CPArray"]), new objj_method(sel_getUid("addWindowController:"), function $CPDocument__addWindowController_(self, _cmd, aWindowController)
 { with(self)
 {
     objj_msgSend(_windowControllers, "addObject:", aWindowController);
@@ -93,12 +93,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         objj_msgSend(aWindowController, "setDocument:", self);
     }
 }
-}), new objj_method(sel_getUid("showWindows"), function $CPDocument__showWindows(self, _cmd)
+},["void","CPWindowController"]), new objj_method(sel_getUid("showWindows"), function $CPDocument__showWindows(self, _cmd)
 { with(self)
 {
     objj_msgSend(_windowControllers, "makeObjectsPerformSelector:withObject:", sel_getUid("showWindow:"), self);
 }
-}), new objj_method(sel_getUid("displayName"), function $CPDocument__displayName(self, _cmd)
+},["void"]), new objj_method(sel_getUid("displayName"), function $CPDocument__displayName(self, _cmd)
 { with(self)
 {
     if (_fileURL)
@@ -109,32 +109,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     return "Untitled";
  return "Untitled " + _untitledDocumentIndex;
 }
-}), new objj_method(sel_getUid("windowCibName"), function $CPDocument__windowCibName(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("windowCibName"), function $CPDocument__windowCibName(self, _cmd)
 { with(self)
 {
     return nil;
 }
-}), new objj_method(sel_getUid("windowControllerDidLoadCib:"), function $CPDocument__windowControllerDidLoadCib_(self, _cmd, aWindowController)
+},["CPString"]), new objj_method(sel_getUid("windowControllerDidLoadCib:"), function $CPDocument__windowControllerDidLoadCib_(self, _cmd, aWindowController)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("windowControllerWillLoadCib:"), function $CPDocument__windowControllerWillLoadCib_(self, _cmd, aWindowController)
+},["void","CPWindowController"]), new objj_method(sel_getUid("windowControllerWillLoadCib:"), function $CPDocument__windowControllerWillLoadCib_(self, _cmd, aWindowController)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("readFromURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocument__readFromURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, aType, aDelegate, aDidReadSelector, aContextInfo)
+},["void","CPWindowController"]), new objj_method(sel_getUid("readFromURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocument__readFromURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, aType, aDelegate, aDidReadSelector, aContextInfo)
 { with(self)
 {
     objj_msgSend(_readConnection, "cancel");
     _readConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", objj_msgSend(CPURLRequest, "requestWithURL:", anAbsoluteURL), self);
     _readConnection.session = _CPReadSessionMake(aType, aDelegate, aDidReadSelector, aContextInfo);
 }
-}), new objj_method(sel_getUid("fileURL"), function $CPDocument__fileURL(self, _cmd)
+},["void","CPURL","CPString","id","SEL","id"]), new objj_method(sel_getUid("fileURL"), function $CPDocument__fileURL(self, _cmd)
 { with(self)
 {
     return _fileURL;
 }
-}), new objj_method(sel_getUid("setFileURL:"), function $CPDocument__setFileURL_(self, _cmd, aFileURL)
+},["CPURL"]), new objj_method(sel_getUid("setFileURL:"), function $CPDocument__setFileURL_(self, _cmd, aFileURL)
 { with(self)
 {
     if (_fileURL == aFileURL)
@@ -142,7 +142,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     _fileURL = aFileURL;
     objj_msgSend(_windowControllers, "makeObjectsPerformSelector:", sel_getUid("synchronizeWindowTitleWithDocumentName"));
 }
-}), new objj_method(sel_getUid("saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:"), function $CPDocument__saveToURL_ofType_forSaveOperation_delegate_didSaveSelector_contextInfo_(self, _cmd, anAbsoluteURL, aTypeName, aSaveOperation, aDelegate, aDidSaveSelector, aContextInfo)
+},["void","CPURL"]), new objj_method(sel_getUid("saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:"), function $CPDocument__saveToURL_ofType_forSaveOperation_delegate_didSaveSelector_contextInfo_(self, _cmd, anAbsoluteURL, aTypeName, aSaveOperation, aDelegate, aDidSaveSelector, aContextInfo)
 { with(self)
 {
     var data = objj_msgSend(self, "dataOfType:error:", objj_msgSend(self, "fileType"), nil),
@@ -158,7 +158,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     var connection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", _writeRequest, self);
     connection.session = _CPSaveSessionMake(anAbsoluteURL, aSaveOperation, oldChangeCount, aDelegate, aDidSaveSelector, aContextInfo, connection);
 }
-}), new objj_method(sel_getUid("connection:didReceiveResponse:"), function $CPDocument__connection_didReceiveResponse_(self, _cmd, aConnection, aResponse)
+},["void","CPURL","CPString","CPSaveOperationType","id","SEL","id"]), new objj_method(sel_getUid("connection:didReceiveResponse:"), function $CPDocument__connection_didReceiveResponse_(self, _cmd, aConnection, aResponse)
 { with(self)
 {
     if (!objj_msgSend(aResponse, "isKindOfClass:", objj_msgSend(CPHTTPURLResponse, "class")))
@@ -196,7 +196,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         }
     }
 }
-}), new objj_method(sel_getUid("connection:didReceiveData:"), function $CPDocument__connection_didReceiveData_(self, _cmd, aConnection, aData)
+},["void","CPURLConnection","CPURLResponse"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $CPDocument__connection_didReceiveData_(self, _cmd, aConnection, aData)
 { with(self)
 {
     var session = aConnection.session;
@@ -213,7 +213,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         objj_msgSend(session.delegate, session.didSaveSelector, self, YES, session.contextInfo);
     }
 }
-}), new objj_method(sel_getUid("connection:didFailWithError:"), function $CPDocument__connection_didFailWithError_(self, _cmd, aConnection, anError)
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $CPDocument__connection_didFailWithError_(self, _cmd, aConnection, anError)
 { with(self)
 {
     var session = aConnection.session;
@@ -231,18 +231,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         objj_msgSend(session.delegate, session.didSaveSelector, self, NO, session.contextInfo);
     }
 }
-}), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $CPDocument__connectionDidFinishLoading_(self, _cmd, aConnection)
+},["void","CPURLConnection","CPError"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $CPDocument__connectionDidFinishLoading_(self, _cmd, aConnection)
 { with(self)
 {
     if (_readConnection == aConnection)
         _readConnection = nil;
 }
-}), new objj_method(sel_getUid("isDocumentEdited"), function $CPDocument__isDocumentEdited(self, _cmd)
+},["void","CPURLConnection"]), new objj_method(sel_getUid("isDocumentEdited"), function $CPDocument__isDocumentEdited(self, _cmd)
 { with(self)
 {
     return _changeCount != 0;
 }
-}), new objj_method(sel_getUid("updateChangeCount:"), function $CPDocument__updateChangeCount_(self, _cmd, aChangeType)
+},["BOOL"]), new objj_method(sel_getUid("updateChangeCount:"), function $CPDocument__updateChangeCount_(self, _cmd, aChangeType)
 { with(self)
 {
     if (aChangeType == CPChangeDone)
@@ -253,22 +253,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         _changeCount = 0;
     objj_msgSend(_windowControllers, "makeObjectsPerformSelector:withObject:", sel_getUid("setDocumentEdited:"), objj_msgSend(self, "isDocumentEdited"));
 }
-}), new objj_method(sel_getUid("setFileType:"), function $CPDocument__setFileType_(self, _cmd, aType)
+},["void","CPDocumentChangeType"]), new objj_method(sel_getUid("setFileType:"), function $CPDocument__setFileType_(self, _cmd, aType)
 { with(self)
 {
     _fileType = aType;
 }
-}), new objj_method(sel_getUid("fileType"), function $CPDocument__fileType(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("fileType"), function $CPDocument__fileType(self, _cmd)
 { with(self)
 {
     return _fileType;
 }
-}), new objj_method(sel_getUid("hasUndoManager"), function $CPDocument__hasUndoManager(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("hasUndoManager"), function $CPDocument__hasUndoManager(self, _cmd)
 { with(self)
 {
     return _hasUndoManager;
 }
-}), new objj_method(sel_getUid("setHasUndoManager:"), function $CPDocument__setHasUndoManager_(self, _cmd, aFlag)
+},["BOOL"]), new objj_method(sel_getUid("setHasUndoManager:"), function $CPDocument__setHasUndoManager_(self, _cmd, aFlag)
 { with(self)
 {
     if (_hasUndoManager == aFlag)
@@ -277,7 +277,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     if (!_hasUndoManager)
         objj_msgSend(self, "setUndoManager:", nil);
 }
-}), new objj_method(sel_getUid("_undoManagerWillCloseGroup:"), function $CPDocument___undoManagerWillCloseGroup_(self, _cmd, aNotification)
+},["void","BOOL"]), new objj_method(sel_getUid("_undoManagerWillCloseGroup:"), function $CPDocument___undoManagerWillCloseGroup_(self, _cmd, aNotification)
 { with(self)
 {
     var undoManager = objj_msgSend(aNotification, "object");
@@ -285,17 +285,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         return;
     objj_msgSend(self, "updateChangeCount:", CPChangeDone);
 }
-}), new objj_method(sel_getUid("_undoManagerDidUndoChange:"), function $CPDocument___undoManagerDidUndoChange_(self, _cmd, aNotification)
+},["void","CPNotification"]), new objj_method(sel_getUid("_undoManagerDidUndoChange:"), function $CPDocument___undoManagerDidUndoChange_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "updateChangeCount:", CPChangeUndone);
 }
-}), new objj_method(sel_getUid("_undoManagerDidRedoChange:"), function $CPDocument___undoManagerDidRedoChange_(self, _cmd, aNotification)
+},["void","CPNotification"]), new objj_method(sel_getUid("_undoManagerDidRedoChange:"), function $CPDocument___undoManagerDidRedoChange_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "updateChangeCount:", CPChangeDone);
 }
-}), new objj_method(sel_getUid("setUndoManager:"), function $CPDocument__setUndoManager_(self, _cmd, anUndoManager)
+},["void","CPNotification"]), new objj_method(sel_getUid("setUndoManager:"), function $CPDocument__setUndoManager_(self, _cmd, anUndoManager)
 { with(self)
 {
     var defaultCenter = objj_msgSend(CPNotificationCenter, "defaultCenter");
@@ -313,19 +313,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         objj_msgSend(defaultCenter, "addObserver:selector:name:object:", self, sel_getUid("_undoManagerWillCloseGroup:"), CPUndoManagerWillCloseUndoGroupNotification, _undoManager);
     }
 }
-}), new objj_method(sel_getUid("undoManager"), function $CPDocument__undoManager(self, _cmd)
+},["void","CPUndoManager"]), new objj_method(sel_getUid("undoManager"), function $CPDocument__undoManager(self, _cmd)
 { with(self)
 {
     if (_hasUndoManager && !_undoManager)
         objj_msgSend(self, "setUndoManager:", objj_msgSend(objj_msgSend(CPUndoManager, "alloc"), "init"));
     return _undoManager;
 }
-}), new objj_method(sel_getUid("windowWillReturnUndoManager:"), function $CPDocument__windowWillReturnUndoManager_(self, _cmd, aWindow)
+},["CPUndoManager"]), new objj_method(sel_getUid("windowWillReturnUndoManager:"), function $CPDocument__windowWillReturnUndoManager_(self, _cmd, aWindow)
 { with(self)
 {
     return objj_msgSend(self, "undoManager");
 }
-}), new objj_method(sel_getUid("saveDocument:"), function $CPDocument__saveDocument_(self, _cmd, aSender)
+},["CPUndoManager","CPWindow"]), new objj_method(sel_getUid("saveDocument:"), function $CPDocument__saveDocument_(self, _cmd, aSender)
 { with(self)
 {
     if (_fileURL)
@@ -336,7 +336,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     else
         objj_msgSend(self, "saveDocumentAs:", self);
 }
-}), new objj_method(sel_getUid("saveDocumentAs:"), function $CPDocument__saveDocumentAs_(self, _cmd, aSender)
+},["void","id"]), new objj_method(sel_getUid("saveDocumentAs:"), function $CPDocument__saveDocumentAs_(self, _cmd, aSender)
 { with(self)
 {
     _documentName = window.prompt("Document Name:");
@@ -345,7 +345,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPDocumentWillSaveNotification, self);
     objj_msgSend(self, "saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:", objj_msgSend(self, "proposedFileURL"), objj_msgSend(self, "fileType"), CPSaveAsOperation, self, sel_getUid("document:didSave:contextInfo:"), NULL);
 }
-}), new objj_method(sel_getUid("document:didSave:contextInfo:"), function $CPDocument__document_didSave_contextInfo_(self, _cmd, aDocument, didSave, aContextInfo)
+},["void","id"]), new objj_method(sel_getUid("document:didSave:contextInfo:"), function $CPDocument__document_didSave_contextInfo_(self, _cmd, aDocument, didSave, aContextInfo)
 { with(self)
 {
     if (didSave)
@@ -353,7 +353,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     else
         objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPDocumentDidFailToSaveNotification, self);
 }
-})]);
+},["void","id","BOOL","id"])]);
 }
 var _CPReadSessionMake = function(aType, aDelegate, aDidReadSelector, aContextInfo)
 {

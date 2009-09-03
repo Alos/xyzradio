@@ -1732,7 +1732,8 @@ function objj_exception_setOutputStream(aStream)
     OBJJ_EXCEPTION_OUTPUT_STREAM = aStream;
 }
 objj_exception_setOutputStream(function(aString) { });
-var OBJJ_PREPROCESSOR_DEBUG_SYMBOLS = 1 << 0;
+var OBJJ_PREPROCESSOR_DEBUG_SYMBOLS = 1 << 0,
+    OBJJ_PREPROCESSOR_TYPE_SIGNATURES = 1 << 1;
 function objj_preprocess( aString, aBundle, aSourceFile, flags)
 {
     try
@@ -2147,22 +2148,31 @@ objj_preprocessor.prototype.method = function(tokens)
     var buffer = new objj_stringBuffer(),
         token,
         selector = "",
-        parameters = [];
+        parameters = [],
+        types = [null];
     while((token = tokens.skip_whitespace()) && token != TOKEN_OPEN_BRACE)
     {
         if (token == TOKEN_COLON)
         {
+            var type = "";
             selector += token;
             token = tokens.skip_whitespace();
             if (token == TOKEN_OPEN_PARENTHESIS)
             {
-                while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS) ;
+                while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS)
+                    type += token;
                 token = tokens.skip_whitespace();
             }
+            types[parameters.length+1] = type || null;
             parameters[parameters.length] = token;
         }
         else if (token == TOKEN_OPEN_PARENTHESIS)
-            while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS) ;
+        {
+            var type = "";
+            while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS)
+                type += token;
+            types[0] = type || null;
+        }
         else if (token == TOKEN_COMMA)
         {
             if ((token = tokens.skip_whitespace()) != TOKEN_PERIOD || tokens.next() != TOKEN_PERIOD || tokens.next() != TOKEN_PERIOD)
@@ -2186,7 +2196,10 @@ objj_preprocessor.prototype.method = function(tokens)
     }
     buffer.atoms[buffer.atoms.length] = ")\n{ with(self)\n{";
     buffer.atoms[buffer.atoms.length] = this.preprocess(tokens, NULL, TOKEN_CLOSE_BRACE, TOKEN_OPEN_BRACE);
-    buffer.atoms[buffer.atoms.length] = "}\n})";
+    buffer.atoms[buffer.atoms.length] = "}\n}";
+    if (this._flags & OBJJ_PREPROCESSOR_DEBUG_SYMBOLS)
+        buffer.atoms[buffer.atoms.length] = ","+JSON.stringify(types);
+    buffer.atoms[buffer.atoms.length] = ")";
     return buffer;
 }
 objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, terminator, instigator, tuple)
@@ -2482,138 +2495,150 @@ function objj_import( pathOrPaths, isLocal, didCompleteCallback)
     context.didCompleteCallback = didCompleteCallback;
     context.evaluate();
 }
-function objj_backtrace_format(aReceiver, aSelector)
+if (window.OBJJ_MAIN_FILE)
+    objj_import(OBJJ_MAIN_FILE, YES, function() { main(); });
+function objj_debug_object_format(aReceiver)
 {
-    return "[<" + (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name + " " + (typeof sprintf == "function" ? sprintf("%#08x", aReceiver.__address) : aReceiver.__address.toString(16)) + "> " + aSelector + "]";
+    return (aReceiver && aReceiver.isa) ? sprintf("<%s %#08x>", (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aReceiver.__address) : String(aReceiver);
 }
-function objj_msgSend_Backtrace( aReceiver, aSelector)
+function objj_debug_message_format(aReceiver, aSelector)
 {
-    if (aReceiver == nil)
-        return nil;
-    objj_debug_backtrace.push(objj_backtrace_format(aReceiver, aSelector));
-    try
-    {
-        var result = class_getMethodImplementation(aReceiver.isa, aSelector).apply(aReceiver, arguments);
-    }
-    catch (anException)
-    {
-        CPLog.error("Exception " + anException + " in " + objj_backtrace_format(aReceiver, aSelector));
-        objj_debug_print_backtrace();
-    }
-    objj_debug_backtrace.pop();
-    return result;
+    return sprintf("[%s %s]", objj_debug_object_format(aReceiver), aSelector);
 }
-function objj_msgSendSuper_Backtrace( aSuper, aSelector)
+var objj_msgSend_original = objj_msgSend,
+    objj_msgSendSuper_original = objj_msgSendSuper;
+function objj_msgSend_reset()
 {
-    objj_debug_backtrace.push(objj_backtrace_format(aSuper.receiver, aSelector));
-    var super_class = aSuper.super_class;
-    arguments[0] = aSuper.receiver;
-    try
-    {
-        var result = class_getMethodImplementation(super_class, aSelector).apply(aSuper.receiver, arguments);
-    }
-    catch (anException)
-    {
-        CPLog.error("Exception " + anException + " in " + objj_backtrace_format(aSuper.receiver, aSelector));
-        objj_debug_print_backtrace();
-    }
-    objj_debug_backtrace.pop();
-    return result;
+    objj_msgSend = objj_msgSend_original;
+    objj_msgSendSuper = objj_msgSendSuper_original;
 }
-function objj_msgSend_Profile( aReceiver, aSelector)
+function objj_msgSend_decorate()
 {
-    if (aReceiver == nil)
-        return nil;
-    var profileRecord = {
-        parent : objj_debug_profile,
-        receiver : (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name,
-        selector : aSelector,
-        calls : []
-    }
-    objj_debug_profile.calls.push(profileRecord);
-    objj_debug_profile = profileRecord;
-    profileRecord.start = new Date();
-    var result = class_getMethodImplementation(aReceiver.isa, aSelector).apply(aReceiver, arguments);
-    profileRecord.end = new Date();
-    objj_debug_profile = profileRecord.parent;
-    return result;
-}
-function objj_msgSendSuper_Profile( aSuper, aSelector)
-{
-    var profileRecord = {
-        parent : objj_debug_profile,
-        receiver : (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name,
-        selector : aSelector,
-        calls : []
-    }
-    objj_debug_profile.calls.push(profileRecord);
-    objj_debug_profile = profileRecord;
-    profileRecord.start = new Date();
-    var super_class = aSuper.super_class;
-    arguments[0] = aSuper.receiver;
-    var result = class_getMethodImplementation(super_class, aSelector).apply(aSuper.receiver, arguments);
-    profileRecord.end = new Date();
-    objj_debug_profile = profileRecord.parent;
-    return result;
-}
-var objj_msgSend_Standard = objj_msgSend,
-    objj_msgSendSuper_Standard = objj_msgSendSuper;
-var objj_debug_backtrace;
-function objj_backtrace_set_enabled(enabled)
-{
-    if (enabled)
+    for (var i = 0; i < arguments.length; i++)
     {
-        objj_debug_backtrace = [];
-        objj_msgSend = objj_msgSend_Backtrace;
-        objj_msgSendSuper = objj_msgSendSuper_Backtrace;
+        objj_msgSend = arguments[i](objj_msgSend);
+        objj_msgSendSuper = arguments[i](objj_msgSendSuper);
+    }
+}
+function objj_msgSend_set_decorators()
+{
+    objj_msgSend_reset();
+    objj_msgSend_decorate.apply(null, arguments);
+}
+var objj_backtrace = [];
+function objj_backtrace_print(stream) {
+    for (var i = 0; i < objj_backtrace.length; i++)
+        objj_fprintf(stream, objj_debug_message_format(objj_backtrace[i].receiver, objj_backtrace[i].selector));
+}
+function objj_backtrace_decorator(msgSend)
+{
+    return function(aReceiverOrSuper, aSelector)
+    {
+        var aReceiver = aReceiverOrSuper && (aReceiverOrSuper.receiver || aReceiverOrSuper);
+        objj_backtrace.push({ receiver: aReceiver, selector : aSelector });
+        try
+        {
+            return msgSend.apply(null, arguments);
+        }
+        catch (anException)
+        {
+            objj_fprintf(warning_stream, "Exception " + anException + " in " + objj_debug_message_format(aReceiver, aSelector));
+            objj_backtrace_print(warning_stream);
+        }
+        finally
+        {
+            objj_backtrace.pop();
+        }
+    }
+}
+var objj_typechecks_reported = {},
+    objj_typecheck_prints_backtrace = false;
+function objj_typecheck_decorator(msgSend)
+{
+    return function(aReceiverOrSuper, aSelector)
+    {
+        var aReceiver = aReceiverOrSuper && (aReceiverOrSuper.receiver || aReceiverOrSuper);
+        if (!aReceiver)
+            return msgSend.apply(null, arguments);
+        var types = aReceiver.isa.method_dtable[aSelector].types;
+        for (var i = 2; i < arguments.length; i++)
+        {
+            try
+            {
+                objj_debug_typecheck(types[i-1], arguments[i]);
+            }
+            catch (e)
+            {
+                var key = [(((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aSelector, i, e].join(";");
+                if (!objj_typechecks_reported[key]) {
+                    objj_typechecks_reported[key] = true;
+                    objj_fprintf(warning_stream, "Type check failed on argument " + (i-2) + " of " + objj_debug_message_format(aReceiver, aSelector) + ": " + e);
+                    if (objj_typecheck_prints_backtrace)
+                        objj_backtrace_print(warning_stream);
+                }
+            }
+        }
+        var result = msgSend.apply(null, arguments);
+        try
+        {
+            objj_debug_typecheck(types[0], result);
+        }
+        catch (e)
+        {
+            var key = [(((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aSelector, "ret", e].join(";");
+            if (!objj_typechecks_reported[key]) {
+                objj_typechecks_reported[key] = true;
+                objj_fprintf(warning_stream, "Type check failed on return val of " + objj_debug_message_format(aReceiver, aSelector) + ": " + e);
+                if (objj_typecheck_prints_backtrace)
+                    objj_backtrace_print(warning_stream);
+            }
+        }
+        return result;
+    }
+}
+function objj_debug_typecheck(expectedType, object)
+{
+    var objjClass;
+    if (!expectedType)
+    {
+        return;
+    }
+    else if (expectedType === "id")
+    {
+        if (object !== undefined)
+            return;
+    }
+    else if (expectedType === "void")
+    {
+        if (object === undefined)
+            return;
+    }
+    else if (objjClass = objj_getClass(expectedType))
+    {
+        if (object === nil)
+        {
+            return;
+        }
+        else if (object && object.isa)
+        {
+            var theClass = object.isa;
+            for (; theClass; theClass = theClass.super_class)
+            if (theClass === objjClass)
+                return;
+        }
     }
     else
     {
-        objj_msgSend = objj_msgSend_Standard;
-        objj_msgSendSuper = objj_msgSendSuper_Standard;
-    }
-}
-function objj_debug_print_backtrace()
-{
-    alert(objj_debug_backtrace_string());
-}
-function objj_debug_backtrace_string()
-{
-    return objj_debug_backtrace ? objj_debug_backtrace.join("\n") : "";
-}
-var objj_debug_profile = null,
-    objj_currently_profiling = false,
-    objj_profile_cleanup;
-function objj_profile(title)
-{
-    if (objj_currently_profiling)
         return;
-    var objj_msgSend_profile_saved = objj_msgSend,
-        objj_msgSendSuper_profile_saved = objj_msgSendSuper;
-    objj_msgSend = objj_msgSend_Profile;
-    objj_msgSendSuper = objj_msgSendSuper_Profile;
-    var root = { calls: [] };
-    objj_debug_profile = root;
-    var context = {
-        start : new Date(),
-        title : title,
-        profile : root
-    };
-    objj_profile_cleanup = function() {
-        objj_msgSend = objj_msgSend_profile_saved;
-        objj_msgSendSuper = objj_msgSendSuper_profile_saved;
-        context.end = new Date();
-        return context;
     }
-    objj_currently_profiling = true;
+    var actualType;
+    if (object === null)
+        actualType = "null";
+    else if (object === undefined)
+        actualType = "void";
+    else if (object.isa)
+        actualType = (((object.info & (CLS_META))) ? object : object.isa).name;
+    else
+        actualType = typeof object;
+    throw ("expected=" + expectedType + ", actual=" + actualType);
 }
-function objj_profileEnd()
-{
-    if (!objj_currently_profiling)
-        return;
-    objj_debug_profile = null;
-    objj_currently_profiling = false;
-    return objj_profile_cleanup();
-}
-if (window.OBJJ_MAIN_FILE)
-    objj_import(OBJJ_MAIN_FILE, YES, function() { main(); });

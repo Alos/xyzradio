@@ -1,4 +1,4 @@
-i;8;CPView.ji;12;CPClipView.ji;12;CPScroller.jc;21285;
+i;8;CPView.ji;12;CPClipView.ji;12;CPScroller.jc;21852;
 {var the_class = objj_allocateClassPair(CPView, "CPScrollView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentView"), new objj_ivar("_hasVerticalScroller"), new objj_ivar("_hasHorizontalScroller"), new objj_ivar("_autohidesScrollers"), new objj_ivar("_verticalScroller"), new objj_ivar("_horizontalScroller"), new objj_ivar("_recursionCount"), new objj_ivar("_verticalLineScroll"), new objj_ivar("_verticalPageScroll"), new objj_ivar("_horizontalLineScroll"), new objj_ivar("_horizontalPageScroll")]);
 objj_registerClassPair(the_class);
@@ -20,17 +20,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("contentSize"), function $CPScrollView__contentSize(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("contentSize"), function $CPScrollView__contentSize(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_contentView, "frame").size;
 }
-}), new objj_method(sel_getUid("documentView"), function $CPScrollView__documentView(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("documentView"), function $CPScrollView__documentView(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_contentView, "documentView");
 }
-}), new objj_method(sel_getUid("setContentView:"), function $CPScrollView__setContentView_(self, _cmd, aContentView)
+},["id"]), new objj_method(sel_getUid("setContentView:"), function $CPScrollView__setContentView_(self, _cmd, aContentView)
 { with(self)
 {
     if (!aContentView)
@@ -45,18 +45,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(_contentView, "setDocumentView:", documentView);
     objj_msgSend(self, "addSubview:", _contentView);
 }
-}), new objj_method(sel_getUid("contentView"), function $CPScrollView__contentView(self, _cmd)
+},["void","CPClipView"]), new objj_method(sel_getUid("contentView"), function $CPScrollView__contentView(self, _cmd)
 { with(self)
 {
     return _contentView;
 }
-}), new objj_method(sel_getUid("setDocumentView:"), function $CPScrollView__setDocumentView_(self, _cmd, aView)
+},["CPClipView"]), new objj_method(sel_getUid("setDocumentView:"), function $CPScrollView__setDocumentView_(self, _cmd, aView)
 { with(self)
 {
    objj_msgSend(_contentView, "setDocumentView:", aView);
    objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
-}), new objj_method(sel_getUid("reflectScrolledClipView:"), function $CPScrollView__reflectScrolledClipView_(self, _cmd, aClipView)
+},["void","CPView"]), new objj_method(sel_getUid("reflectScrolledClipView:"), function $CPScrollView__reflectScrolledClipView_(self, _cmd, aClipView)
 { with(self)
 {
     if(_contentView !== aClipView)
@@ -124,7 +124,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(_contentView, "setFrame:", contentViewFrame);
     --_recursionCount;
 }
-}), new objj_method(sel_getUid("setHorizontalScroller:"), function $CPScrollView__setHorizontalScroller_(self, _cmd, aScroller)
+},["void","CPClipView"]), new objj_method(sel_getUid("setHorizontalScroller:"), function $CPScrollView__setHorizontalScroller_(self, _cmd, aScroller)
 { with(self)
 {
     if (_horizontalScroller === aScroller)
@@ -138,12 +138,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "addSubview:", _horizontalScroller);
     objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
-}), new objj_method(sel_getUid("horizontalScroller"), function $CPScrollView__horizontalScroller(self, _cmd)
+},["void","CPScroller"]), new objj_method(sel_getUid("horizontalScroller"), function $CPScrollView__horizontalScroller(self, _cmd)
 { with(self)
 {
     return _horizontalScroller;
 }
-}), new objj_method(sel_getUid("setHasHorizontalScroller:"), function $CPScrollView__setHasHorizontalScroller_(self, _cmd, shouldHaveHorizontalScroller)
+},["CPScroller"]), new objj_method(sel_getUid("setHasHorizontalScroller:"), function $CPScrollView__setHasHorizontalScroller_(self, _cmd, shouldHaveHorizontalScroller)
 { with(self)
 {
     if (_hasHorizontalScroller === shouldHaveHorizontalScroller)
@@ -157,12 +157,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "reflectScrolledClipView:", _contentView);
     }
 }
-}), new objj_method(sel_getUid("hasHorizontalScroller"), function $CPScrollView__hasHorizontalScroller(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("hasHorizontalScroller"), function $CPScrollView__hasHorizontalScroller(self, _cmd)
 { with(self)
 {
     return _hasHorizontalScroller;
 }
-}), new objj_method(sel_getUid("setVerticalScroller:"), function $CPScrollView__setVerticalScroller_(self, _cmd, aScroller)
+},["BOOL"]), new objj_method(sel_getUid("setVerticalScroller:"), function $CPScrollView__setVerticalScroller_(self, _cmd, aScroller)
 { with(self)
 {
     if (_verticalScroller === aScroller)
@@ -176,12 +176,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "addSubview:", _verticalScroller);
     objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
-}), new objj_method(sel_getUid("verticalScroller"), function $CPScrollView__verticalScroller(self, _cmd)
+},["void","CPScroller"]), new objj_method(sel_getUid("verticalScroller"), function $CPScrollView__verticalScroller(self, _cmd)
 { with(self)
 {
     return _verticalScroller;
 }
-}), new objj_method(sel_getUid("setHasVerticalScroller:"), function $CPScrollView__setHasVerticalScroller_(self, _cmd, shouldHaveVerticalScroller)
+},["CPScroller"]), new objj_method(sel_getUid("setHasVerticalScroller:"), function $CPScrollView__setHasVerticalScroller_(self, _cmd, shouldHaveVerticalScroller)
 { with(self)
 {
     if (_hasVerticalScroller === shouldHaveVerticalScroller)
@@ -195,12 +195,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "reflectScrolledClipView:", _contentView);
     }
 }
-}), new objj_method(sel_getUid("hasVerticalScroller"), function $CPScrollView__hasVerticalScroller(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("hasVerticalScroller"), function $CPScrollView__hasVerticalScroller(self, _cmd)
 { with(self)
 {
     return _hasVerticalScroller;
 }
-}), new objj_method(sel_getUid("setAutohidesScrollers:"), function $CPScrollView__setAutohidesScrollers_(self, _cmd, autohidesScrollers)
+},["BOOL"]), new objj_method(sel_getUid("setAutohidesScrollers:"), function $CPScrollView__setAutohidesScrollers_(self, _cmd, autohidesScrollers)
 { with(self)
 {
     if (_autohidesScrollers == autohidesScrollers)
@@ -208,12 +208,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _autohidesScrollers = autohidesScrollers;
     objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
-}), new objj_method(sel_getUid("autohidesScrollers"), function $CPScrollView__autohidesScrollers(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("autohidesScrollers"), function $CPScrollView__autohidesScrollers(self, _cmd)
 { with(self)
 {
     return _autohidesScrollers;
 }
-}), new objj_method(sel_getUid("_verticalScrollerDidScroll:"), function $CPScrollView___verticalScrollerDidScroll_(self, _cmd, aScroller)
+},["BOOL"]), new objj_method(sel_getUid("_verticalScrollerDidScroll:"), function $CPScrollView___verticalScrollerDidScroll_(self, _cmd, aScroller)
 { with(self)
 {
    var value = objj_msgSend(aScroller, "floatValue"),
@@ -235,7 +235,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
 }
-}), new objj_method(sel_getUid("_horizontalScrollerDidScroll:"), function $CPScrollView___horizontalScrollerDidScroll_(self, _cmd, aScroller)
+},["void","CPScroller"]), new objj_method(sel_getUid("_horizontalScrollerDidScroll:"), function $CPScrollView___horizontalScrollerDidScroll_(self, _cmd, aScroller)
 { with(self)
 {
    var value = objj_msgSend(aScroller, "floatValue"),
@@ -257,78 +257,78 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
 }
-}), new objj_method(sel_getUid("tile"), function $CPScrollView__tile(self, _cmd)
+},["void","CPScroller"]), new objj_method(sel_getUid("tile"), function $CPScrollView__tile(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPScrollView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
+},["void"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $CPScrollView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSend(self, "reflectScrolledClipView:", _contentView);
 }
-}), new objj_method(sel_getUid("setLineScroll:"), function $CPScrollView__setLineScroll_(self, _cmd, aLineScroll)
+},["void","CGSize"]), new objj_method(sel_getUid("setLineScroll:"), function $CPScrollView__setLineScroll_(self, _cmd, aLineScroll)
 { with(self)
 {
     objj_msgSend(self, "setHorizonalLineScroll:", aLineScroll);
     objj_msgSend(self, "setVerticalLineScroll:", aLineScroll);
 }
-}), new objj_method(sel_getUid("lineScroll"), function $CPScrollView__lineScroll(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("lineScroll"), function $CPScrollView__lineScroll(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "horizontalLineScroll");
 }
-}), new objj_method(sel_getUid("setHorizontalLineScroll:"), function $CPScrollView__setHorizontalLineScroll_(self, _cmd, aLineScroll)
+},["float"]), new objj_method(sel_getUid("setHorizontalLineScroll:"), function $CPScrollView__setHorizontalLineScroll_(self, _cmd, aLineScroll)
 { with(self)
 {
     _horizontalLineScroll = aLineScroll;
 }
-}), new objj_method(sel_getUid("horizontalLineScroll"), function $CPScrollView__horizontalLineScroll(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("horizontalLineScroll"), function $CPScrollView__horizontalLineScroll(self, _cmd)
 { with(self)
 {
     return _horizontalLineScroll;
 }
-}), new objj_method(sel_getUid("setVerticalLineScroll:"), function $CPScrollView__setVerticalLineScroll_(self, _cmd, aLineScroll)
+},["float"]), new objj_method(sel_getUid("setVerticalLineScroll:"), function $CPScrollView__setVerticalLineScroll_(self, _cmd, aLineScroll)
 { with(self)
 {
     _verticalLineScroll = aLineScroll;
 }
-}), new objj_method(sel_getUid("verticalLineScroll"), function $CPScrollView__verticalLineScroll(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("verticalLineScroll"), function $CPScrollView__verticalLineScroll(self, _cmd)
 { with(self)
 {
     return _verticalLineScroll;
 }
-}), new objj_method(sel_getUid("setPageScroll:"), function $CPScrollView__setPageScroll_(self, _cmd, aPageScroll)
+},["float"]), new objj_method(sel_getUid("setPageScroll:"), function $CPScrollView__setPageScroll_(self, _cmd, aPageScroll)
 { with(self)
 {
     objj_msgSend(self, "setHorizontalPageScroll:", aPageScroll);
     objj_msgSend(self, "setVerticalPageScroll:", aPageScroll);
 }
-}), new objj_method(sel_getUid("pageScroll"), function $CPScrollView__pageScroll(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("pageScroll"), function $CPScrollView__pageScroll(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "horizontalPageScroll");
 }
-}), new objj_method(sel_getUid("setHorizontalPageScroll:"), function $CPScrollView__setHorizontalPageScroll_(self, _cmd, aPageScroll)
+},["float"]), new objj_method(sel_getUid("setHorizontalPageScroll:"), function $CPScrollView__setHorizontalPageScroll_(self, _cmd, aPageScroll)
 { with(self)
 {
     _horizontalPageScroll = aPageScroll;
 }
-}), new objj_method(sel_getUid("horizontalPageScroll"), function $CPScrollView__horizontalPageScroll(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("horizontalPageScroll"), function $CPScrollView__horizontalPageScroll(self, _cmd)
 { with(self)
 {
     return _horizontalPageScroll;
 }
-}), new objj_method(sel_getUid("setVerticalPageScroll:"), function $CPScrollView__setVerticalPageScroll_(self, _cmd, aPageScroll)
+},["float"]), new objj_method(sel_getUid("setVerticalPageScroll:"), function $CPScrollView__setVerticalPageScroll_(self, _cmd, aPageScroll)
 { with(self)
 {
     _verticalPageScroll = aPageScroll;
 }
-}), new objj_method(sel_getUid("verticalPageScroll"), function $CPScrollView__verticalPageScroll(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("verticalPageScroll"), function $CPScrollView__verticalPageScroll(self, _cmd)
 { with(self)
 {
     return _verticalPageScroll;
 }
-}), new objj_method(sel_getUid("scrollWheel:"), function $CPScrollView__scrollWheel_(self, _cmd, anEvent)
+},["float"]), new objj_method(sel_getUid("scrollWheel:"), function $CPScrollView__scrollWheel_(self, _cmd, anEvent)
 { with(self)
 {
    var documentFrame = objj_msgSend(objj_msgSend(self, "documentView"), "frame"),
@@ -337,7 +337,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     contentBounds.origin.y += objj_msgSend(anEvent, "deltaY") * _verticalLineScroll;
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
 }
-}), new objj_method(sel_getUid("keyDown:"), function $CPScrollView__keyDown_(self, _cmd, anEvent)
+},["void","CPEvent"]), new objj_method(sel_getUid("keyDown:"), function $CPScrollView__keyDown_(self, _cmd, anEvent)
 { with(self)
 {
     var keyCode = objj_msgSend(anEvent, "keyCode"),
@@ -367,7 +367,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(_contentView, "scrollToPoint:", contentBounds.origin);
 }
-})]);
+},["void","CPEvent"])]);
 }
 var CPScrollViewContentViewKey = "CPScrollViewContentView",
     CPScrollViewVLineScrollKey = "CPScrollViewVLineScroll",
@@ -401,7 +401,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPScrollView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPScrollView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
@@ -416,6 +416,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeBool:forKey:", _hasHorizontalScroller, CPScrollViewHasHScrollerKey);
     objj_msgSend(aCoder, "encodeBool:forKey:", _autohidesScrollers, CPScrollViewAutohidesScrollerKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

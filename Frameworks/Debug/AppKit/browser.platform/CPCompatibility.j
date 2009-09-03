@@ -1,4 +1,4 @@
-i;9;CPEvent.jc;4464;
+i;9;CPEvent.jc;4551;
 CPUnknownBrowserEngine = 0;
 CPGeckoBrowserEngine = 1;
 CPInternetExplorerBrowserEngine = 2;
@@ -8,14 +8,15 @@ CPWebKitBrowserEngine = 5;
 CPCSSRGBAFeature = 1 << 5;
 CPHTMLCanvasFeature = 1 << 6;
 CPHTMLContentEditableFeature = 1 << 7;
-CPJavascriptInnerTextFeature = 1 << 8;
-CPJavascriptTextContentFeature = 1 << 9;
-CPJavascriptClipboardEventsFeature = 1 << 10;
-CPJavascriptClipboardAccessFeature = 1 << 11;
-CPJavaScriptCanvasDrawFeature = 1 << 12;
-CPJavaScriptCanvasTransformFeature = 1 << 13;
-CPVMLFeature = 1 << 14;
-CPJavascriptRemedialKeySupport = 1 << 15;
+CPHTMLDragAndDropFeature = 1 << 8;
+CPJavascriptInnerTextFeature = 1 << 9;
+CPJavascriptTextContentFeature = 1 << 10;
+CPJavascriptClipboardEventsFeature = 1 << 11;
+CPJavascriptClipboardAccessFeature = 1 << 12;
+CPJavaScriptCanvasDrawFeature = 1 << 13;
+CPJavaScriptCanvasTransformFeature = 1 << 14;
+CPVMLFeature = 1 << 15;
+CPJavascriptRemedialKeySupport = 1 << 16;
 CPJavaScriptShadowFeature = 1 << 20;
 CPJavaScriptNegativeMouseWheelValues = 1 << 22;
 CPJavaScriptMouseWheelValues_8_15 = 1 << 23
@@ -46,6 +47,7 @@ else if (USER_AGENT.indexOf("AppleWebKit/") != -1)
     PLATFORM_ENGINE = CPWebKitBrowserEngine;
     PLATFORM_FEATURES |= CPCSSRGBAFeature;
     PLATFORM_FEATURES |= CPHTMLContentEditableFeature;
+    PLATFORM_FEATURES |= CPHTMLDragAndDropFeature;
     PLATFORM_FEATURES |= CPJavascriptClipboardEventsFeature;
     PLATFORM_FEATURES |= CPJavascriptClipboardAccessFeature;
     PLATFORM_FEATURES |= CPJavaScriptShadowFeature;

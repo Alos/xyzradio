@@ -19,7 +19,6 @@ This file is part of XYZRadio.
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import <Foundation/CPObject.j>
 @import "PlayerWindow.j"
 @import "XYZSong.j"
 @import "MainBrowser.j"

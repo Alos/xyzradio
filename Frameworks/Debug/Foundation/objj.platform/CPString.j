@@ -1,4 +1,4 @@
-i;10;CPObject.ji;13;CPException.ji;18;CPSortDescriptor.ji;9;CPValue.jc;13608;
+i;10;CPObject.ji;13;CPException.ji;18;CPSortDescriptor.ji;9;CPValue.jc;14617;
 CPCaseInsensitiveSearch = 1;
 CPLiteralSearch = 2;
 CPBackwardsSearch = 4;
@@ -19,7 +19,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
 {
     return String(aString);
 }
-}), new objj_method(sel_getUid("initWithFormat:"), function $CPString__initWithFormat_(self, _cmd, format)
+},["id","CPString"]), new objj_method(sel_getUid("initWithFormat:"), function $CPString__initWithFormat_(self, _cmd, format)
 { with(self)
 {
     if (!format)
@@ -27,34 +27,34 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     self = sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
     return self;
 }
-}), new objj_method(sel_getUid("description"), function $CPString__description(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("description"), function $CPString__description(self, _cmd)
 { with(self)
 {
     return self;
 }
-}), new objj_method(sel_getUid("length"), function $CPString__length(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("length"), function $CPString__length(self, _cmd)
 { with(self)
 {
     return length;
 }
-}), new objj_method(sel_getUid("characterAtIndex:"), function $CPString__characterAtIndex_(self, _cmd, anIndex)
+},["int"]), new objj_method(sel_getUid("characterAtIndex:"), function $CPString__characterAtIndex_(self, _cmd, anIndex)
 { with(self)
 {
     return charAt(anIndex);
 }
-}), new objj_method(sel_getUid("stringByAppendingFormat:"), function $CPString__stringByAppendingFormat_(self, _cmd, format)
+},["CPString","unsigned"]), new objj_method(sel_getUid("stringByAppendingFormat:"), function $CPString__stringByAppendingFormat_(self, _cmd, format)
 { with(self)
 {
     if (!format)
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "initWithFormat: the format can't be 'nil'");
     return self + sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
 }
-}), new objj_method(sel_getUid("stringByAppendingString:"), function $CPString__stringByAppendingString_(self, _cmd, aString)
+},["CPString","CPString"]), new objj_method(sel_getUid("stringByAppendingString:"), function $CPString__stringByAppendingString_(self, _cmd, aString)
 { with(self)
 {
     return self + aString;
 }
-}), new objj_method(sel_getUid("stringByPaddingToLength:withString:startingAtIndex:"), function $CPString__stringByPaddingToLength_withString_startingAtIndex_(self, _cmd, aLength, aString, anIndex)
+},["CPString","CPString"]), new objj_method(sel_getUid("stringByPaddingToLength:withString:startingAtIndex:"), function $CPString__stringByPaddingToLength_withString_startingAtIndex_(self, _cmd, aLength, aString, anIndex)
 { with(self)
 {
     if (length == aLength)
@@ -70,37 +70,37 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         string += substring.substring(0, -difference);
     return string;
 }
-}), new objj_method(sel_getUid("componentsSeparatedByString:"), function $CPString__componentsSeparatedByString_(self, _cmd, aString)
+},["CPString","unsigned","CPString","unsigned"]), new objj_method(sel_getUid("componentsSeparatedByString:"), function $CPString__componentsSeparatedByString_(self, _cmd, aString)
 { with(self)
 {
     return split(aString);
 }
-}), new objj_method(sel_getUid("substringFromIndex:"), function $CPString__substringFromIndex_(self, _cmd, anIndex)
+},["CPArray","CPString"]), new objj_method(sel_getUid("substringFromIndex:"), function $CPString__substringFromIndex_(self, _cmd, anIndex)
 { with(self)
 {
     return substr(anIndex);
 }
-}), new objj_method(sel_getUid("substringWithRange:"), function $CPString__substringWithRange_(self, _cmd, aRange)
+},["CPString","unsigned"]), new objj_method(sel_getUid("substringWithRange:"), function $CPString__substringWithRange_(self, _cmd, aRange)
 { with(self)
 {
     return substr(aRange.location, aRange.length);
 }
-}), new objj_method(sel_getUid("substringToIndex:"), function $CPString__substringToIndex_(self, _cmd, anIndex)
+},["CPString","CPRange"]), new objj_method(sel_getUid("substringToIndex:"), function $CPString__substringToIndex_(self, _cmd, anIndex)
 { with(self)
 {
     return substring(0, anIndex);
 }
-}), new objj_method(sel_getUid("rangeOfString:"), function $CPString__rangeOfString_(self, _cmd, aString)
+},["CPString","unsigned"]), new objj_method(sel_getUid("rangeOfString:"), function $CPString__rangeOfString_(self, _cmd, aString)
 { with(self)
 {
    return objj_msgSend(self, "rangeOfString:options:", aString, 0);
 }
-}), new objj_method(sel_getUid("rangeOfString:options:"), function $CPString__rangeOfString_options_(self, _cmd, aString, aMask)
+},["CPRange","CPString"]), new objj_method(sel_getUid("rangeOfString:options:"), function $CPString__rangeOfString_options_(self, _cmd, aString, aMask)
 { with(self)
 {
     return objj_msgSend(self, "rangeOfString:options:range:", aString, aMask, nil);
 }
-}), new objj_method(sel_getUid("rangeOfString:options:range:"), function $CPString__rangeOfString_options_range_(self, _cmd, aString, aMask, aRange)
+},["CPRange","CPString","int"]), new objj_method(sel_getUid("rangeOfString:options:range:"), function $CPString__rangeOfString_options_range_(self, _cmd, aString, aMask, aRange)
 { with(self)
 {
     var string = (aRange == nil) ? self : objj_msgSend(self, "substringWithRange:", aRange),
@@ -118,17 +118,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         location = string.indexOf(aString);
     return CPMakeRange(location, location == CPNotFound ? 0 : aString.length);
 }
-}), new objj_method(sel_getUid("stringByEscapingRegexControlCharacters"), function $CPString__stringByEscapingRegexControlCharacters(self, _cmd)
+},["CPRange","CPString","int","CPrange"]), new objj_method(sel_getUid("stringByEscapingRegexControlCharacters"), function $CPString__stringByEscapingRegexControlCharacters(self, _cmd)
 { with(self)
 {
     return self.replace(CPStringRegexEscapeExpression, "\\$1");
 }
-}), new objj_method(sel_getUid("stringByReplacingOccurrencesOfString:withString:"), function $CPString__stringByReplacingOccurrencesOfString_withString_(self, _cmd, target, replacement)
+},["CPString"]), new objj_method(sel_getUid("stringByReplacingOccurrencesOfString:withString:"), function $CPString__stringByReplacingOccurrencesOfString_withString_(self, _cmd, target, replacement)
 { with(self)
 {
     return self.replace(new RegExp(objj_msgSend(target, "stringByEscapingRegexControlCharacters"), "g"), replacement);
 }
-}), new objj_method(sel_getUid("stringByReplacingOccurrencesOfString:withString:options:range:"), function $CPString__stringByReplacingOccurrencesOfString_withString_options_range_(self, _cmd, target, replacement, options, searchRange)
+},["CPString","CPString","CPString"]), new objj_method(sel_getUid("stringByReplacingOccurrencesOfString:withString:options:range:"), function $CPString__stringByReplacingOccurrencesOfString_withString_options_range_(self, _cmd, target, replacement, options, searchRange)
 { with(self)
 {
     var start = substring(0, searchRange.location),
@@ -142,27 +142,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         regExp = new RegExp(target, "g");
     return start + '' + stringSegmentToSearch.replace(regExp, replacement) + '' + end;
 }
-}), new objj_method(sel_getUid("stringByReplacingCharactersInRange:withString:"), function $CPString__stringByReplacingCharactersInRange_withString_(self, _cmd, range, replacement)
+},["CPString","CPString","CPString","int","CPRange"]), new objj_method(sel_getUid("stringByReplacingCharactersInRange:withString:"), function $CPString__stringByReplacingCharactersInRange_withString_(self, _cmd, range, replacement)
 { with(self)
 {
  return '' + substring(0, range.location) + replacement + substring(range.location + range.length, self.length);
 }
-}), new objj_method(sel_getUid("stringByTrimmingWhitespace"), function $CPString__stringByTrimmingWhitespace(self, _cmd)
+},["CPString","CPRange","CPString"]), new objj_method(sel_getUid("stringByTrimmingWhitespace"), function $CPString__stringByTrimmingWhitespace(self, _cmd)
 { with(self)
 {
     return self.replace(CPStringRegexTrimWhitespace, "");
 }
-}), new objj_method(sel_getUid("compare:"), function $CPString__compare_(self, _cmd, aString)
+},["CPString"]), new objj_method(sel_getUid("compare:"), function $CPString__compare_(self, _cmd, aString)
 { with(self)
 {
     return objj_msgSend(self, "compare:options:", aString, nil);
 }
-}), new objj_method(sel_getUid("caseInsensitiveCompare:"), function $CPString__caseInsensitiveCompare_(self, _cmd, aString)
+},["CPComparisonResult","CPString"]), new objj_method(sel_getUid("caseInsensitiveCompare:"), function $CPString__caseInsensitiveCompare_(self, _cmd, aString)
 { with(self)
 {
     return objj_msgSend(self, "compare:options:", aString, CPCaseInsensitiveSearch);
 }
-}), new objj_method(sel_getUid("compare:options:"), function $CPString__compare_options_(self, _cmd, aString, aMask)
+},["CPComparisonResult","CPString"]), new objj_method(sel_getUid("compare:options:"), function $CPString__compare_options_(self, _cmd, aString, aMask)
 { with(self)
 {
     var lhs = self,
@@ -178,29 +178,29 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         return CPOrderedDescending;
     return CPOrderedSame;
 }
-}), new objj_method(sel_getUid("compare:options:range:"), function $CPString__compare_options_range_(self, _cmd, aString, aMask, range)
+},["CPComparisonResult","CPString","int"]), new objj_method(sel_getUid("compare:options:range:"), function $CPString__compare_options_range_(self, _cmd, aString, aMask, range)
 { with(self)
 {
     var lhs = objj_msgSend(self, "substringWithRange:", range),
         rhs = aString;
     return objj_msgSend(lhs, "compare:options:", rhs, aMask);
 }
-}), new objj_method(sel_getUid("hasPrefix:"), function $CPString__hasPrefix_(self, _cmd, aString)
+},["CPComparisonResult","CPString","int","CPRange"]), new objj_method(sel_getUid("hasPrefix:"), function $CPString__hasPrefix_(self, _cmd, aString)
 { with(self)
 {
     return aString && aString != "" && indexOf(aString) == 0;
 }
-}), new objj_method(sel_getUid("hasSuffix:"), function $CPString__hasSuffix_(self, _cmd, aString)
+},["BOOL","CPString"]), new objj_method(sel_getUid("hasSuffix:"), function $CPString__hasSuffix_(self, _cmd, aString)
 { with(self)
 {
     return aString && aString != "" && lastIndexOf(aString) == (length - aString.length);
 }
-}), new objj_method(sel_getUid("isEqualToString:"), function $CPString__isEqualToString_(self, _cmd, aString)
+},["BOOL","CPString"]), new objj_method(sel_getUid("isEqualToString:"), function $CPString__isEqualToString_(self, _cmd, aString)
 { with(self)
 {
     return self == aString;
 }
-}), new objj_method(sel_getUid("UID"), function $CPString__UID(self, _cmd)
+},["BOOL","CPString"]), new objj_method(sel_getUid("UID"), function $CPString__UID(self, _cmd)
 { with(self)
 {
     var hash = dictionary_getValue(CPStringHashes, self);
@@ -211,7 +211,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return hash;
 }
-}), new objj_method(sel_getUid("capitalizedString"), function $CPString__capitalizedString(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("capitalizedString"), function $CPString__capitalizedString(self, _cmd)
 { with(self)
 {
     var parts = self.split(/\b/g);
@@ -224,38 +224,38 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
     }
     return parts.join("");
 }
-}), new objj_method(sel_getUid("lowercaseString"), function $CPString__lowercaseString(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("lowercaseString"), function $CPString__lowercaseString(self, _cmd)
 { with(self)
 {
     return toLowerCase();
 }
-}), new objj_method(sel_getUid("uppercaseString"), function $CPString__uppercaseString(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("uppercaseString"), function $CPString__uppercaseString(self, _cmd)
 { with(self)
 {
     return toUpperCase();
 }
-}), new objj_method(sel_getUid("doubleValue"), function $CPString__doubleValue(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("doubleValue"), function $CPString__doubleValue(self, _cmd)
 { with(self)
 {
     return parseFloat(self, 10);
 }
-}), new objj_method(sel_getUid("boolValue"), function $CPString__boolValue(self, _cmd)
+},["double"]), new objj_method(sel_getUid("boolValue"), function $CPString__boolValue(self, _cmd)
 { with(self)
 {
     var replaceRegExp = new RegExp("^\\s*[\\+,\\-]*0*");
     return RegExp("^[Y,y,t,T,1-9]").test(self.replace(replaceRegExp, ''));
 }
-}), new objj_method(sel_getUid("floatValue"), function $CPString__floatValue(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("floatValue"), function $CPString__floatValue(self, _cmd)
 { with(self)
 {
     return parseFloat(self, 10);
 }
-}), new objj_method(sel_getUid("intValue"), function $CPString__intValue(self, _cmd)
+},["float"]), new objj_method(sel_getUid("intValue"), function $CPString__intValue(self, _cmd)
 { with(self)
 {
     return parseInt(self, 10);
 }
-}), new objj_method(sel_getUid("pathComponents"), function $CPString__pathComponents(self, _cmd)
+},["int"]), new objj_method(sel_getUid("pathComponents"), function $CPString__pathComponents(self, _cmd)
 { with(self)
 {
     var result = split('/');
@@ -265,18 +265,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         result.pop();
     return result;
 }
-}), new objj_method(sel_getUid("pathExtension"), function $CPString__pathExtension(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("pathExtension"), function $CPString__pathExtension(self, _cmd)
 { with(self)
 {
     return substr(lastIndexOf('.') + 1);
 }
-}), new objj_method(sel_getUid("lastPathComponent"), function $CPString__lastPathComponent(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("lastPathComponent"), function $CPString__lastPathComponent(self, _cmd)
 { with(self)
 {
     var components = objj_msgSend(self, "pathComponents");
     return components[components.length -1];
 }
-}), new objj_method(sel_getUid("stringByDeletingLastPathComponent"), function $CPString__stringByDeletingLastPathComponent(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("stringByDeletingLastPathComponent"), function $CPString__stringByDeletingLastPathComponent(self, _cmd)
 { with(self)
 {
     var path = self,
@@ -288,48 +288,48 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         return '/';
     return path;
 }
-}), new objj_method(sel_getUid("stringByStandardizingPath"), function $CPString__stringByStandardizingPath(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("stringByStandardizingPath"), function $CPString__stringByStandardizingPath(self, _cmd)
 { with(self)
 {
     return objj_standardize_path(self);
 }
-}), new objj_method(sel_getUid("copy"), function $CPString__copy(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("copy"), function $CPString__copy(self, _cmd)
 { with(self)
 {
     return new String(self);
 }
-})]);
+},["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPString__alloc(self, _cmd)
 { with(self)
 {
     return new String;
 }
-}), new objj_method(sel_getUid("string"), function $CPString__string(self, _cmd)
+},["id"]), new objj_method(sel_getUid("string"), function $CPString__string(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
-}), new objj_method(sel_getUid("stringWithHash:"), function $CPString__stringWithHash_(self, _cmd, aHash)
+},["id"]), new objj_method(sel_getUid("stringWithHash:"), function $CPString__stringWithHash_(self, _cmd, aHash)
 { with(self)
 {
     var hashString = parseInt(aHash, 10).toString(16);
     return "000000".substring(0, MAX(6-hashString.length, 0)) + hashString;
 }
-}), new objj_method(sel_getUid("stringWithString:"), function $CPString__stringWithString_(self, _cmd, aString)
+},["id","unsigned"]), new objj_method(sel_getUid("stringWithString:"), function $CPString__stringWithString_(self, _cmd, aString)
 { with(self)
 {
     if (!aString)
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "stringWithString: the string can't be 'nil'");
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithString:", aString);
 }
-}), new objj_method(sel_getUid("stringWithFormat:"), function $CPString__stringWithFormat_(self, _cmd, format)
+},["id","CPString"]), new objj_method(sel_getUid("stringWithFormat:"), function $CPString__stringWithFormat_(self, _cmd, format)
 { with(self)
 {
     if (!format)
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "initWithFormat: the format can't be 'nil'");
     return sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
 }
-})]);
+},["id","CPString"])]);
 }
 {
 var the_class = objj_getClass("CPString")
@@ -339,13 +339,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return JSON.parse(self);
 }
-})]);
+},["JSObject"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("JSONFromObject:"), function $CPString__JSONFromObject_(self, _cmd, anObject)
 { with(self)
 {
     return JSON.stringify(anObject);
 }
-})]);
+},["CPString","JSObject"])]);
 }
 {
 var the_class = objj_getClass("CPString")
@@ -358,7 +358,7 @@ var meta_class = the_class.isa;class_addMethods(meta_class, [new objj_method(sel
         g += FLOOR(RAND() * 0xF).toString(0xF);
     return g;
 }
-})]);
+},["CPString"])]);
 }
 String.prototype.isa = CPString;
 

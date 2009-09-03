@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;8090;
+I;21;Foundation/CPObject.jc;8406;
 CPLeftMouseDown=1;
 CPLeftMouseUp=2;
 CPRightMouseDown=3;
@@ -118,7 +118,7 @@ return _1c;
 }
 }),new objj_method(sel_getUid("locationInWindow"),function(_27,_28){
 with(_27){
-return _location;
+return {x:_location.x,y:_location.y};
 }
 }),new objj_method(sel_getUid("modifierFlags"),function(_29,_2a){
 with(_29){
@@ -200,15 +200,23 @@ return objj_msgSend(objj_msgSend(_55,"alloc"),"_initMouseEventWithType:location:
 with(_60){
 return objj_msgSend(objj_msgSend(_60,"alloc"),"_initOtherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:",_62,_63,_64,_65,_66,_67,_68,_69,_6a);
 }
-}),new objj_method(sel_getUid("startPeriodicEventsAfterDelay:withPeriod:"),function(_6b,_6c,_6d,_6e){
+}),new objj_method(sel_getUid("mouseLocation"),function(_6b,_6c){
 with(_6b){
-_1=_6e;
-_2=window.setTimeout(function(){
-_2=window.setInterval(_CPEventFirePeriodEvent,_6e*1000);
-},_6d*1000);
+var _6d=objj_msgSend(CPApp,"currentEvent"),_6e=objj_msgSend(_6d,"window");
+if(_6e){
+return objj_msgSend(_6e,"convertBaseToGlobal:",objj_msgSend(_6d,"locationInWindow"));
 }
-}),new objj_method(sel_getUid("stopPeriodicEvents"),function(_6f,_70){
+return objj_msgSend(_6d,"locationInWindow");
+}
+}),new objj_method(sel_getUid("startPeriodicEventsAfterDelay:withPeriod:"),function(_6f,_70,_71,_72){
 with(_6f){
+_1=_72;
+_2=window.setTimeout(function(){
+_2=window.setInterval(_CPEventFirePeriodEvent,_72*1000);
+},_71*1000);
+}
+}),new objj_method(sel_getUid("stopPeriodicEvents"),function(_73,_74){
+with(_73){
 if(_2===nil){
 return;
 }
@@ -219,18 +227,18 @@ _2=nil;
 _CPEventFirePeriodEvent=function(){
 objj_msgSend(CPApp,"sendEvent:",objj_msgSend(CPEvent,"otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:",CPPeriodic,{x:0,y:0},0,0,0,nil,0,0,0));
 };
-var _71=objj_msgSend(CPEvent,"class");
-_CPEventFromNativeMouseEvent=function(_72,_73,_74,_75,_76,_77,_78,_79,_7a,_7b){
-_72.isa=_71;
-_72._type=_73;
-_72._location=_74;
-_72._modifierFlags=_75;
-_72._timestamp=_76;
-_72._windowNumber=_77;
-_72._window=nil;
-_72._context=_78;
-_72._eventNumber=_79;
-_72._clickCount=_7a;
-_72._pressure=_7b;
-return _72;
+var _75=objj_msgSend(CPEvent,"class");
+_CPEventFromNativeMouseEvent=function(_76,_77,_78,_79,_7a,_7b,_7c,_7d,_7e,_7f){
+_76.isa=_75;
+_76._type=_77;
+_76._location=_78;
+_76._modifierFlags=_79;
+_76._timestamp=_7a;
+_76._windowNumber=_7b;
+_76._window=nil;
+_76._context=_7c;
+_76._eventNumber=_7d;
+_76._clickCount=_7e;
+_76._pressure=_7f;
+return _76;
 };

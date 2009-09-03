@@ -1,4 +1,4 @@
-i;8;CPNull.ji;9;CPCoder.jc;13982;
+i;8;CPNull.ji;9;CPCoder.jc;14379;
 CPInvalidUnarchiveOperationException = "CPInvalidUnarchiveOperationException";
 var _CPKeyedUnarchiverCannotDecodeObjectOfClassNameOriginalClassesSelector = 1 << 0,
     _CPKeyedUnarchiverDidDecodeObjectSelector = 1 << 1,
@@ -39,12 +39,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     }
     return self;
 }
-}), new objj_method(sel_getUid("containsValueForKey:"), function $CPKeyedUnarchiver__containsValueForKey_(self, _cmd, aKey)
+},["id","CPData"]), new objj_method(sel_getUid("containsValueForKey:"), function $CPKeyedUnarchiver__containsValueForKey_(self, _cmd, aKey)
 { with(self)
 {
     return objj_msgSend(_plistObject, "objectForKey:", aKey) != nil;
 }
-}), new objj_method(sel_getUid("_decodeDictionaryOfObjectsForKey:"), function $CPKeyedUnarchiver___decodeDictionaryOfObjectsForKey_(self, _cmd, aKey)
+},["BOOL","CPString"]), new objj_method(sel_getUid("_decodeDictionaryOfObjectsForKey:"), function $CPKeyedUnarchiver___decodeDictionaryOfObjectsForKey_(self, _cmd, aKey)
 { with(self)
 {
     var object = objj_msgSend(_plistObject, "objectForKey:", aKey);
@@ -59,27 +59,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     }
     return nil;
 }
-}), new objj_method(sel_getUid("decodeBoolForKey:"), function $CPKeyedUnarchiver__decodeBoolForKey_(self, _cmd, aKey)
+},["void","CPString"]), new objj_method(sel_getUid("decodeBoolForKey:"), function $CPKeyedUnarchiver__decodeBoolForKey_(self, _cmd, aKey)
 { with(self)
 {
     return objj_msgSend(self, "decodeObjectForKey:", aKey);
 }
-}), new objj_method(sel_getUid("decodeFloatForKey:"), function $CPKeyedUnarchiver__decodeFloatForKey_(self, _cmd, aKey)
+},["BOOL","CPString"]), new objj_method(sel_getUid("decodeFloatForKey:"), function $CPKeyedUnarchiver__decodeFloatForKey_(self, _cmd, aKey)
 { with(self)
 {
     return objj_msgSend(self, "decodeObjectForKey:", aKey);
 }
-}), new objj_method(sel_getUid("decodeDoubleForKey:"), function $CPKeyedUnarchiver__decodeDoubleForKey_(self, _cmd, aKey)
+},["float","CPString"]), new objj_method(sel_getUid("decodeDoubleForKey:"), function $CPKeyedUnarchiver__decodeDoubleForKey_(self, _cmd, aKey)
 { with(self)
 {
     return objj_msgSend(self, "decodeObjectForKey:", aKey);
 }
-}), new objj_method(sel_getUid("decodeIntForKey:"), function $CPKeyedUnarchiver__decodeIntForKey_(self, _cmd, aKey)
+},["double","CPString"]), new objj_method(sel_getUid("decodeIntForKey:"), function $CPKeyedUnarchiver__decodeIntForKey_(self, _cmd, aKey)
 { with(self)
 {
     return objj_msgSend(self, "decodeObjectForKey:", aKey);
 }
-}), new objj_method(sel_getUid("decodePointForKey:"), function $CPKeyedUnarchiver__decodePointForKey_(self, _cmd, aKey)
+},["int","CPString"]), new objj_method(sel_getUid("decodePointForKey:"), function $CPKeyedUnarchiver__decodePointForKey_(self, _cmd, aKey)
 { with(self)
 {
     var object = objj_msgSend(self, "decodeObjectForKey:", aKey);
@@ -88,7 +88,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     else
         return CPPointMake(0.0, 0.0);
 }
-}), new objj_method(sel_getUid("decodeRectForKey:"), function $CPKeyedUnarchiver__decodeRectForKey_(self, _cmd, aKey)
+},["CGPoint","CPString"]), new objj_method(sel_getUid("decodeRectForKey:"), function $CPKeyedUnarchiver__decodeRectForKey_(self, _cmd, aKey)
 { with(self)
 {
     var object = objj_msgSend(self, "decodeObjectForKey:", aKey);
@@ -97,7 +97,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     else
         return CPRectMakeZero();
 }
-}), new objj_method(sel_getUid("decodeSizeForKey:"), function $CPKeyedUnarchiver__decodeSizeForKey_(self, _cmd, aKey)
+},["CGRect","CPString"]), new objj_method(sel_getUid("decodeSizeForKey:"), function $CPKeyedUnarchiver__decodeSizeForKey_(self, _cmd, aKey)
 { with(self)
 {
     var object = objj_msgSend(self, "decodeObjectForKey:", aKey);
@@ -106,7 +106,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     else
         return CPSizeMake(0.0, 0.0);
 }
-}), new objj_method(sel_getUid("decodeObjectForKey:"), function $CPKeyedUnarchiver__decodeObjectForKey_(self, _cmd, aKey)
+},["CGSize","CPString"]), new objj_method(sel_getUid("decodeObjectForKey:"), function $CPKeyedUnarchiver__decodeObjectForKey_(self, _cmd, aKey)
 { with(self)
 {
     var object = objj_msgSend(_plistObject, "objectForKey:", aKey);
@@ -125,7 +125,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     }
     return nil;
 }
-}), new objj_method(sel_getUid("decodeBytesForKey:"), function $CPKeyedUnarchiver__decodeBytesForKey_(self, _cmd, aKey)
+},["id","CPString"]), new objj_method(sel_getUid("decodeBytesForKey:"), function $CPKeyedUnarchiver__decodeBytesForKey_(self, _cmd, aKey)
 { with(self)
 {
     var data = objj_msgSend(self, "decodeObjectForKey:", aKey);
@@ -133,7 +133,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
         return data.bytes;
     return nil;
 }
-}), new objj_method(sel_getUid("finishDecoding"), function $CPKeyedUnarchiver__finishDecoding(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("finishDecoding"), function $CPKeyedUnarchiver__finishDecoding(self, _cmd)
 { with(self)
 {
     if (_delegateSelectors & _CPKeyedUnarchiverWillFinishSelector)
@@ -141,12 +141,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     if (_delegateSelectors & _CPKeyedUnarchiverDidFinishSelector)
         objj_msgSend(_delegate, "unarchiverDidFinish:", self);
 }
-}), new objj_method(sel_getUid("delegate"), function $CPKeyedUnarchiver__delegate(self, _cmd)
+},["void"]), new objj_method(sel_getUid("delegate"), function $CPKeyedUnarchiver__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPKeyedUnarchiver__setDelegate_(self, _cmd, aDelegate)
+},["id"]), new objj_method(sel_getUid("setDelegate:"), function $CPKeyedUnarchiver__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     _delegate = aDelegate;
@@ -163,22 +163,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initForReadingWithData:
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("unarchiver:cannotDecodeObjectOfClassName:originalClasses:")))
         _delegateSelectors |= CPKeyedUnarchiverDelegate_unarchiver_cannotDecodeObjectOfClassName_originalClasses_;
 }
-}), new objj_method(sel_getUid("setClass:forClassName:"), function $CPKeyedUnarchiver__setClass_forClassName_(self, _cmd, aClass, aClassName)
+},["void","id"]), new objj_method(sel_getUid("setClass:forClassName:"), function $CPKeyedUnarchiver__setClass_forClassName_(self, _cmd, aClass, aClassName)
 { with(self)
 {
     objj_msgSend(_replacementClasses, "setObject:forKey:", aClass, aClassName);
 }
-}), new objj_method(sel_getUid("classForClassName:"), function $CPKeyedUnarchiver__classForClassName_(self, _cmd, aClassName)
+},["void","Class","CPString"]), new objj_method(sel_getUid("classForClassName:"), function $CPKeyedUnarchiver__classForClassName_(self, _cmd, aClassName)
 { with(self)
 {
     return objj_msgSend(_replacementClasses, "objectForKey:", aClassName);
 }
-}), new objj_method(sel_getUid("allowsKeyedCoding"), function $CPKeyedUnarchiver__allowsKeyedCoding(self, _cmd)
+},["Class","CPString"]), new objj_method(sel_getUid("allowsKeyedCoding"), function $CPKeyedUnarchiver__allowsKeyedCoding(self, _cmd)
 { with(self)
 {
     return YES;
 }
-})]);
+},["BOOL"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPKeyedUnarchiver__initialize(self, _cmd)
 { with(self)
 {
@@ -191,7 +191,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     _CPKeyedUnarchiverDataClass = objj_msgSend(CPData, "class");
     _CPKeyedUnarchiverArchiverValueClass = objj_msgSend(_CPKeyedArchiverValue, "class");
 }
-}), new objj_method(sel_getUid("unarchiveObjectWithData:"), function $CPKeyedUnarchiver__unarchiveObjectWithData_(self, _cmd, data)
+},["void"]), new objj_method(sel_getUid("unarchiveObjectWithData:"), function $CPKeyedUnarchiver__unarchiveObjectWithData_(self, _cmd, data)
 { with(self)
 {
     var unarchiver = objj_msgSend(objj_msgSend(self, "alloc"), "initForReadingWithData:", data),
@@ -199,15 +199,15 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     objj_msgSend(unarchiver, "finishDecoding");
     return object;
 }
-}), new objj_method(sel_getUid("unarchiveObjectWithFile:"), function $CPKeyedUnarchiver__unarchiveObjectWithFile_(self, _cmd, aFilePath)
+},["id","CPData"]), new objj_method(sel_getUid("unarchiveObjectWithFile:"), function $CPKeyedUnarchiver__unarchiveObjectWithFile_(self, _cmd, aFilePath)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("unarchiveObjectWithFile:asynchronously:"), function $CPKeyedUnarchiver__unarchiveObjectWithFile_asynchronously_(self, _cmd, aFilePath, aFlag)
+},["id","CPString"]), new objj_method(sel_getUid("unarchiveObjectWithFile:asynchronously:"), function $CPKeyedUnarchiver__unarchiveObjectWithFile_asynchronously_(self, _cmd, aFilePath, aFlag)
 { with(self)
 {
 }
-})]);
+},["id","CPString","BOOL"])]);
 }
 var _CPKeyedUnarchiverDecodeObjectAtIndex = function(self, anIndex)
 {

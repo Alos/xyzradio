@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;9;CGColor.ji;17;CPCompatibility.ji;9;CPImage.jc;21619;
+I;21;Foundation/CPObject.ji;9;CGColor.ji;17;CPCompatibility.ji;9;CPImage.jc;22382;
 var _redComponent = 0,
     _greenComponent = 1,
     _blueComponent = 2,
@@ -43,7 +43,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initWithCSSString:"), 
     _cssString = aString;
     return self;
 }
-}), new objj_method(sel_getUid("_initWithRGBA:"), function $CPColor___initWithRGBA_(self, _cmd, components)
+},["id","CPString"]), new objj_method(sel_getUid("_initWithRGBA:"), function $CPColor___initWithRGBA_(self, _cmd, components)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -87,7 +87,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initWithCSSString:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("_initWithPatternImage:"), function $CPColor___initWithPatternImage_(self, _cmd, anImage)
+},["id","CPArray"]), new objj_method(sel_getUid("_initWithPatternImage:"), function $CPColor___initWithPatternImage_(self, _cmd, anImage)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -98,44 +98,44 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initWithCSSString:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("patternImage"), function $CPColor__patternImage(self, _cmd)
+},["id","CPImage"]), new objj_method(sel_getUid("patternImage"), function $CPColor__patternImage(self, _cmd)
 { with(self)
 {
     return _patternImage;
 }
-}), new objj_method(sel_getUid("alphaComponent"), function $CPColor__alphaComponent(self, _cmd)
+},["CPImage"]), new objj_method(sel_getUid("alphaComponent"), function $CPColor__alphaComponent(self, _cmd)
 { with(self)
 {
     return _components[3];
 }
-}), new objj_method(sel_getUid("blueComponent"), function $CPColor__blueComponent(self, _cmd)
+},["float"]), new objj_method(sel_getUid("blueComponent"), function $CPColor__blueComponent(self, _cmd)
 { with(self)
 {
     return _components[2];
 }
-}), new objj_method(sel_getUid("greenComponent"), function $CPColor__greenComponent(self, _cmd)
+},["float"]), new objj_method(sel_getUid("greenComponent"), function $CPColor__greenComponent(self, _cmd)
 { with(self)
 {
     return _components[1];
 }
-}), new objj_method(sel_getUid("redComponent"), function $CPColor__redComponent(self, _cmd)
+},["float"]), new objj_method(sel_getUid("redComponent"), function $CPColor__redComponent(self, _cmd)
 { with(self)
 {
     return _components[0];
 }
-}), new objj_method(sel_getUid("components"), function $CPColor__components(self, _cmd)
+},["float"]), new objj_method(sel_getUid("components"), function $CPColor__components(self, _cmd)
 { with(self)
 {
     return _components;
 }
-}), new objj_method(sel_getUid("colorWithAlphaComponent:"), function $CPColor__colorWithAlphaComponent_(self, _cmd, anAlphaComponent)
+},["CPArray"]), new objj_method(sel_getUid("colorWithAlphaComponent:"), function $CPColor__colorWithAlphaComponent_(self, _cmd, anAlphaComponent)
 { with(self)
 {
     var components = _components.slice();
     components[components.length - 1] = anAlphaComponent;
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "_initWithRGBA:", components);
 }
-}), new objj_method(sel_getUid("hsbComponents"), function $CPColor__hsbComponents(self, _cmd)
+},["CPColor","float"]), new objj_method(sel_getUid("hsbComponents"), function $CPColor__hsbComponents(self, _cmd)
 { with(self)
 {
     var red = ROUND(_components[_redComponent] * 255.0),
@@ -170,17 +170,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initWithCSSString:"), 
         ROUND(brightness * 100.0)
     ];
 }
-}), new objj_method(sel_getUid("cssString"), function $CPColor__cssString(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("cssString"), function $CPColor__cssString(self, _cmd)
 { with(self)
 {
     return _cssString;
 }
-}), new objj_method(sel_getUid("hexString"), function $CPColor__hexString(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("hexString"), function $CPColor__hexString(self, _cmd)
 { with(self)
 {
     return rgbToHex(objj_msgSend(self, "redComponent"), objj_msgSend(self, "greenComponent"), objj_msgSend(self, "blueComponent"))
 }
-}), new objj_method(sel_getUid("isEqual:"), function $CPColor__isEqual_(self, _cmd, aColor)
+},["CPString"]), new objj_method(sel_getUid("isEqual:"), function $CPColor__isEqual_(self, _cmd, aColor)
 { with(self)
 {
     if (!aColor)
@@ -189,38 +189,38 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initWithCSSString:"), 
         return YES;
     return objj_msgSend(aColor, "isKindOfClass:", CPColor) && objj_msgSend(aColor, "cssString") === objj_msgSend(self, "cssString");
 }
-}), new objj_method(sel_getUid("description"), function $CPColor__description(self, _cmd)
+},["BOOL","CPColor"]), new objj_method(sel_getUid("description"), function $CPColor__description(self, _cmd)
 { with(self)
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "description")+" "+objj_msgSend(self, "cssString");
 }
-})]);
+},["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("colorWithRed:green:blue:alpha:"), function $CPColor__colorWithRed_green_blue_alpha_(self, _cmd, red, green, blue, alpha)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [red, green, blue, alpha]);
 }
-}), new objj_method(sel_getUid("colorWithCalibratedRed:green:blue:alpha:"), function $CPColor__colorWithCalibratedRed_green_blue_alpha_(self, _cmd, red, green, blue, alpha)
+},["CPColor","float","float","float","float"]), new objj_method(sel_getUid("colorWithCalibratedRed:green:blue:alpha:"), function $CPColor__colorWithCalibratedRed_green_blue_alpha_(self, _cmd, red, green, blue, alpha)
 { with(self)
 {
     return objj_msgSend(self, "colorWithRed:green:blue:alpha:", red, green, blue, alpha);
 }
-}), new objj_method(sel_getUid("colorWithWhite:alpha:"), function $CPColor__colorWithWhite_alpha_(self, _cmd, white, alpha)
+},["CPColor","float","float","float","float"]), new objj_method(sel_getUid("colorWithWhite:alpha:"), function $CPColor__colorWithWhite_alpha_(self, _cmd, white, alpha)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [white, white, white, alpha]);
 }
-}), new objj_method(sel_getUid("colorWithCalibratedWhite:alpha:"), function $CPColor__colorWithCalibratedWhite_alpha_(self, _cmd, white, alpha)
+},["CPColor","float","float"]), new objj_method(sel_getUid("colorWithCalibratedWhite:alpha:"), function $CPColor__colorWithCalibratedWhite_alpha_(self, _cmd, white, alpha)
 { with(self)
 {
     return objj_msgSend(self, "colorWithWhite:alpha:", white, alpha);
 }
-}), new objj_method(sel_getUid("colorWithHue:saturation:brightness:"), function $CPColor__colorWithHue_saturation_brightness_(self, _cmd, hue, saturation, brightness)
+},["CPColor","float","float"]), new objj_method(sel_getUid("colorWithHue:saturation:brightness:"), function $CPColor__colorWithHue_saturation_brightness_(self, _cmd, hue, saturation, brightness)
 { with(self)
 {
     return objj_msgSend(self, "colorWithHue:saturation:brightness:alpha:", hue, saturation, brightness, 1.0);
 }
-}), new objj_method(sel_getUid("colorWithHue:saturation:brightness:alpha:"), function $CPColor__colorWithHue_saturation_brightness_alpha_(self, _cmd, hue, saturation, brightness, alpha)
+},["CPColor","float","float","float"]), new objj_method(sel_getUid("colorWithHue:saturation:brightness:alpha:"), function $CPColor__colorWithHue_saturation_brightness_alpha_(self, _cmd, hue, saturation, brightness, alpha)
 { with(self)
 {
     if(saturation === 0.0)
@@ -240,134 +240,134 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("colorWithRed:green:blu
         case 5: return objj_msgSend(CPColor, "colorWithCalibratedRed:green:blue:alpha:",  b,  p,  q,  alpha);
     }
 }
-}), new objj_method(sel_getUid("colorWithHexString:"), function $CPColor__colorWithHexString_(self, _cmd, hex)
+},["CPColor","float","float","float","float"]), new objj_method(sel_getUid("colorWithHexString:"), function $CPColor__colorWithHexString_(self, _cmd, hex)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:",  hexToRGB(hex));
 }
-}), new objj_method(sel_getUid("blackColor"), function $CPColor__blackColor(self, _cmd)
+},["CPColor","string"]), new objj_method(sel_getUid("blackColor"), function $CPColor__blackColor(self, _cmd)
 { with(self)
 {
     if (!cachedBlackColor)
         cachedBlackColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.0, 0.0, 0.0, 1.0]);
     return cachedBlackColor;
 }
-}), new objj_method(sel_getUid("blueColor"), function $CPColor__blueColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("blueColor"), function $CPColor__blueColor(self, _cmd)
 { with(self)
 {
     if (!cachedBlueColor)
         cachedBlueColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.0, 0.0, 1.0, 1.0]);
     return cachedBlueColor;
 }
-}), new objj_method(sel_getUid("darkGrayColor"), function $CPColor__darkGrayColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("darkGrayColor"), function $CPColor__darkGrayColor(self, _cmd)
 { with(self)
 {
     if (!cachedDarkGrayColor)
         cachedDarkGrayColor = objj_msgSend(CPColor, "colorWithCalibratedWhite:alpha:", 1.0 / 3.0, 1.0);
     return cachedDarkGrayColor;
 }
-}), new objj_method(sel_getUid("grayColor"), function $CPColor__grayColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("grayColor"), function $CPColor__grayColor(self, _cmd)
 { with(self)
 {
     if (!cachedGrayColor)
         cachedGrayColor = objj_msgSend(CPColor, "colorWithCalibratedWhite:alpha:", 0.5,  1.0);
     return cachedGrayColor;
 }
-}), new objj_method(sel_getUid("greenColor"), function $CPColor__greenColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("greenColor"), function $CPColor__greenColor(self, _cmd)
 { with(self)
 {
     if (!cachedGreenColor)
         cachedGreenColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.0, 1.0, 0.0, 1.0]);
     return cachedGreenColor;
 }
-}), new objj_method(sel_getUid("lightGrayColor"), function $CPColor__lightGrayColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("lightGrayColor"), function $CPColor__lightGrayColor(self, _cmd)
 { with(self)
 {
     if (!cachedLightGrayColor)
         cachedLightGrayColor = objj_msgSend(CPColor, "colorWithCalibratedWhite:alpha:", 2.0 / 3.0, 1.0);
     return cachedLightGrayColor;
 }
-}), new objj_method(sel_getUid("redColor"), function $CPColor__redColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("redColor"), function $CPColor__redColor(self, _cmd)
 { with(self)
 {
     if (!cachedRedColor)
         cachedRedColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [1.0, 0.0, 0.0, 1.0]);
     return cachedRedColor;
 }
-}), new objj_method(sel_getUid("whiteColor"), function $CPColor__whiteColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("whiteColor"), function $CPColor__whiteColor(self, _cmd)
 { with(self)
 {
     if (!cachedWhiteColor)
         cachedWhiteColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [1.0, 1.0, 1.0, 1.0]);
     return cachedWhiteColor;
 }
-}), new objj_method(sel_getUid("yellowColor"), function $CPColor__yellowColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("yellowColor"), function $CPColor__yellowColor(self, _cmd)
 { with(self)
 {
     if (!cachedYellowColor)
         cachedYellowColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [1.0, 1.0, 0.0, 1.0]);
     return cachedYellowColor;
 }
-}), new objj_method(sel_getUid("brownColor"), function $CPColor__brownColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("brownColor"), function $CPColor__brownColor(self, _cmd)
 { with(self)
 {
     if (!cachedBrownColor)
         cachedBrownColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.6, 0.4, 0.2, 1.0]);
     return cachedBrownColor;
 }
-}), new objj_method(sel_getUid("cyanColor"), function $CPColor__cyanColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("cyanColor"), function $CPColor__cyanColor(self, _cmd)
 { with(self)
 {
     if (!cachedCyanColor)
         cachedCyanColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.0, 1.0, 1.0, 1.0]);
     return cachedCyanColor;
 }
-}), new objj_method(sel_getUid("magentaColor"), function $CPColor__magentaColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("magentaColor"), function $CPColor__magentaColor(self, _cmd)
 { with(self)
 {
     if (!cachedMagentaColor)
         cachedMagentaColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [1.0, 0.0, 1.0, 1.0]);
     return cachedMagentaColor;
 }
-}), new objj_method(sel_getUid("orangeColor"), function $CPColor__orangeColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("orangeColor"), function $CPColor__orangeColor(self, _cmd)
 { with(self)
 {
     if (!cachedOrangeColor)
         cachedOrangeColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [1.0, 0.5, 0.0, 1.0]);
     return cachedOrangeColor;
 }
-}), new objj_method(sel_getUid("purpleColor"), function $CPColor__purpleColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("purpleColor"), function $CPColor__purpleColor(self, _cmd)
 { with(self)
 {
     if (!cachedPurpleColor)
         cachedPurpleColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.5, 0.0, 0.5, 1.0]);
     return cachedPurpleColor;
 }
-}), new objj_method(sel_getUid("shadowColor"), function $CPColor__shadowColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("shadowColor"), function $CPColor__shadowColor(self, _cmd)
 { with(self)
 {
     if (!cachedShadowColor)
         cachedShadowColor = objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.0, 0.0, 0.0, 1.0 / 3.0]);
     return cachedShadowColor;
 }
-}), new objj_method(sel_getUid("clearColor"), function $CPColor__clearColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("clearColor"), function $CPColor__clearColor(self, _cmd)
 { with(self)
 {
     if (!cachedClearColor)
         cachedClearColor = objj_msgSend(self, "colorWithCalibratedWhite:alpha:", 0.0, 0.0);
     return cachedClearColor;
 }
-}), new objj_method(sel_getUid("colorWithPatternImage:"), function $CPColor__colorWithPatternImage_(self, _cmd, anImage)
+},["CPColor"]), new objj_method(sel_getUid("colorWithPatternImage:"), function $CPColor__colorWithPatternImage_(self, _cmd, anImage)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithPatternImage:", anImage);
 }
-}), new objj_method(sel_getUid("colorWithCSSString:"), function $CPColor__colorWithCSSString_(self, _cmd, aString)
+},["CPColor","CPImage"]), new objj_method(sel_getUid("colorWithCSSString:"), function $CPColor__colorWithCSSString_(self, _cmd, aString)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithCSSString:",  aString);
 }
-})]);
+},["CPColor","CPString"])]);
 }
 {
 var the_class = objj_getClass("CPColor")
@@ -378,19 +378,19 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(self, "setFill");
     objj_msgSend(self, "setStroke");
 }
-}), new objj_method(sel_getUid("setFill"), function $CPColor__setFill(self, _cmd)
+},["void"]), new objj_method(sel_getUid("setFill"), function $CPColor__setFill(self, _cmd)
 { with(self)
 {
     var ctx = objj_msgSend(objj_msgSend(CPGraphicsContext, "currentContext"), "graphicsPort");
     CGContextSetFillColor(ctx, self);
 }
-}), new objj_method(sel_getUid("setStroke"), function $CPColor__setStroke(self, _cmd)
+},["void"]), new objj_method(sel_getUid("setStroke"), function $CPColor__setStroke(self, _cmd)
 { with(self)
 {
     var ctx = objj_msgSend(objj_msgSend(CPGraphicsContext, "currentContext"), "graphicsPort");
     CGContextSetStrokeColor(ctx, self);
 }
-})]);
+},["void"])]);
 }
 {
 var the_class = objj_getClass("CPColor")
@@ -400,7 +400,7 @@ var meta_class = the_class.isa;class_addMethods(meta_class, [new objj_method(sel
 {
     return objj_msgSend(CPColor, "colorWithRed:green:blue:alpha:", RAND(), RAND(), RAND(), 1.0);
 }
-})]);
+},["CPColor"])]);
 }
 var CPColorComponentsKey = "CPColorComponentsKey",
     CPColorPatternImageKey = "CPColorPatternImageKey";
@@ -414,7 +414,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         return objj_msgSend(self, "_initWithPatternImage:", objj_msgSend(aCoder, "decodeObjectForKey:", CPColorPatternImageKey));
     return objj_msgSend(self, "_initWithRGBA:", objj_msgSend(aCoder, "decodeObjectForKey:", CPColorComponentsKey));
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPColor__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPColor__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     if (_patternImage)
@@ -422,7 +422,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     else
         objj_msgSend(aCoder, "encodeObject:forKey:", _components, CPColorComponentsKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 var hexCharacters = "0123456789ABCDEF";
 hexToRGB= function(hex)

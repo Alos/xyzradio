@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;607;
+I;21;Foundation/CPObject.jc;865;
 var _1=objj_allocateClassPair(CPObject,"CPPlatform"),_2=_1.isa;
 objj_registerClassPair(_1);
 objj_addClassForBundle(_1,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
@@ -12,5 +12,13 @@ document.documentElement.style.overflow="hidden";
 }
 objj_msgSend(CPPlatformString,"bootstrap");
 objj_msgSend(CPPlatformWindow,"setPrimaryPlatformWindow:",objj_msgSend(objj_msgSend(CPPlatformWindow,"alloc"),"_init"));
+}
+}),new objj_method(sel_getUid("isBrowser"),function(_6,_7){
+with(_6){
+return typeof window.cpIsDesktop==="undefined";
+}
+}),new objj_method(sel_getUid("supportsDragAndDrop"),function(_8,_9){
+with(_8){
+return CPFeatureIsCompatible(CPHTMLDragAndDropFeature);
 }
 })]);

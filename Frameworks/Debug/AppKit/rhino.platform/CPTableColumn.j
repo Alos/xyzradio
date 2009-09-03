@@ -1,4 +1,4 @@
-I;23;Foundation/Foundation.jc;10254;
+I;23;Foundation/Foundation.jc;10740;
 CPTableColumnNoResizing = 0;
 CPTableColumnAutoresizingMask = 1;
 CPTableColumnUserResizingMask = 2;
@@ -25,71 +25,71 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     }
     return self;
 }
-}), new objj_method(sel_getUid("_init"), function $CPTableColumn___init(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("_init"), function $CPTableColumn___init(self, _cmd)
 { with(self)
 {
     _dataViewData = {};
     _dataViewForView = {};
     _purgableInfosForDataView = {};
 }
-}), new objj_method(sel_getUid("setIdentifier:"), function $CPTableColumn__setIdentifier_(self, _cmd, anIdentifier)
+},["void"]), new objj_method(sel_getUid("setIdentifier:"), function $CPTableColumn__setIdentifier_(self, _cmd, anIdentifier)
 { with(self)
 {
     _identifier = anIdentifier;
 }
-}), new objj_method(sel_getUid("identifier"), function $CPTableColumn__identifier(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("identifier"), function $CPTableColumn__identifier(self, _cmd)
 { with(self)
 {
     return _identifier;
 }
-}), new objj_method(sel_getUid("setTableView:"), function $CPTableColumn__setTableView_(self, _cmd, aTableView)
+},["CPString"]), new objj_method(sel_getUid("setTableView:"), function $CPTableColumn__setTableView_(self, _cmd, aTableView)
 { with(self)
 {
     _tableView = aTableView;
 }
-}), new objj_method(sel_getUid("tableView"), function $CPTableColumn__tableView(self, _cmd)
+},["void","CPTableView"]), new objj_method(sel_getUid("tableView"), function $CPTableColumn__tableView(self, _cmd)
 { with(self)
 {
     return _tableView;
 }
-}), new objj_method(sel_getUid("setWidth:"), function $CPTableColumn__setWidth_(self, _cmd, aWidth)
+},["CPTableView"]), new objj_method(sel_getUid("setWidth:"), function $CPTableColumn__setWidth_(self, _cmd, aWidth)
 { with(self)
 {
     _width = aWidth;
 }
-}), new objj_method(sel_getUid("width"), function $CPTableColumn__width(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("width"), function $CPTableColumn__width(self, _cmd)
 { with(self)
 {
     return _width;
 }
-}), new objj_method(sel_getUid("setMinWidth:"), function $CPTableColumn__setMinWidth_(self, _cmd, aWidth)
+},["float"]), new objj_method(sel_getUid("setMinWidth:"), function $CPTableColumn__setMinWidth_(self, _cmd, aWidth)
 { with(self)
 {
     if (_width < (_minWidth = aWidth))
         objj_msgSend(self, "setWidth:", _minWidth);
 }
-}), new objj_method(sel_getUid("minWidth"), function $CPTableColumn__minWidth(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("minWidth"), function $CPTableColumn__minWidth(self, _cmd)
 { with(self)
 {
     return _minWidth;
 }
-}), new objj_method(sel_getUid("setMaxWidth:"), function $CPTableColumn__setMaxWidth_(self, _cmd, aWidth)
+},["float"]), new objj_method(sel_getUid("setMaxWidth:"), function $CPTableColumn__setMaxWidth_(self, _cmd, aWidth)
 { with(self)
 {
     if (_width > (_maxmimumWidth = aWidth))
         objj_msgSend(self, "setWidth:", _maxWidth);
 }
-}), new objj_method(sel_getUid("setResizingMask:"), function $CPTableColumn__setResizingMask_(self, _cmd, aMask)
+},["void","float"]), new objj_method(sel_getUid("setResizingMask:"), function $CPTableColumn__setResizingMask_(self, _cmd, aMask)
 { with(self)
 {
     _resizingMask = aMask;
 }
-}), new objj_method(sel_getUid("resizingMask"), function $CPTableColumn__resizingMask(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("resizingMask"), function $CPTableColumn__resizingMask(self, _cmd)
 { with(self)
 {
     return _resizingMask;
 }
-}), new objj_method(sel_getUid("sizeToFit"), function $CPTableColumn__sizeToFit(self, _cmd)
+},["unsigned"]), new objj_method(sel_getUid("sizeToFit"), function $CPTableColumn__sizeToFit(self, _cmd)
 { with(self)
 {
     var width = CPRectGetWidth(objj_msgSend(_headerView, "frame"));
@@ -100,32 +100,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     if (_width != width)
         objj_msgSend(self, "setWidth:", width);
 }
-}), new objj_method(sel_getUid("setEditable:"), function $CPTableColumn__setEditable_(self, _cmd, aFlag)
+},["void"]), new objj_method(sel_getUid("setEditable:"), function $CPTableColumn__setEditable_(self, _cmd, aFlag)
 { with(self)
 {
     _isEditable = aFlag;
 }
-}), new objj_method(sel_getUid("isEditable"), function $CPTableColumn__isEditable(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isEditable"), function $CPTableColumn__isEditable(self, _cmd)
 { with(self)
 {
     return _isEditable;
 }
-}), new objj_method(sel_getUid("setHeaderView:"), function $CPTableColumn__setHeaderView_(self, _cmd, aView)
+},["BOOL"]), new objj_method(sel_getUid("setHeaderView:"), function $CPTableColumn__setHeaderView_(self, _cmd, aView)
 { with(self)
 {
     _headerView = aView;
 }
-}), new objj_method(sel_getUid("headerView"), function $CPTableColumn__headerView(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("headerView"), function $CPTableColumn__headerView(self, _cmd)
 { with(self)
 {
     return _headerView;
 }
-}), new objj_method(sel_getUid("setDataCell:"), function $CPTableColumn__setDataCell_(self, _cmd, aView)
+},["CPView"]), new objj_method(sel_getUid("setDataCell:"), function $CPTableColumn__setDataCell_(self, _cmd, aView)
 { with(self)
 {
     objj_msgSend(self, "setDataView:", aView);
 }
-}), new objj_method(sel_getUid("setDataView:"), function $CPTableColumn__setDataView_(self, _cmd, aView)
+},["void","CPView<CPCoding>"]), new objj_method(sel_getUid("setDataView:"), function $CPTableColumn__setDataView_(self, _cmd, aView)
 { with(self)
 {
     if (_dataView)
@@ -133,27 +133,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     _dataView = aView;
     _dataViewData[objj_msgSend(aView, "UID")] = objj_msgSend(CPKeyedArchiver, "archivedDataWithRootObject:", aView);
 }
-}), new objj_method(sel_getUid("dataCell"), function $CPTableColumn__dataCell(self, _cmd)
+},["void","CPView<CPCoding>"]), new objj_method(sel_getUid("dataCell"), function $CPTableColumn__dataCell(self, _cmd)
 { with(self)
 {
     return _dataView;
 }
-}), new objj_method(sel_getUid("dataView"), function $CPTableColumn__dataView(self, _cmd)
+},["CPCell"]), new objj_method(sel_getUid("dataView"), function $CPTableColumn__dataView(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "dataCell");
 }
-}), new objj_method(sel_getUid("dataCellForRow:"), function $CPTableColumn__dataCellForRow_(self, _cmd, aRowIndex)
+},["CPView"]), new objj_method(sel_getUid("dataCellForRow:"), function $CPTableColumn__dataCellForRow_(self, _cmd, aRowIndex)
 { with(self)
 {
     return objj_msgSend(self, "dataView");
 }
-}), new objj_method(sel_getUid("dataViewForRow:"), function $CPTableColumn__dataViewForRow_(self, _cmd, aRowIndex)
+},["CPCell","int"]), new objj_method(sel_getUid("dataViewForRow:"), function $CPTableColumn__dataViewForRow_(self, _cmd, aRowIndex)
 { with(self)
 {
     return objj_msgSend(self, "dataCellForRow:", aRowIndex);
 }
-}), new objj_method(sel_getUid("_markView:inRow:asPurgable:"), function $CPTableColumn___markView_inRow_asPurgable_(self, _cmd, aView, aRow, isPurgable)
+},["CPView","int"]), new objj_method(sel_getUid("_markView:inRow:asPurgable:"), function $CPTableColumn___markView_inRow_asPurgable_(self, _cmd, aView, aRow, isPurgable)
 { with(self)
 {
     var viewUID = objj_msgSend(aView, "UID"),
@@ -172,7 +172,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     else
         _purgableInfosForDataView[dataViewUID][viewUID] = { view:(aView), row:(aRow) };
 }
-}), new objj_method(sel_getUid("_newDataViewForRow:avoidingRows:"), function $CPTableColumn___newDataViewForRow_avoidingRows_(self, _cmd, aRowIndex, rows)
+},["void","CPView","unsigned","BOOL"]), new objj_method(sel_getUid("_newDataViewForRow:avoidingRows:"), function $CPTableColumn___newDataViewForRow_avoidingRows_(self, _cmd, aRowIndex, rows)
 { with(self)
 {
     var view = objj_msgSend(self, "dataViewForRow:", aRowIndex),
@@ -194,7 +194,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
     CPLog.warn("creating cell: %s", newView);
     return newView;
 }
-}), new objj_method(sel_getUid("_purge"), function $CPTableColumn___purge(self, _cmd)
+},["CPView","int","CPRange"]), new objj_method(sel_getUid("_purge"), function $CPTableColumn___purge(self, _cmd)
 { with(self)
 {
     for (var viewUID in _purgableInfosForDataView)
@@ -211,7 +211,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
         }
     }
 }
-})]);
+},["void"])]);
 }
 var CPTableColumnIdentifierKey = "CPTableColumnIdentifierKey",
     CPTableColumnHeaderViewKey = "CPTableColumnHeaderViewKey",
@@ -236,7 +236,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     _resizingMask = objj_msgSend(aCoder, "decodeBoolForKey:", CPTableColumnResizingMaskKey);
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTableColumn__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTableColumn__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _identifier, CPTableColumnIdentifierKey);
@@ -247,6 +247,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _maxWidth, CPTableColumnMaxWidthKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _resizingMask, CPTableColumnResizingMaskKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

@@ -1,4 +1,4 @@
-i;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.ji;15;CPURLResponse.jc;6650;
+i;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.ji;15;CPURLResponse.jc;6873;
 var XMLHTTPRequestUninitialized = 0,
     XMLHTTPRequestLoading = 1,
     XMLHTTPRequestLoaded = 2,
@@ -29,17 +29,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRequest:delegat
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithRequest:delegate:"), function $CPURLConnection__initWithRequest_delegate_(self, _cmd, aRequest, aDelegate)
+},["id","CPURLRequest","id","BOOL"]), new objj_method(sel_getUid("initWithRequest:delegate:"), function $CPURLConnection__initWithRequest_delegate_(self, _cmd, aRequest, aDelegate)
 { with(self)
 {
     return objj_msgSend(self, "initWithRequest:delegate:startImmediately:", aRequest, aDelegate, YES);
 }
-}), new objj_method(sel_getUid("delegate"), function $CPURLConnection__delegate(self, _cmd)
+},["id","CPURLRequest","id"]), new objj_method(sel_getUid("delegate"), function $CPURLConnection__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("start"), function $CPURLConnection__start(self, _cmd)
+},["id"]), new objj_method(sel_getUid("start"), function $CPURLConnection__start(self, _cmd)
 { with(self)
 {
     _isCanceled = NO;
@@ -60,7 +60,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRequest:delegat
             objj_msgSend(_delegate, "connection:didFailWithError:", self, anException);
     }
 }
-}), new objj_method(sel_getUid("cancel"), function $CPURLConnection__cancel(self, _cmd)
+},["void"]), new objj_method(sel_getUid("cancel"), function $CPURLConnection__cancel(self, _cmd)
 { with(self)
 {
     _isCanceled = YES;
@@ -72,12 +72,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRequest:delegat
     {
     }
 }
-}), new objj_method(sel_getUid("isLocalFileConnection"), function $CPURLConnection__isLocalFileConnection(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isLocalFileConnection"), function $CPURLConnection__isLocalFileConnection(self, _cmd)
 { with(self)
 {
     return _isLocalFileConnection;
 }
-}), new objj_method(sel_getUid("_readyStateDidChange"), function $CPURLConnection___readyStateDidChange(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("_readyStateDidChange"), function $CPURLConnection___readyStateDidChange(self, _cmd)
 { with(self)
 {
     if (_XMLHTTPRequest.readyState == XMLHTTPRequestComplete)
@@ -110,18 +110,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRequest:delegat
     }
     objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "limitDateForMode:", CPDefaultRunLoopMode);
 }
-}), new objj_method(sel_getUid("_XMLHTTPRequest"), function $CPURLConnection___XMLHTTPRequest(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_XMLHTTPRequest"), function $CPURLConnection___XMLHTTPRequest(self, _cmd)
 { with(self)
 {
     return _XMLHTTPRequest;
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("setClassDelegate:"), function $CPURLConnection__setClassDelegate_(self, _cmd, delegate)
 { with(self)
 {
     CPURLConnectionDelegate = delegate;
 }
-}), new objj_method(sel_getUid("sendSynchronousRequest:returningResponse:error:"), function $CPURLConnection__sendSynchronousRequest_returningResponse_error_(self, _cmd, aRequest, aURLResponse, anError)
+},["void","id"]), new objj_method(sel_getUid("sendSynchronousRequest:returningResponse:error:"), function $CPURLConnection__sendSynchronousRequest_returningResponse_error_(self, _cmd, aRequest, aURLResponse, anError)
 { with(self)
 {
     try
@@ -141,11 +141,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("setClassDelegate:"), f
     }
     return nil;
 }
-}), new objj_method(sel_getUid("connectionWithRequest:delegate:"), function $CPURLConnection__connectionWithRequest_delegate_(self, _cmd, aRequest, aDelegate)
+},["CPData","CPURLRequest","{CPURLResponse}","{CPError}"]), new objj_method(sel_getUid("connectionWithRequest:delegate:"), function $CPURLConnection__connectionWithRequest_delegate_(self, _cmd, aRequest, aDelegate)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithRequest:delegate:", aRequest, aDelegate);
 }
-})]);
+},["CPURLConnection","CPURLRequest","id"])]);
 }
 

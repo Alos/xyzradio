@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPBundle.ji;12;CPDocument.jc;8091;
+I;21;Foundation/CPObject.jI;21;Foundation/CPBundle.ji;12;CPDocument.jc;8583;
 var CPSharedDocumentController = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPDocumentController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_documents"), new objj_ivar("_documentTypes")]);
@@ -17,7 +17,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return self;
 }
-}), new objj_method(sel_getUid("documentForURL:"), function $CPDocumentController__documentForURL_(self, _cmd, aURL)
+},["id"]), new objj_method(sel_getUid("documentForURL:"), function $CPDocumentController__documentForURL_(self, _cmd, aURL)
 { with(self)
 {
     var index = 0,
@@ -30,7 +30,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
  return nil;
 }
-}), new objj_method(sel_getUid("openUntitledDocumentOfType:display:"), function $CPDocumentController__openUntitledDocumentOfType_display_(self, _cmd, aType, shouldDisplay)
+},["CPDocument","CPURL"]), new objj_method(sel_getUid("openUntitledDocumentOfType:display:"), function $CPDocumentController__openUntitledDocumentOfType_display_(self, _cmd, aType, shouldDisplay)
 { with(self)
 {
     var theDocument = objj_msgSend(self, "makeUntitledDocumentOfType:error:", aType, nil);
@@ -43,12 +43,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return theDocument;
 }
-}), new objj_method(sel_getUid("makeUntitledDocumentOfType:error:"), function $CPDocumentController__makeUntitledDocumentOfType_error_(self, _cmd, aType, anError)
+},["void","CPString","BOOL"]), new objj_method(sel_getUid("makeUntitledDocumentOfType:error:"), function $CPDocumentController__makeUntitledDocumentOfType_error_(self, _cmd, aType, anError)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "documentClassForType:", aType), "alloc"), "initWithType:error:", aType, anError);
 }
-}), new objj_method(sel_getUid("openDocumentWithContentsOfURL:display:error:"), function $CPDocumentController__openDocumentWithContentsOfURL_display_error_(self, _cmd, anAbsoluteURL, shouldDisplay, anError)
+},["CPDocument","CPString","{CPError}"]), new objj_method(sel_getUid("openDocumentWithContentsOfURL:display:error:"), function $CPDocumentController__openDocumentWithContentsOfURL_display_error_(self, _cmd, anAbsoluteURL, shouldDisplay, anError)
 { with(self)
 {
     var result = objj_msgSend(self, "documentForURL:", anAbsoluteURL);
@@ -61,22 +61,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         objj_msgSend(result, "showWindows");
     return result;
 }
-}), new objj_method(sel_getUid("reopenDocumentForURL:withContentsOfURL:error:"), function $CPDocumentController__reopenDocumentForURL_withContentsOfURL_error_(self, _cmd, anAbsoluteURL, absoluteContentsURL, anError)
+},["CPDocument","CPURL","BOOL","CPError"]), new objj_method(sel_getUid("reopenDocumentForURL:withContentsOfURL:error:"), function $CPDocumentController__reopenDocumentForURL_withContentsOfURL_error_(self, _cmd, anAbsoluteURL, absoluteContentsURL, anError)
 { with(self)
 {
     return objj_msgSend(self, "makeDocumentForURL:withContentsOfURL:ofType:delegate:didReadSelector:contextInfo:", anAbsoluteURL, absoluteContentsURL, objj_msgSend(objj_msgSend(_documentTypes, "objectAtIndex:", 0), "objectForKey:", "CPBundleTypeName"), self, sel_getUid("document:didRead:contextInfo:"), nil);
 }
-}), new objj_method(sel_getUid("makeDocumentWithContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocumentController__makeDocumentWithContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, aType, aDelegate, aSelector, aContextInfo)
+},["CPDocument","CPURL","CPURL","CPError"]), new objj_method(sel_getUid("makeDocumentWithContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocumentController__makeDocumentWithContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, aType, aDelegate, aSelector, aContextInfo)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "documentClassForType:", aType), "alloc"), "initWithContentsOfURL:ofType:delegate:didReadSelector:contextInfo:", anAbsoluteURL, aType, aDelegate, aSelector, aContextInfo);
 }
-}), new objj_method(sel_getUid("makeDocumentForURL:withContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocumentController__makeDocumentForURL_withContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, absoluteContentsURL, aType, aDelegate, aSelector, aContextInfo)
+},["CPDocument","CPURL","CPString","id","SEL","id"]), new objj_method(sel_getUid("makeDocumentForURL:withContentsOfURL:ofType:delegate:didReadSelector:contextInfo:"), function $CPDocumentController__makeDocumentForURL_withContentsOfURL_ofType_delegate_didReadSelector_contextInfo_(self, _cmd, anAbsoluteURL, absoluteContentsURL, aType, aDelegate, aSelector, aContextInfo)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "documentClassForType:", aType), "alloc"), "initForURL:withContentsOfURL:ofType:delegate:didReadSelector:contextInfo:", anAbsoluteURL, absoluteContentsURL, aType, aDelegate, aSelector, aContextInfo);
 }
-}), new objj_method(sel_getUid("document:didRead:contextInfo:"), function $CPDocumentController__document_didRead_contextInfo_(self, _cmd, aDocument, didRead, aContextInfo)
+},["CPDocument","CPURL","CPURL","CPString","id","SEL","id"]), new objj_method(sel_getUid("document:didRead:contextInfo:"), function $CPDocumentController__document_didRead_contextInfo_(self, _cmd, aDocument, didRead, aContextInfo)
 { with(self)
 {
     if (!didRead)
@@ -86,32 +86,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     if (objj_msgSend(aContextInfo, "objectForKey:", "shouldDisplay"))
         objj_msgSend(aDocument, "showWindows");
 }
-}), new objj_method(sel_getUid("newDocument:"), function $CPDocumentController__newDocument_(self, _cmd, aSender)
+},["void","CPDocument","BOOL","id"]), new objj_method(sel_getUid("newDocument:"), function $CPDocumentController__newDocument_(self, _cmd, aSender)
 { with(self)
 {
     objj_msgSend(self, "openUntitledDocumentOfType:display:", objj_msgSend(objj_msgSend(_documentTypes, "objectAtIndex:", 0), "objectForKey:", "CPBundleTypeName"), YES);
 }
-}), new objj_method(sel_getUid("documents"), function $CPDocumentController__documents(self, _cmd)
+},["CFAction","id"]), new objj_method(sel_getUid("documents"), function $CPDocumentController__documents(self, _cmd)
 { with(self)
 {
     return _documents;
 }
-}), new objj_method(sel_getUid("addDocument:"), function $CPDocumentController__addDocument_(self, _cmd, aDocument)
+},["CPArray"]), new objj_method(sel_getUid("addDocument:"), function $CPDocumentController__addDocument_(self, _cmd, aDocument)
 { with(self)
 {
     objj_msgSend(_documents, "addObject:", aDocument);
 }
-}), new objj_method(sel_getUid("removeDocument:"), function $CPDocumentController__removeDocument_(self, _cmd, aDocument)
+},["void","CPDocument"]), new objj_method(sel_getUid("removeDocument:"), function $CPDocumentController__removeDocument_(self, _cmd, aDocument)
 { with(self)
 {
     objj_msgSend(_documents, "removeObjectIdenticalTo:", aDocument);
 }
-}), new objj_method(sel_getUid("defaultType"), function $CPDocumentController__defaultType(self, _cmd)
+},["void","CPDocument"]), new objj_method(sel_getUid("defaultType"), function $CPDocumentController__defaultType(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_documentTypes[0], "objectForKey:", "CPBundleTypeName");
 }
-}), new objj_method(sel_getUid("typeForContentsOfURL:error:"), function $CPDocumentController__typeForContentsOfURL_error_(self, _cmd, anAbsoluteURL, outError)
+},["CPString"]), new objj_method(sel_getUid("typeForContentsOfURL:error:"), function $CPDocumentController__typeForContentsOfURL_error_(self, _cmd, anAbsoluteURL, outError)
 { with(self)
 {
     var index = 0,
@@ -129,7 +129,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return objj_msgSend(self, "defaultType");
 }
-}), new objj_method(sel_getUid("_infoForType:"), function $CPDocumentController___infoForType_(self, _cmd, aType)
+},["CPString","CPURL","CPError"]), new objj_method(sel_getUid("_infoForType:"), function $CPDocumentController___infoForType_(self, _cmd, aType)
 { with(self)
 {
     var i = 0,
@@ -142,13 +142,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     }
     return nil;
 }
-}), new objj_method(sel_getUid("documentClassForType:"), function $CPDocumentController__documentClassForType_(self, _cmd, aType)
+},["CPDictionary","CPString"]), new objj_method(sel_getUid("documentClassForType:"), function $CPDocumentController__documentClassForType_(self, _cmd, aType)
 { with(self)
 {
     var className = objj_msgSend(objj_msgSend(self, "_infoForType:", aType), "objectForKey:", "CPDocumentClass");
     return className ? CPClassFromString(className) : nil;
 }
-})]);
+},["Class","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("sharedDocumentController"), function $CPDocumentController__sharedDocumentController(self, _cmd)
 { with(self)
 {
@@ -156,6 +156,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("sharedDocumentControll
         objj_msgSend(objj_msgSend(self, "alloc"), "init");
     return CPSharedDocumentController;
 }
-})]);
+},["id"])]);
 }
 

@@ -1,4 +1,4 @@
-i;9;CPArray.ji;14;CPDictionary.ji;16;CPNotification.ji;13;CPException.jc;10022;
+i;9;CPArray.ji;14;CPDictionary.ji;16;CPNotification.ji;13;CPException.jc;10381;
 var CPNotificationDefaultCenter = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPNotificationCenter"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_namedRegistries"), new objj_ivar("_unnamedRegistry")]);
@@ -15,7 +15,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNot
     }
    return self;
 }
-}), new objj_method(sel_getUid("addObserver:selector:name:object:"), function $CPNotificationCenter__addObserver_selector_name_object_(self, _cmd, anObserver, aSelector, aNotificationName, anObject)
+},["id"]), new objj_method(sel_getUid("addObserver:selector:name:object:"), function $CPNotificationCenter__addObserver_selector_name_object_(self, _cmd, anObserver, aSelector, aNotificationName, anObject)
 { with(self)
 {
     var registry,
@@ -29,7 +29,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNot
     }
     objj_msgSend(registry, "addObserver:object:", observer, anObject);
 }
-}), new objj_method(sel_getUid("removeObserver:"), function $CPNotificationCenter__removeObserver_(self, _cmd, anObserver)
+},["void","id","SEL","CPString","id"]), new objj_method(sel_getUid("removeObserver:"), function $CPNotificationCenter__removeObserver_(self, _cmd, anObserver)
 { with(self)
 {
     var name = nil,
@@ -38,7 +38,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNot
         objj_msgSend(objj_msgSend(_namedRegistries, "objectForKey:", name), "removeObserver:object:", anObserver, nil);
     objj_msgSend(_unnamedRegistry, "removeObserver:object:", anObserver, nil);
 }
-}), new objj_method(sel_getUid("removeObserver:name:object:"), function $CPNotificationCenter__removeObserver_name_object_(self, _cmd, anObserver, aNotificationName, anObject)
+},["void","id"]), new objj_method(sel_getUid("removeObserver:name:object:"), function $CPNotificationCenter__removeObserver_name_object_(self, _cmd, anObserver, aNotificationName, anObject)
 { with(self)
 {
     if (aNotificationName == nil)
@@ -52,24 +52,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPNot
     else
         objj_msgSend(objj_msgSend(_namedRegistries, "objectForKey:", aNotificationName), "removeObserver:object:", anObserver, anObject);
 }
-}), new objj_method(sel_getUid("postNotification:"), function $CPNotificationCenter__postNotification_(self, _cmd, aNotification)
+},["void","id","CPString","id"]), new objj_method(sel_getUid("postNotification:"), function $CPNotificationCenter__postNotification_(self, _cmd, aNotification)
 { with(self)
 {
     if (!aNotification)
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "postNotification: does not except 'nil' notifications");
     _CPNotificationCenterPostNotification(self, aNotification);
 }
-}), new objj_method(sel_getUid("postNotificationName:object:userInfo:"), function $CPNotificationCenter__postNotificationName_object_userInfo_(self, _cmd, aNotificationName, anObject, aUserInfo)
+},["void","CPNotification"]), new objj_method(sel_getUid("postNotificationName:object:userInfo:"), function $CPNotificationCenter__postNotificationName_object_userInfo_(self, _cmd, aNotificationName, anObject, aUserInfo)
 { with(self)
 {
    _CPNotificationCenterPostNotification(self, objj_msgSend(objj_msgSend(CPNotification, "alloc"), "initWithName:object:userInfo:", aNotificationName, anObject, aUserInfo));
 }
-}), new objj_method(sel_getUid("postNotificationName:object:"), function $CPNotificationCenter__postNotificationName_object_(self, _cmd, aNotificationName, anObject)
+},["void","CPString","id","CPDictionary"]), new objj_method(sel_getUid("postNotificationName:object:"), function $CPNotificationCenter__postNotificationName_object_(self, _cmd, aNotificationName, anObject)
 { with(self)
 {
    _CPNotificationCenterPostNotification(self, objj_msgSend(objj_msgSend(CPNotification, "alloc"), "initWithName:object:userInfo:", aNotificationName, anObject, nil));
 }
-})]);
+},["void","CPString","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("defaultCenter"), function $CPNotificationCenter__defaultCenter(self, _cmd)
 { with(self)
 {
@@ -77,7 +77,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("defaultCenter"), funct
         CPNotificationDefaultCenter = objj_msgSend(objj_msgSend(CPNotificationCenter, "alloc"), "init");
     return CPNotificationDefaultCenter;
 }
-})]);
+},["CPNotificationCenter"])]);
 }
 var _CPNotificationCenterPostNotification = function( self, aNotification)
 {
@@ -95,7 +95,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
         _objectObservers = objj_msgSend(CPDictionary, "dictionary");
    return self;
 }
-}), new objj_method(sel_getUid("addObserver:object:"), function $_CPNotificationRegistry__addObserver_object_(self, _cmd, anObserver, anObject)
+},["id"]), new objj_method(sel_getUid("addObserver:object:"), function $_CPNotificationRegistry__addObserver_object_(self, _cmd, anObserver, anObject)
 { with(self)
 {
     if (!anObject)
@@ -110,7 +110,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
         _postingObservers = objj_msgSend(observers, "copy");
     observers.push(anObserver);
 }
-}), new objj_method(sel_getUid("removeObserver:object:"), function $_CPNotificationRegistry__removeObserver_object_(self, _cmd, anObserver, anObject)
+},["void","_CPNotificationObserver","id"]), new objj_method(sel_getUid("removeObserver:object:"), function $_CPNotificationRegistry__removeObserver_object_(self, _cmd, anObserver, anObject)
 { with(self)
 {
     var removedKeys = [];
@@ -154,7 +154,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
     while (count--)
         objj_msgSend(_objectObservers, "removeObjectForKey:", removedKeys[count]);
 }
-}), new objj_method(sel_getUid("postNotification:"), function $_CPNotificationRegistry__postNotification_(self, _cmd, aNotification)
+},["void","id","id"]), new objj_method(sel_getUid("postNotification:"), function $_CPNotificationRegistry__postNotification_(self, _cmd, aNotification)
 { with(self)
 {
     var object = objj_msgSend(aNotification, "object");
@@ -184,12 +184,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
     }
     _postingObservers = nil;
 }
-}), new objj_method(sel_getUid("count"), function $_CPNotificationRegistry__count(self, _cmd)
+},["void","CPNotification"]), new objj_method(sel_getUid("count"), function $_CPNotificationRegistry__count(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_objectObservers, "count");
 }
-})]);
+},["unsigned"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "_CPNotificationObserver"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_observer"), new objj_ivar("_selector")]);
@@ -205,16 +205,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithObserver:select
     }
    return self;
 }
-}), new objj_method(sel_getUid("observer"), function $_CPNotificationObserver__observer(self, _cmd)
+},["id","id","SEL"]), new objj_method(sel_getUid("observer"), function $_CPNotificationObserver__observer(self, _cmd)
 { with(self)
 {
     return _observer;
 }
-}), new objj_method(sel_getUid("postNotification:"), function $_CPNotificationObserver__postNotification_(self, _cmd, aNotification)
+},["id"]), new objj_method(sel_getUid("postNotification:"), function $_CPNotificationObserver__postNotification_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(_observer, "performSelector:withObject:", _selector, aNotification);
 }
-})]);
+},["void","CPNotification"])]);
 }
 

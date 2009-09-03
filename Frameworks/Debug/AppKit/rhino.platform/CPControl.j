@@ -1,4 +1,4 @@
-i;8;CPFont.ji;10;CPShadow.ji;8;CPView.jc;22536;
+i;8;CPFont.ji;10;CPShadow.ji;8;CPView.jc;23439;
 CPLeftTextAlignment = 0;
 CPRightTextAlignment = 1;
 CPCenterTextAlignment = 2;
@@ -30,44 +30,44 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setAction:"), function $CPControl__setAction_(self, _cmd, anAction)
+},["id","CGRect"]), new objj_method(sel_getUid("setAction:"), function $CPControl__setAction_(self, _cmd, anAction)
 { with(self)
 {
     _action = anAction;
 }
-}), new objj_method(sel_getUid("action"), function $CPControl__action(self, _cmd)
+},["void","SEL"]), new objj_method(sel_getUid("action"), function $CPControl__action(self, _cmd)
 { with(self)
 {
     return _action;
 }
-}), new objj_method(sel_getUid("setTarget:"), function $CPControl__setTarget_(self, _cmd, aTarget)
+},["SEL"]), new objj_method(sel_getUid("setTarget:"), function $CPControl__setTarget_(self, _cmd, aTarget)
 { with(self)
 {
     _target = aTarget;
 }
-}), new objj_method(sel_getUid("target"), function $CPControl__target(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("target"), function $CPControl__target(self, _cmd)
 { with(self)
 {
     return _target;
 }
-}), new objj_method(sel_getUid("sendAction:to:"), function $CPControl__sendAction_to_(self, _cmd, anAction, anObject)
+},["id"]), new objj_method(sel_getUid("sendAction:to:"), function $CPControl__sendAction_to_(self, _cmd, anAction, anObject)
 { with(self)
 {
     objj_msgSend(CPApp, "sendAction:to:from:", anAction, anObject, self);
 }
-}), new objj_method(sel_getUid("sendActionOn:"), function $CPControl__sendActionOn_(self, _cmd, mask)
+},["void","SEL","id"]), new objj_method(sel_getUid("sendActionOn:"), function $CPControl__sendActionOn_(self, _cmd, mask)
 { with(self)
 {
     var previousMask = _sendActionOn;
     _sendActionOn = mask;
     return previousMask;
 }
-}), new objj_method(sel_getUid("isContinuous"), function $CPControl__isContinuous(self, _cmd)
+},["int","int"]), new objj_method(sel_getUid("isContinuous"), function $CPControl__isContinuous(self, _cmd)
 { with(self)
 {
     return (_sendActionOn & CPPeriodicMask) !== 0;
 }
-}), new objj_method(sel_getUid("setContinuous:"), function $CPControl__setContinuous_(self, _cmd, flag)
+},["BOOL"]), new objj_method(sel_getUid("setContinuous:"), function $CPControl__setContinuous_(self, _cmd, flag)
 { with(self)
 {
     if (flag)
@@ -75,12 +75,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         _sendActionOn &= ~CPPeriodicMask;
 }
-}), new objj_method(sel_getUid("tracksMouseOutsideOfFrame"), function $CPControl__tracksMouseOutsideOfFrame(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("tracksMouseOutsideOfFrame"), function $CPControl__tracksMouseOutsideOfFrame(self, _cmd)
 { with(self)
 {
     return NO;
 }
-}), new objj_method(sel_getUid("trackMouse:"), function $CPControl__trackMouse_(self, _cmd, anEvent)
+},["BOOL"]), new objj_method(sel_getUid("trackMouse:"), function $CPControl__trackMouse_(self, _cmd, anEvent)
 { with(self)
 {
     var type = objj_msgSend(anEvent, "type"),
@@ -117,7 +117,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _trackingWasWithinFrame = isWithinFrame;
     _previousTrackingLocation = currentLocation;
 }
-}), new objj_method(sel_getUid("performClick:"), function $CPControl__performClick_(self, _cmd, sender)
+},["void","CPEvent"]), new objj_method(sel_getUid("performClick:"), function $CPControl__performClick_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "highlight:", YES);
@@ -125,212 +125,212 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "sendAction:to:", objj_msgSend(self, "action"), objj_msgSend(self, "target"));
     objj_msgSend(self, "highlight:", NO);
 }
-}), new objj_method(sel_getUid("mouseDownFlags"), function $CPControl__mouseDownFlags(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("mouseDownFlags"), function $CPControl__mouseDownFlags(self, _cmd)
 { with(self)
 {
     return _trackingMouseDownFlags;
 }
-}), new objj_method(sel_getUid("startTrackingAt:"), function $CPControl__startTrackingAt_(self, _cmd, aPoint)
+},["unsigned"]), new objj_method(sel_getUid("startTrackingAt:"), function $CPControl__startTrackingAt_(self, _cmd, aPoint)
 { with(self)
 {
     objj_msgSend(self, "highlight:", YES);
     return (_sendActionOn & CPPeriodicMask) || (_sendActionOn & CPLeftMouseDraggedMask);
 }
-}), new objj_method(sel_getUid("continueTracking:at:"), function $CPControl__continueTracking_at_(self, _cmd, lastPoint, aPoint)
+},["BOOL","CGPoint"]), new objj_method(sel_getUid("continueTracking:at:"), function $CPControl__continueTracking_at_(self, _cmd, lastPoint, aPoint)
 { with(self)
 {
     return (_sendActionOn & CPPeriodicMask) || (_sendActionOn & CPLeftMouseDraggedMask);
 }
-}), new objj_method(sel_getUid("stopTracking:at:mouseIsUp:"), function $CPControl__stopTracking_at_mouseIsUp_(self, _cmd, lastPoint, aPoint, mouseIsUp)
+},["BOOL","CGPoint","CGPoint"]), new objj_method(sel_getUid("stopTracking:at:mouseIsUp:"), function $CPControl__stopTracking_at_mouseIsUp_(self, _cmd, lastPoint, aPoint, mouseIsUp)
 { with(self)
 {
     objj_msgSend(self, "highlight:", NO);
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPControl__mouseDown_(self, _cmd, anEvent)
+},["void","CGPoint","CGPoint","BOOL"]), new objj_method(sel_getUid("mouseDown:"), function $CPControl__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     if (!objj_msgSend(self, "isEnabled"))
         return;
     objj_msgSend(self, "trackMouse:", anEvent);
 }
-}), new objj_method(sel_getUid("objectValue"), function $CPControl__objectValue(self, _cmd)
+},["void","CPEvent"]), new objj_method(sel_getUid("objectValue"), function $CPControl__objectValue(self, _cmd)
 { with(self)
 {
     return _value;
 }
-}), new objj_method(sel_getUid("setObjectValue:"), function $CPControl__setObjectValue_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("setObjectValue:"), function $CPControl__setObjectValue_(self, _cmd, anObject)
 { with(self)
 {
     _value = anObject;
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("floatValue"), function $CPControl__floatValue(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("floatValue"), function $CPControl__floatValue(self, _cmd)
 { with(self)
 {
     var floatValue = parseFloat(_value, 10);
     return isNaN(floatValue) ? 0.0 : floatValue;
 }
-}), new objj_method(sel_getUid("setFloatValue:"), function $CPControl__setFloatValue_(self, _cmd, aValue)
+},["float"]), new objj_method(sel_getUid("setFloatValue:"), function $CPControl__setFloatValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", aValue);
 }
-}), new objj_method(sel_getUid("doubleValue"), function $CPControl__doubleValue(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("doubleValue"), function $CPControl__doubleValue(self, _cmd)
 { with(self)
 {
     var doubleValue = parseFloat(_value, 10);
     return isNaN(doubleValue) ? 0.0 : doubleValue;
 }
-}), new objj_method(sel_getUid("setDoubleValue:"), function $CPControl__setDoubleValue_(self, _cmd, anObject)
+},["double"]), new objj_method(sel_getUid("setDoubleValue:"), function $CPControl__setDoubleValue_(self, _cmd, anObject)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", anObject);
 }
-}), new objj_method(sel_getUid("intValue"), function $CPControl__intValue(self, _cmd)
+},["void","double"]), new objj_method(sel_getUid("intValue"), function $CPControl__intValue(self, _cmd)
 { with(self)
 {
     var intValue = parseInt(_value, 10);
     return isNaN(intValue) ? 0.0 : intValue;
 }
-}), new objj_method(sel_getUid("setIntValue:"), function $CPControl__setIntValue_(self, _cmd, anObject)
+},["int"]), new objj_method(sel_getUid("setIntValue:"), function $CPControl__setIntValue_(self, _cmd, anObject)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", anObject);
 }
-}), new objj_method(sel_getUid("integerValue"), function $CPControl__integerValue(self, _cmd)
+},["void","int"]), new objj_method(sel_getUid("integerValue"), function $CPControl__integerValue(self, _cmd)
 { with(self)
 {
     var intValue = parseInt(_value, 10);
     return isNaN(intValue) ? 0.0 : intValue;
 }
-}), new objj_method(sel_getUid("setIntegerValue:"), function $CPControl__setIntegerValue_(self, _cmd, anObject)
+},["int"]), new objj_method(sel_getUid("setIntegerValue:"), function $CPControl__setIntegerValue_(self, _cmd, anObject)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", anObject);
 }
-}), new objj_method(sel_getUid("stringValue"), function $CPControl__stringValue(self, _cmd)
+},["void","int"]), new objj_method(sel_getUid("stringValue"), function $CPControl__stringValue(self, _cmd)
 { with(self)
 {
     return (_value === undefined || _value === nil) ? "" : String(_value);
 }
-}), new objj_method(sel_getUid("setStringValue:"), function $CPControl__setStringValue_(self, _cmd, anObject)
+},["CPString"]), new objj_method(sel_getUid("setStringValue:"), function $CPControl__setStringValue_(self, _cmd, anObject)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", anObject);
 }
-}), new objj_method(sel_getUid("takeDoubleValueFrom:"), function $CPControl__takeDoubleValueFrom_(self, _cmd, sender)
+},["void","CPString"]), new objj_method(sel_getUid("takeDoubleValueFrom:"), function $CPControl__takeDoubleValueFrom_(self, _cmd, sender)
 { with(self)
 {
     if (objj_msgSend(sender, "respondsToSelector:", sel_getUid("doubleValue")))
         objj_msgSend(self, "setDoubleValue:", objj_msgSend(sender, "doubleValue"));
 }
-}), new objj_method(sel_getUid("takeFloatValueFrom:"), function $CPControl__takeFloatValueFrom_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("takeFloatValueFrom:"), function $CPControl__takeFloatValueFrom_(self, _cmd, sender)
 { with(self)
 {
     if (objj_msgSend(sender, "respondsToSelector:", sel_getUid("floatValue")))
         objj_msgSend(self, "setFloatValue:", objj_msgSend(sender, "floatValue"));
 }
-}), new objj_method(sel_getUid("takeIntegerValueFrom:"), function $CPControl__takeIntegerValueFrom_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("takeIntegerValueFrom:"), function $CPControl__takeIntegerValueFrom_(self, _cmd, sender)
 { with(self)
 {
     if (objj_msgSend(sender, "respondsToSelector:", sel_getUid("integerValue")))
         objj_msgSend(self, "setIntegerValue:", objj_msgSend(sender, "integerValue"));
 }
-}), new objj_method(sel_getUid("takeIntValueFrom:"), function $CPControl__takeIntValueFrom_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("takeIntValueFrom:"), function $CPControl__takeIntValueFrom_(self, _cmd, sender)
 { with(self)
 {
     if (objj_msgSend(sender, "respondsToSelector:", sel_getUid("intValue")))
         objj_msgSend(self, "setIntValue:", objj_msgSend(sender, "intValue"));
 }
-}), new objj_method(sel_getUid("takeObjectValueFrom:"), function $CPControl__takeObjectValueFrom_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("takeObjectValueFrom:"), function $CPControl__takeObjectValueFrom_(self, _cmd, sender)
 { with(self)
 {
     if (objj_msgSend(sender, "respondsToSelector:", sel_getUid("objectValue")))
         objj_msgSend(self, "setObjectValue:", objj_msgSend(sender, "objectValue"));
 }
-}), new objj_method(sel_getUid("takeStringValueFrom:"), function $CPControl__takeStringValueFrom_(self, _cmd, sender)
+},["void","id"]), new objj_method(sel_getUid("takeStringValueFrom:"), function $CPControl__takeStringValueFrom_(self, _cmd, sender)
 { with(self)
 {
     if (objj_msgSend(sender, "respondsToSelector:", sel_getUid("stringValue")))
         objj_msgSend(self, "setStringValue:", objj_msgSend(sender, "stringValue"));
 }
-}), new objj_method(sel_getUid("textDidBeginEditing:"), function $CPControl__textDidBeginEditing_(self, _cmd, note)
+},["void","id"]), new objj_method(sel_getUid("textDidBeginEditing:"), function $CPControl__textDidBeginEditing_(self, _cmd, note)
 { with(self)
 {
     if(objj_msgSend(note, "object") != self)
         return;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", CPControlTextDidBeginEditingNotification, self, objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", objj_msgSend(note, "object"), "CPFieldEditor"));
 }
-}), new objj_method(sel_getUid("textDidChange:"), function $CPControl__textDidChange_(self, _cmd, note)
+},["void","CPNotification"]), new objj_method(sel_getUid("textDidChange:"), function $CPControl__textDidChange_(self, _cmd, note)
 { with(self)
 {
     if(objj_msgSend(note, "object") != self)
         return;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", CPControlTextDidChangeNotification, self, objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", objj_msgSend(note, "object"), "CPFieldEditor"));
 }
-}), new objj_method(sel_getUid("textDidEndEditing:"), function $CPControl__textDidEndEditing_(self, _cmd, note)
+},["void","CPNotification"]), new objj_method(sel_getUid("textDidEndEditing:"), function $CPControl__textDidEndEditing_(self, _cmd, note)
 { with(self)
 {
     if(objj_msgSend(note, "object") != self)
         return;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", CPControlTextDidEndEditingNotification, self, objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", objj_msgSend(note, "object"), "CPFieldEditor"));
 }
-}), new objj_method(sel_getUid("setAlignment:"), function $CPControl__setAlignment_(self, _cmd, aValue)
+},["void","CPNotification"]), new objj_method(sel_getUid("setAlignment:"), function $CPControl__setAlignment_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "alignment");}
-}), new objj_method(sel_getUid("alignment"), function $CPControl__alignment(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("alignment"), function $CPControl__alignment(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "alignment");}
-}), new objj_method(sel_getUid("setVerticalAlignment:"), function $CPControl__setVerticalAlignment_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setVerticalAlignment:"), function $CPControl__setVerticalAlignment_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "vertical-alignment");}
-}), new objj_method(sel_getUid("verticalAlignment"), function $CPControl__verticalAlignment(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("verticalAlignment"), function $CPControl__verticalAlignment(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "vertical-alignment");}
-}), new objj_method(sel_getUid("setLineBreakMode:"), function $CPControl__setLineBreakMode_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setLineBreakMode:"), function $CPControl__setLineBreakMode_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "line-break-mode");}
-}), new objj_method(sel_getUid("lineBreakMode"), function $CPControl__lineBreakMode(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("lineBreakMode"), function $CPControl__lineBreakMode(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "line-break-mode");}
-}), new objj_method(sel_getUid("setTextColor:"), function $CPControl__setTextColor_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setTextColor:"), function $CPControl__setTextColor_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "text-color");}
-}), new objj_method(sel_getUid("textColor"), function $CPControl__textColor(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("textColor"), function $CPControl__textColor(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "text-color");}
-}), new objj_method(sel_getUid("setFont:"), function $CPControl__setFont_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setFont:"), function $CPControl__setFont_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "font");}
-}), new objj_method(sel_getUid("font"), function $CPControl__font(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("font"), function $CPControl__font(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "font");}
-}), new objj_method(sel_getUid("setTextShadowColor:"), function $CPControl__setTextShadowColor_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setTextShadowColor:"), function $CPControl__setTextShadowColor_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "text-shadow-color");}
-}), new objj_method(sel_getUid("textShadowColor"), function $CPControl__textShadowColor(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("textShadowColor"), function $CPControl__textShadowColor(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "text-shadow-color");}
-}), new objj_method(sel_getUid("setTextShadowOffset:"), function $CPControl__setTextShadowOffset_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setTextShadowOffset:"), function $CPControl__setTextShadowOffset_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "text-shadow-offset");}
-}), new objj_method(sel_getUid("textShadowOffset"), function $CPControl__textShadowOffset(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("textShadowOffset"), function $CPControl__textShadowOffset(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "text-shadow-offset");}
-}), new objj_method(sel_getUid("setImagePosition:"), function $CPControl__setImagePosition_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setImagePosition:"), function $CPControl__setImagePosition_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "image-position");}
-}), new objj_method(sel_getUid("imagePosition"), function $CPControl__imagePosition(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("imagePosition"), function $CPControl__imagePosition(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "image-position");}
-}), new objj_method(sel_getUid("setImageScaling:"), function $CPControl__setImageScaling_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setImageScaling:"), function $CPControl__setImageScaling_(self, _cmd, aValue)
 { with(self)
 {objj_msgSend(self, "setValue:forThemeAttribute:", aValue, "image-scaling");}
-}), new objj_method(sel_getUid("imageScaling"), function $CPControl__imageScaling(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("imageScaling"), function $CPControl__imageScaling(self, _cmd)
 { with(self)
 {return objj_msgSend(self, "valueForThemeAttribute:", "image-scaling");}
-}), new objj_method(sel_getUid("setEnabled:"), function $CPControl__setEnabled_(self, _cmd, isEnabled)
+},["id"]), new objj_method(sel_getUid("setEnabled:"), function $CPControl__setEnabled_(self, _cmd, isEnabled)
 { with(self)
 {
     if (isEnabled)
@@ -338,17 +338,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "setThemeState:", CPThemeStateDisabled);
 }
-}), new objj_method(sel_getUid("isEnabled"), function $CPControl__isEnabled(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isEnabled"), function $CPControl__isEnabled(self, _cmd)
 { with(self)
 {
     return !objj_msgSend(self, "hasThemeState:", CPThemeStateDisabled);
 }
-}), new objj_method(sel_getUid("highlight:"), function $CPControl__highlight_(self, _cmd, shouldHighlight)
+},["BOOL"]), new objj_method(sel_getUid("highlight:"), function $CPControl__highlight_(self, _cmd, shouldHighlight)
 { with(self)
 {
     objj_msgSend(self, "setHighlighted:", shouldHighlight);
 }
-}), new objj_method(sel_getUid("setHighlighted:"), function $CPControl__setHighlighted_(self, _cmd, isHighlighted)
+},["void","BOOL"]), new objj_method(sel_getUid("setHighlighted:"), function $CPControl__setHighlighted_(self, _cmd, isHighlighted)
 { with(self)
 {
     if (isHighlighted)
@@ -356,12 +356,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "unsetThemeState:", CPThemeStateHighlighted);
 }
-}), new objj_method(sel_getUid("isHighlighted"), function $CPControl__isHighlighted(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("isHighlighted"), function $CPControl__isHighlighted(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "hasThemeState:", CPThemeStateHighlighted);
 }
-})]);
+},["BOOL"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("themeAttributes"), function $CPControl__themeAttributes(self, _cmd)
 { with(self)
 {
@@ -387,7 +387,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("themeAttributes"), fun
                                                 "min-size",
                                                 "max-size"]);
 }
-})]);
+},["CPDictionary"])]);
 }
 var CPControlValueKey = "CPControlValueKey",
     CPControlControlStateKey = "CPControlControlStateKey",
@@ -412,7 +412,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPControl__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPControl__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
@@ -424,7 +424,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         objj_msgSend(aCoder, "encodeObject:forKey:", _action, CPControlActionKey);
     objj_msgSend(aCoder, "encodeInt:forKey:", _sendActionOn, CPControlSendActionOnKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 var _CPControlSizeIdentifiers = [],
     _CPControlCachedColorWithPatternImages = {},

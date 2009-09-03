@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;40;Foundation/CPPropertyListSerialization.jc;4575;
+I;21;Foundation/CPObject.jI;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;40;Foundation/CPPropertyListSerialization.jc;6358;
 CPGeneralPboard="CPGeneralPboard";
 CPFontPboard="CPFontPboard";
 CPRulerPboard="CPRulerPboard";
@@ -69,7 +69,7 @@ return objj_msgSend(_1b,"setPropertyList:forType:",_1d,_1e);
 }
 }),new objj_method(sel_getUid("availableTypeFromArray:"),function(_1f,_20,_21){
 with(_1f){
-return objj_msgSend(_types,"firstObjectCommonWithArray:",_21);
+return objj_msgSend(objj_msgSend(_1f,"types"),"firstObjectCommonWithArray:",_21);
 }
 }),new objj_method(sel_getUid("types"),function(_22,_23){
 with(_22){
@@ -140,5 +140,55 @@ return _3e;
 _3e=objj_msgSend(objj_msgSend(CPPasteboard,"alloc"),"_initWithName:",_3d);
 objj_msgSend(_1,"setObject:forKey:",_3e,_3d);
 return _3e;
+}
+})]);
+var _3f=nil;
+var _2=objj_allocateClassPair(CPPasteboard,"_CPDOMDataTransferPasteboard"),_3=_2.isa;
+class_addIvars(_2,[new objj_ivar("_dataTransfer")]);
+objj_registerClassPair(_2);
+objj_addClassForBundle(_2,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
+class_addMethods(_2,[new objj_method(sel_getUid("_setDataTransfer:"),function(_40,_41,_42){
+with(_40){
+_dataTransfer=_42;
+}
+}),new objj_method(sel_getUid("_setPasteboard:"),function(_43,_44,_45){
+with(_43){
+_dataTransfer.clearData();
+var _46=objj_msgSend(_45,"types"),_47=_46.length;
+while(_47--){
+var _48=_46[_47];
+if(_48===CPStringPboardType){
+_dataTransfer.setData(_48,objj_msgSend(_45,"stringForType:",_48));
+}else{
+_dataTransfer.setData(_48,objj_msgSend(objj_msgSend(_45,"dataForType:",_48),"string"));
+}
+}
+}
+}),new objj_method(sel_getUid("types"),function(_49,_4a){
+with(_49){
+return Array.prototype.slice.apply(_dataTransfer.types);
+}
+}),new objj_method(sel_getUid("dataForType:"),function(_4b,_4c,_4d){
+with(_4b){
+var _4e=_dataTransfer.getData(_4d);
+if(_4d===CPStringPboardType){
+return objj_msgSend(CPData,"dataFromPropertyList:format:errorDescription:",_4e,kCFPropertyList280NorthFormat_v1_0,0);
+}
+return objj_msgSend(CPData,"dataWithString:",_4e);
+}
+}),new objj_method(sel_getUid("propertyListForType:"),function(_4f,_50,_51){
+with(_4f){
+if(_51===CPStringPboardType){
+return _dataTransfer.getData(_51);
+}
+return objj_msgSend(CPPropertyListSerialization,"propertyListFromData:format:errorDescription:",objj_msgSend(_4f,"dataForType:",_51),CPPropertyListUnknownFormat,nil);
+}
+})]);
+class_addMethods(_3,[new objj_method(sel_getUid("DOMDataTransferPasteboard"),function(_52,_53){
+with(_52){
+if(!_3f){
+_3f=objj_msgSend(objj_msgSend(_CPDOMDataTransferPasteboard,"alloc"),"init");
+}
+return _3f;
 }
 })]);
