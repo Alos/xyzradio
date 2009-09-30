@@ -26,7 +26,6 @@
 			instructionsLabel = [[CPTextField alloc] initWithFrame: CGRectMake(0, 0, 100, 30)];
 			[instructionsLabel setStringValue:"Create an Account!"];
 			[instructionsLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[instructionsLabel setBackgroundColor:NULL];
 			[instructionsLabel setFont:[CPFont systemFontOfSize:18.0]];
 			[instructionsLabel sizeToFit];
 			[self addSubview:instructionsLabel];
@@ -36,7 +35,6 @@
 			accountLabel = [[CPTextField alloc] initWithFrame: CGRectMake(15, 54, 100, 30)];
 			[accountLabel setStringValue:"Account:"];
 			[accountLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[accountLabel setBackgroundColor:NULL];
 			[accountLabel sizeToFit];
 			[self addSubview:accountLabel];
 			
@@ -45,14 +43,12 @@
 			[account setBezeled:YES];
 			[account setPlaceholderString:"bob@gmail.com"];
 			[account setTextColor: [CPColor colorWithHexString:"000000"]];
-			[account setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[self addSubview:account];
 			
 			//pass
 			passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(5, 96, 100, 30)];
 			[passLabel setStringValue:"Password:"];
 			[passLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[passLabel setBackgroundColor:NULL];
 			[passLabel sizeToFit];
 			[self addSubview:passLabel];
 			
@@ -61,14 +57,12 @@
 			[password setBezeled:YES];
 			[password setSecure: YES];
 			[password setTextColor: [CPColor colorWithHexString:"000000"]];
-			[password setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[self addSubview:password];
 			
 			//username
 			userNameLabel = [[CPTextField alloc] initWithFrame: CGRectMake(0, 138, 100, 30)];
 			[userNameLabel setStringValue:"User name:"];
 			[userNameLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[userNameLabel setBackgroundColor:NULL];
 			[userNameLabel sizeToFit];
 			[self addSubview:userNameLabel];
 			
@@ -76,14 +70,12 @@
 			[userName setEditable:YES];
 			[userName setBezeled:YES];
 			[userName setTextColor: [CPColor colorWithHexString:"000000"]];
-			[userName setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[self addSubview:userName];
 			
 			//the radio buttons
 			var sexLabel = [[CPTextField alloc] initWithFrame: CGRectMake(40, 179, 100, 30)];
 			[sexLabel setStringValue:"Sex:"];
 			[sexLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[sexLabel setBackgroundColor:NULL];
 			[sexLabel sizeToFit];
 			[self addSubview:sexLabel];
 			

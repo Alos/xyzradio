@@ -19,7 +19,6 @@
 			instructionsLabel = [[CPTextField alloc] initWithFrame: CGRectMake(0, 0, 100, 30)];
 			[instructionsLabel setStringValue:"Login to XYZRadio"];
 			[instructionsLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[instructionsLabel setBackgroundColor:NULL];
 			[instructionsLabel setFont:[CPFont systemFontOfSize:18.0]];
 			[instructionsLabel sizeToFit];
 			[self addSubview:instructionsLabel];
@@ -29,7 +28,6 @@
 			usuarioLabel = [[CPTextField alloc] initWithFrame: CGRectMake(10, 54, 100, 30)];
 			[usuarioLabel setStringValue:"Account:"];
 			[usuarioLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[usuarioLabel setBackgroundColor:NULL];
 			[usuarioLabel sizeToFit];
 			[self addSubview:usuarioLabel];
 			
@@ -38,14 +36,12 @@
 			[userid setBezeled:YES];
 			[userid setPlaceholderString:"bob@gmail.com"];
 			[userid setTextColor: [CPColor colorWithHexString:"000000"]];
-			[userid setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[self addSubview:userid];
 			
 			//pass
 			passLabel = [[CPTextField alloc] initWithFrame: CGRectMake(0, 96, 100, 30)];
 			[passLabel setStringValue:"Password:"];
 			[passLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[passLabel setBackgroundColor:NULL];
 			[passLabel sizeToFit];
 			[self addSubview:passLabel];
 			
@@ -54,7 +50,6 @@
 			[password setBezeled:YES];
 			[password setSecure: YES];
 			[password setTextColor: [CPColor colorWithHexString:"000000"]];
-			[password setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[self addSubview:password];
 			
 			loginButton = [[CPButton alloc] initWithFrame:CGRectMake(190, 140, 50, 18)];
@@ -70,7 +65,6 @@
 			newUserLabel = [[CPTextField alloc] initWithFrame: CGRectMake(0, 220, 100, 30)];
 			[newUserLabel setStringValue:"New user?"];
 			[newUserLabel setTextColor: [CPColor colorWithHexString:"FFFFFF"]];
-			[newUserLabel setBackgroundColor:NULL];
 			[newUserLabel sizeToFit];
 			[self addSubview:newUserLabel];
 			
