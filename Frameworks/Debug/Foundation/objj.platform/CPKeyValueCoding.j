@@ -1,4 +1,4 @@
-i;9;CPArray.ji;10;CPObject.ji;14;CPDictionary.jc;8584;
+i;9;CPArray.ji;10;CPObject.ji;14;CPDictionary.jc;8854;
 var CPObjectAccessorsForClass = nil,
     CPObjectModifiersForClass = nil;
 CPUndefinedKeyException = "CPUndefinedKeyException";
@@ -25,7 +25,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         return ivar;
     return nil;
 }
-}), new objj_method(sel_getUid("valueForKey:"), function $CPObject__valueForKey_(self, _cmd, aKey)
+},["CPString","CPString"]), new objj_method(sel_getUid("valueForKey:"), function $CPObject__valueForKey_(self, _cmd, aKey)
 { with(self)
 {
     var theClass = objj_msgSend(self, "class"),
@@ -40,7 +40,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return objj_msgSend(self, "valueForUndefinedKey:", aKey);
 }
-}), new objj_method(sel_getUid("valueForKeyPath:"), function $CPObject__valueForKeyPath_(self, _cmd, aKeyPath)
+},["id","CPString"]), new objj_method(sel_getUid("valueForKeyPath:"), function $CPObject__valueForKeyPath_(self, _cmd, aKeyPath)
 { with(self)
 {
     var keys = aKeyPath.split("."),
@@ -51,7 +51,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         value = objj_msgSend(value, "valueForKey:", keys[index]);
     return value;
 }
-}), new objj_method(sel_getUid("dictionaryWithValuesForKeys:"), function $CPObject__dictionaryWithValuesForKeys_(self, _cmd, keys)
+},["id","CPString"]), new objj_method(sel_getUid("dictionaryWithValuesForKeys:"), function $CPObject__dictionaryWithValuesForKeys_(self, _cmd, keys)
 { with(self)
 {
     var index = 0,
@@ -68,12 +68,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return dictionary;
 }
-}), new objj_method(sel_getUid("valueForUndefinedKey:"), function $CPObject__valueForUndefinedKey_(self, _cmd, aKey)
+},["CPDictionary","CPArray"]), new objj_method(sel_getUid("valueForUndefinedKey:"), function $CPObject__valueForUndefinedKey_(self, _cmd, aKey)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPException, "exceptionWithName:reason:userInfo:", CPUndefinedKeyException, objj_msgSend(self, "description") + " is not key value coding-compliant for the key " + aKey, objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [self, aKey], [CPTargetObjectUserInfoKey, CPUnknownUserInfoKey])), "raise");
 }
-}), new objj_method(sel_getUid("setValue:forKeyPath:"), function $CPObject__setValue_forKeyPath_(self, _cmd, aValue, aKeyPath)
+},["id","CPString"]), new objj_method(sel_getUid("setValue:forKeyPath:"), function $CPObject__setValue_forKeyPath_(self, _cmd, aValue, aKeyPath)
 { with(self)
 {
     if (!aKeyPath) aKeyPath = "self";
@@ -85,7 +85,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         owner = objj_msgSend(owner, "valueForKey:", keys[i]);
     objj_msgSend(owner, "setValue:forKey:", aValue, keys[i]);
 }
-}), new objj_method(sel_getUid("setValue:forKey:"), function $CPObject__setValue_forKey_(self, _cmd, aValue, aKey)
+},["void","id","CPString"]), new objj_method(sel_getUid("setValue:forKey:"), function $CPObject__setValue_forKey_(self, _cmd, aValue, aKey)
 { with(self)
 {
     var theClass = objj_msgSend(self, "class"),
@@ -105,18 +105,18 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     objj_msgSend(self, "setValue:forUndefinedKey:", aValue, aKey);
 }
-}), new objj_method(sel_getUid("setValue:forUndefinedKey:"), function $CPObject__setValue_forUndefinedKey_(self, _cmd, aValue, aKey)
+},["void","id","CPString"]), new objj_method(sel_getUid("setValue:forUndefinedKey:"), function $CPObject__setValue_forUndefinedKey_(self, _cmd, aValue, aKey)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPException, "exceptionWithName:reason:userInfo:", CPUndefinedKeyException, objj_msgSend(self, "description") + " is not key value coding-compliant for the key " + aKey, objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [self, aKey], [CPTargetObjectUserInfoKey, CPUnknownUserInfoKey])), "raise");
 }
-})]);
+},["void","id","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("accessInstanceVariablesDirectly"), function $CPObject__accessInstanceVariablesDirectly(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("_accessorForKey:"), function $CPObject___accessorForKey_(self, _cmd, aKey)
+},["BOOL"]), new objj_method(sel_getUid("_accessorForKey:"), function $CPObject___accessorForKey_(self, _cmd, aKey)
 { with(self)
 {
     if (!CPObjectAccessorsForClass)
@@ -149,7 +149,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("accessInstanceVariable
     objj_msgSend(accessors, "setObject:forKey:", objj_msgSend(CPNull, "null"), aKey);
     return nil;
 }
-}), new objj_method(sel_getUid("_modifierForKey:"), function $CPObject___modifierForKey_(self, _cmd, aKey)
+},["SEL","CPString"]), new objj_method(sel_getUid("_modifierForKey:"), function $CPObject___modifierForKey_(self, _cmd, aKey)
 { with(self)
 {
     if (!CPObjectModifiersForClass)
@@ -180,7 +180,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("accessInstanceVariable
     objj_msgSend(modifiers, "setObject:forKey:", objj_msgSend(CPNull, "null"), aKey);
     return nil;
 }
-})]);
+},["SEL","CPString"])]);
 }
 {
 var the_class = objj_getClass("CPDictionary")
@@ -190,11 +190,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
  return objj_msgSend(self, "objectForKey:", aKey);
 }
-}), new objj_method(sel_getUid("setValue:forKey:"), function $CPDictionary__setValue_forKey_(self, _cmd, aValue, aKey)
+},["id","CPString"]), new objj_method(sel_getUid("setValue:forKey:"), function $CPDictionary__setValue_forKey_(self, _cmd, aValue, aKey)
 { with(self)
 {
     objj_msgSend(self, "setObject:forKey:", aValue, aKey);
 }
-})]);
+},["void","id","CPString"])]);
 }
 i;13;CPArray+KVO.j

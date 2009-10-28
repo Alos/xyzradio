@@ -1,4 +1,4 @@
-I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;12874;
+I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;11901;
 CPScaleProportionally = 0;
 CPScaleToFit = 1;
 CPScaleNone = 2;
@@ -28,7 +28,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             _DOMImageElement.setAttribute("draggable", "true");
             _DOMImageElement.style["-khtml-user-drag"] = "element";
         }
-        if (_DOMImageElement.CPDOMDisplayContext) _DOMImageElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMImageElement;;
+        _DOMElement.appendChild(_DOMImageElement);
         _DOMImageElement.style.visibility = "hidden";
     }
     return self;
@@ -108,7 +108,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setImageScaling:", anImageScaling);
     if (objj_msgSend(self, "currentValueForThemeAttribute:", "image-scaling") === CPScaleToFit)
     {
-        if (!_DOMImageElement.CPDOMDisplayContext) _DOMImageElement.CPDOMDisplayContext = []; var __index = _DOMImageElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageElement; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
+        if (NULL) var ____p = _CGPointApplyAffineTransform(CGPointMake(0.0, 0.0), NULL); else var ____p = { x:0.0, y:0.0 }; _DOMImageElement.style.left = ROUND(____p.x) + "px";_DOMImageElement.style.top = ROUND(____p.y) + "px";;
     }
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
@@ -189,7 +189,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         }
         var x = (boundsWidth - width) / 2.0,
             y = (boundsHeight - height) / 2.0;
-        if (!_DOMImageElement.CPDOMDisplayContext) _DOMImageElement.CPDOMDisplayContext = []; var __index = _DOMImageElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageElement; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = x; CPDOMDisplayServerInstructions[__index + 4] = y;;
+        if (NULL) var ____p = _CGPointApplyAffineTransform(CGPointMake(x, y), NULL); else var ____p = { x:x, y:y }; _DOMImageElement.style.left = ROUND(____p.x) + "px";_DOMImageElement.style.top = ROUND(____p.y) + "px";;
     }
     _imageRect = { origin: { x:x, y:y }, size: { width:width, height:height } };
     if (_hasShadow)

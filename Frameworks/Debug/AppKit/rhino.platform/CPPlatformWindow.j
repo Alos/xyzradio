@@ -1,5 +1,4 @@
-I;21;Foundation/CPObject.jc;5620;
-
+I;21;Foundation/CPObject.jc;5320;
 
 
 
@@ -7,7 +6,7 @@ I;21;Foundation/CPObject.jc;5620;
 var PrimaryPlatformWindow = NULL;
 
 {var the_class = objj_allocateClassPair(CPObject, "CPPlatformWindow"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentRect"), new objj_ivar("_level"), new objj_ivar("_hasShadow")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentRect"), new objj_ivar("_level"), new objj_ivar("_hasShadow"), new objj_ivar("_shadowStyle")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"), function $CPPlatformWindow__initWithContentRect_(self, _cmd, aRect)
@@ -60,31 +59,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
 {
     if (!aRect || ((_contentRect.origin.x == aRect.origin.x && _contentRect.origin.y == aRect.origin.y) && (_contentRect.size.width == aRect.size.width && _contentRect.size.height == aRect.size.height)))
         return;
-    objj_msgSend(self, "setContentOrigin:", aRect.origin);
-    objj_msgSend(self, "setContentSize:", aRect.size);
+    _contentRect = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
+    objj_msgSend(self, "updateNativeContentRect");
 }
-},["void","CGRect"]), new objj_method(sel_getUid("setContentOrigin:"), function $CPPlatformWindow__setContentOrigin_(self, _cmd, aPoint)
-{ with(self)
-{
-    var origin = _contentRect.origin;
-    if (!aPoint || (origin.x == aPoint.x && origin.y == aPoint.y))
-        return;
-    origin.x = aPoint.x;
-    origin.y = aPoint.y;
-    objj_msgSend(self, "updateNativeContentOrigin");
-}
-},["void","CGPoint"]), new objj_method(sel_getUid("setContentSize:"), function $CPPlatformWindow__setContentSize_(self, _cmd, aSize)
-{ with(self)
-{
-    var size = _contentRect.size;
-    if (!aSize || (size.width == aSize.width && size.height == aSize.height))
-        return;
-    var delta = { width:aSize.width - size.width, height:aSize.height - size.height };
-    size.width = aSize.width;
-    size.height = aSize.height;
-    objj_msgSend(self, "updateNativeContentSize");
-}
-},["void","CGSize"]), new objj_method(sel_getUid("updateFromNativeContentRect"), function $CPPlatformWindow__updateFromNativeContentRect(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("updateFromNativeContentRect"), function $CPPlatformWindow__updateFromNativeContentRect(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "setContentRect:", objj_msgSend(self, "nativeContentRect"));
@@ -106,7 +84,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
 {
     return NO;
 }
-},["BOOL"]), new objj_method(sel_getUid("setLevel:"), function $CPPlatformWindow__setLevel_(self, _cmd, aLevel)
+},["BOOL"]), new objj_method(sel_getUid("deminiaturize:"), function $CPPlatformWindow__deminiaturize_(self, _cmd, sender)
+{ with(self)
+{
+}
+},["void","id"]), new objj_method(sel_getUid("miniaturize:"), function $CPPlatformWindow__miniaturize_(self, _cmd, sender)
+{ with(self)
+{
+}
+},["void","id"]), new objj_method(sel_getUid("setLevel:"), function $CPPlatformWindow__setLevel_(self, _cmd, aLevel)
 { with(self)
 {
     _level = aLevel;
@@ -116,7 +102,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
 {
     _hasShadow = shouldHaveShadow;
 }
-},["void","BOOL"]), new objj_method(sel_getUid("supportsFullPlatformWindows"), function $CPPlatformWindow__supportsFullPlatformWindows(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("setShadowStyle:"), function $CPPlatformWindow__setShadowStyle_(self, _cmd, aStyle)
+{ with(self)
+{
+    _shadowStyle = aStyle;
+}
+},["void","int"]), new objj_method(sel_getUid("supportsFullPlatformWindows"), function $CPPlatformWindow__supportsFullPlatformWindows(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPPlatform, "isBrowser");

@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.ji;9;CPEvent.ji;17;CPCompatibility.ji;18;CPDOMWindowLayer.ji;18;CPPlatformWindow.jc;38676;
+I;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.ji;9;CPEvent.ji;17;CPCompatibility.ji;18;CPDOMWindowLayer.ji;12;CPPlatform.ji;18;CPPlatformWindow.jc;39983;
 var DoubleClick = "dblclick",
     MouseDown = "mousedown",
     MouseUp = "mouseup",
@@ -21,11 +21,13 @@ ExcludedDOMElements["SELECT"] = YES;
 ExcludedDOMElements["TEXTAREA"] = YES;
 ExcludedDOMElements["OPTION"] = YES;
 var CPDOMEventGetClickCount,
-    CPDOMEventStop;
+    CPDOMEventStop,
+    StopDOMEventPropagation;
 var KeyCodesToPrevent = {},
     CharacterKeysToPrevent = {},
     KeyCodesWithoutKeyPressEvents = { '8':1, '9':1, '16':1, '37':1, '38':1, '39':1, '40':1, '46':1, '33':1, '34':1 };
 var CTRL_KEY_CODE = 17;
+var supportsNativeDragAndDrop = objj_msgSend(CPPlatform, "supportsDragAndDrop");
 {
 var the_class = objj_getClass("CPPlatformWindow")
 if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPPlatformWindow\""));
@@ -65,27 +67,25 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         contentRect.size = { width:_DOMWindow.document.body.clientWidth, height:_DOMWindow.document.body.clientHeight };
     return contentRect;
 }
-},["CGRect"]), new objj_method(sel_getUid("updateNativeContentOrigin"), function $CPPlatformWindow__updateNativeContentOrigin(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("updateNativeContentRect"), function $CPPlatformWindow__updateNativeContentRect(self, _cmd)
 { with(self)
 {
     if (!_DOMWindow)
         return;
-    if (_DOMWindow.cpSetFrame)
+    if (typeof _DOMWindow["cpSetFrame"] === "function")
         return _DOMWindow.cpSetFrame(objj_msgSend(self, "contentRect"));
     var origin = objj_msgSend(self, "contentRect").origin,
         nativeOrigin = objj_msgSend(self, "nativeContentRect").origin;
-    _DOMWindow.moveBy(origin.x - nativeOrigin.x, origin.y - nativeOrigin.y);
-}
-},["void"]), new objj_method(sel_getUid("updateNativeContentSize"), function $CPPlatformWindow__updateNativeContentSize(self, _cmd)
-{ with(self)
-{
-    if (!_DOMWindow)
-        return;
-    if (_DOMWindow.cpSetFrame)
-        return _DOMWindow.cpSetFrame(objj_msgSend(self, "contentRect"));
+    if (origin.x !== nativeOrigin.x || origin.y !== nativeOrigin.y)
+    {
+        _DOMWindow.moveBy(origin.x - nativeOrigin.x, origin.y - nativeOrigin.y);
+    }
     var size = objj_msgSend(self, "contentRect").size,
         nativeSize = objj_msgSend(self, "nativeContentRect").size;
-    _DOMWindow.resizeBy(size.width - nativeSize.width, size.height - nativeSize.height);
+    if (size.width !== nativeSize.width || size.height !== nativeSize.height)
+    {
+        _DOMWindow.resizeBy(size.width - nativeSize.width, size.height - nativeSize.height);
+    }
 }
 },["void"]), new objj_method(sel_getUid("orderBack:"), function $CPPlatformWindow__orderBack_(self, _cmd, aSender)
 { with(self)
@@ -113,6 +113,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     _DOMPasteboardElement.style.zIndex = "99";
     _DOMBodyElement.appendChild(_DOMPasteboardElement);
     _DOMPasteboardElement.blur();
+    objj_msgSend(self, "_addLayers");
     var theClass = objj_msgSend(self, "class"),
         dragEventImplementation = class_getMethodImplementation(theClass, sel_getUid("dragEvent:")),
         dragEventCallback = function (anEvent) { dragEventImplementation(self, nil, anEvent); },
@@ -158,6 +159,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _DOMWindow.addEventListener("unload", function()
         {
             objj_msgSend(self, "updateFromNativeContentRect");
+            objj_msgSend(self, "_removeLayers");
             theDocument.removeEventListener("mouseup", mouseEventCallback, NO);
             theDocument.removeEventListener("mousedown", mouseEventCallback, NO);
             theDocument.removeEventListener("mousemove", mouseEventCallback, NO);
@@ -190,6 +192,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _DOMWindow.attachEvent("onbeforeunload", function()
         {
             objj_msgSend(self, "updateFromNativeContentRect");
+            objj_msgSend(self, "_removeLayers");
             theDocument.removeEvent("onmouseup", mouseEventCallback);
             theDocument.removeEvent("onmousedown", mouseEventCallback);
             theDocument.removeEvent("onmousemove", mouseEventCallback);
@@ -216,8 +219,11 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     _DOMWindow.document.close();
     if (!objj_msgSend(CPPlatform, "isBrowser"))
     {
+        _DOMWindow.cpWindowNumber = objj_msgSend(self._only, "windowNumber");
+        _DOMWindow.cpSetFrame(_contentRect);
         _DOMWindow.cpSetLevel(_level);
         _DOMWindow.cpSetHasShadow(_hasShadow);
+        _DOMWindow.cpSetShadowStyle(_shadowStyle);
     }
     objj_msgSend(self, "registerDOMWindow");
 }
@@ -248,10 +254,10 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         document.getElementsByTagName("body")[0].appendChild(DOMDragElement);
         var draggingOffset = objj_msgSend(dragServer, "draggingOffset");
         aDOMEvent.dataTransfer.setDragImage(DOMDragElement, draggingOffset.width, draggingOffset.height);
-        objj_msgSend(dragServer, "draggingStartedInPlatformWindow:location:", self, objj_msgSend(CPPlatform, "isBrowser") ? location : { x:aDOMEvent.screenX, y:aDOMEvent.screenY });
+        objj_msgSend(dragServer, "draggingStartedInPlatformWindow:globalLocation:", self, objj_msgSend(CPPlatform, "isBrowser") ? location : { x:aDOMEvent.screenX, y:aDOMEvent.screenY });
     }
     else if (type === "drag")
-        objj_msgSend(dragServer, "draggingSourceUpdatedWithLocation:", objj_msgSend(CPPlatform, "isBrowser") ? location : { x:aDOMEvent.screenX, y:aDOMEvent.screenY });
+        objj_msgSend(dragServer, "draggingSourceUpdatedWithGlobalLocation:", objj_msgSend(CPPlatform, "isBrowser") ? location : { x:aDOMEvent.screenX, y:aDOMEvent.screenY });
     else if (type === "dragover" || type === "dragleave")
     {
         if (aDOMEvent.preventDefault)
@@ -267,7 +273,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         aDOMEvent.dataTransfer.dropEffect = dropEffect;
     }
     else if (type === "dragend")
-        objj_msgSend(dragServer, "draggingEndedInPlatformWindow:", self);
+        objj_msgSend(dragServer, "draggingEndedInPlatformWindow:globalLocation:", self, objj_msgSend(CPPlatform, "isBrowser") ? location : { x:aDOMEvent.screenX, y:aDOMEvent.screenY });
     else
     {
         objj_msgSend(dragServer, "performDragOperationInPlatformWindow:", self);
@@ -559,12 +565,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
             return;
         event = _CPEventFromNativeMouseEvent(aDOMEvent, _mouseIsDown ? CPLeftMouseDragged : CPMouseMoved, location, modifierFlags, timestamp, windowNumber, nil, -1, 1, 0);
     }
-    if (event)
+    var isDragging = objj_msgSend(objj_msgSend(CPDragServer, "sharedDragServer"), "isDragging");
+    if (event && (!isDragging || !supportsNativeDragAndDrop))
     {
         event._DOMEvent = aDOMEvent;
         objj_msgSend(CPApp, "sendEvent:", event);
     }
-    if (StopDOMEventPropagation && (!objj_msgSend(CPPlatform, "supportsDragAndDrop") || type !== "mousedown" && !objj_msgSend(objj_msgSend(CPDragServer, "sharedDragServer"), "isDragging")))
+    if (StopDOMEventPropagation && (!supportsNativeDragAndDrop || type !== "mousedown" && !isDragging))
         CPDOMEventStop(aDOMEvent, self);
     objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "limitDateForMode:", CPDefaultRunLoopMode);
 }
@@ -601,7 +608,31 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         return objj_msgSend(layer, "removeWindow:", aWindow);
     objj_msgSend(layer, "insertWindow:atIndex:", aWindow, (otherWindow ? (aPlace == CPWindowAbove ? otherWindow._index + 1 : otherWindow._index) : CPNotFound));
 }
-},["void","CPWindowOrderingMode","CPWindow","CPWindow"]), new objj_method(sel_getUid("_dragHitTest:pasteboard:"), function $CPPlatformWindow___dragHitTest_pasteboard_(self, _cmd, aPoint, aPasteboard)
+},["void","CPWindowOrderingMode","CPWindow","CPWindow"]), new objj_method(sel_getUid("_removeLayers"), function $CPPlatformWindow___removeLayers(self, _cmd)
+{ with(self)
+{
+    var levels = _windowLevels,
+        layers = _windowLayers,
+        levelCount = levels.length;
+    while (levelCount--)
+    {
+        var layer = objj_msgSend(layers, "objectForKey:", levels[levelCount]);
+        _DOMBodyElement.removeChild(layer._DOMElement);
+    }
+}
+},["void"]), new objj_method(sel_getUid("_addLayers"), function $CPPlatformWindow___addLayers(self, _cmd)
+{ with(self)
+{
+    var levels = _windowLevels,
+        layers = _windowLayers,
+        levelCount = levels.length;
+    while (levelCount--)
+    {
+        var layer = objj_msgSend(layers, "objectForKey:", levels[levelCount]);
+        _DOMBodyElement.appendChild(layer._DOMElement);
+    }
+}
+},["void"]), new objj_method(sel_getUid("_dragHitTest:pasteboard:"), function $CPPlatformWindow___dragHitTest_pasteboard_(self, _cmd, aPoint, aPasteboard)
 { with(self)
 {
     var levels = _windowLevels,

@@ -1,4 +1,4 @@
-i;10;CPButton.jc;1421;
+i;10;CPButton.jc;1496;
 {var the_class = objj_allocateClassPair(CPButton, "CPCheckBox"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
@@ -16,22 +16,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-})]);
+},["id","CGRect"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("checkBoxWithTitle:theme:"), function $CPCheckBox__checkBoxWithTitle_theme_(self, _cmd, aTitle, aTheme)
 { with(self)
 {
     return objj_msgSend(self, "buttonWithTitle:theme:", aTitle, aTheme);
 }
-}), new objj_method(sel_getUid("checkBoxWithTitle:"), function $CPCheckBox__checkBoxWithTitle_(self, _cmd, aTitle)
+},["id","CPString","CPTheme"]), new objj_method(sel_getUid("checkBoxWithTitle:"), function $CPCheckBox__checkBoxWithTitle_(self, _cmd, aTitle)
 { with(self)
 {
     return objj_msgSend(self, "buttonWithTitle:", aTitle);
 }
-}), new objj_method(sel_getUid("themeClass"), function $CPCheckBox__themeClass(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("themeClass"), function $CPCheckBox__themeClass(self, _cmd)
 { with(self)
 {
     return "check-box";
 }
-})]);
+},["CPString"])]);
 }
 

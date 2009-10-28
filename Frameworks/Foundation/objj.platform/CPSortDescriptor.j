@@ -1,4 +1,4 @@
-i;10;CPObject.ji;15;CPObjJRuntime.jc;1521;
+i;10;CPObject.ji;15;CPObjJRuntime.jc;1945;
 CPOrderedAscending=-1;
 CPOrderedSame=0;
 CPOrderedDescending=1;
@@ -39,5 +39,14 @@ return (_ascending?1:-1)*objj_msgSend(objj_msgSend(_14,"valueForKey:",_key),"per
 }),new objj_method(sel_getUid("reversedSortDescriptor"),function(_16,_17){
 with(_16){
 return objj_msgSend(objj_msgSend(objj_msgSend(_16,"class"),"alloc"),"initWithKey:ascending:selector:",_key,!_ascending,_selector);
+}
+})]);
+class_addMethods(_2,[new objj_method(sel_getUid("sortDescriptorWithKey:ascending:"),function(_18,_19,_1a,_1b){
+with(_18){
+return objj_msgSend(objj_msgSend(_18,"alloc"),"initWithKey:ascending:",_1a,_1b);
+}
+}),new objj_method(sel_getUid("sortDescriptorWithKey:ascending:selector:"),function(_1c,_1d,_1e,_1f,_20){
+with(_1c){
+return objj_msgSend(objj_msgSend(_1c,"alloc"),"initWithKey:ascending:selector:",_1e,_1f,_20);
 }
 })]);

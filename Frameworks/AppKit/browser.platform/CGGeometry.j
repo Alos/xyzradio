@@ -1,4 +1,4 @@
-c;5815;
+c;5881;
 CGPointMake=function(x,y){
 return {x:x,y:y};
 };
@@ -104,6 +104,7 @@ return {top:(_2e.top),right:(_2e.right),bottom:(_2e.bottom),left:(_2e.left)};
 CGInsetIsEmpty=function(_2f){
 return ((_2f).top===0&&(_2f).right===0&&(_2f).bottom===0&&(_2f).left===0);
 };
+CGRectNull={origin:{x:Infinity,y:Infinity},size:{width:0,height:0}};
 CGRectContainsRect=function(_30,_31){
 var _32=CGRectUnion(_30,_31);
 return ((_32.origin.x==_30.origin.x&&_32.origin.y==_30.origin.y)&&(_32.size.width==_30.size.width&&_32.size.height==_30.size.height));
@@ -128,47 +129,48 @@ _3b.size.height=MIN((_39.origin.y+_39.size.height),(_3a.origin.y+_3a.size.height
 return (_3b.size.width<=0||_3b.size.height<=0)?{origin:{x:0,y:0},size:{width:0,height:0}}:_3b;
 };
 CGRectStandardize=function(_3c){
-var _3d=(_3c.size.width),_3e=(_3c.size.height),_3f=_3c;
+var _3d=(_3c.size.width),_3e=(_3c.size.height),_3f={origin:{x:_3c.origin.x,y:_3c.origin.y},size:{width:_3c.size.width,height:_3c.size.height}};
 if(_3d<0){
-if(_3f==_3c){
-_3f={origin:{x:_3c.origin.x,y:_3c.origin.y},size:{width:_3c.size.width,height:_3c.size.height}};
-}
 _3f.origin.x+=_3d;
 _3f.size.width=-_3d;
 }
 if(_3e<0){
-if(_3f==_3c){
-_3f={origin:{x:_3c.origin.x,y:_3c.origin.y},size:{width:_3c.size.width,height:_3c.size.height}};
-}
 _3f.origin.y+=_3e;
 _3f.size.height=-_3e;
 }
 return _3f;
 };
 CGRectUnion=function(_40,_41){
-var _42=MIN((_40.origin.x),(_41.origin.x)),_43=MIN((_40.origin.y),(_41.origin.y)),_44=MAX((_40.origin.x+_40.size.width),(_41.origin.x+_41.size.width)),_45=MAX((_40.origin.y+_40.size.height),(_41.origin.y+_41.size.height));
-return {origin:{x:_42,y:_43},size:{width:_44-_42,height:_45-_43}};
+var _42=!_40||_40===CGRectNull,_43=!_41||_41===CGRectNull;
+if(_42){
+return _43?CGRectNull:_41;
+}
+if(_43){
+return _42?CGRectNull:_40;
+}
+var _44=MIN((_40.origin.x),(_41.origin.x)),_45=MIN((_40.origin.y),(_41.origin.y)),_46=MAX((_40.origin.x+_40.size.width),(_41.origin.x+_41.size.width)),_47=MAX((_40.origin.y+_40.size.height),(_41.origin.y+_41.size.height));
+return {origin:{x:_44,y:_45},size:{width:_46-_44,height:_47-_45}};
 };
-CGPointFromString=function(_46){
-var _47=_46.indexOf(",");
-return {x:parseInt(_46.substr(1,_47-1)),y:parseInt(_46.substring(_47+1,_46.length))};
-};
-CGSizeFromString=function(_48){
+CGPointFromString=function(_48){
 var _49=_48.indexOf(",");
-return {width:parseInt(_48.substr(1,_49-1)),height:parseInt(_48.substring(_49+1,_48.length))};
+return {x:parseInt(_48.substr(1,_49-1)),y:parseInt(_48.substring(_49+1,_48.length))};
 };
-CGRectFromString=function(_4a){
-var _4b=_4a.indexOf(",",_4a.indexOf(",")+1);
-return {origin:CGPointFromString(_4a.substr(1,_4b-1)),size:CGSizeFromString(_4a.substring(_4b+2,_4a.length))};
+CGSizeFromString=function(_4a){
+var _4b=_4a.indexOf(",");
+return {width:parseInt(_4a.substr(1,_4b-1)),height:parseInt(_4a.substring(_4b+1,_4a.length))};
 };
-CGPointFromEvent=function(_4c){
-return {x:_4c.clientX,y:_4c.clientY};
+CGRectFromString=function(_4c){
+var _4d=_4c.indexOf(",",_4c.indexOf(",")+1);
+return {origin:CGPointFromString(_4c.substr(1,_4d-1)),size:CGSizeFromString(_4c.substring(_4d+2,_4c.length))};
 };
-CGInsetFromString=function(_4d){
-var _4e=_4d.substr(1,_4d.length-2).split(",");
-return {top:(parseFloat(_4e[0])),right:(parseFloat(_4e[1])),bottom:(parseFloat(_4e[2])),left:(parseFloat(_4e[3]))};
+CGPointFromEvent=function(_4e){
+return {x:_4e.clientX,y:_4e.clientY};
+};
+CGInsetFromString=function(_4f){
+var _50=_4f.substr(1,_4f.length-2).split(",");
+return {top:(parseFloat(_50[0])),right:(parseFloat(_50[1])),bottom:(parseFloat(_50[2])),left:(parseFloat(_50[3]))};
 };
 CGInsetFromCPString=CGInsetFromString;
-CPStringFromCGInset=function(_4f){
-return "{"+_4f.top+", "+_4f.left+", "+_4f.bottom+", "+_4f.right+"}";
+CPStringFromCGInset=function(_51){
+return "{"+_51.top+", "+_51.left+", "+_51.bottom+", "+_51.right+"}";
 };

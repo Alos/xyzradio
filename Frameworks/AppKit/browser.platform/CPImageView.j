@@ -1,4 +1,4 @@
-I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;8911;
+I;33;Foundation/CPNotificationCenter.ji;11;CPControl.ji;9;CPImage.ji;14;CPShadowView.jc;8025;
 CPScaleProportionally=0;
 CPScaleToFit=1;
 CPScaleNone=2;
@@ -20,12 +20,7 @@ if(objj_msgSend(CPPlatform,"supportsDragAndDrop")){
 _DOMImageElement.setAttribute("draggable","true");
 _DOMImageElement.style["-khtml-user-drag"]="element";
 }
-if(_DOMImageElement.CPDOMDisplayContext){
-_DOMImageElement.CPDOMDisplayContext[0]=-1;
-}
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=6;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_DOMElement;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_DOMImageElement;
+_DOMElement.appendChild(_DOMImageElement);
 _DOMImageElement.style.visibility="hidden";
 }
 return _a;
@@ -94,19 +89,13 @@ objj_msgSend(_1e,"hideOrDisplayContents");
 with(_21){
 objj_msgSendSuper({receiver:_21,super_class:objj_getClass("CPControl")},"setImageScaling:",_23);
 if(objj_msgSend(_21,"currentValueForThemeAttribute:","image-scaling")===CPScaleToFit){
-if(!_DOMImageElement.CPDOMDisplayContext){
-_DOMImageElement.CPDOMDisplayContext=[];
+if(NULL){
+var _24=_CGPointApplyAffineTransform(CGPointMake(0,0),NULL);
+}else{
+var _24={x:0,y:0};
 }
-var _24=_DOMImageElement.CPDOMDisplayContext[0];
-if(!(_24>=0)){
-_24=_DOMImageElement.CPDOMDisplayContext[0]=CPDOMDisplayServerInstructionCount;
-CPDOMDisplayServerInstructionCount+=5;
-}
-CPDOMDisplayServerInstructions[_24]=0;
-CPDOMDisplayServerInstructions[_24+1]=_DOMImageElement;
-CPDOMDisplayServerInstructions[_24+2]=NULL;
-CPDOMDisplayServerInstructions[_24+3]=0;
-CPDOMDisplayServerInstructions[_24+4]=0;
+_DOMImageElement.style.left=ROUND(_24.x)+"px";
+_DOMImageElement.style.top=ROUND(_24.y)+"px";
 }
 objj_msgSend(_21,"setNeedsLayout");
 objj_msgSend(_21,"setNeedsDisplay:",YES);
@@ -162,19 +151,13 @@ _DOMImageElement.width=ROUND(_36.width);
 _DOMImageElement.height=ROUND(_36.height);
 }
 var x=(_32-_34)/2,y=(_33-_35)/2;
-if(!_DOMImageElement.CPDOMDisplayContext){
-_DOMImageElement.CPDOMDisplayContext=[];
+if(NULL){
+var _39=_CGPointApplyAffineTransform(CGPointMake(x,y),NULL);
+}else{
+var _39={x:x,y:y};
 }
-var _39=_DOMImageElement.CPDOMDisplayContext[0];
-if(!(_39>=0)){
-_39=_DOMImageElement.CPDOMDisplayContext[0]=CPDOMDisplayServerInstructionCount;
-CPDOMDisplayServerInstructionCount+=5;
-}
-CPDOMDisplayServerInstructions[_39]=0;
-CPDOMDisplayServerInstructions[_39+1]=_DOMImageElement;
-CPDOMDisplayServerInstructions[_39+2]=NULL;
-CPDOMDisplayServerInstructions[_39+3]=x;
-CPDOMDisplayServerInstructions[_39+4]=y;
+_DOMImageElement.style.left=ROUND(_39.x)+"px";
+_DOMImageElement.style.top=ROUND(_39.y)+"px";
 }
 _imageRect={origin:{x:x,y:y},size:{width:_34,height:_35}};
 if(_hasShadow){

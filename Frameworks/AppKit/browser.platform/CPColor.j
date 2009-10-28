@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;9;CGColor.ji;17;CPCompatibility.ji;9;CPImage.jc;14176;
+I;21;Foundation/CPObject.ji;9;CGColor.ji;17;CPCompatibility.ji;9;CPImage.jc;14542;
 var _1=0,_2=1,_3=2,_4=3;
 var _5=0,_6=1,_7=2;
 var _8,_9,_a,_b,_c,_d,_e,_f,_10,_11,_12,_13,_14,_15,_16,_17;
@@ -299,34 +299,21 @@ _17=objj_msgSend(_9f,"colorWithCalibratedWhite:alpha:",0,0);
 }
 return _17;
 }
-}),new objj_method(sel_getUid("colorWithPatternImage:"),function(_a1,_a2,_a3){
+}),new objj_method(sel_getUid("alternateSelectedControlColor"),function(_a1,_a2){
 with(_a1){
-return objj_msgSend(objj_msgSend(CPColor,"alloc"),"_initWithPatternImage:",_a3);
+return objj_msgSend(objj_msgSend(CPColor,"alloc"),"_initWithRGBA:",[0.22,0.46,0.84,1]);
 }
-}),new objj_method(sel_getUid("colorWithCSSString:"),function(_a4,_a5,_a6){
-with(_a4){
-return objj_msgSend(objj_msgSend(CPColor,"alloc"),"_initWithCSSString:",_a6);
+}),new objj_method(sel_getUid("secondarySelectedControlColor"),function(_a3,_a4){
+with(_a3){
+return objj_msgSend(objj_msgSend(CPColor,"alloc"),"_initWithRGBA:",[0.83,0.83,0.83,1]);
 }
-})]);
-var _18=objj_getClass("CPColor");
-if(!_18){
-objj_exception_throw(new objj_exception(OBJJClassNotFoundException,"*** Could not find definition for class \"CPColor\""));
+}),new objj_method(sel_getUid("colorWithPatternImage:"),function(_a5,_a6,_a7){
+with(_a5){
+return objj_msgSend(objj_msgSend(CPColor,"alloc"),"_initWithPatternImage:",_a7);
 }
-var _19=_18.isa;
-class_addMethods(_18,[new objj_method(sel_getUid("set"),function(_a7,_a8){
-with(_a7){
-objj_msgSend(_a7,"setFill");
-objj_msgSend(_a7,"setStroke");
-}
-}),new objj_method(sel_getUid("setFill"),function(_a9,_aa){
-with(_a9){
-var ctx=objj_msgSend(objj_msgSend(CPGraphicsContext,"currentContext"),"graphicsPort");
-CGContextSetFillColor(ctx,_a9);
-}
-}),new objj_method(sel_getUid("setStroke"),function(_ac,_ad){
-with(_ac){
-var ctx=objj_msgSend(objj_msgSend(CPGraphicsContext,"currentContext"),"graphicsPort");
-CGContextSetStrokeColor(ctx,_ac);
+}),new objj_method(sel_getUid("colorWithCSSString:"),function(_a8,_a9,_aa){
+with(_a8){
+return objj_msgSend(objj_msgSend(CPColor,"alloc"),"_initWithCSSString:",_aa);
 }
 })]);
 var _18=objj_getClass("CPColor");
@@ -334,34 +321,55 @@ if(!_18){
 objj_exception_throw(new objj_exception(OBJJClassNotFoundException,"*** Could not find definition for class \"CPColor\""));
 }
 var _19=_18.isa;
-class_addMethods(_19,[new objj_method(sel_getUid("randomColor"),function(_af,_b0){
-with(_af){
+class_addMethods(_18,[new objj_method(sel_getUid("set"),function(_ab,_ac){
+with(_ab){
+objj_msgSend(_ab,"setFill");
+objj_msgSend(_ab,"setStroke");
+}
+}),new objj_method(sel_getUid("setFill"),function(_ad,_ae){
+with(_ad){
+var ctx=objj_msgSend(objj_msgSend(CPGraphicsContext,"currentContext"),"graphicsPort");
+CGContextSetFillColor(ctx,_ad);
+}
+}),new objj_method(sel_getUid("setStroke"),function(_b0,_b1){
+with(_b0){
+var ctx=objj_msgSend(objj_msgSend(CPGraphicsContext,"currentContext"),"graphicsPort");
+CGContextSetStrokeColor(ctx,_b0);
+}
+})]);
+var _18=objj_getClass("CPColor");
+if(!_18){
+objj_exception_throw(new objj_exception(OBJJClassNotFoundException,"*** Could not find definition for class \"CPColor\""));
+}
+var _19=_18.isa;
+class_addMethods(_19,[new objj_method(sel_getUid("randomColor"),function(_b3,_b4){
+with(_b3){
 return objj_msgSend(CPColor,"colorWithRed:green:blue:alpha:",RAND(),RAND(),RAND(),1);
 }
 })]);
-var _b1="CPColorComponentsKey",_b2="CPColorPatternImageKey";
+var _b5="CPColorComponentsKey",_b6="CPColorPatternImageKey";
 var _18=objj_getClass("CPColor");
 if(!_18){
 objj_exception_throw(new objj_exception(OBJJClassNotFoundException,"*** Could not find definition for class \"CPColor\""));
 }
 var _19=_18.isa;
-class_addMethods(_18,[new objj_method(sel_getUid("initWithCoder:"),function(_b3,_b4,_b5){
-with(_b3){
-if(objj_msgSend(_b5,"containsValueForKey:",_b2)){
-return objj_msgSend(_b3,"_initWithPatternImage:",objj_msgSend(_b5,"decodeObjectForKey:",_b2));
+class_addMethods(_18,[new objj_method(sel_getUid("initWithCoder:"),function(_b7,_b8,_b9){
+with(_b7){
+if(objj_msgSend(_b9,"containsValueForKey:",_b6)){
+return objj_msgSend(_b7,"_initWithPatternImage:",objj_msgSend(_b9,"decodeObjectForKey:",_b6));
 }
-return objj_msgSend(_b3,"_initWithRGBA:",objj_msgSend(_b5,"decodeObjectForKey:",_b1));
+return objj_msgSend(_b7,"_initWithRGBA:",objj_msgSend(_b9,"decodeObjectForKey:",_b5));
 }
-}),new objj_method(sel_getUid("encodeWithCoder:"),function(_b6,_b7,_b8){
-with(_b6){
+}),new objj_method(sel_getUid("encodeWithCoder:"),function(_ba,_bb,_bc){
+with(_ba){
 if(_patternImage){
-objj_msgSend(_b8,"encodeObject:forKey:",_patternImage,_b2);
+objj_msgSend(_bc,"encodeObject:forKey:",_patternImage,_b6);
 }else{
-objj_msgSend(_b8,"encodeObject:forKey:",_components,_b1);
+objj_msgSend(_bc,"encodeObject:forKey:",_components,_b5);
 }
 }
 })]);
-var _b9="0123456789ABCDEF";
+var _bd="0123456789ABCDEF";
 hexToRGB=function(hex){
 if(hex.length==3){
 hex=hex.charAt(0)+hex.charAt(0)+hex.charAt(1)+hex.charAt(1)+hex.charAt(2)+hex.charAt(2);
@@ -371,25 +379,25 @@ return null;
 }
 hex=hex.toUpperCase();
 for(var i=0;i<hex.length;i++){
-if(_b9.indexOf(hex.charAt(i))==-1){
+if(_bd.indexOf(hex.charAt(i))==-1){
 return null;
 }
 }
-var red=(_b9.indexOf(hex.charAt(0))*16+_b9.indexOf(hex.charAt(1)))/255;
-var _bd=(_b9.indexOf(hex.charAt(2))*16+_b9.indexOf(hex.charAt(3)))/255;
-var _be=(_b9.indexOf(hex.charAt(4))*16+_b9.indexOf(hex.charAt(5)))/255;
-return [red,_bd,_be,1];
+var red=(_bd.indexOf(hex.charAt(0))*16+_bd.indexOf(hex.charAt(1)))/255;
+var _c1=(_bd.indexOf(hex.charAt(2))*16+_bd.indexOf(hex.charAt(3)))/255;
+var _c2=(_bd.indexOf(hex.charAt(4))*16+_bd.indexOf(hex.charAt(5)))/255;
+return [red,_c1,_c2,1];
 };
-integerToBytes=function(_bf,_c0){
-if(!_c0){
-_c0=(_bf==0)?1:Math.round((Math.log(_bf)/Math.log(2))/8+0.5);
+integerToBytes=function(_c3,_c4){
+if(!_c4){
+_c4=(_c3==0)?1:Math.round((Math.log(_c3)/Math.log(2))/8+0.5);
 }
-var _c1=new Array(_c0);
-for(var i=_c0-1;i>=0;i--){
-_c1[i]=_bf&255;
-_bf=_bf>>8;
+var _c5=new Array(_c4);
+for(var i=_c4-1;i>=0;i--){
+_c5[i]=_c3&255;
+_c3=_c3>>8;
 }
-return _c1;
+return _c5;
 };
 rgbToHex=function(r,g,b){
 return byteToHex(r)+byteToHex(g)+byteToHex(b);
@@ -399,5 +407,5 @@ if(!n||isNaN(n)){
 return "00";
 }
 n=ROUND(MIN(255,MAX(0,256*n)));
-return _b9.charAt((n-n%16)/16)+_b9.charAt(n%16);
+return _bd.charAt((n-n%16)/16)+_bd.charAt(n%16);
 };

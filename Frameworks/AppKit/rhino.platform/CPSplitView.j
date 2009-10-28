@@ -1,4 +1,4 @@
-i;9;CPImage.ji;8;CPView.jc;16269;
+i;9;CPImage.ji;8;CPView.jc;16313;
 CPSplitViewDidResizeSubviewsNotification="CPSplitViewDidResizeSubviewsNotification";
 CPSplitViewWillResizeSubviewsNotification="CPSplitViewWillResizeSubviewsNotification";
 var _1=nil,_2=nil;
@@ -187,6 +187,9 @@ _initialOffset=_51-_4d[_originComponent];
 objj_msgSend(_49,"_postNotificationWillResize");
 }
 }
+}
+if(_currentDivider===CPNotFound){
+return;
 }
 }else{
 if(_4c==CPLeftMouseDragged&&_currentDivider!=CPNotFound){

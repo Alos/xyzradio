@@ -1,4 +1,4 @@
-i;9;CPImage.ji;8;CPView.jc;25910;
+i;9;CPImage.ji;8;CPView.jc;24824;
 CPSplitViewDidResizeSubviewsNotification = "CPSplitViewDidResizeSubviewsNotification";
 CPSplitViewWillResizeSubviewsNotification = "CPSplitViewWillResizeSubviewsNotification";
 var CPSplitViewHorizontalImage = nil,
@@ -120,7 +120,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         _DOMDividerElements[_drawingDivider].style.cursor = "move";
         _DOMDividerElements[_drawingDivider].style.position = "absolute";
         _DOMDividerElements[_drawingDivider].style.backgroundRepeat = "repeat";
-        if (_DOMDividerElements[_drawingDivider].CPDOMDisplayContext) _DOMDividerElements[_drawingDivider].CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMDividerElements[_drawingDivider];;
+        _DOMElement.appendChild(_DOMDividerElements[_drawingDivider]);
         if (_isPaneSplitter)
         {
             _DOMDividerElements[_drawingDivider].style.backgroundColor = "#A5A5A5";
@@ -132,8 +132,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             _DOMDividerElements[_drawingDivider].style.backgroundImage = "url('"+_dividerImagePath+"')";
         }
     }
-    if (!_DOMDividerElements[_drawingDivider].CPDOMDisplayContext) _DOMDividerElements[_drawingDivider].CPDOMDisplayContext = []; var __index = _DOMDividerElements[_drawingDivider].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMDividerElements[_drawingDivider].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMDividerElements[_drawingDivider]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = (aRect.origin.x); CPDOMDisplayServerInstructions[__index + 4] = (aRect.origin.y);;
-    if (!_DOMDividerElements[_drawingDivider].CPDOMDisplayContext) _DOMDividerElements[_drawingDivider].CPDOMDisplayContext = []; var __index = _DOMDividerElements[_drawingDivider].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMDividerElements[_drawingDivider].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMDividerElements[_drawingDivider]; CPDOMDisplayServerInstructions[__index + 2] = (aRect.size.width); CPDOMDisplayServerInstructions[__index + 3] = (aRect.size.height);;
+    if (NULL) var ____p = _CGPointApplyAffineTransform(CGPointMake((aRect.origin.x), (aRect.origin.y)), NULL); else var ____p = { x:(aRect.origin.x), y:(aRect.origin.y) }; _DOMDividerElements[_drawingDivider].style.left = ROUND(____p.x) + "px";_DOMDividerElements[_drawingDivider].style.top = ROUND(____p.y) + "px";;
+    _DOMDividerElements[_drawingDivider].style.width = MAX(0.0, ROUND((aRect.size.width))) + "px"; _DOMDividerElements[_drawingDivider].style.height = MAX(0.0, ROUND((aRect.size.height))) + "px";;
 }
 },["void","CGRect"]), new objj_method(sel_getUid("viewWillDraw"), function $CPSplitView__viewWillDraw(self, _cmd)
 { with(self)
@@ -243,6 +243,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
                 }
             }
         }
+        if (_currentDivider === CPNotFound)
+            return;
     }
     else if (type == CPLeftMouseDragged && _currentDivider != CPNotFound)
     {

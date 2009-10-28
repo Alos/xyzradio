@@ -1,4 +1,4 @@
-I;15;AppKit/CPView.jI;16;AppKit/CPEvent.jI;21;AppKit/CPPasteboard.jI;20;AppKit/CPImageView.jc;17057;
+I;15;AppKit/CPView.jI;16;AppKit/CPEvent.jI;21;AppKit/CPPasteboard.jI;20;AppKit/CPImageView.jc;17167;
 CPDragOperationNone = 0,
 CPDragOperationCopy = 1 << 1,
 CPDragOperationLink = 1 << 1,
@@ -119,7 +119,7 @@ return _draggingSource;
 {
     return _draggingLocation
 }
-},["CGPoint"]), new objj_method(sel_getUid("draggingStartedInPlatformWindow:location:"), function $CPDragServer__draggingStartedInPlatformWindow_location_(self, _cmd, aPlatformWindow, aLocation)
+},["CGPoint"]), new objj_method(sel_getUid("draggingStartedInPlatformWindow:globalLocation:"), function $CPDragServer__draggingStartedInPlatformWindow_globalLocation_(self, _cmd, aPlatformWindow, aLocation)
 { with(self)
 {
     if (_isDraggingImage)
@@ -135,7 +135,7 @@ return _draggingSource;
     if (!objj_msgSend(CPPlatform, "supportsDragAndDrop"))
         objj_msgSend(_draggedWindow, "orderFront:", self);
 }
-},["void","CPPlatformWindow","CGPoint"]), new objj_method(sel_getUid("draggingSourceUpdatedWithLocation:"), function $CPDragServer__draggingSourceUpdatedWithLocation_(self, _cmd, aGlobalLocation)
+},["void","CPPlatformWindow","CGPoint"]), new objj_method(sel_getUid("draggingSourceUpdatedWithGlobalLocation:"), function $CPDragServer__draggingSourceUpdatedWithGlobalLocation_(self, _cmd, aGlobalLocation)
 { with(self)
 {
     if (!objj_msgSend(CPPlatform, "supportsDragAndDrop"))
@@ -166,19 +166,19 @@ return _draggingSource;
         dragOperation = CPDragOperationNone;
     return dragOperation;
 }
-},["CPDragOperation","CPPlatformWindow","CGPoint"]), new objj_method(sel_getUid("draggingEndedInPlatformWindow:"), function $CPDragServer__draggingEndedInPlatformWindow_(self, _cmd, aPlatformWindow)
+},["CPDragOperation","CPPlatformWindow","CGPoint"]), new objj_method(sel_getUid("draggingEndedInPlatformWindow:globalLocation:"), function $CPDragServer__draggingEndedInPlatformWindow_globalLocation_(self, _cmd, aPlatformWindow, aLocation)
 { with(self)
 {
     objj_msgSend(_draggedView, "removeFromSuperview");
     if (!objj_msgSend(CPPlatform, "supportsDragAndDrop"))
         objj_msgSend(_draggedWindow, "orderOut:", self);
     if (_implementedDraggingSourceMethods & CPDraggingSource_draggedImage_endAt_operation_)
-        objj_msgSend(_draggingSource, "draggedImage:endedAt:operation:", objj_msgSend(_draggedView, "image"), _draggingLocation, NO);
+        objj_msgSend(_draggingSource, "draggedImage:endedAt:operation:", objj_msgSend(_draggedView, "image"), aLocation, NO);
     else if (_implementedDraggingSourceMethods & CPDraggingSource_draggedView_endedAt_operation_)
-        objj_msgSend(_draggingSource, "draggedView:endedAt:operation:", _draggedView, _draggingLocation, NO);
+        objj_msgSend(_draggingSource, "draggedView:endedAt:operation:", _draggedView, aLocation, NO);
     _isDragging = NO;
 }
-},["void","CPPlatformWindow"]), new objj_method(sel_getUid("performDragOperationInPlatformWindow:"), function $CPDragServer__performDragOperationInPlatformWindow_(self, _cmd, aPlatformWindow)
+},["void","CPPlatformWindow","CGPoint"]), new objj_method(sel_getUid("performDragOperationInPlatformWindow:"), function $CPDragServer__performDragOperationInPlatformWindow_(self, _cmd, aPlatformWindow)
 { with(self)
 {
     if (_draggingDestination &&
@@ -229,7 +229,7 @@ return _draggingSource;
     }
     if (!objj_msgSend(CPPlatform, "supportsDragAndDrop"))
     {
-        objj_msgSend(self, "draggingStartedInPlatformWindow:location:", objj_msgSend(aWindow, "platformWindow"), mouseLocation);
+        objj_msgSend(self, "draggingStartedInPlatformWindow:globalLocation:", objj_msgSend(aWindow, "platformWindow"), mouseLocation);
         objj_msgSend(self, "trackDragging:", mouseDownEvent);
     }
 }
@@ -252,10 +252,10 @@ return _draggingSource;
     if (type === CPLeftMouseUp)
     {
         objj_msgSend(self, "performDragOperationInPlatformWindow:", platformWindow);
-        objj_msgSend(self, "draggingEndedInPlatformWindow:", platformWindow);
+        objj_msgSend(self, "draggingEndedInPlatformWindow:globalLocation:", platformWindow, platformWindowLocation);
         return;
     }
-    objj_msgSend(self, "draggingSourceUpdatedWithLocation:", platformWindowLocation);
+    objj_msgSend(self, "draggingSourceUpdatedWithGlobalLocation:", platformWindowLocation);
     objj_msgSend(self, "draggingUpdatedInPlatformWindow:location:", platformWindow, platformWindowLocation);
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackDragging:"), CPMouseMovedMask | CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, 0, NO);
 }

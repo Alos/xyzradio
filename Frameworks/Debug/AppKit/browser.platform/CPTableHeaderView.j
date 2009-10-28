@@ -1,4 +1,4 @@
-i;15;CPTableColumn.ji;13;CPTableView.ji;8;CPView.jc;3886;
+i;15;CPTableColumn.ji;13;CPTableView.ji;8;CPView.jc;5218;
 {var the_class = objj_allocateClassPair(CPView, "CPTableHeaderView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_resizedColumn"), new objj_ivar("_draggedColumn"), new objj_ivar("_draggedDistance"), new objj_ivar("_tableView")]);
 objj_registerClassPair(the_class);
@@ -8,31 +8,31 @@ class_addMethods(the_class, [new objj_method(sel_getUid("resizedColumn"), functi
 {
 return _resizedColumn;
 }
-}),
+},["id"]),
 new objj_method(sel_getUid("draggedColumn"), function $CPTableHeaderView__draggedColumn(self, _cmd)
 { with(self)
 {
 return _draggedColumn;
 }
-}),
+},["id"]),
 new objj_method(sel_getUid("draggedDistance"), function $CPTableHeaderView__draggedDistance(self, _cmd)
 { with(self)
 {
 return _draggedDistance;
 }
-}),
+},["id"]),
 new objj_method(sel_getUid("tableView"), function $CPTableHeaderView__tableView(self, _cmd)
 { with(self)
 {
 return _tableView;
 }
-}),
+},["id"]),
 new objj_method(sel_getUid("setTableView:"), function $CPTableHeaderView__setTableView_(self, _cmd, newValue)
 { with(self)
 {
 _tableView = newValue;
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $CPTableHeaderView__initWithFrame_(self, _cmd, aFrame)
+},["void","id"]), new objj_method(sel_getUid("initWithFrame:"), function $CPTableHeaderView__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "initWithFrame:", aFrame);
@@ -44,7 +44,7 @@ _tableView = newValue;
     }
     return self;
 }
-}), new objj_method(sel_getUid("columnAtPoint:"), function $CPTableHeaderView__columnAtPoint_(self, _cmd, aPoint)
+},["void","CGRect"]), new objj_method(sel_getUid("columnAtPoint:"), function $CPTableHeaderView__columnAtPoint_(self, _cmd, aPoint)
 { with(self)
 {
     if (!CGRectContainsPoint(objj_msgSend(self, "bounds"), aPoint))
@@ -64,7 +64,7 @@ _tableView = newValue;
     }
     return CPNotFound;
 }
-}), new objj_method(sel_getUid("headerRectOfColumn:"), function $CPTableHeaderView__headerRectOfColumn_(self, _cmd, aColumnIndex)
+},["int","CGPoint"]), new objj_method(sel_getUid("headerRectOfColumn:"), function $CPTableHeaderView__headerRectOfColumn_(self, _cmd, aColumnIndex)
 { with(self)
 {
     var tableColumns = objj_msgSend(_tableView, "tableColumns"),
@@ -77,7 +77,7 @@ _tableView = newValue;
         bounds.origin.x += objj_msgSend(tableColumns[aColumnIndex], "width") + tableSpacing.width;
     return bounds;
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPTableHeaderView__layoutSubviews(self, _cmd)
+},["CGRect","int"]), new objj_method(sel_getUid("layoutSubviews"), function $CPTableHeaderView__layoutSubviews(self, _cmd)
 { with(self)
 {
     var tableColumns = objj_msgSend(_tableView, "tableColumns"),
@@ -94,6 +94,26 @@ _tableView = newValue;
         objj_msgSend(self, "addSubview:", headerView);
     }
 }
-})]);
+},["void"]), new objj_method(sel_getUid("drawRect:"), function $CPTableHeaderView__drawRect_(self, _cmd, aRect)
+{ with(self)
+{
+    objj_msgSend(objj_msgSend(_tableView, "gridColor"), "setStroke");
+    var context = objj_msgSend(objj_msgSend(CPGraphicsContext, "currentContext"), "graphicsPort"),
+        exposedColumnIndexes = exposedColumnIndexes = objj_msgSend(_tableView, "columnIndexesInRect:", aRect),
+        columnsArray = [];
+    objj_msgSend(exposedColumnIndexes, "getIndexes:maxCount:inIndexRange:", columnsArray, -1, nil);
+    var columnArrayIndex = 0,
+        columnArrayCount = columnsArray.length;
+    for(; columnArrayIndex < columnArrayCount; ++columnArrayIndex)
+    {
+        var columnToStroke = objj_msgSend(self, "headerRectOfColumn:", columnArrayIndex);
+        CGContextBeginPath(context);
+        CGContextMoveToPoint(context, ROUND(columnToStroke.origin.x + columnToStroke.size.width) - 0.5, ROUND(columnToStroke.origin.y) - 0.5);
+        CGContextAddLineToPoint(context, ROUND(columnToStroke.origin.x + columnToStroke.size.width) - 0.5, ROUND(columnToStroke.origin.y + columnToStroke.size.height) - 0.5);
+        CGContextSetLineWidth(context, 1);
+        CGContextStrokePath(context);
+    }
+}
+},["void","CGRect"])]);
 }
 

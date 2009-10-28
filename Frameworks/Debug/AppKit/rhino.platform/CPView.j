@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;20;CPDOMDisplayServer.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.jc;61331;
+I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.ji;18;_CPDisplayServer.jc;62329;
 CPViewNotSizable = 0;
 CPViewMinXMargin = 1;
 CPViewWidthSizable = 2;
@@ -10,11 +10,30 @@ CPViewBoundsDidChangeNotification = "CPViewBoundsDidChangeNotification";
 CPViewFrameDidChangeNotification = "CPViewFrameDidChangeNotification";
 var CachedNotificationCenter = nil,
     CachedThemeAttributes = nil;
+var CPViewFlags = { },
+    CPViewHasCustomDrawRect = 1 << 0,
+    CPViewHasCustomLayoutSubviews = 1 << 1;
 {var the_class = objj_allocateClassPair(CPResponder, "CPView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_superview"), new objj_ivar("_subviews"), new objj_ivar("_graphicsContext"), new objj_ivar("_tag"), new objj_ivar("_frame"), new objj_ivar("_bounds"), new objj_ivar("_boundsTransform"), new objj_ivar("_inverseBoundsTransform"), new objj_ivar("_registeredDraggedTypes"), new objj_ivar("_registeredDraggedTypesArray"), new objj_ivar("_isHidden"), new objj_ivar("_hitTests"), new objj_ivar("_postsFrameChangedNotifications"), new objj_ivar("_postsBoundsChangedNotifications"), new objj_ivar("_inhibitFrameAndBoundsChangedNotifications"), new objj_ivar("_dirtyRect"), new objj_ivar("_opacity"), new objj_ivar("_backgroundColor"), new objj_ivar("_autoresizesSubviews"), new objj_ivar("_autoresizingMask"), new objj_ivar("_layer"), new objj_ivar("_wantsLayer"), new objj_ivar("_isInFullScreenMode"), new objj_ivar("_fullScreenModeState"), new objj_ivar("_needsLayout"), new objj_ivar("_ephemeralSubviews"), new objj_ivar("_theme"), new objj_ivar("_themeAttributes"), new objj_ivar("_themeState"), new objj_ivar("_ephemeralSubviewsForNames"), new objj_ivar("_ephereralSubviews"), new objj_ivar("_nextKeyView"), new objj_ivar("_previousKeyView")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_superview"), new objj_ivar("_subviews"), new objj_ivar("_graphicsContext"), new objj_ivar("_tag"), new objj_ivar("_frame"), new objj_ivar("_bounds"), new objj_ivar("_boundsTransform"), new objj_ivar("_inverseBoundsTransform"), new objj_ivar("_registeredDraggedTypes"), new objj_ivar("_registeredDraggedTypesArray"), new objj_ivar("_isHidden"), new objj_ivar("_hitTests"), new objj_ivar("_postsFrameChangedNotifications"), new objj_ivar("_postsBoundsChangedNotifications"), new objj_ivar("_inhibitFrameAndBoundsChangedNotifications"), new objj_ivar("_dirtyRect"), new objj_ivar("_opacity"), new objj_ivar("_backgroundColor"), new objj_ivar("_autoresizesSubviews"), new objj_ivar("_autoresizingMask"), new objj_ivar("_layer"), new objj_ivar("_wantsLayer"), new objj_ivar("_isInFullScreenMode"), new objj_ivar("_fullScreenModeState"), new objj_ivar("_needsLayout"), new objj_ivar("_ephemeralSubviews"), new objj_ivar("_theme"), new objj_ivar("_themeAttributes"), new objj_ivar("_themeState"), new objj_ivar("_ephemeralSubviewsForNames"), new objj_ivar("_ephereralSubviews"), new objj_ivar("_nextKeyView"), new objj_ivar("_previousKeyView"), new objj_ivar("_viewClassFlags")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
-class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPView__init(self, _cmd)
+class_addMethods(the_class, [new objj_method(sel_getUid("setupViewFlags"), function $CPView__setupViewFlags(self, _cmd)
+{ with(self)
+{
+    var theClass = objj_msgSend(self, "class"),
+        classUID = objj_msgSend(theClass, "UID");
+    if (CPViewFlags[classUID] === undefined)
+    {
+        var flags = 0;
+        if (objj_msgSend(theClass, "instanceMethodForSelector:", sel_getUid("drawRect:")) !== objj_msgSend(CPView, "instanceMethodForSelector:", sel_getUid("drawRect:")))
+            flags |= CPViewHasCustomDrawRect;
+        if (objj_msgSend(theClass, "instanceMethodForSelector:", sel_getUid("layoutSubviews")) !== objj_msgSend(CPView, "instanceMethodForSelector:", sel_getUid("layoutSubviews")))
+            flags |= CPViewHasCustomLayoutSubviews;
+        CPViewFlags[classUID] = flags;
+    }
+    _viewClassFlags = CPViewFlags[classUID];
+}
+},["void"]), new objj_method(sel_getUid("init"), function $CPView__init(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "initWithFrame:", CGRectMakeZero());
@@ -40,6 +59,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         _hitTests = YES;
         _theme = objj_msgSend(CPTheme, "defaultTheme");
         _themeState = CPThemeStateNormal;
+        objj_msgSend(self, "setupViewFlags");
         objj_msgSend(self, "_loadThemeAttributes");
     }
     return self;
@@ -660,12 +680,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 },["void","BOOL"]), new objj_method(sel_getUid("setNeedsDisplayInRect:"), function $CPView__setNeedsDisplayInRect_(self, _cmd, aRect)
 { with(self)
 {
+    if (!(_viewClassFlags & CPViewHasCustomDrawRect))
+        return;
     if ((aRect.size.width <= 0.0 || aRect.size.height <= 0.0))
         return;
     if (_dirtyRect && !(_dirtyRect.size.width <= 0.0 || _dirtyRect.size.height <= 0.0))
         _dirtyRect = CGRectUnion(aRect, _dirtyRect);
     else
         _dirtyRect = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
+    _CPDisplayServerAddDisplayObject(self);
 }
 },["void","CPRect"]), new objj_method(sel_getUid("needsDisplay"), function $CPView__needsDisplay(self, _cmd)
 { with(self)
@@ -725,7 +748,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         _DOMContentsElement.style.left = "0px";
         _DOMContentsElement.style.width = ROUND((_frame.size.width)) + "px";
         _DOMContentsElement.style.height = ROUND((_frame.size.height)) + "px";
-        if (_DOMContentsElement.CPDOMDisplayContext) _DOMContentsElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMContentsElement;;
+        _DOMElement.appendChild(_DOMContentsElement);
         _graphicsContext = objj_msgSend(CPGraphicsContext, "graphicsContextWithGraphicsPort:flipped:", graphicsPort, YES);
     }
     objj_msgSend(CPGraphicsContext, "setCurrentContext:", _graphicsContext);
@@ -740,7 +763,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 },["void"]), new objj_method(sel_getUid("setNeedsLayout"), function $CPView__setNeedsLayout(self, _cmd)
 { with(self)
 {
+    if (!(_viewClassFlags & CPViewHasCustomLayoutSubviews))
+        return;
     _needsLayout = YES;
+    _CPDisplayServerAddLayoutObject(self);
 }
 },["void"]), new objj_method(sel_getUid("layoutIfNeeded"), function $CPView__layoutIfNeeded(self, _cmd)
 { with(self)
@@ -1201,6 +1227,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         else
             _opacity = 1.0;
         objj_msgSend(self, "setBackgroundColor:", objj_msgSend(aCoder, "decodeObjectForKey:", CPViewBackgroundColorKey));
+        objj_msgSend(self, "setupViewFlags");
         _theme = objj_msgSend(CPTheme, "defaultTheme");
         _themeState = CPThemeState(objj_msgSend(aCoder, "decodeIntForKey:", CPViewThemeStateKey));
         _themeAttributes = {};

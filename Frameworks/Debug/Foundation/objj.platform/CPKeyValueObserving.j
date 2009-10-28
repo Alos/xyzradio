@@ -1,4 +1,4 @@
-i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;10;CPObject.ji;7;CPSet.jc;20592;
+i;9;CPArray.ji;14;CPDictionary.ji;13;CPException.ji;10;CPObject.ji;7;CPSet.jc;21319;
 {
 var the_class = objj_getClass("CPObject")
 if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPObject\""));
@@ -6,39 +6,39 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("didChangeValueForKey:"), function $CPObject__didChangeValueForKey_(self, _cmd, aKey)
+},["void","CPString"]), new objj_method(sel_getUid("didChangeValueForKey:"), function $CPObject__didChangeValueForKey_(self, _cmd, aKey)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("willChange:valuesAtIndexes:forKey:"), function $CPObject__willChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, key)
+},["void","CPString"]), new objj_method(sel_getUid("willChange:valuesAtIndexes:forKey:"), function $CPObject__willChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, key)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("didChange:valuesAtIndexes:forKey:"), function $CPObject__didChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, key)
+},["void","CPKeyValueChange","CPIndexSet","CPString"]), new objj_method(sel_getUid("didChange:valuesAtIndexes:forKey:"), function $CPObject__didChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, key)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("addObserver:forKeyPath:options:context:"), function $CPObject__addObserver_forKeyPath_options_context_(self, _cmd, anObserver, aPath, options, aContext)
+},["void","CPKeyValueChange","CPIndexSet","CPString"]), new objj_method(sel_getUid("addObserver:forKeyPath:options:context:"), function $CPObject__addObserver_forKeyPath_options_context_(self, _cmd, anObserver, aPath, options, aContext)
 { with(self)
 {
     if (!anObserver || !aPath)
         return;
     objj_msgSend(objj_msgSend(_CPKVOProxy, "proxyForObject:", self), "_addObserver:forKeyPath:options:context:", anObserver, aPath, options, aContext);
 }
-}), new objj_method(sel_getUid("removeObserver:forKeyPath:"), function $CPObject__removeObserver_forKeyPath_(self, _cmd, anObserver, aPath)
+},["void","id","CPString","unsigned","id"]), new objj_method(sel_getUid("removeObserver:forKeyPath:"), function $CPObject__removeObserver_forKeyPath_(self, _cmd, anObserver, aPath)
 { with(self)
 {
     if (!anObserver || !aPath)
         return;
     objj_msgSend(self[KVOProxyKey], "_removeObserver:forKeyPath:", anObserver, aPath);
 }
-})]);
+},["void","id","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("automaticallyNotifiesObserversForKey:"), function $CPObject__automaticallyNotifiesObserversForKey_(self, _cmd, aKey)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("keyPathsForValuesAffectingValueForKey:"), function $CPObject__keyPathsForValuesAffectingValueForKey_(self, _cmd, aKey)
+},["BOOL","CPString"]), new objj_method(sel_getUid("keyPathsForValuesAffectingValueForKey:"), function $CPObject__keyPathsForValuesAffectingValueForKey_(self, _cmd, aKey)
 { with(self)
 {
     var capitalizedKey = aKey.charAt(0).toUpperCase() + aKey.substring(1);
@@ -47,7 +47,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("automaticallyNotifiesO
         return objj_msgSend(objj_msgSend(self, "class"), selector);
     return objj_msgSend(CPSet, "set");
 }
-})]);
+},["CPSet","CPString"])]);
 }
 CPKeyValueObservingOptionNew = 1 << 0;
 CPKeyValueObservingOptionOld = 1 << 1;
@@ -81,7 +81,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
     _observersForKeyLength = 0;
     return self;
 }
-}), new objj_method(sel_getUid("_replaceClass"), function $_CPKVOProxy___replaceClass(self, _cmd)
+},["id","id"]), new objj_method(sel_getUid("_replaceClass"), function $_CPKVOProxy___replaceClass(self, _cmd)
 { with(self)
 {
     var currentClass = _nativeClass,
@@ -104,7 +104,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
     }
     _targetObject.isa = kvoClass;
 }
-}), new objj_method(sel_getUid("_replaceSetterForKey:"), function $_CPKVOProxy___replaceSetterForKey_(self, _cmd, aKey)
+},["void"]), new objj_method(sel_getUid("_replaceSetterForKey:"), function $_CPKVOProxy___replaceSetterForKey_(self, _cmd, aKey)
 { with(self)
 {
     if (objj_msgSend(_replacedKeys, "containsObject:", aKey) || !objj_msgSend(_nativeClass, "automaticallyNotifiesObserversForKey:", aKey))
@@ -152,7 +152,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
         objj_msgSend(self, "_replaceSetterForKey:", affectingKey);
     }
 }
-}), new objj_method(sel_getUid("_addObserver:forKeyPath:options:context:"), function $_CPKVOProxy___addObserver_forKeyPath_options_context_(self, _cmd, anObserver, aPath, options, aContext)
+},["void","CPString"]), new objj_method(sel_getUid("_addObserver:forKeyPath:options:context:"), function $_CPKVOProxy___addObserver_forKeyPath_options_context_(self, _cmd, anObserver, aPath, options, aContext)
 { with(self)
 {
     if (!anObserver)
@@ -179,7 +179,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
         objj_msgSend(anObserver, "observeValueForKeyPath:ofObject:change:context:", aPath, self, changes, aContext);
     }
 }
-}), new objj_method(sel_getUid("_removeObserver:forKeyPath:"), function $_CPKVOProxy___removeObserver_forKeyPath_(self, _cmd, anObserver, aPath)
+},["void","id","CPString","unsigned","id"]), new objj_method(sel_getUid("_removeObserver:forKeyPath:"), function $_CPKVOProxy___removeObserver_forKeyPath_(self, _cmd, anObserver, aPath)
 { with(self)
 {
     var observers = _observersForKey[aPath];
@@ -200,7 +200,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
         delete _targetObject[KVOProxyKey];
     }
 }
-}), new objj_method(sel_getUid("_sendNotificationsForKey:changeOptions:isBefore:"), function $_CPKVOProxy___sendNotificationsForKey_changeOptions_isBefore_(self, _cmd, aKey, changeOptions, isBefore)
+},["void","id","CPString"]), new objj_method(sel_getUid("_sendNotificationsForKey:changeOptions:isBefore:"), function $_CPKVOProxy___sendNotificationsForKey_changeOptions_isBefore_(self, _cmd, aKey, changeOptions, isBefore)
 { with(self)
 {
     var changes = _changesForKey[aKey];
@@ -267,7 +267,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithTarget:"), func
     for (var i=0, count=keysComposedOfKey.length; i<count; i++)
         objj_msgSend(self, "_sendNotificationsForKey:changeOptions:isBefore:", keysComposedOfKey[i], changeOptions, isBefore);
 }
-})]);
+},["void","CPString","CPDictionary","BOOL"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("proxyForObject:"), function $_CPKVOProxy__proxyForObject_(self, _cmd, anObject)
 { with(self)
 {
@@ -279,7 +279,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("proxyForObject:"), fun
     anObject[KVOProxyKey] = proxy;
     return proxy;
 }
-})]);
+},["id","CPObject"])]);
 }
 {var the_class = objj_allocateClassPair(Nil, "_CPKVOModelSubclass"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
@@ -292,14 +292,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("willChangeValueForKey:"
     var changeOptions = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", CPKeyValueChangeSetting, CPKeyValueChangeKindKey);
     objj_msgSend(objj_msgSend(_CPKVOProxy, "proxyForObject:", self), "_sendNotificationsForKey:changeOptions:isBefore:", aKey, changeOptions, YES);
 }
-}), new objj_method(sel_getUid("didChangeValueForKey:"), function $_CPKVOModelSubclass__didChangeValueForKey_(self, _cmd, aKey)
+},["void","CPString"]), new objj_method(sel_getUid("didChangeValueForKey:"), function $_CPKVOModelSubclass__didChangeValueForKey_(self, _cmd, aKey)
 { with(self)
 {
     if (!aKey)
         return;
     objj_msgSend(objj_msgSend(_CPKVOProxy, "proxyForObject:", self), "_sendNotificationsForKey:changeOptions:isBefore:", aKey, nil, NO);
 }
-}), new objj_method(sel_getUid("willChange:valuesAtIndexes:forKey:"), function $_CPKVOModelSubclass__willChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, aKey)
+},["void","CPString"]), new objj_method(sel_getUid("willChange:valuesAtIndexes:forKey:"), function $_CPKVOModelSubclass__willChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, aKey)
 { with(self)
 {
     if (!aKey)
@@ -307,39 +307,39 @@ class_addMethods(the_class, [new objj_method(sel_getUid("willChangeValueForKey:"
     var changeOptions = objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [change, indexes], [CPKeyValueChangeKindKey, CPKeyValueChangeIndexesKey]);
     objj_msgSend(objj_msgSend(_CPKVOProxy, "proxyForObject:", self), "_sendNotificationsForKey:changeOptions:isBefore:", aKey, changeOptions, YES);
 }
-}), new objj_method(sel_getUid("didChange:valuesAtIndexes:forKey:"), function $_CPKVOModelSubclass__didChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, aKey)
+},["void","CPKeyValueChange","CPIndexSet","CPString"]), new objj_method(sel_getUid("didChange:valuesAtIndexes:forKey:"), function $_CPKVOModelSubclass__didChange_valuesAtIndexes_forKey_(self, _cmd, change, indexes, aKey)
 { with(self)
 {
     if (!aKey)
         return;
     objj_msgSend(objj_msgSend(_CPKVOProxy, "proxyForObject:", self), "_sendNotificationsForKey:changeOptions:isBefore:", aKey, nil, NO);
 }
-}), new objj_method(sel_getUid("class"), function $_CPKVOModelSubclass__class(self, _cmd)
+},["void","CPKeyValueChange","CPIndexSet","CPString"]), new objj_method(sel_getUid("class"), function $_CPKVOModelSubclass__class(self, _cmd)
 { with(self)
 {
     return self[KVOProxyKey]._nativeClass;
 }
-}), new objj_method(sel_getUid("superclass"), function $_CPKVOModelSubclass__superclass(self, _cmd)
+},["Class"]), new objj_method(sel_getUid("superclass"), function $_CPKVOModelSubclass__superclass(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "class"), "superclass");
 }
-}), new objj_method(sel_getUid("isKindOfClass:"), function $_CPKVOModelSubclass__isKindOfClass_(self, _cmd, aClass)
+},["Class"]), new objj_method(sel_getUid("isKindOfClass:"), function $_CPKVOModelSubclass__isKindOfClass_(self, _cmd, aClass)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "class"), "isSubclassOfClass:", aClass);
 }
-}), new objj_method(sel_getUid("isMemberOfClass:"), function $_CPKVOModelSubclass__isMemberOfClass_(self, _cmd, aClass)
+},["BOOL","Class"]), new objj_method(sel_getUid("isMemberOfClass:"), function $_CPKVOModelSubclass__isMemberOfClass_(self, _cmd, aClass)
 { with(self)
 {
     return objj_msgSend(self, "class") == aClass;
 }
-}), new objj_method(sel_getUid("className"), function $_CPKVOModelSubclass__className(self, _cmd)
+},["BOOL","Class"]), new objj_method(sel_getUid("className"), function $_CPKVOModelSubclass__className(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "class").name;
 }
-})]);
+},["CPString"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "_CPKVOForwardingObserver"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_object"), new objj_ivar("_observer"), new objj_ivar("_context"), new objj_ivar("_firstPart"), new objj_ivar("_secondPart"), new objj_ivar("_value")]);
@@ -363,7 +363,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKeyPath:object:
         objj_msgSend(_value, "addObserver:forKeyPath:options:context:", self, _secondPart, kvoNewAndOld, nil);
     return self;
 }
-}), new objj_method(sel_getUid("observeValueForKeyPath:ofObject:change:context:"), function $_CPKVOForwardingObserver__observeValueForKeyPath_ofObject_change_context_(self, _cmd, aKeyPath, anObject, changes, aContext)
+},["id","CPString","id","id","unsigned","id"]), new objj_method(sel_getUid("observeValueForKeyPath:ofObject:change:context:"), function $_CPKVOForwardingObserver__observeValueForKeyPath_ofObject_change_context_(self, _cmd, aKeyPath, anObject, changes, aContext)
 { with(self)
 {
     if (anObject == _object)
@@ -380,7 +380,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKeyPath:object:
         objj_msgSend(_observer, "observeValueForKeyPath:ofObject:change:context:", _firstPart+"."+aKeyPath, _object, changes, _context);
     }
 }
-}), new objj_method(sel_getUid("finalize"), function $_CPKVOForwardingObserver__finalize(self, _cmd)
+},["void","CPString","id","CPDictionary","id"]), new objj_method(sel_getUid("finalize"), function $_CPKVOForwardingObserver__finalize(self, _cmd)
 { with(self)
 {
     if (_value)
@@ -391,7 +391,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKeyPath:object:
     _context = nil;
     _value = nil;
 }
-})]);
+},["void"])]);
 }
 var _CPKVOInfoMake = _CPKVOInfoMake= function(anObserver, theOptions, aContext, aForwarder)
 {

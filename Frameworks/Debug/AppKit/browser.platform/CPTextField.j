@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;32286;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;32833;
 CPLineBreakByWordWrapping = 0;
 CPLineBreakByCharWrapping = 1;
 CPLineBreakByClipping = 2;
@@ -64,15 +64,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
             CPTextFieldInputDidBlur = YES;
             return true;
         }
-        CPTextFieldKeyDownFunction = function(anEvent)
+        CPTextFieldKeyDownFunction = function(aDOMEvent)
         {
             CPTextFieldTextDidChangeValue = objj_msgSend(CPTextFieldInputOwner, "stringValue");
-            CPTextFieldKeyPressFunction(anEvent);
+            aDOMEvent = aDOMEvent || window.event;
+            if (aDOMEvent.keyCode == CPReturnKeyCode || aDOMEvent.keyCode == CPTabKeyCode)
+                CPTextFieldKeyPressFunction(aDOMEvent);
             return true;
         }
         CPTextFieldKeyPressFunction = function(aDOMEvent)
         {
             aDOMEvent = aDOMEvent || window.event;
+            CPTextFieldKeyUpFunction();
             if (aDOMEvent.keyCode == CPReturnKeyCode || aDOMEvent.keyCode == CPTabKeyCode)
             {
                 if (aDOMEvent.preventDefault)
@@ -98,11 +101,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         }
         CPTextFieldKeyUpFunction = function()
         {
-            objj_msgSend(CPTextFieldInputOwner, "setStringValue:", CPTextFieldDOMInputElement.value);
+            objj_msgSend(CPTextFieldInputOwner, "_setStringValue:", CPTextFieldDOMInputElement.value);
             if (objj_msgSend(CPTextFieldInputOwner, "stringValue") !== CPTextFieldTextDidChangeValue)
             {
-                CPTextFieldTextDidChangeValue = objj_msgSend(CPTextFieldInputOwner, "stringValue");
                 objj_msgSend(CPTextFieldInputOwner, "textDidChange:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidChangeNotification, CPTextFieldInputOwner, nil));
+                CPTextFieldTextDidChangeValue = objj_msgSend(CPTextFieldInputOwner, "stringValue");
             }
             objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "limitDateForMode:", CPDefaultRunLoopMode);
         }
@@ -313,6 +316,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         CPTextFieldInputOwner = self;
     }, 0.0);
     objj_msgSend(self, "textDidBeginEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidBeginEditingNotification, self, nil));
+    element.value = objj_msgSend(self, "stringValue");
     objj_msgSend(objj_msgSend(objj_msgSend(self, "window"), "platformWindow"), "_propagateCurrentDOMEvent:", YES);
     CPTextFieldInputIsActive = YES;
     if (document.attachEvent)
@@ -348,7 +352,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
         document.body.ondrag = CPTextFieldCachedDragFunction
         document.body.onselectstart = CPTextFieldCachedSelectStartFunction
     }
-    objj_msgSend(self, "textDidEndEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidBeginEditingNotification, self, nil));
+    objj_msgSend(self, "textDidEndEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidEndEditingNotification, self, nil));
     return YES;
 }
 },["BOOL"]), new objj_method(sel_getUid("mouseDown:"), function $CPTextField__mouseDown_(self, _cmd, anEvent)
@@ -364,17 +368,25 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_inputElement"), functi
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "objectValue");
 }
-},["id"]), new objj_method(sel_getUid("setObjectValue:"), function $CPTextField__setObjectValue_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("_setStringValue:"), function $CPTextField___setStringValue_(self, _cmd, aValue)
+{ with(self)
+{
+    objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setObjectValue:", String(aValue));
+    objj_msgSend(self, "_updatePlaceholderState");
+}
+},["void","id"]), new objj_method(sel_getUid("setObjectValue:"), function $CPTextField__setObjectValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setObjectValue:", aValue);
+    if (CPTextFieldInputOwner === self)
+        objj_msgSend(self, "_inputElement").value = aValue;
     objj_msgSend(self, "_updatePlaceholderState");
 }
 },["void","id"]), new objj_method(sel_getUid("_updatePlaceholderState"), function $CPTextField___updatePlaceholderState(self, _cmd)
 { with(self)
 {
     var string = objj_msgSend(self, "stringValue");
-    if ((!string || objj_msgSend(string, "length") === 0) && !objj_msgSend(self, "hasThemeState:", CPThemeStateEditing))
+    if ((!string || string.length === 0) && !objj_msgSend(self, "hasThemeState:", CPThemeStateEditing))
         objj_msgSend(self, "setThemeState:", CPTextFieldStatePlaceholder);
     else
         objj_msgSend(self, "unsetThemeState:", CPTextFieldStatePlaceholder);
@@ -588,11 +600,7 @@ var secureStringForString = function(aString)
 {
     if (!aString)
         return "";
-    var secureString = "",
-        length = aString.length;
-    while (length--)
-        secureString += CPSecureTextFieldCharacter;
-    return secureString;
+    return Array(aString.length).join(CPSecureTextFieldCharacter);
 }
 var CPTextFieldIsEditableKey = "CPTextFieldIsEditableKey",
     CPTextFieldIsSelectableKey = "CPTextFieldIsSelectableKey",

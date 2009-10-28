@@ -1,4 +1,4 @@
-i;9;CPArray.jc;15620;
+i;9;CPArray.jc;16089;
 {
 var the_class = objj_getClass("CPObject")
 if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPObject\""));
@@ -7,7 +7,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
  return objj_msgSend(objj_msgSend(_CPKVCArray, "alloc"), "initWithKey:forProxyObject:", aKey, self);
 }
-}), new objj_method(sel_getUid("mutableArrayValueForKeyPath:"), function $CPObject__mutableArrayValueForKeyPath_(self, _cmd, aKeyPath)
+},["id","id"]), new objj_method(sel_getUid("mutableArrayValueForKeyPath:"), function $CPObject__mutableArrayValueForKeyPath_(self, _cmd, aKeyPath)
 { with(self)
 {
     var dotIndex = aKeyPath.indexOf(".");
@@ -17,7 +17,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         lastPart = aKeyPath.substring(dotIndex+1);
     return objj_msgSend(objj_msgSend(self, "valueForKeyPath:", firstPart), "valueForKeyPath:", lastPart);
 }
-})]);
+},["id","id"])]);
 }
 {var the_class = objj_allocateClassPair(CPArray, "_CPKVCArray"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_proxyObject"), new objj_ivar("_key"), new objj_ivar("_insertSEL"), new objj_ivar("_insert"), new objj_ivar("_removeSEL"), new objj_ivar("_remove"), new objj_ivar("_replaceSEL"), new objj_ivar("_replace"), new objj_ivar("_insertManySEL"), new objj_ivar("_insertMany"), new objj_ivar("_removeManySEL"), new objj_ivar("_removeMany"), new objj_ivar("_replaceManySEL"), new objj_ivar("_replaceMany"), new objj_ivar("_objectAtIndexSEL"), new objj_ivar("_objectAtIndex"), new objj_ivar("_countSEL"), new objj_ivar("_count"), new objj_ivar("_accessSEL"), new objj_ivar("_access"), new objj_ivar("_setSEL"), new objj_ivar("_set")]);
@@ -62,7 +62,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
         _set = objj_msgSend(_proxyObject, "methodForSelector:", _setSEL);
     return self;
 }
-}), new objj_method(sel_getUid("copy"), function $_CPKVCArray__copy(self, _cmd)
+},["id","id","id"]), new objj_method(sel_getUid("copy"), function $_CPKVCArray__copy(self, _cmd)
 { with(self)
 {
     var theCopy = [],
@@ -71,35 +71,35 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
         objj_msgSend(theCopy, "addObject:", objj_msgSend(self, "objectAtIndex:", i));
     return theCopy;
 }
-}), new objj_method(sel_getUid("_representedObject"), function $_CPKVCArray___representedObject(self, _cmd)
+},["id"]), new objj_method(sel_getUid("_representedObject"), function $_CPKVCArray___representedObject(self, _cmd)
 { with(self)
 {
     if (_access)
         return _access(_proxyObject, _accessSEL);
     return objj_msgSend(_proxyObject, "valueForKey:", _key);
 }
-}), new objj_method(sel_getUid("_setRepresentedObject:"), function $_CPKVCArray___setRepresentedObject_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("_setRepresentedObject:"), function $_CPKVCArray___setRepresentedObject_(self, _cmd, anObject)
 { with(self)
 {
     if (_set)
         return _set(_proxyObject, _setSEL, anObject);
     objj_msgSend(_proxyObject, "setValue:forKey:", anObject, _key);
 }
-}), new objj_method(sel_getUid("count"), function $_CPKVCArray__count(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("count"), function $_CPKVCArray__count(self, _cmd)
 { with(self)
 {
     if (_count)
         return _count(_proxyObject, _countSEL);
     return objj_msgSend(objj_msgSend(self, "_representedObject"), "count");
 }
-}), new objj_method(sel_getUid("objectAtIndex:"), function $_CPKVCArray__objectAtIndex_(self, _cmd, anIndex)
+},["unsigned"]), new objj_method(sel_getUid("objectAtIndex:"), function $_CPKVCArray__objectAtIndex_(self, _cmd, anIndex)
 { with(self)
 {
     if(_objectAtIndex)
         return _objectAtIndex(_proxyObject, _objectAtIndexSEL, anIndex);
     return objj_msgSend(objj_msgSend(self, "_representedObject"), "objectAtIndex:", anIndex);
 }
-}), new objj_method(sel_getUid("addObject:"), function $_CPKVCArray__addObject_(self, _cmd, anObject)
+},["id","unsigned"]), new objj_method(sel_getUid("addObject:"), function $_CPKVCArray__addObject_(self, _cmd, anObject)
 { with(self)
 {
     if (_insert)
@@ -108,7 +108,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
     objj_msgSend(target, "addObject:", anObject);
     objj_msgSend(self, "_setRepresentedObject:", target);
 }
-}), new objj_method(sel_getUid("insertObject:atIndex:"), function $_CPKVCArray__insertObject_atIndex_(self, _cmd, anObject, anIndex)
+},["void","id"]), new objj_method(sel_getUid("insertObject:atIndex:"), function $_CPKVCArray__insertObject_atIndex_(self, _cmd, anObject, anIndex)
 { with(self)
 {
     if (_insert)
@@ -117,7 +117,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
     objj_msgSend(target, "insertObject:atIndex:", anObject, anIndex);
     objj_msgSend(self, "_setRepresentedObject:", target);
 }
-}), new objj_method(sel_getUid("removeLastObject"), function $_CPKVCArray__removeLastObject(self, _cmd)
+},["void","id","unsigned"]), new objj_method(sel_getUid("removeLastObject"), function $_CPKVCArray__removeLastObject(self, _cmd)
 { with(self)
 {
     if(_remove)
@@ -126,7 +126,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
     objj_msgSend(target, "removeLastObject");
     objj_msgSend(self, "_setRepresentedObject:", target);
 }
-}), new objj_method(sel_getUid("removeObjectAtIndex:"), function $_CPKVCArray__removeObjectAtIndex_(self, _cmd, anIndex)
+},["void"]), new objj_method(sel_getUid("removeObjectAtIndex:"), function $_CPKVCArray__removeObjectAtIndex_(self, _cmd, anIndex)
 { with(self)
 {
     if(_remove)
@@ -135,7 +135,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
     objj_msgSend(target, "removeObjectAtIndex:", anIndex);
     objj_msgSend(self, "_setRepresentedObject:", target);
 }
-}), new objj_method(sel_getUid("replaceObjectAtIndex:withObject:"), function $_CPKVCArray__replaceObjectAtIndex_withObject_(self, _cmd, anIndex, anObject)
+},["void","unsigned"]), new objj_method(sel_getUid("replaceObjectAtIndex:withObject:"), function $_CPKVCArray__replaceObjectAtIndex_withObject_(self, _cmd, anIndex, anObject)
 { with(self)
 {
     if(_replace)
@@ -144,7 +144,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
     objj_msgSend(target, "replaceObjectAtIndex:withObject:", anIndex, anObject);
     objj_msgSend(self, "_setRepresentedObject:", target);
 }
-}), new objj_method(sel_getUid("objectsAtIndexes:"), function $_CPKVCArray__objectsAtIndexes_(self, _cmd, indexes)
+},["void","unsigned","id"]), new objj_method(sel_getUid("objectsAtIndexes:"), function $_CPKVCArray__objectsAtIndexes_(self, _cmd, indexes)
 { with(self)
 {
     var index = objj_msgSend(indexes, "firstIndex"),
@@ -156,7 +156,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:forProxyObj
     }
     return objects;
 }
-})]);
+},["CPArray","CPIndexSet"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $_CPKVCArray__alloc(self, _cmd)
 { with(self)
 {
@@ -168,7 +168,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $_CP
         a[ivar_getName(ivars[count])] = nil;
     return a;
 }
-})]);
+},["id"])]);
 }
 {
 var the_class = objj_getClass("CPArray")
@@ -199,7 +199,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         return newArray;
     }
 }
-}), new objj_method(sel_getUid("valueForKeyPath:"), function $CPArray__valueForKeyPath_(self, _cmd, aKeyPath)
+},["id","CPString"]), new objj_method(sel_getUid("valueForKeyPath:"), function $CPArray__valueForKeyPath_(self, _cmd, aKeyPath)
 { with(self)
 {
     if (aKeyPath.indexOf("@") === 0)
@@ -226,7 +226,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         return newArray;
     }
 }
-}), new objj_method(sel_getUid("setValue:forKey:"), function $CPArray__setValue_forKey_(self, _cmd, aValue, aKey)
+},["id","CPString"]), new objj_method(sel_getUid("setValue:forKey:"), function $CPArray__setValue_forKey_(self, _cmd, aValue, aKey)
 { with(self)
 {
     var enumerator = objj_msgSend(self, "objectEnumerator"),
@@ -234,7 +234,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     while (object = objj_msgSend(enumerator, "nextObject"))
         objj_msgSend(object, "setValue:forKey:", aValue, aKey);
 }
-}), new objj_method(sel_getUid("setValue:forKeyPath:"), function $CPArray__setValue_forKeyPath_(self, _cmd, aValue, aKeyPath)
+},["void","id","CPString"]), new objj_method(sel_getUid("setValue:forKeyPath:"), function $CPArray__setValue_forKeyPath_(self, _cmd, aValue, aKeyPath)
 { with(self)
 {
     var enumerator = objj_msgSend(self, "objectEnumerator"),
@@ -242,7 +242,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     while (object = objj_msgSend(enumerator, "nextObject"))
         objj_msgSend(object, "setValue:forKeyPath:", aValue, aKeyPath);
 }
-})]);
+},["void","id","CPString"])]);
 }
 var kvoOperators = [];
 kvoOperators["avg"] = avgOperator= function(self, _cmd, param)
@@ -309,7 +309,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         index = objj_msgSend(indexes, "indexGreaterThanIndex:", index);
     }
 }
-}), new objj_method(sel_getUid("removeObserver:fromObjectsAtIndexes:forKeyPath:"), function $CPArray__removeObserver_fromObjectsAtIndexes_forKeyPath_(self, _cmd, anObserver, indexes, aKeyPath)
+},["void","id","CPIndexSet","CPString","unsigned","id"]), new objj_method(sel_getUid("removeObserver:fromObjectsAtIndexes:forKeyPath:"), function $CPArray__removeObserver_fromObjectsAtIndexes_forKeyPath_(self, _cmd, anObserver, indexes, aKeyPath)
 { with(self)
 {
     var index = objj_msgSend(indexes, "firstIndex");
@@ -319,7 +319,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         index = objj_msgSend(indexes, "indexGreaterThanIndex:", index);
     }
 }
-}), new objj_method(sel_getUid("addObserver:forKeyPath:options:context:"), function $CPArray__addObserver_forKeyPath_options_context_(self, _cmd, observer, aKeyPath, options, context)
+},["void","id","CPIndexSet","CPString"]), new objj_method(sel_getUid("addObserver:forKeyPath:options:context:"), function $CPArray__addObserver_forKeyPath_options_context_(self, _cmd, observer, aKeyPath, options, context)
 { with(self)
 {
     if (objj_msgSend(isa, "instanceMethodForSelector:", _cmd) === objj_msgSend(CPArray, "instanceMethodForSelector:", _cmd))
@@ -327,7 +327,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     else
         objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPArray").super_class }, "addObserver:forKeyPath:options:context:", observer, aKeyPath, options, context);
 }
-}), new objj_method(sel_getUid("removeObserver:forKeyPath:"), function $CPArray__removeObserver_forKeyPath_(self, _cmd, observer, aKeyPath)
+},["void","id","CPString","unsigned","id"]), new objj_method(sel_getUid("removeObserver:forKeyPath:"), function $CPArray__removeObserver_forKeyPath_(self, _cmd, observer, aKeyPath)
 { with(self)
 {
     if (objj_msgSend(isa, "instanceMethodForSelector:", _cmd) === objj_msgSend(CPArray, "instanceMethodForSelector:", _cmd))
@@ -335,6 +335,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     else
         objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPArray").super_class }, "removeObserver:forKeyPath:", observer, aKeyPath);
 }
-})]);
+},["void","id","CPString"])]);
 }
 

@@ -1,5 +1,4 @@
-I;21;Foundation/CPObject.jc;6476;
-
+I;21;Foundation/CPObject.jc;6497;
 
 
 
@@ -7,7 +6,7 @@ I;21;Foundation/CPObject.jc;6476;
 var PrimaryPlatformWindow = NULL;
 
 {var the_class = objj_allocateClassPair(CPObject, "CPPlatformWindow"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentRect"), new objj_ivar("_level"), new objj_ivar("_hasShadow"), new objj_ivar("_DOMWindow"), new objj_ivar("_DOMBodyElement"), new objj_ivar("_DOMFocusElement"), new objj_ivar("_windowLevels"), new objj_ivar("_windowLayers"), new objj_ivar("_mouseIsDown"), new objj_ivar("_mouseDownWindow"), new objj_ivar("_lastMouseUp"), new objj_ivar("_lastMouseDown"), new objj_ivar("_charCodes"), new objj_ivar("_keyCode"), new objj_ivar("_DOMEventMode"), new objj_ivar("_DOMPasteboardElement"), new objj_ivar("_pasteboardKeyDownEvent"), new objj_ivar("_overriddenEventType")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentRect"), new objj_ivar("_level"), new objj_ivar("_hasShadow"), new objj_ivar("_shadowStyle"), new objj_ivar("_DOMWindow"), new objj_ivar("_DOMBodyElement"), new objj_ivar("_DOMFocusElement"), new objj_ivar("_windowLevels"), new objj_ivar("_windowLayers"), new objj_ivar("_mouseIsDown"), new objj_ivar("_mouseDownWindow"), new objj_ivar("_lastMouseUp"), new objj_ivar("_lastMouseDown"), new objj_ivar("_charCodes"), new objj_ivar("_keyCode"), new objj_ivar("_DOMEventMode"), new objj_ivar("_DOMPasteboardElement"), new objj_ivar("_pasteboardKeyDownEvent"), new objj_ivar("_overriddenEventType")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"), function $CPPlatformWindow__initWithContentRect_(self, _cmd, aRect)
@@ -76,38 +75,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
     if (!aRect || ((_contentRect.origin.x == aRect.origin.x && _contentRect.origin.y == aRect.origin.y) && (_contentRect.size.width == aRect.size.width && _contentRect.size.height == aRect.size.height)))
         return;
 
-    objj_msgSend(self, "setContentOrigin:", aRect.origin);
-    objj_msgSend(self, "setContentSize:", aRect.size);
+    _contentRect = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
+
+    objj_msgSend(self, "updateNativeContentRect");
 }
-},["void","CGRect"]), new objj_method(sel_getUid("setContentOrigin:"), function $CPPlatformWindow__setContentOrigin_(self, _cmd, aPoint)
-{ with(self)
-{
-    var origin = _contentRect.origin;
-
-    if (!aPoint || (origin.x == aPoint.x && origin.y == aPoint.y))
-        return;
-
-    origin.x = aPoint.x;
-    origin.y = aPoint.y;
-
-    objj_msgSend(self, "updateNativeContentOrigin");
-}
-},["void","CGPoint"]), new objj_method(sel_getUid("setContentSize:"), function $CPPlatformWindow__setContentSize_(self, _cmd, aSize)
-{ with(self)
-{
-    var size = _contentRect.size;
-
-    if (!aSize || (size.width == aSize.width && size.height == aSize.height))
-        return;
-
-    var delta = { width:aSize.width - size.width, height:aSize.height - size.height };
-
-    size.width = aSize.width;
-    size.height = aSize.height;
-
-    objj_msgSend(self, "updateNativeContentSize");
-}
-},["void","CGSize"]), new objj_method(sel_getUid("updateFromNativeContentRect"), function $CPPlatformWindow__updateFromNativeContentRect(self, _cmd)
+},["void","CGRect"]), new objj_method(sel_getUid("updateFromNativeContentRect"), function $CPPlatformWindow__updateFromNativeContentRect(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "setContentRect:", objj_msgSend(self, "nativeContentRect"));
@@ -135,7 +107,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
 
 
 }
-},["BOOL"]), new objj_method(sel_getUid("setLevel:"), function $CPPlatformWindow__setLevel_(self, _cmd, aLevel)
+},["BOOL"]), new objj_method(sel_getUid("deminiaturize:"), function $CPPlatformWindow__deminiaturize_(self, _cmd, sender)
+{ with(self)
+{
+
+    if (_DOMWindow && typeof _DOMWindow["cpDeminiaturize"] === "function")
+        _DOMWindow.cpDeminiaturize();
+
+}
+},["void","id"]), new objj_method(sel_getUid("miniaturize:"), function $CPPlatformWindow__miniaturize_(self, _cmd, sender)
+{ with(self)
+{
+
+    if (_DOMWindow && typeof _DOMWindow["cpMiniaturize"] === "function")
+        _DOMWindow.cpMiniaturize();
+
+}
+},["void","id"]), new objj_method(sel_getUid("setLevel:"), function $CPPlatformWindow__setLevel_(self, _cmd, aLevel)
 { with(self)
 {
     _level = aLevel;
@@ -155,7 +143,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
         _DOMWindow.cpSetHasShadow(shouldHaveShadow);
 
 }
-},["void","BOOL"]), new objj_method(sel_getUid("supportsFullPlatformWindows"), function $CPPlatformWindow__supportsFullPlatformWindows(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("setShadowStyle:"), function $CPPlatformWindow__setShadowStyle_(self, _cmd, aStyle)
+{ with(self)
+{
+    _shadowStyle = aStyle;
+
+
+    if (_DOMWindow && _DOMWindow.cpSetShadowStyle)
+        _shadowStyle.cpSetShadowStyle(aStyle);
+
+}
+},["void","int"]), new objj_method(sel_getUid("supportsFullPlatformWindows"), function $CPPlatformWindow__supportsFullPlatformWindows(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPPlatform, "isBrowser");

@@ -1,4 +1,4 @@
-i;13;CPImageView.ji;15;CPTabViewItem.ji;8;CPView.jc;26103;
+i;13;CPImageView.ji;15;CPTabViewItem.ji;8;CPView.jc;26925;
 CPTopTabsBezelBorder = 0;
 CPNoTabsBezelBorder = 4;
 CPNoTabsLineBorder = 5;
@@ -29,7 +29,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("viewDidMoveToWindow"), function $CPTabView__viewDidMoveToWindow(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("viewDidMoveToWindow"), function $CPTabView__viewDidMoveToWindow(self, _cmd)
 { with(self)
 {
     if (_tabViewType != CPTopTabsBezelBorder || _labelsView)
@@ -37,7 +37,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "_createBezelBorder");
     objj_msgSend(self, "layoutSubviews");
 }
-}), new objj_method(sel_getUid("_createBezelBorder"), function $CPTabView___createBezelBorder(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_createBezelBorder"), function $CPTabView___createBezelBorder(self, _cmd)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds");
@@ -54,7 +54,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(_separatorView, "setAutoresizingMask:", CPViewWidthSizable | CPViewMaxYMargin);
     objj_msgSend(self, "addSubview:", _separatorView);
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPTabView__layoutSubviews(self, _cmd)
+},["void"]), new objj_method(sel_getUid("layoutSubviews"), function $CPTabView__layoutSubviews(self, _cmd)
 { with(self)
 {
     if (_tabViewType == CPTopTabsBezelBorder)
@@ -74,12 +74,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(_contentView, "setFrame:", objj_msgSend(self, "contentRect"));
 }
-}), new objj_method(sel_getUid("addTabViewItem:"), function $CPTabView__addTabViewItem_(self, _cmd, aTabViewItem)
+},["void"]), new objj_method(sel_getUid("addTabViewItem:"), function $CPTabView__addTabViewItem_(self, _cmd, aTabViewItem)
 { with(self)
 {
     objj_msgSend(self, "insertTabViewItem:atIndex:", aTabViewItem, objj_msgSend(_tabViewItems, "count"));
 }
-}), new objj_method(sel_getUid("insertTabViewItem:atIndex:"), function $CPTabView__insertTabViewItem_atIndex_(self, _cmd, aTabViewItem, anIndex)
+},["void","CPTabViewItem"]), new objj_method(sel_getUid("insertTabViewItem:atIndex:"), function $CPTabView__insertTabViewItem_atIndex_(self, _cmd, aTabViewItem, anIndex)
 { with(self)
 {
     if (!_labelsView && _tabViewType == CPTopTabsBezelBorder)
@@ -91,20 +91,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (_delegateSelectors & CPTabViewDidChangeNumberOfTabViewItemsSelector)
         objj_msgSend(_delegate, "tabViewDidChangeNumberOfTabViewItems:", self);
 }
-}), new objj_method(sel_getUid("removeTabViewItem:"), function $CPTabView__removeTabViewItem_(self, _cmd, aTabViewItem)
+},["void","CPTabViewItem","unsigned"]), new objj_method(sel_getUid("removeTabViewItem:"), function $CPTabView__removeTabViewItem_(self, _cmd, aTabViewItem)
 { with(self)
 {
+    var index = objj_msgSend(self, "indexOfTabViewItem:", aTabViewItem);
     objj_msgSend(_tabViewItems, "removeObjectIdenticalTo:", aTabViewItem);
-    objj_msgSend(_labelsView, "tabView:didRemoveTabViewItem:", self, aTabViewItem);
+    objj_msgSend(_labelsView, "tabView:didRemoveTabViewItemAtIndex:", self, index);
     if (_delegateSelectors & CPTabViewDidChangeNumberOfTabViewItemsSelector)
         objj_msgSend(_delegate, "tabViewDidChangeNumberOfTabViewItems:", self);
 }
-}), new objj_method(sel_getUid("indexOfTabViewItem:"), function $CPTabView__indexOfTabViewItem_(self, _cmd, aTabViewItem)
+},["void","CPTabViewItem"]), new objj_method(sel_getUid("indexOfTabViewItem:"), function $CPTabView__indexOfTabViewItem_(self, _cmd, aTabViewItem)
 { with(self)
 {
     return objj_msgSend(_tabViewItems, "indexOfObjectIdenticalTo:", aTabViewItem);
 }
-}), new objj_method(sel_getUid("indexOfTabViewItemWithIdentifier:"), function $CPTabView__indexOfTabViewItemWithIdentifier_(self, _cmd, anIdentifier)
+},["int","CPTabViewItem"]), new objj_method(sel_getUid("indexOfTabViewItemWithIdentifier:"), function $CPTabView__indexOfTabViewItemWithIdentifier_(self, _cmd, anIdentifier)
 { with(self)
 {
     var index = 0,
@@ -114,36 +115,36 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             return index;
     return index;
 }
-}), new objj_method(sel_getUid("numberOfTabViewItems"), function $CPTabView__numberOfTabViewItems(self, _cmd)
+},["int","CPString"]), new objj_method(sel_getUid("numberOfTabViewItems"), function $CPTabView__numberOfTabViewItems(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_tabViewItems, "count");
 }
-}), new objj_method(sel_getUid("tabViewItemAtIndex:"), function $CPTabView__tabViewItemAtIndex_(self, _cmd, anIndex)
+},["unsigned"]), new objj_method(sel_getUid("tabViewItemAtIndex:"), function $CPTabView__tabViewItemAtIndex_(self, _cmd, anIndex)
 { with(self)
 {
     return _tabViewItems[anIndex];
 }
-}), new objj_method(sel_getUid("tabViewItems"), function $CPTabView__tabViewItems(self, _cmd)
+},["CPTabViewItem","unsigned"]), new objj_method(sel_getUid("tabViewItems"), function $CPTabView__tabViewItems(self, _cmd)
 { with(self)
 {
     return _tabViewItems;
 }
-}), new objj_method(sel_getUid("selectFirstTabViewItem:"), function $CPTabView__selectFirstTabViewItem_(self, _cmd, aSender)
+},["CPArray"]), new objj_method(sel_getUid("selectFirstTabViewItem:"), function $CPTabView__selectFirstTabViewItem_(self, _cmd, aSender)
 { with(self)
 {
     var count = objj_msgSend(_tabViewItems, "count");
     if (count)
         objj_msgSend(self, "selectTabViewItemAtIndex:", 0);
 }
-}), new objj_method(sel_getUid("selectLastTabViewItem:"), function $CPTabView__selectLastTabViewItem_(self, _cmd, aSender)
+},["void","id"]), new objj_method(sel_getUid("selectLastTabViewItem:"), function $CPTabView__selectLastTabViewItem_(self, _cmd, aSender)
 { with(self)
 {
     var count = objj_msgSend(_tabViewItems, "count");
     if (count)
         objj_msgSend(self, "selectTabViewItemAtIndex:", count - 1);
 }
-}), new objj_method(sel_getUid("selectNextTabViewItem:"), function $CPTabView__selectNextTabViewItem_(self, _cmd, aSender)
+},["void","id"]), new objj_method(sel_getUid("selectNextTabViewItem:"), function $CPTabView__selectNextTabViewItem_(self, _cmd, aSender)
 { with(self)
 {
     if (!_selectedTabViewItem)
@@ -152,7 +153,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         count = objj_msgSend(_tabViewItems, "count");
     objj_msgSend(self, "selectTabViewItemAtIndex:", index + 1 % count);
 }
-}), new objj_method(sel_getUid("selectPreviousTabViewItem:"), function $CPTabView__selectPreviousTabViewItem_(self, _cmd, aSender)
+},["void","id"]), new objj_method(sel_getUid("selectPreviousTabViewItem:"), function $CPTabView__selectPreviousTabViewItem_(self, _cmd, aSender)
 { with(self)
 {
     if (!_selectedTabViewItem)
@@ -161,7 +162,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         count = objj_msgSend(_tabViewItems, "count");
     objj_msgSend(self, "selectTabViewItemAtIndex:", index == 0 ? count : index - 1);
 }
-}), new objj_method(sel_getUid("selectTabViewItem:"), function $CPTabView__selectTabViewItem_(self, _cmd, aTabViewItem)
+},["void","id"]), new objj_method(sel_getUid("selectTabViewItem:"), function $CPTabView__selectTabViewItem_(self, _cmd, aTabViewItem)
 { with(self)
 {
     if ((_delegateSelectors & CPTabViewShouldSelectTabViewItemSelector) && !objj_msgSend(_delegate, "tabView:shouldSelectTabViewItem:", self, aTabViewItem))
@@ -189,17 +190,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (_delegateSelectors & CPTabViewDidSelectTabViewItemSelector)
         objj_msgSend(_delegate, "tabView:didSelectTabViewItem:", self, aTabViewItem);
 }
-}), new objj_method(sel_getUid("selectTabViewItemAtIndex:"), function $CPTabView__selectTabViewItemAtIndex_(self, _cmd, anIndex)
+},["void","CPTabViewItem"]), new objj_method(sel_getUid("selectTabViewItemAtIndex:"), function $CPTabView__selectTabViewItemAtIndex_(self, _cmd, anIndex)
 { with(self)
 {
     objj_msgSend(self, "selectTabViewItem:", _tabViewItems[anIndex]);
 }
-}), new objj_method(sel_getUid("selectedTabViewItem"), function $CPTabView__selectedTabViewItem(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("selectedTabViewItem"), function $CPTabView__selectedTabViewItem(self, _cmd)
 { with(self)
 {
     return _selectedTabViewItem;
 }
-}), new objj_method(sel_getUid("setTabViewType:"), function $CPTabView__setTabViewType_(self, _cmd, aTabViewType)
+},["CPTabViewItem"]), new objj_method(sel_getUid("setTabViewType:"), function $CPTabView__setTabViewType_(self, _cmd, aTabViewType)
 { with(self)
 {
     if (_tabViewType == aTabViewType)
@@ -215,12 +216,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "addSubview:", _backgroundView);
     objj_msgSend(self, "layoutSubviews");
 }
-}), new objj_method(sel_getUid("tabViewType"), function $CPTabView__tabViewType(self, _cmd)
+},["void","CPTabViewType"]), new objj_method(sel_getUid("tabViewType"), function $CPTabView__tabViewType(self, _cmd)
 { with(self)
 {
     return _tabViewType;
 }
-}), new objj_method(sel_getUid("contentRect"), function $CPTabView__contentRect(self, _cmd)
+},["CPTabViewType"]), new objj_method(sel_getUid("contentRect"), function $CPTabView__contentRect(self, _cmd)
 { with(self)
 {
     var contentRect = CGRectMakeCopy(objj_msgSend(self, "bounds"));
@@ -236,7 +237,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return contentRect;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPTabView__setDelegate_(self, _cmd, aDelegate)
+},["CGRect"]), new objj_method(sel_getUid("setDelegate:"), function $CPTabView__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     if (_delegate == aDelegate)
@@ -252,7 +253,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("tabViewDidChangeNumberOfTabViewItems:")))
         _delegateSelectors |= CPTabViewDidChangeNumberOfTabViewItemsSelector;
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPTabView__mouseDown_(self, _cmd, anEvent)
+},["void","id"]), new objj_method(sel_getUid("mouseDown:"), function $CPTabView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     var location = objj_msgSend(_labelsView, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil),
@@ -260,7 +261,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (tabViewItem)
         objj_msgSend(self, "selectTabViewItem:", tabViewItem);
 }
-})]);
+},["void","CPEvent"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPTabView__initialize(self, _cmd)
 { with(self)
 {
@@ -286,12 +287,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
         ]));
     CPTabViewBezelBorderColor = objj_msgSend(CPColor, "colorWithPatternImage:", bezerBorderImage);
 }
-}), new objj_method(sel_getUid("bezelBorderColor"), function $CPTabView__bezelBorderColor(self, _cmd)
+},["void"]), new objj_method(sel_getUid("bezelBorderColor"), function $CPTabView__bezelBorderColor(self, _cmd)
 { with(self)
 {
     return CPTabViewBezelBorderColor;
 }
-})]);
+},["CPColor"])]);
 }
 var CPTabViewItemsKey = "CPTabViewItemsKey",
     CPTabViewSelectedItemKey = "CPTabViewSelectedItemKey",
@@ -318,7 +319,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTabView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTabView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     var actualSubviews = _subviews;
@@ -330,7 +331,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeInt:forKey:", _tabViewType, CPTabViewTypeKey);
     objj_msgSend(aCoder, "encodeConditionalObject:forKey:", _delegate, CPTabViewDelegateKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 var _CPTabLabelsViewBackgroundColor = nil,
     _CPTabLabelsViewInsideMargin = 10.0,
@@ -351,17 +352,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setTabView:"), function $_CPTabLabelsView__setTabView_(self, _cmd, aTabView)
+},["id","CGRect"]), new objj_method(sel_getUid("setTabView:"), function $_CPTabLabelsView__setTabView_(self, _cmd, aTabView)
 { with(self)
 {
     _tabView = aTabView;
 }
-}), new objj_method(sel_getUid("tabView"), function $_CPTabLabelsView__tabView(self, _cmd)
+},["void","CPTabView"]), new objj_method(sel_getUid("tabView"), function $_CPTabLabelsView__tabView(self, _cmd)
 { with(self)
 {
     return _tabView;
 }
-}), new objj_method(sel_getUid("tabView:didAddTabViewItem:"), function $_CPTabLabelsView__tabView_didAddTabViewItem_(self, _cmd, aTabView, aTabViewItem)
+},["CPTabView"]), new objj_method(sel_getUid("tabView:didAddTabViewItem:"), function $_CPTabLabelsView__tabView_didAddTabViewItem_(self, _cmd, aTabView, aTabViewItem)
 { with(self)
 {
     var label = objj_msgSend(objj_msgSend(_CPTabLabel, "alloc"), "initWithFrame:", CGRectMakeZero());
@@ -370,21 +371,20 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "addSubview:", label);
     objj_msgSend(self, "layoutSubviews");
 }
-}), new objj_method(sel_getUid("tabView:didRemoveTabViewItem:"), function $_CPTabLabelsView__tabView_didRemoveTabViewItem_(self, _cmd, aTabView, aTabViewItem)
+},["void","CPTabView","CPTabViewItem"]), new objj_method(sel_getUid("tabView:didRemoveTabViewItemAtIndex:"), function $_CPTabLabelsView__tabView_didRemoveTabViewItemAtIndex_(self, _cmd, aTabView, index)
 { with(self)
 {
-    var index = objj_msgSend(aTabView, "indexOfTabViewItem:", aTabViewItem),
-        label = _tabLabels[index];
+    var label = _tabLabels[index];
     objj_msgSend(_tabLabels, "removeObjectAtIndex:", index);
     objj_msgSend(label, "removeFromSuperview");
     objj_msgSend(self, "layoutSubviews");
 }
-}), new objj_method(sel_getUid("tabView:didChangeStateOfTabViewItem:"), function $_CPTabLabelsView__tabView_didChangeStateOfTabViewItem_(self, _cmd, aTabView, aTabViewItem)
+},["void","CPTabView","unsigned"]), new objj_method(sel_getUid("tabView:didChangeStateOfTabViewItem:"), function $_CPTabLabelsView__tabView_didChangeStateOfTabViewItem_(self, _cmd, aTabView, aTabViewItem)
 { with(self)
 {
     objj_msgSend(_tabLabels[objj_msgSend(aTabView, "indexOfTabViewItem:", aTabViewItem)], "setTabState:", objj_msgSend(aTabViewItem, "tabState"));
  }
-}), new objj_method(sel_getUid("representedTabViewItemAtPoint:"), function $_CPTabLabelsView__representedTabViewItemAtPoint_(self, _cmd, aPoint)
+},["void","CPTabView","CPTabViewItem"]), new objj_method(sel_getUid("representedTabViewItemAtPoint:"), function $_CPTabLabelsView__representedTabViewItemAtPoint_(self, _cmd, aPoint)
 { with(self)
 {
     var index = 0,
@@ -397,7 +397,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return nil;
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $_CPTabLabelsView__layoutSubviews(self, _cmd)
+},["CPTabViewItem","CGPoint"]), new objj_method(sel_getUid("layoutSubviews"), function $_CPTabLabelsView__layoutSubviews(self, _cmd)
 { with(self)
 {
     var index = 0,
@@ -412,7 +412,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         x = (frame.origin.x + frame.size.width) + _CPTabLabelsViewInsideMargin;
     }
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $_CPTabLabelsView__setFrameSize_(self, _cmd, aSize)
+},["void"]), new objj_method(sel_getUid("setFrameSize:"), function $_CPTabLabelsView__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     if (CGSizeEqualToSize(objj_msgSend(self, "frame").size, aSize))
@@ -420,7 +420,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "setFrameSize:", aSize);
     objj_msgSend(self, "layoutSubviews");
 }
-})]);
+},["void","CGSize"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $_CPTabLabelsView__initialize(self, _cmd)
 { with(self)
 {
@@ -434,12 +434,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
             objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPTabView/_CPTabLabelsViewRight.png"), CGSizeMake(12.0, 26.0))
         ], NO));
 }
-}), new objj_method(sel_getUid("height"), function $_CPTabLabelsView__height(self, _cmd)
+},["void"]), new objj_method(sel_getUid("height"), function $_CPTabLabelsView__height(self, _cmd)
 { with(self)
 {
     return 26.0;
 }
-})]);
+},["float"])]);
 }
 var _CPTabLabelBackgroundColor = nil,
     _CPTabLabelSelectedBackgroundColor = nil;
@@ -463,28 +463,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setTabState:"), function $_CPTabLabel__setTabState_(self, _cmd, aTabState)
+},["id","CGRect"]), new objj_method(sel_getUid("setTabState:"), function $_CPTabLabel__setTabState_(self, _cmd, aTabState)
 { with(self)
 {
     objj_msgSend(self, "setBackgroundColor:", aTabState == CPSelectedTab ? _CPTabLabelSelectedBackgroundColor : _CPTabLabelBackgroundColor);
 }
-}), new objj_method(sel_getUid("setTabViewItem:"), function $_CPTabLabel__setTabViewItem_(self, _cmd, aTabViewItem)
+},["void","CPTabState"]), new objj_method(sel_getUid("setTabViewItem:"), function $_CPTabLabel__setTabViewItem_(self, _cmd, aTabViewItem)
 { with(self)
 {
     _tabViewItem = aTabViewItem;
     objj_msgSend(self, "update");
 }
-}), new objj_method(sel_getUid("tabViewItem"), function $_CPTabLabel__tabViewItem(self, _cmd)
+},["void","CPTabViewItem"]), new objj_method(sel_getUid("tabViewItem"), function $_CPTabLabel__tabViewItem(self, _cmd)
 { with(self)
 {
     return _tabViewItem;
 }
-}), new objj_method(sel_getUid("update"), function $_CPTabLabel__update(self, _cmd)
+},["CPTabViewItem"]), new objj_method(sel_getUid("update"), function $_CPTabLabel__update(self, _cmd)
 { with(self)
 {
     objj_msgSend(_labelField, "setStringValue:", objj_msgSend(_tabViewItem, "label"));
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $_CPTabLabel__initialize(self, _cmd)
 { with(self)
 {
@@ -504,6 +504,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
             objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPTabView/_CPTabLabelSelectedRight.png"), CGSizeMake(3.0, 18.0))
         ], NO));
 }
-})]);
+},["void"])]);
 }
 

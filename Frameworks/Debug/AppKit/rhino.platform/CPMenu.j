@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPString.ji;15;CPApplication.ji;12;CPClipView.ji;12;CPMenuItem.ji;9;CPPanel.jc;68130;
+I;20;Foundation/CPArray.jI;25;Foundation/CPDictionary.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPString.ji;15;CPApplication.ji;12;CPClipView.ji;12;CPMenuItem.ji;9;CPPanel.jc;69746;
 CPMenuDidAddItemNotification = "CPMenuDidAddItemNotification";
 CPMenuDidChangeItemNotification = "CPMenuDidChangeItemNotification";
 CPMenuDidRemoveItemNotification = "CPMenuDidRemoveItemNotification";
@@ -11,7 +11,7 @@ var _CPMenuBarVisible = NO,
     _CPMenuBarAttributes = nil,
     _CPMenuBarSharedWindow = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPMenu"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_supermenu"), new objj_ivar("_title"), new objj_ivar("_items"), new objj_ivar("_attachedMenu"), new objj_ivar("_autoenablesItems"), new objj_ivar("_showsStateColumn"), new objj_ivar("_delegate"), new objj_ivar("_highlightedIndex"), new objj_ivar("_menuWindow")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_supermenu"), new objj_ivar("_title"), new objj_ivar("_name"), new objj_ivar("_items"), new objj_ivar("_attachedMenu"), new objj_ivar("_autoenablesItems"), new objj_ivar("_showsStateColumn"), new objj_ivar("_delegate"), new objj_ivar("_highlightedIndex"), new objj_ivar("_menuWindow")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("menuBarHeight"), function $CPMenu__menuBarHeight(self, _cmd)
@@ -90,7 +90,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("menuBarHeight"), functi
         return;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", CPMenuDidChangeItemNotification, self, objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", objj_msgSend(_items, "indexOfObjectIdenticalTo:", aMenuItem), "CPMenuItemIndex"));
 }
-},["void","CPMenuItem"]), new objj_method(sel_getUid("menuWithTag:"), function $CPMenu__menuWithTag_(self, _cmd, aTag)
+},["void","CPMenuItem"]), new objj_method(sel_getUid("itemWithTag:"), function $CPMenu__itemWithTag_(self, _cmd, aTag)
 { with(self)
 {
     var index = objj_msgSend(self, "indexOfItemWithTag:", aTag);
@@ -98,7 +98,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("menuBarHeight"), functi
         return nil;
     return _items[index];
 }
-},["CPMenuItem","int"]), new objj_method(sel_getUid("menuWithTitle:"), function $CPMenu__menuWithTitle_(self, _cmd, aTitle)
+},["CPMenuItem","int"]), new objj_method(sel_getUid("itemWithTitle:"), function $CPMenu__itemWithTitle_(self, _cmd, aTitle)
 { with(self)
 {
     var index = objj_msgSend(self, "indexOfItemWithTitle:", aTitle);
@@ -273,7 +273,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("menuBarHeight"), functi
 },["id"]), new objj_method(sel_getUid("cancelTracking"), function $CPMenu__cancelTracking(self, _cmd)
 { with(self)
 {
-    objj_msgSend(_menuWindow, "cancelTracking");
+    objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "performSelector:target:argument:order:modes:", sel_getUid("_fireCancelTrackingEvent"), self, nil, 0, [CPDefaultRunLoopMode]);
+}
+},["void"]), new objj_method(sel_getUid("_fireCancelTrackingEvent"), function $CPMenu___fireCancelTrackingEvent(self, _cmd)
+{ with(self)
+{
+    objj_msgSend(CPApp, "sendEvent:", objj_msgSend(CPEvent, "otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:", CPAppKitDefined, { x:0.0, y:0.0 }, 0, 0, 0, 0, 0, 0, 0));
 }
 },["void"]), new objj_method(sel_getUid("_setMenuWindow:"), function $CPMenu___setMenuWindow_(self, _cmd, aMenuWindow)
 { with(self)
@@ -329,7 +334,30 @@ class_addMethods(the_class, [new objj_method(sel_getUid("menuBarHeight"), functi
     if (_highlightedIndex != CPNotFound)
         objj_msgSend(objj_msgSend(_items[_highlightedIndex], "_menuItemView"), "highlight:", YES);
 }
-},["void","int"])]);
+},["void","int"]), new objj_method(sel_getUid("_setMenuName:"), function $CPMenu___setMenuName_(self, _cmd, aName)
+{ with(self)
+{
+    if (_name === aName)
+        return;
+    _name = aName;
+    if (_name === "CPMainMenu")
+        objj_msgSend(CPApp, "setMainMenu:", self);
+}
+},["void","CPString"]), new objj_method(sel_getUid("_menuName"), function $CPMenu___menuName(self, _cmd)
+{ with(self)
+{
+    return _name;
+}
+},["CPString"]), new objj_method(sel_getUid("awakeFromCib"), function $CPMenu__awakeFromCib(self, _cmd)
+{ with(self)
+{
+    if (_name === "_CPMainMenu")
+    {
+        objj_msgSend(self, "_setMenuName:", "CPMainMenu");
+        objj_msgSend(CPMenu, "setMenuBarVisible:", YES);
+    }
+}
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPMenu__initialize(self, _cmd)
 { with(self)
 {
@@ -346,6 +374,8 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     if (_CPMenuBarVisible == menuBarShouldBeVisible)
         return;
     _CPMenuBarVisible = menuBarShouldBeVisible;
+    if (objj_msgSend(CPPlatform, "supportsNativeMainMenu"))
+        return;
     if (menuBarShouldBeVisible)
     {
         if (!_CPMenuBarSharedWindow)
@@ -491,6 +521,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
 },["void","_CPMenuWindow","CPMenuItem"])]);
 }
 var CPMenuTitleKey = "CPMenuTitleKey",
+    CPMenuNameKey = "CPMenuNameKey",
     CPMenuItemsKey = "CPMenuItemsKey",
     CPMenuShowsStateColumnKey = "CPMenuShowsStateColumnKey";
 {
@@ -504,6 +535,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     {
         _title = objj_msgSend(aCoder, "decodeObjectForKey:", CPMenuTitleKey);
         _items = objj_msgSend(aCoder, "decodeObjectForKey:", CPMenuItemsKey);
+        objj_msgSend(self, "_setMenuName:", objj_msgSend(aCoder, "decodeObjectForKey:", CPMenuNameKey));
         _showsStateColumn = !objj_msgSend(aCoder, "containsValueForKey:", CPMenuShowsStateColumnKey) || objj_msgSend(aCoder, "decodeBoolForKey:", CPMenuShowsStateColumnKey);
     }
     return self;
@@ -512,6 +544,8 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _title, CPMenuTitleKey);
+    if (_name)
+        objj_msgSend(aCoder, "encodeObject:forKey:", _name, CPMenuNameKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _items, CPMenuItemsKey);
     if (!_showsStateColumn)
         objj_msgSend(aCoder, "encodeBool:forKey:", _showsStateColumn, CPMenuShowsStateColumnKey);
@@ -545,6 +579,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
     {
         objj_msgSend(self, "setLevel:", CPPopUpMenuWindowLevel);
         objj_msgSend(self, "setHasShadow:", YES);
+        objj_msgSend(self, "setShadowStyle:", CPMenuWindowShadowStyle);
         objj_msgSend(self, "setAcceptsMouseMovedEvents:", YES);
         _unconstrainedFrame = CGRectMakeZero();
         var contentView = objj_msgSend(self, "contentView");
@@ -560,6 +595,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
         objj_msgSend(_moreBelowView, "setImage:", _CPMenuWindowMoreBelowImage);
         objj_msgSend(_moreBelowView, "setFrameSize:", objj_msgSend(_CPMenuWindowMoreBelowImage, "size"));
         objj_msgSend(contentView, "addSubview:", _moreBelowView);
+        objj_msgSend(self, "setShadowStyle:", CPWindowShadowStyleMenu);
     }
     return self;
 }
@@ -678,14 +714,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
     objj_msgSend(_menuView, "setFrameSize:", CGSizeMake(CGRectGetWidth(clipFrame), CGRectGetHeight(objj_msgSend(_menuView, "frame"))));
     objj_msgSend(_menuView, "scrollPoint:", CGPointMake(0.0, objj_msgSend(self, "convertBaseToGlobal:", clipFrame.origin).y - menuViewOrigin.y));
 }
-},["void"]), new objj_method(sel_getUid("cancelTracking"), function $_CPMenuWindow__cancelTracking(self, _cmd)
-{ with(self)
-{
-    _trackingCanceled = YES;
-}
 },["void"]), new objj_method(sel_getUid("beginTrackingWithEvent:sessionDelegate:didEndSelector:"), function $_CPMenuWindow__beginTrackingWithEvent_sessionDelegate_didEndSelector_(self, _cmd, anEvent, aSessionDelegate, aDidEndSelector)
 { with(self)
 {
+    CPApp._activeMenu = objj_msgSend(_menuView, "menu");
     _startTime = objj_msgSend(anEvent, "timestamp");
     _scrollingState = _CPMenuWindowScrollingStateNone;
     _trackingCanceled = NO;
@@ -697,7 +729,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
 { with(self)
 {
     var type = objj_msgSend(anEvent, "type"),
-        theWindow = objj_msgSend(anEvent, "window"),
+        menu = objj_msgSend(_menuView, "menu");
+    if (type === CPAppKitDefined)
+    {
+        objj_msgSend(CPEvent, "stopPeriodicEvents");
+        var highlightedItem = objj_msgSend(objj_msgSend(_menuView, "menu"), "highlightedItem");
+        objj_msgSend(menu, "_highlightItemAtIndex:", CPNotFound);
+        objj_msgSend(self, "orderOut:", self);
+        var delegate = objj_msgSend(menu, "delegate");
+        if (objj_msgSend(delegate, "respondsToSelector:", sel_getUid("menuDidClose:")))
+            objj_msgSend(delegate, "menuDidClose:", menu);
+        if (_sessionDelegate && _didEndSelector)
+            objj_msgSend(_sessionDelegate, _didEndSelector, self, highlightedItem);
+        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPMenuDidEndTrackingNotification, menu);
+        objj_msgSend(_menuView, "setMenu:", nil);
+        CPApp._activeMenu = nil;
+        return;
+    }
+    var theWindow = objj_msgSend(anEvent, "window"),
         globalLocation = theWindow ? objj_msgSend(theWindow, "convertBaseToGlobal:", objj_msgSend(anEvent, "locationInWindow")) : objj_msgSend(anEvent, "locationInWindow");
     if (type === CPPeriodic)
     {
@@ -715,8 +764,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
         globalLocation = _lastGlobalLocation;
     }
     _lastGlobalLocation = globalLocation;
-    var menu = objj_msgSend(_menuView, "menu"),
-        menuLocation = objj_msgSend(self, "convertGlobalToBase:", globalLocation),
+    var menuLocation = objj_msgSend(self, "convertGlobalToBase:", globalLocation),
         activeItemIndex = objj_msgSend(_menuView, "itemIndexAtPoint:", objj_msgSend(_menuView, "convertPoint:fromView:", menuLocation, nil)),
         mouseOverMenuView = objj_msgSend(objj_msgSend(menu, "itemAtIndex:", activeItemIndex), "view");
     if (mouseOverMenuView)
@@ -755,28 +803,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
                     objj_msgSend(CPEvent, "startPeriodicEventsAfterDelay:withPeriod:", 0.0, 0.04);
         }
         else if (type == CPLeftMouseUp && (objj_msgSend(anEvent, "timestamp") - _startTime > STICKY_TIME_INTERVAL))
-        {
-            if (_scrollingState != _CPMenuWindowScrollingStateNone)
-                objj_msgSend(CPEvent, "stopPeriodicEvents");
-            objj_msgSend(self, "cancelTracking");
-        }
+            objj_msgSend(menu, "cancelTracking");
     }
-    if (_trackingCanceled)
-    {
-        objj_msgSend(CPEvent, "stopPeriodicEvents");
-        var highlightedItem = objj_msgSend(objj_msgSend(_menuView, "menu"), "highlightedItem");
-        objj_msgSend(menu, "_highlightItemAtIndex:", CPNotFound);
-        objj_msgSend(self, "orderOut:", self);
-        var delegate = objj_msgSend(menu, "delegate");
-        if (objj_msgSend(delegate, "respondsToSelector:", sel_getUid("menuDidClose:")))
-            objj_msgSend(delegate, "menuDidClose:", menu);
-        if (_sessionDelegate && _didEndSelector)
-            objj_msgSend(_sessionDelegate, _didEndSelector, self, highlightedItem);
-        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPMenuDidEndTrackingNotification, menu);
-        objj_msgSend(_menuView, "setMenu:", nil);
-        return;
-    }
-    objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackEvent:"), CPPeriodicMask | CPMouseMovedMask | CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
+    objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackEvent:"), CPPeriodicMask | CPMouseMovedMask | CPLeftMouseDraggedMask | CPLeftMouseUpMask | CPAppKitDefinedMask, nil, nil, YES);
 }
 },["void","CPEvent"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("menuWindowWithMenu:font:"), function $_CPMenuWindow__menuWindowWithMenu_font_(self, _cmd, aMenu, aFont)
@@ -906,7 +935,7 @@ objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.pat
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMenuBarWindow__init(self, _cmd)
 { with(self)
 {
-    var contentRect = objj_msgSend(CPPlatform, "isBrowser") ? objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "contentBounds") : objj_msgSend(objj_msgSend(self, "screen"), "visibleFrame");
+    var contentRect = objj_msgSend(objj_msgSend(CPPlatformWindow, "primaryPlatformWindow"), "contentBounds");
     contentRect.size.height = MENUBAR_HEIGHT;
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPanel") }, "initWithContentRect:styleMask:", contentRect, CPBorderlessWindowMask);
     if (self)
@@ -1232,13 +1261,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPMe
         objj_msgSend(_titleField, "setFrameOrigin:", CGPointMake((CGRectGetWidth(bounds) - totalWidth) / 2.0 + iconWidth, (CGRectGetHeight(bounds) - CGRectGetHeight(titleFrame)) / 2.0));
     }
 }
-},["void"]), new objj_method(sel_getUid("setFrameSize:"), function $_CPMenuBarWindow__setFrameSize_(self, _cmd, aSize)
+},["void"]), new objj_method(sel_getUid("setFrame:display:animate:"), function $_CPMenuBarWindow__setFrame_display_animate_(self, _cmd, aRect, shouldDisplay, shouldAnimate)
 { with(self)
 {
-    objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPanel") }, "setFrameSize:", aSize);
-    objj_msgSend(self, "tile");
+    var size = objj_msgSend(self, "frame").size;
+    objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPPanel") }, "setFrame:display:animate:", aRect, shouldDisplay, shouldAnimate);
+    if (!(size.width == aRect.size.width && size.height == aRect.size.height))
+        objj_msgSend(self, "tile");
 }
-},["void","CGSize"])]);
+},["void","CGRect","BOOL","BOOL"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $_CPMenuBarWindow__initialize(self, _cmd)
 { with(self)
 {

@@ -19,21 +19,21 @@
 	</array>
 	<key>CPBundleReplacedFiles</key>
 	<array>
-		<string>_CPAudioSound.j</string>
 		<string>_CPBorderlessBridgeWindowView.j</string>
 		<string>_CPBorderlessWindowView.j</string>
 		<string>_CPCibClassSwapper.j</string>
-		<string>_CPCibConnector.j</string>
 		<string>_CPCibCustomObject.j</string>
 		<string>_CPCibCustomResource.j</string>
 		<string>_CPCibCustomView.j</string>
 		<string>_CPCibKeyedUnarchiver.j</string>
 		<string>_CPCibObjectData.j</string>
+		<string>_CPCibProxyObject.j</string>
 		<string>_CPCibWindowTemplate.j</string>
 		<string>_CPCornerView.j</string>
+		<string>_CPDisplayServer.j</string>
+		<string>_CPDocModalWindowView.j</string>
 		<string>_CPHUDWindowView.j</string>
 		<string>_CPImageAndTextView.j</string>
-		<string>_CPQuickTimeSound.j</string>
 		<string>_CPStandardWindowView.j</string>
 		<string>_CPWindowView.j</string>
 		<string>AppKit.j</string>
@@ -49,17 +49,23 @@
 		<string>CGGeometry.j</string>
 		<string>CGGradient.j</string>
 		<string>CGPath.j</string>
+		<string>CPAccordionView.j</string>
 		<string>CPAlert.j</string>
 		<string>CPAnimation.j</string>
 		<string>CPApplication.j</string>
 		<string>CPBezierPath.j</string>
+		<string>CPBox.j</string>
 		<string>CPButton.j</string>
 		<string>CPButtonBar.j</string>
 		<string>CPCheckBox.j</string>
 		<string>CPCib.j</string>
+		<string>CPCibConnector.j</string>
+		<string>CPCibControlConnector.j</string>
 		<string>CPCibLoading.j</string>
+		<string>CPCibOutletConnector.j</string>
 		<string>CPClipView.j</string>
 		<string>CPCollectionView.j</string>
+		<string>CPCollectionViewItem.j</string>
 		<string>CPColor.j</string>
 		<string>CPColorPanel.j</string>
 		<string>CPColorPicker.j</string>
@@ -69,8 +75,6 @@
 		<string>CPCookie.j</string>
 		<string>CPDocument.j</string>
 		<string>CPDocumentController.j</string>
-		<string>CPDOMDisplayServer.j</string>
-		<string>CPDOMWindowBridge.j</string>
 		<string>CPDOMWindowLayer.j</string>
 		<string>CPDragServer.j</string>
 		<string>CPEvent.j</string>
@@ -96,6 +100,7 @@
 		<string>CPProgressIndicator.j</string>
 		<string>CPRadio.j</string>
 		<string>CPResponder.j</string>
+		<string>CPSavePanel.j</string>
 		<string>CPScreen.j</string>
 		<string>CPScroller.j</string>
 		<string>CPScrollView.j</string>
@@ -106,7 +111,6 @@
 		<string>CPShadowView.j</string>
 		<string>CPSlider.j</string>
 		<string>CPSliderColorPicker.j</string>
-		<string>CPSound.j</string>
 		<string>CPSplitView.j</string>
 		<string>CPStringDrawing.j</string>
 		<string>CPTableColumn.j</string>
@@ -119,12 +123,12 @@
 		<string>CPThemeBlend.j</string>
 		<string>CPToolbar.j</string>
 		<string>CPToolbarItem.j</string>
+		<string>CPTreeNode.j</string>
 		<string>CPView.j</string>
+		<string>CPViewController.j</string>
 		<string>CPWebView.j</string>
 		<string>CPWindow.j</string>
 		<string>CPWindowController.j</string>
-		<string>NEWCPTableColumn.j</string>
-		<string>NEWCPTableView.j</string>
 		<string>OLDCPTableColumn.j</string>
 		<string>OLDCPTableView.j</string>
 	</array>

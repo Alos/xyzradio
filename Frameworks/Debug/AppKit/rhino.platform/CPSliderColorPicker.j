@@ -1,4 +1,4 @@
-i;15;CPColorPicker.jc;17294;
+i;15;CPColorPicker.jc;17493;
 {var the_class = objj_allocateClassPair(CPColorPicker, "CPSliderColorPicker"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contentView"), new objj_ivar("_redSlider"), new objj_ivar("_greenSlider"), new objj_ivar("_blueSlider"), new objj_ivar("_hueSlider"), new objj_ivar("_saturationSlider"), new objj_ivar("_brightnessSlider"), new objj_ivar("_rgbLabel"), new objj_ivar("_hsbLabel"), new objj_ivar("_redLabel"), new objj_ivar("_greenLabel"), new objj_ivar("_blueLabel"), new objj_ivar("_hueLabel"), new objj_ivar("_saturationLabel"), new objj_ivar("_brightnessLabel"), new objj_ivar("_hexLabel"), new objj_ivar("_redValue"), new objj_ivar("_greenValue"), new objj_ivar("_blueValue"), new objj_ivar("_hueValue"), new objj_ivar("_saturationValue"), new objj_ivar("_brightnessValue"), new objj_ivar("_hexValue")]);
 objj_registerClassPair(the_class);
@@ -8,7 +8,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPColorPicker") }, "initWithPickerMask:colorPanel:", mask,  owningColorPanel);
 }
-}), new objj_method(sel_getUid("initView"), function $CPSliderColorPicker__initView(self, _cmd)
+},["id","int","CPColorPanel"]), new objj_method(sel_getUid("initView"), function $CPSliderColorPicker__initView(self, _cmd)
 { with(self)
 {
     aFrame = CPRectMake(0, 0, CPColorPickerViewWidth, CPColorPickerViewHeight);
@@ -192,24 +192,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(_contentView, "addSubview:",  _brightnessSlider);
     objj_msgSend(_contentView, "addSubview:",  _hexLabel);
 }
-}), new objj_method(sel_getUid("provideNewView:"), function $CPSliderColorPicker__provideNewView_(self, _cmd, initialRequest)
+},["id"]), new objj_method(sel_getUid("provideNewView:"), function $CPSliderColorPicker__provideNewView_(self, _cmd, initialRequest)
 { with(self)
 {
     if (initialRequest)
         objj_msgSend(self, "initView");
     return _contentView;
 }
-}), new objj_method(sel_getUid("currentMode"), function $CPSliderColorPicker__currentMode(self, _cmd)
+},["CPView","BOOL"]), new objj_method(sel_getUid("currentMode"), function $CPSliderColorPicker__currentMode(self, _cmd)
 { with(self)
 {
     return CPSliderColorPickerMode;
 }
-}), new objj_method(sel_getUid("supportsMode:"), function $CPSliderColorPicker__supportsMode_(self, _cmd, mode)
+},["int"]), new objj_method(sel_getUid("supportsMode:"), function $CPSliderColorPicker__supportsMode_(self, _cmd, mode)
 { with(self)
 {
     return (mode == CPSliderColorPickerMode) ? YES : NO;
 }
-}), new objj_method(sel_getUid("sliderChanged:"), function $CPSliderColorPicker__sliderChanged_(self, _cmd, sender)
+},["BOOL","int"]), new objj_method(sel_getUid("sliderChanged:"), function $CPSliderColorPicker__sliderChanged_(self, _cmd, sender)
 { with(self)
 {
     var newColor,
@@ -232,7 +232,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(self, "updateHex:",  newColor);
     objj_msgSend(colorPanel, "setColor:",  newColor);
 }
-}), new objj_method(sel_getUid("setColor:"), function $CPSliderColorPicker__setColor_(self, _cmd, aColor)
+},["void","id"]), new objj_method(sel_getUid("setColor:"), function $CPSliderColorPicker__setColor_(self, _cmd, aColor)
 { with(self)
 {
     objj_msgSend(self, "updateRGBSliders:",  aColor);
@@ -240,7 +240,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(self, "updateHex:",  aColor);
     objj_msgSend(self, "updateLabels");
 }
-}), new objj_method(sel_getUid("updateHSBSliders:"), function $CPSliderColorPicker__updateHSBSliders_(self, _cmd, aColor)
+},["void","CPColor"]), new objj_method(sel_getUid("updateHSBSliders:"), function $CPSliderColorPicker__updateHSBSliders_(self, _cmd, aColor)
 { with(self)
 {
     var hsb = objj_msgSend(aColor, "hsbComponents");
@@ -248,12 +248,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(_saturationSlider, "setFloatValue:", hsb[1]);
     objj_msgSend(_brightnessSlider, "setFloatValue:", hsb[2]);
 }
-}), new objj_method(sel_getUid("updateHex:"), function $CPSliderColorPicker__updateHex_(self, _cmd, aColor)
+},["void","CPColor"]), new objj_method(sel_getUid("updateHex:"), function $CPSliderColorPicker__updateHex_(self, _cmd, aColor)
 { with(self)
 {
     _hexValue.value = objj_msgSend(aColor, "hexString");
 }
-}), new objj_method(sel_getUid("updateRGBSliders:"), function $CPSliderColorPicker__updateRGBSliders_(self, _cmd, aColor)
+},["void","CPColor"]), new objj_method(sel_getUid("updateRGBSliders:"), function $CPSliderColorPicker__updateRGBSliders_(self, _cmd, aColor)
 { with(self)
 {
     var rgb = objj_msgSend(aColor, "components");
@@ -261,7 +261,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     objj_msgSend(_greenSlider, "setFloatValue:", rgb[1]);
     objj_msgSend(_blueSlider, "setFloatValue:", rgb[2]);
 }
-}), new objj_method(sel_getUid("updateLabels"), function $CPSliderColorPicker__updateLabels(self, _cmd)
+},["void","CPColor"]), new objj_method(sel_getUid("updateLabels"), function $CPSliderColorPicker__updateLabels(self, _cmd)
 { with(self)
 {
     _hueValue.value = ROUND(objj_msgSend(_hueSlider, "floatValue"));
@@ -271,16 +271,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPickerMask:colo
     _greenValue.value = ROUND(objj_msgSend(_greenSlider, "floatValue") * 255);
     _blueValue.value = ROUND(objj_msgSend(_blueSlider, "floatValue") * 255);
 }
-}), new objj_method(sel_getUid("provideNewButtonImage"), function $CPSliderColorPicker__provideNewButtonImage(self, _cmd)
+},["void"]), new objj_method(sel_getUid("provideNewButtonImage"), function $CPSliderColorPicker__provideNewButtonImage(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", CPColorPicker), "pathForResource:", "slider_button.png"), CGSizeMake(32, 32));
 }
-}), new objj_method(sel_getUid("provideNewAlternateButtonImage"), function $CPSliderColorPicker__provideNewAlternateButtonImage(self, _cmd)
+},["CPImage"]), new objj_method(sel_getUid("provideNewAlternateButtonImage"), function $CPSliderColorPicker__provideNewAlternateButtonImage(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", CPColorPicker), "pathForResource:", "slider_button_h.png"), CGSizeMake(32, 32));
 }
-})]);
+},["CPImage"])]);
 }
 

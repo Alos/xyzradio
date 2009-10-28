@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;12596;
+I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;12311;
 CPTopVerticalTextAlignment=1,CPCenterVerticalTextAlignment=2,CPBottomVerticalTextAlignment=3;
 var _1=1<<0,_2=1<<1,_3=1<<2,_4=1<<3,_5=1<<4,_6=1<<5,_7=1<<6,_8=1<<7,_9=1<<8,_a=1<<9,_b=1<<10;
 var _c=3,_d=5;
@@ -364,19 +364,13 @@ _59.top=FLOOR(_5a.height-_60)+"px";
 _5b.size.height=_5a.height-_60-_d;
 }else{
 if(_imagePosition===CPImageAbove){
-if(!_DOMImageElement.CPDOMDisplayContext){
-_DOMImageElement.CPDOMDisplayContext=[];
+if(NULL){
+var _62=_CGPointApplyAffineTransform(CGPointMake(FLOOR(_5c-_5f/2),0),NULL);
+}else{
+var _62={x:FLOOR(_5c-_5f/2),y:0};
 }
-var _62=_DOMImageElement.CPDOMDisplayContext[0];
-if(!(_62>=0)){
-_62=_DOMImageElement.CPDOMDisplayContext[0]=CPDOMDisplayServerInstructionCount;
-CPDOMDisplayServerInstructionCount+=5;
-}
-CPDOMDisplayServerInstructions[_62]=0;
-CPDOMDisplayServerInstructions[_62+1]=_DOMImageElement;
-CPDOMDisplayServerInstructions[_62+2]=NULL;
-CPDOMDisplayServerInstructions[_62+3]=FLOOR(_5c-_5f/2);
-CPDOMDisplayServerInstructions[_62+4]=0;
+_DOMImageElement.style.left=ROUND(_62.x)+"px";
+_DOMImageElement.style.top=ROUND(_62.y)+"px";
 _5b.origin.y+=_60+_d;
 _5b.size.height=_5a.height-_60-_d;
 }else{

@@ -1,4 +1,4 @@
-i;9;CPCoder.ji;10;CPObject.ji;10;CPString.jc;4340;
+i;9;CPCoder.ji;10;CPObject.ji;10;CPString.jc;4583;
 CPInvalidArgumentException = "CPInvalidArgumentException";
 CPUnsupportedMethodException = "CPUnsupportedMethodException";
 CPRangeException = "CPRangeException";
@@ -18,48 +18,48 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithName:reason:use
     }
     return self;
 }
-}), new objj_method(sel_getUid("name"), function $CPException__name(self, _cmd)
+},["id","CPString","CPString","CPDictionary"]), new objj_method(sel_getUid("name"), function $CPException__name(self, _cmd)
 { with(self)
 {
     return name;
 }
-}), new objj_method(sel_getUid("reason"), function $CPException__reason(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("reason"), function $CPException__reason(self, _cmd)
 { with(self)
 {
     return reason;
 }
-}), new objj_method(sel_getUid("userInfo"), function $CPException__userInfo(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("userInfo"), function $CPException__userInfo(self, _cmd)
 { with(self)
 {
     return userInfo;
 }
-}), new objj_method(sel_getUid("description"), function $CPException__description(self, _cmd)
+},["CPDictionary"]), new objj_method(sel_getUid("description"), function $CPException__description(self, _cmd)
 { with(self)
 {
     return reason;
 }
-}), new objj_method(sel_getUid("raise"), function $CPException__raise(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("raise"), function $CPException__raise(self, _cmd)
 { with(self)
 {
     objj_exception_throw(self);
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPException__alloc(self, _cmd)
 { with(self)
 {
     return new objj_exception();
 }
-}), new objj_method(sel_getUid("raise:reason:"), function $CPException__raise_reason_(self, _cmd, aName, aReason)
+},["id"]), new objj_method(sel_getUid("raise:reason:"), function $CPException__raise_reason_(self, _cmd, aName, aReason)
 { with(self)
 {
     objj_msgSend(objj_msgSend(self, "exceptionWithName:reason:userInfo:", aName, aReason, nil), "raise");
 }
-}), new objj_method(sel_getUid("exceptionWithName:reason:userInfo:"), function $CPException__exceptionWithName_reason_userInfo_(self, _cmd, aName, aReason, aUserInfo)
+},["void","CPString","CPString"]), new objj_method(sel_getUid("exceptionWithName:reason:userInfo:"), function $CPException__exceptionWithName_reason_userInfo_(self, _cmd, aName, aReason, aUserInfo)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithName:reason:userInfo:", aName, aReason, aUserInfo);
 }
-})]);
+},["CPException","CPString","CPString","CPDictionary"])]);
 }
 {
 var the_class = objj_getClass("CPException")
@@ -69,7 +69,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(objj_msgSend(self, "class"), "exceptionWithName:reason:userInfo:", name, reason, userInfo);
 }
-})]);
+},["id"])]);
 }
 var CPExceptionNameKey = "CPExceptionNameKey",
     CPExceptionReasonKey = "CPExceptionReasonKey",
@@ -89,14 +89,14 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPException__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPException__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", name, CPExceptionNameKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", reason, CPExceptionReasonKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", userInfo, CPExceptionUserInfoKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 objj_exception.prototype.isa = CPException;
 objj_msgSend(CPException, "initialize");

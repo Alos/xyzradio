@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;20;CPDOMDisplayServer.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.jc;91344;
+I;20;Foundation/CPArray.jI;26;Foundation/CPObjJRuntime.ji;19;CGAffineTransform.ji;12;CGGeometry.ji;9;CPColor.ji;12;CPGeometry.ji;19;CPGraphicsContext.ji;13;CPResponder.ji;9;CPTheme.ji;18;_CPDisplayServer.jc;78142;
 CPViewNotSizable = 0;
 CPViewMinXMargin = 1;
 CPViewWidthSizable = 2;
@@ -14,14 +14,31 @@ var DOMElementPrototype = nil,
     BackgroundTrivialColor = 0,
     BackgroundVerticalThreePartImage = 1,
     BackgroundHorizontalThreePartImage = 2,
-    BackgroundNinePartImage = 3,
-    CustomDrawRectViews = {},
-    CustomLayoutSubviewsViews = {};
+    BackgroundNinePartImage = 3;
+var CPViewFlags = { },
+    CPViewHasCustomDrawRect = 1 << 0,
+    CPViewHasCustomLayoutSubviews = 1 << 1;
 {var the_class = objj_allocateClassPair(CPResponder, "CPView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_superview"), new objj_ivar("_subviews"), new objj_ivar("_graphicsContext"), new objj_ivar("_tag"), new objj_ivar("_frame"), new objj_ivar("_bounds"), new objj_ivar("_boundsTransform"), new objj_ivar("_inverseBoundsTransform"), new objj_ivar("_registeredDraggedTypes"), new objj_ivar("_registeredDraggedTypesArray"), new objj_ivar("_isHidden"), new objj_ivar("_hitTests"), new objj_ivar("_postsFrameChangedNotifications"), new objj_ivar("_postsBoundsChangedNotifications"), new objj_ivar("_inhibitFrameAndBoundsChangedNotifications"), new objj_ivar("_DOMElement"), new objj_ivar("_DOMContentsElement"), new objj_ivar("_DOMImageParts"), new objj_ivar("_DOMImageSizes"), new objj_ivar("_backgroundType"), new objj_ivar("_dirtyRect"), new objj_ivar("_opacity"), new objj_ivar("_backgroundColor"), new objj_ivar("_autoresizesSubviews"), new objj_ivar("_autoresizingMask"), new objj_ivar("_layer"), new objj_ivar("_wantsLayer"), new objj_ivar("_isInFullScreenMode"), new objj_ivar("_fullScreenModeState"), new objj_ivar("_needsLayout"), new objj_ivar("_ephemeralSubviews"), new objj_ivar("_theme"), new objj_ivar("_themeAttributes"), new objj_ivar("_themeState"), new objj_ivar("_ephemeralSubviewsForNames"), new objj_ivar("_ephereralSubviews"), new objj_ivar("_nextKeyView"), new objj_ivar("_previousKeyView")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_superview"), new objj_ivar("_subviews"), new objj_ivar("_graphicsContext"), new objj_ivar("_tag"), new objj_ivar("_frame"), new objj_ivar("_bounds"), new objj_ivar("_boundsTransform"), new objj_ivar("_inverseBoundsTransform"), new objj_ivar("_registeredDraggedTypes"), new objj_ivar("_registeredDraggedTypesArray"), new objj_ivar("_isHidden"), new objj_ivar("_hitTests"), new objj_ivar("_postsFrameChangedNotifications"), new objj_ivar("_postsBoundsChangedNotifications"), new objj_ivar("_inhibitFrameAndBoundsChangedNotifications"), new objj_ivar("_DOMElement"), new objj_ivar("_DOMContentsElement"), new objj_ivar("_DOMImageParts"), new objj_ivar("_DOMImageSizes"), new objj_ivar("_backgroundType"), new objj_ivar("_dirtyRect"), new objj_ivar("_opacity"), new objj_ivar("_backgroundColor"), new objj_ivar("_autoresizesSubviews"), new objj_ivar("_autoresizingMask"), new objj_ivar("_layer"), new objj_ivar("_wantsLayer"), new objj_ivar("_isInFullScreenMode"), new objj_ivar("_fullScreenModeState"), new objj_ivar("_needsLayout"), new objj_ivar("_ephemeralSubviews"), new objj_ivar("_theme"), new objj_ivar("_themeAttributes"), new objj_ivar("_themeState"), new objj_ivar("_ephemeralSubviewsForNames"), new objj_ivar("_ephereralSubviews"), new objj_ivar("_nextKeyView"), new objj_ivar("_previousKeyView"), new objj_ivar("_viewClassFlags")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
-class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPView__init(self, _cmd)
+class_addMethods(the_class, [new objj_method(sel_getUid("setupViewFlags"), function $CPView__setupViewFlags(self, _cmd)
+{ with(self)
+{
+    var theClass = objj_msgSend(self, "class"),
+        classUID = objj_msgSend(theClass, "UID");
+    if (CPViewFlags[classUID] === undefined)
+    {
+        var flags = 0;
+        if (objj_msgSend(theClass, "instanceMethodForSelector:", sel_getUid("drawRect:")) !== objj_msgSend(CPView, "instanceMethodForSelector:", sel_getUid("drawRect:")))
+            flags |= CPViewHasCustomDrawRect;
+        if (objj_msgSend(theClass, "instanceMethodForSelector:", sel_getUid("layoutSubviews")) !== objj_msgSend(CPView, "instanceMethodForSelector:", sel_getUid("layoutSubviews")))
+            flags |= CPViewHasCustomLayoutSubviews;
+        CPViewFlags[classUID] = flags;
+    }
+    _viewClassFlags = CPViewFlags[classUID];
+}
+},["void"]), new objj_method(sel_getUid("init"), function $CPView__init(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "initWithFrame:", CGRectMakeZero());
@@ -46,12 +63,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         _isHidden = NO;
         _hitTests = YES;
         _DOMElement = DOMElementPrototype.cloneNode(false);
-        if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = (aFrame.origin.x); CPDOMDisplayServerInstructions[__index + 4] = (aFrame.origin.y);;
-        if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = height;;
+        if (NULL) var ____p = { x:CGPointMake((aFrame.origin.x), (aFrame.origin.y)).x * NULL.a + CGPointMake((aFrame.origin.x), (aFrame.origin.y)).y * NULL.c + NULL.tx, y:CGPointMake((aFrame.origin.x), (aFrame.origin.y)).x * NULL.b + CGPointMake((aFrame.origin.x), (aFrame.origin.y)).y * NULL.d + NULL.ty }; else var ____p = { x:(aFrame.origin.x), y:(aFrame.origin.y) }; _DOMElement.style.left = ROUND(____p.x) + "px";_DOMElement.style.top = ROUND(____p.y) + "px";;
+        _DOMElement.style.width = MAX(0.0, ROUND(width)) + "px"; _DOMElement.style.height = MAX(0.0, ROUND(height)) + "px";;
         _DOMImageParts = [];
         _DOMImageSizes = [];
         _theme = objj_msgSend(CPTheme, "defaultTheme");
         _themeState = CPThemeStateNormal;
+        objj_msgSend(self, "setupViewFlags");
         objj_msgSend(self, "_loadThemeAttributes");
     }
     return self;
@@ -97,7 +115,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         if (index === anIndex || index === count - 1 && anIndex === count)
             return;
         objj_msgSend(_subviews, "removeObjectAtIndex:", index);
-        CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 8; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = aSubview._DOMElement;;
+        _DOMElement.removeChild(aSubview._DOMElement);
         if (anIndex > index)
             --anIndex;
         --count;
@@ -112,12 +130,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     if (anIndex === CPNotFound || anIndex >= count)
     {
         _subviews.push(aSubview);
-        if (aSubview._DOMElement.CPDOMDisplayContext) aSubview._DOMElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = aSubview._DOMElement;;
+        _DOMElement.appendChild(aSubview._DOMElement);
     }
     else
     {
         _subviews.splice(anIndex, 0, aSubview);
-        if (aSubview._DOMElement.CPDOMDisplayContext) aSubview._DOMElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 7; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = aSubview._DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _subviews[anIndex + 1]._DOMElement;;
+        _DOMElement.insertBefore(aSubview._DOMElement, _subviews[anIndex + 1]._DOMElement);
     }
     objj_msgSend(aSubview, "setNextResponder:", self);
     objj_msgSend(aSubview, "viewDidMoveToSuperview");
@@ -135,7 +153,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     objj_msgSend(objj_msgSend(self, "window"), "_dirtyKeyViewLoop");
     objj_msgSend(_superview, "willRemoveSubview:", self);
     objj_msgSend(objj_msgSend(_superview, "subviews"), "removeObject:", self);
-        CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 8; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _superview._DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement;;
+        _superview._DOMElement.removeChild(_DOMElement);
     _superview = nil;
     objj_msgSend(self, "_setWindow:", nil);
 }
@@ -288,7 +306,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     origin.y = aPoint.y;
     if (_postsFrameChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewFrameDidChangeNotification, self);
-    if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = _superview ? _superview._boundsTransform : NULL; CPDOMDisplayServerInstructions[__index + 3] = origin.x; CPDOMDisplayServerInstructions[__index + 4] = origin.y;;
+    var transform = _superview ? _superview._boundsTransform : NULL;
+    if (transform) var ____p = { x:CGPointMake(origin.x, origin.y).x * transform.a + CGPointMake(origin.x, origin.y).y * transform.c + transform.tx, y:CGPointMake(origin.x, origin.y).x * transform.b + CGPointMake(origin.x, origin.y).y * transform.d + transform.ty }; else var ____p = { x:origin.x, y:origin.y }; _DOMElement.style.left = ROUND(____p.x) + "px";_DOMElement.style.top = ROUND(____p.y) + "px";;
 }
 },["void","CGPoint"]), new objj_method(sel_getUid("setFrameSize:"), function $CPView__setFrameSize_(self, _cmd, aSize)
 { with(self)
@@ -310,32 +329,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         objj_msgSend(self, "resizeSubviewsWithOldSize:", oldSize);
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
-    if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = size.width; CPDOMDisplayServerInstructions[__index + 3] = size.height;;
+    _DOMElement.style.width = MAX(0.0, ROUND(size.width)) + "px"; _DOMElement.style.height = MAX(0.0, ROUND(size.height)) + "px";;
     if (_DOMContentsElement)
     {
-        if (!_DOMContentsElement.CPDOMDisplayContext) _DOMContentsElement.CPDOMDisplayContext = []; var __index = _DOMContentsElement.CPDOMDisplayContext[5]; if (!(__index >= 0)) { __index = _DOMContentsElement.CPDOMDisplayContext[5] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 5; CPDOMDisplayServerInstructions[__index + 1] = _DOMContentsElement; CPDOMDisplayServerInstructions[__index + 2] = size.width; CPDOMDisplayServerInstructions[__index + 3] = size.height;;
-        if (!_DOMContentsElement.CPDOMDisplayContext) _DOMContentsElement.CPDOMDisplayContext = []; var __index = _DOMContentsElement.CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMContentsElement.CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMContentsElement; CPDOMDisplayServerInstructions[__index + 2] = size.width; CPDOMDisplayServerInstructions[__index + 3] = size.height;;
+        _DOMContentsElement.width = MAX(0.0, ROUND(size.width)); _DOMContentsElement.height = MAX(0.0, ROUND(size.height));;
+        _DOMContentsElement.style.width = MAX(0.0, ROUND(size.width)) + "px"; _DOMContentsElement.style.height = MAX(0.0, ROUND(size.height)) + "px";;
     }
     if (_backgroundType !== BackgroundTrivialColor)
     {
         var images = objj_msgSend(objj_msgSend(_backgroundColor, "patternImage"), "imageSlices");
         if (_backgroundType === BackgroundVerticalThreePartImage)
         {
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = size.width; CPDOMDisplayServerInstructions[__index + 3] = size.height - _DOMImageSizes[0].height - _DOMImageSizes[2].height;;
+            _DOMImageParts[1].style.width = MAX(0.0, ROUND(size.width)) + "px"; _DOMImageParts[1].style.height = MAX(0.0, ROUND(size.height - _DOMImageSizes[0].height - _DOMImageSizes[2].height)) + "px";;
         }
         else if (_backgroundType === BackgroundHorizontalThreePartImage)
         {
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = size.width - _DOMImageSizes[0].width - _DOMImageSizes[2].width; CPDOMDisplayServerInstructions[__index + 3] = size.height;;
+            _DOMImageParts[1].style.width = MAX(0.0, ROUND(size.width - _DOMImageSizes[0].width - _DOMImageSizes[2].width)) + "px"; _DOMImageParts[1].style.height = MAX(0.0, ROUND(size.height)) + "px";;
         }
         else if (_backgroundType === BackgroundNinePartImage)
         {
             var width = size.width - _DOMImageSizes[0].width - _DOMImageSizes[2].width,
                 height = size.height - _DOMImageSizes[0].height - _DOMImageSizes[6].height;
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[0].height;;
-            if (!_DOMImageParts[3].CPDOMDisplayContext) _DOMImageParts[3].CPDOMDisplayContext = []; var __index = _DOMImageParts[3].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[3].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[3]; CPDOMDisplayServerInstructions[__index + 2] = _DOMImageSizes[3].width; CPDOMDisplayServerInstructions[__index + 3] = height;;
-            if (!_DOMImageParts[4].CPDOMDisplayContext) _DOMImageParts[4].CPDOMDisplayContext = []; var __index = _DOMImageParts[4].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[4].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[4]; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = height;;
-            if (!_DOMImageParts[5].CPDOMDisplayContext) _DOMImageParts[5].CPDOMDisplayContext = []; var __index = _DOMImageParts[5].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[5].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[5]; CPDOMDisplayServerInstructions[__index + 2] = _DOMImageSizes[5].width; CPDOMDisplayServerInstructions[__index + 3] = height;;
-            if (!_DOMImageParts[7].CPDOMDisplayContext) _DOMImageParts[7].CPDOMDisplayContext = []; var __index = _DOMImageParts[7].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[7].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[7]; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[7].height;;
+            _DOMImageParts[1].style.width = MAX(0.0, ROUND(width)) + "px"; _DOMImageParts[1].style.height = MAX(0.0, ROUND(_DOMImageSizes[0].height)) + "px";;
+            _DOMImageParts[3].style.width = MAX(0.0, ROUND(_DOMImageSizes[3].width)) + "px"; _DOMImageParts[3].style.height = MAX(0.0, ROUND(height)) + "px";;
+            _DOMImageParts[4].style.width = MAX(0.0, ROUND(width)) + "px"; _DOMImageParts[4].style.height = MAX(0.0, ROUND(height)) + "px";;
+            _DOMImageParts[5].style.width = MAX(0.0, ROUND(_DOMImageSizes[5].width)) + "px"; _DOMImageParts[5].style.height = MAX(0.0, ROUND(height)) + "px";;
+            _DOMImageParts[7].style.width = MAX(0.0, ROUND(width)) + "px"; _DOMImageParts[7].style.height = MAX(0.0, ROUND(_DOMImageSizes[7].height)) + "px";;
         }
     }
     if (_postsFrameChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
@@ -381,7 +400,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
     {
         var view = _subviews[index],
             origin = view._frame.origin;
-        if (!view._DOMElement.CPDOMDisplayContext) view._DOMElement.CPDOMDisplayContext = []; var __index = view._DOMElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = view._DOMElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = view._DOMElement; CPDOMDisplayServerInstructions[__index + 2] = _boundsTransform; CPDOMDisplayServerInstructions[__index + 3] = origin.x; CPDOMDisplayServerInstructions[__index + 4] = origin.y;;
+        if (_boundsTransform) var ____p = { x:CGPointMake(origin.x, origin.y).x * _boundsTransform.a + CGPointMake(origin.x, origin.y).y * _boundsTransform.c + _boundsTransform.tx, y:CGPointMake(origin.x, origin.y).x * _boundsTransform.b + CGPointMake(origin.x, origin.y).y * _boundsTransform.d + _boundsTransform.ty }; else var ____p = { x:origin.x, y:origin.y }; view._DOMElement.style.left = ROUND(____p.x) + "px";view._DOMElement.style.top = ROUND(____p.y) + "px";;
     }
     if (_postsBoundsChangedNotifications && !_inhibitFrameAndBoundsChangedNotifications)
         objj_msgSend(CachedNotificationCenter, "postNotificationName:object:", CPViewBoundsDidChangeNotification, self);
@@ -650,41 +669,41 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         {
             var image = slices[count],
                 size = _DOMImageSizes[count] = image ? objj_msgSend(image, "size") : { width:0.0, height:0.0 };
-            if (!_DOMImageParts[count].CPDOMDisplayContext) _DOMImageParts[count].CPDOMDisplayContext = []; var __index = _DOMImageParts[count].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[count].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[count]; CPDOMDisplayServerInstructions[__index + 2] = size.width; CPDOMDisplayServerInstructions[__index + 3] = size.height;;
+            _DOMImageParts[count].style.width = MAX(0.0, ROUND(size.width)) + "px"; _DOMImageParts[count].style.height = MAX(0.0, ROUND(size.height)) + "px";;
             _DOMImageParts[count].style.background = image ? "url(\"" + objj_msgSend(image, "filename") + "\")" : "";
         }
         if (_backgroundType == BackgroundNinePartImage)
         {
             var width = frameSize.width - _DOMImageSizes[0].width - _DOMImageSizes[2].width,
                 height = frameSize.height - _DOMImageSizes[0].height - _DOMImageSizes[6].height;
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[0].height;;
-            if (!_DOMImageParts[3].CPDOMDisplayContext) _DOMImageParts[3].CPDOMDisplayContext = []; var __index = _DOMImageParts[3].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[3].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[3]; CPDOMDisplayServerInstructions[__index + 2] = _DOMImageSizes[3].width; CPDOMDisplayServerInstructions[__index + 3] = height;;
-            if (!_DOMImageParts[4].CPDOMDisplayContext) _DOMImageParts[4].CPDOMDisplayContext = []; var __index = _DOMImageParts[4].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[4].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[4]; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = height;;
-            if (!_DOMImageParts[5].CPDOMDisplayContext) _DOMImageParts[5].CPDOMDisplayContext = []; var __index = _DOMImageParts[5].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[5].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[5]; CPDOMDisplayServerInstructions[__index + 2] = _DOMImageSizes[5].width; CPDOMDisplayServerInstructions[__index + 3] = height;;
-            if (!_DOMImageParts[7].CPDOMDisplayContext) _DOMImageParts[7].CPDOMDisplayContext = []; var __index = _DOMImageParts[7].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[7].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[7]; CPDOMDisplayServerInstructions[__index + 2] = width; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[7].height;;
-            if (!_DOMImageParts[0].CPDOMDisplayContext) _DOMImageParts[0].CPDOMDisplayContext = []; var __index = _DOMImageParts[0].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[0].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[0]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[0].width; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[2].CPDOMDisplayContext) _DOMImageParts[2].CPDOMDisplayContext = []; var __index = _DOMImageParts[2].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[2].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 1; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[2]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[3].CPDOMDisplayContext) _DOMImageParts[3].CPDOMDisplayContext = []; var __index = _DOMImageParts[3].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[3].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[3]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = _DOMImageSizes[1].height;;
-            if (!_DOMImageParts[4].CPDOMDisplayContext) _DOMImageParts[4].CPDOMDisplayContext = []; var __index = _DOMImageParts[4].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[4].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[4]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[0].width; CPDOMDisplayServerInstructions[__index + 4] = _DOMImageSizes[0].height;;
-            if (!_DOMImageParts[5].CPDOMDisplayContext) _DOMImageParts[5].CPDOMDisplayContext = []; var __index = _DOMImageParts[5].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[5].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 1; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[5]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = _DOMImageSizes[1].height;;
-            if (!_DOMImageParts[6].CPDOMDisplayContext) _DOMImageParts[6].CPDOMDisplayContext = []; var __index = _DOMImageParts[6].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[6].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 2; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[6]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[7].CPDOMDisplayContext) _DOMImageParts[7].CPDOMDisplayContext = []; var __index = _DOMImageParts[7].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[7].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 2; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[7]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[6].width; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[8].CPDOMDisplayContext) _DOMImageParts[8].CPDOMDisplayContext = []; var __index = _DOMImageParts[8].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[8].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 3; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[8]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
+            _DOMImageParts[1].style.width = MAX(0.0, ROUND(width)) + "px"; _DOMImageParts[1].style.height = MAX(0.0, ROUND(_DOMImageSizes[0].height)) + "px";;
+            _DOMImageParts[3].style.width = MAX(0.0, ROUND(_DOMImageSizes[3].width)) + "px"; _DOMImageParts[3].style.height = MAX(0.0, ROUND(height)) + "px";;
+            _DOMImageParts[4].style.width = MAX(0.0, ROUND(width)) + "px"; _DOMImageParts[4].style.height = MAX(0.0, ROUND(height)) + "px";;
+            _DOMImageParts[5].style.width = MAX(0.0, ROUND(_DOMImageSizes[5].width)) + "px"; _DOMImageParts[5].style.height = MAX(0.0, ROUND(height)) + "px";;
+            _DOMImageParts[7].style.width = MAX(0.0, ROUND(width)) + "px"; _DOMImageParts[7].style.height = MAX(0.0, ROUND(_DOMImageSizes[7].height)) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[0].style.left = ROUND(____p.x) + "px";_DOMImageParts[0].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(_DOMImageSizes[0].width, 0.0).x * NULL.a + CGPointMake(_DOMImageSizes[0].width, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(_DOMImageSizes[0].width, 0.0).x * NULL.b + CGPointMake(_DOMImageSizes[0].width, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:_DOMImageSizes[0].width, y:0.0 }; _DOMImageParts[1].style.left = ROUND(____p.x) + "px";_DOMImageParts[1].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[2].style.right = ROUND(____p.x) + "px";_DOMImageParts[2].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, _DOMImageSizes[1].height).x * NULL.a + CGPointMake(0.0, _DOMImageSizes[1].height).y * NULL.c + NULL.tx, y:CGPointMake(0.0, _DOMImageSizes[1].height).x * NULL.b + CGPointMake(0.0, _DOMImageSizes[1].height).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:_DOMImageSizes[1].height }; _DOMImageParts[3].style.left = ROUND(____p.x) + "px";_DOMImageParts[3].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(_DOMImageSizes[0].width, _DOMImageSizes[0].height).x * NULL.a + CGPointMake(_DOMImageSizes[0].width, _DOMImageSizes[0].height).y * NULL.c + NULL.tx, y:CGPointMake(_DOMImageSizes[0].width, _DOMImageSizes[0].height).x * NULL.b + CGPointMake(_DOMImageSizes[0].width, _DOMImageSizes[0].height).y * NULL.d + NULL.ty }; else var ____p = { x:_DOMImageSizes[0].width, y:_DOMImageSizes[0].height }; _DOMImageParts[4].style.left = ROUND(____p.x) + "px";_DOMImageParts[4].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, _DOMImageSizes[1].height).x * NULL.a + CGPointMake(0.0, _DOMImageSizes[1].height).y * NULL.c + NULL.tx, y:CGPointMake(0.0, _DOMImageSizes[1].height).x * NULL.b + CGPointMake(0.0, _DOMImageSizes[1].height).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:_DOMImageSizes[1].height }; _DOMImageParts[5].style.right = ROUND(____p.x) + "px";_DOMImageParts[5].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[6].style.left = ROUND(____p.x) + "px";_DOMImageParts[6].style.bottom = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(_DOMImageSizes[6].width, 0.0).x * NULL.a + CGPointMake(_DOMImageSizes[6].width, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(_DOMImageSizes[6].width, 0.0).x * NULL.b + CGPointMake(_DOMImageSizes[6].width, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:_DOMImageSizes[6].width, y:0.0 }; _DOMImageParts[7].style.left = ROUND(____p.x) + "px";_DOMImageParts[7].style.bottom = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[8].style.right = ROUND(____p.x) + "px";_DOMImageParts[8].style.bottom = ROUND(____p.y) + "px";;
         }
         else if (_backgroundType == BackgroundVerticalThreePartImage)
         {
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = frameSize.width; CPDOMDisplayServerInstructions[__index + 3] = frameSize.height - _DOMImageSizes[0].height - _DOMImageSizes[2].height;;
-            if (!_DOMImageParts[0].CPDOMDisplayContext) _DOMImageParts[0].CPDOMDisplayContext = []; var __index = _DOMImageParts[0].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[0].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[0]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = _DOMImageSizes[0].height;;
-            if (!_DOMImageParts[2].CPDOMDisplayContext) _DOMImageParts[2].CPDOMDisplayContext = []; var __index = _DOMImageParts[2].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[2].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 2; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[2]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
+            _DOMImageParts[1].style.width = MAX(0.0, ROUND(frameSize.width)) + "px"; _DOMImageParts[1].style.height = MAX(0.0, ROUND(frameSize.height - _DOMImageSizes[0].height - _DOMImageSizes[2].height)) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[0].style.left = ROUND(____p.x) + "px";_DOMImageParts[0].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, _DOMImageSizes[0].height).x * NULL.a + CGPointMake(0.0, _DOMImageSizes[0].height).y * NULL.c + NULL.tx, y:CGPointMake(0.0, _DOMImageSizes[0].height).x * NULL.b + CGPointMake(0.0, _DOMImageSizes[0].height).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:_DOMImageSizes[0].height }; _DOMImageParts[1].style.left = ROUND(____p.x) + "px";_DOMImageParts[1].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[2].style.left = ROUND(____p.x) + "px";_DOMImageParts[2].style.bottom = ROUND(____p.y) + "px";;
         }
         else if (_backgroundType == BackgroundHorizontalThreePartImage)
         {
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = frameSize.width - _DOMImageSizes[0].width - _DOMImageSizes[2].width; CPDOMDisplayServerInstructions[__index + 3] = frameSize.height;;
-            if (!_DOMImageParts[0].CPDOMDisplayContext) _DOMImageParts[0].CPDOMDisplayContext = []; var __index = _DOMImageParts[0].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[0].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[0]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[1].CPDOMDisplayContext) _DOMImageParts[1].CPDOMDisplayContext = []; var __index = _DOMImageParts[1].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[1].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[1]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = _DOMImageSizes[0].width; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
-            if (!_DOMImageParts[2].CPDOMDisplayContext) _DOMImageParts[2].CPDOMDisplayContext = []; var __index = _DOMImageParts[2].CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageParts[2].CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 1; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageParts[2]; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = 0.0; CPDOMDisplayServerInstructions[__index + 4] = 0.0;;
+            _DOMImageParts[1].style.width = MAX(0.0, ROUND(frameSize.width - _DOMImageSizes[0].width - _DOMImageSizes[2].width)) + "px"; _DOMImageParts[1].style.height = MAX(0.0, ROUND(frameSize.height)) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[0].style.left = ROUND(____p.x) + "px";_DOMImageParts[0].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(_DOMImageSizes[0].width, 0.0).x * NULL.a + CGPointMake(_DOMImageSizes[0].width, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(_DOMImageSizes[0].width, 0.0).x * NULL.b + CGPointMake(_DOMImageSizes[0].width, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:_DOMImageSizes[0].width, y:0.0 }; _DOMImageParts[1].style.left = ROUND(____p.x) + "px";_DOMImageParts[1].style.top = ROUND(____p.y) + "px";;
+            if (NULL) var ____p = { x:CGPointMake(0.0, 0.0).x * NULL.a + CGPointMake(0.0, 0.0).y * NULL.c + NULL.tx, y:CGPointMake(0.0, 0.0).x * NULL.b + CGPointMake(0.0, 0.0).y * NULL.d + NULL.ty }; else var ____p = { x:0.0, y:0.0 }; _DOMImageParts[2].style.right = ROUND(____p.x) + "px";_DOMImageParts[2].style.top = ROUND(____p.y) + "px";;
         }
     }
 }
@@ -797,20 +816,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 {
     if (aFlag)
         objj_msgSend(self, "setNeedsDisplayInRect:", objj_msgSend(self, "bounds"));
-    else
-        { var index = CPDOMDisplayServerViewsContext[objj_msgSend(self, "UID")]; if (typeof index != "undefined") { CPDOMDisplayServerViewsContext[objj_msgSend(self, "UID")]; CPDOMDisplayServerViews[index] = NULL; } };
 }
 },["void","BOOL"]), new objj_method(sel_getUid("setNeedsDisplayInRect:"), function $CPView__setNeedsDisplayInRect_(self, _cmd, aRect)
 { with(self)
 {
-    var UID = objj_msgSend(objj_msgSend(self, "class"), "UID"),
-        hasCustomDrawRect = CustomDrawRectViews[UID];
-    if (!hasCustomDrawRect && typeof hasCustomDrawRect === "undefined")
-    {
-        hasCustomDrawRect = objj_msgSend(self, "methodForSelector:", sel_getUid("drawRect:")) != objj_msgSend(CPView, "instanceMethodForSelector:", sel_getUid("drawRect:"));
-        CustomDrawRectViews[UID] = hasCustomDrawRect;
-    }
-    if (!hasCustomDrawRect)
+    if (!(_viewClassFlags & CPViewHasCustomDrawRect))
         return;
     if ((aRect.size.width <= 0.0 || aRect.size.height <= 0.0))
         return;
@@ -818,7 +828,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         _dirtyRect = CGRectUnion(aRect, _dirtyRect);
     else
         _dirtyRect = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
-    { var ___UID = objj_msgSend(self, "UID"); if (typeof (CPDOMDisplayServerViewsContext[___UID]) == "undefined") { CPDOMDisplayServerViews[CPDOMDisplayServerViewsCount++] = self; CPDOMDisplayServerViewsContext[___UID] = self; } };
+    _CPDisplayServerAddDisplayObject(self);
 }
 },["void","CPRect"]), new objj_method(sel_getUid("needsDisplay"), function $CPView__needsDisplay(self, _cmd)
 { with(self)
@@ -878,7 +888,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
         _DOMContentsElement.style.left = "0px";
         _DOMContentsElement.style.width = ROUND((_frame.size.width)) + "px";
         _DOMContentsElement.style.height = ROUND((_frame.size.height)) + "px";
-        if (_DOMContentsElement.CPDOMDisplayContext) _DOMContentsElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMContentsElement;;
+        _DOMElement.appendChild(_DOMContentsElement);
         _graphicsContext = objj_msgSend(CPGraphicsContext, "graphicsContextWithGraphicsPort:flipped:", graphicsPort, YES);
     }
     objj_msgSend(CPGraphicsContext, "setCurrentContext:", _graphicsContext);
@@ -893,20 +903,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPVie
 },["void"]), new objj_method(sel_getUid("setNeedsLayout"), function $CPView__setNeedsLayout(self, _cmd)
 { with(self)
 {
-    _needsLayout = YES;
-    var UID = objj_msgSend(objj_msgSend(self, "class"), "UID"),
-        hasCustomLayoutSubviews = CustomLayoutSubviewsViews[UID];
-    if (hasCustomLayoutSubviews === undefined)
-    {
-        hasCustomLayoutSubviews = objj_msgSend(self, "methodForSelector:", sel_getUid("layoutSubviews")) != objj_msgSend(CPView, "instanceMethodForSelector:", sel_getUid("layoutSubviews"));
-        CustomLayoutSubviewsViews[UID] = hasCustomLayoutSubviews;
-    }
-    if (!hasCustomLayoutSubviews)
+    if (!(_viewClassFlags & CPViewHasCustomLayoutSubviews))
         return;
-    if (_needsLayout)
-    {
-        { var ___UID = objj_msgSend(self, "UID"); if (typeof (CPDOMDisplayServerViewsContext[___UID]) == "undefined") { CPDOMDisplayServerViews[CPDOMDisplayServerViewsCount++] = self; CPDOMDisplayServerViewsContext[___UID] = self; } };
-    }
+    _needsLayout = YES;
+    _CPDisplayServerAddLayoutObject(self);
 }
 },["void"]), new objj_method(sel_getUid("layoutIfNeeded"), function $CPView__layoutIfNeeded(self, _cmd)
 { with(self)
@@ -1370,13 +1370,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _hitTests = !objj_msgSend(aCoder, "containsValueForKey:", CPViewHitTestsKey) || objj_msgSend(aCoder, "decodeObjectForKey:", CPViewHitTestsKey);
         _DOMImageParts = [];
         _DOMImageSizes = [];
-        if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = (_frame.origin.x); CPDOMDisplayServerInstructions[__index + 4] = (_frame.origin.y);;
-        if (!_DOMElement.CPDOMDisplayContext) _DOMElement.CPDOMDisplayContext = []; var __index = _DOMElement.CPDOMDisplayContext[4]; if (!(__index >= 0)) { __index = _DOMElement.CPDOMDisplayContext[4] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 4; } CPDOMDisplayServerInstructions[__index] = 4; CPDOMDisplayServerInstructions[__index + 1] = _DOMElement; CPDOMDisplayServerInstructions[__index + 2] = (_frame.size.width); CPDOMDisplayServerInstructions[__index + 3] = (_frame.size.height);;
+        if (NULL) var ____p = { x:CGPointMake((_frame.origin.x), (_frame.origin.y)).x * NULL.a + CGPointMake((_frame.origin.x), (_frame.origin.y)).y * NULL.c + NULL.tx, y:CGPointMake((_frame.origin.x), (_frame.origin.y)).x * NULL.b + CGPointMake((_frame.origin.x), (_frame.origin.y)).y * NULL.d + NULL.ty }; else var ____p = { x:(_frame.origin.x), y:(_frame.origin.y) }; _DOMElement.style.left = ROUND(____p.x) + "px";_DOMElement.style.top = ROUND(____p.y) + "px";;
+        _DOMElement.style.width = MAX(0.0, ROUND((_frame.size.width))) + "px"; _DOMElement.style.height = MAX(0.0, ROUND((_frame.size.height))) + "px";;
         var index = 0,
             count = _subviews.length;
         for (; index < count; ++index)
         {
-            if (_subviews[index]._DOMElement.CPDOMDisplayContext) _subviews[index]._DOMElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _subviews[index]._DOMElement;;
+            _DOMElement.appendChild(_subviews[index]._DOMElement);
         }
         if (objj_msgSend(aCoder, "containsValueForKey:", CPViewIsHiddenKey))
             objj_msgSend(self, "setHidden:", objj_msgSend(aCoder, "decodeBoolForKey:", CPViewIsHiddenKey));
@@ -1387,6 +1387,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         else
             _opacity = 1.0;
         objj_msgSend(self, "setBackgroundColor:", objj_msgSend(aCoder, "decodeObjectForKey:", CPViewBackgroundColorKey));
+        objj_msgSend(self, "setupViewFlags");
         _theme = objj_msgSend(CPTheme, "defaultTheme");
         _themeState = CPThemeState(objj_msgSend(aCoder, "decodeIntForKey:", CPViewThemeStateKey));
         _themeAttributes = {};

@@ -1,4 +1,4 @@
-i;8;CPView.ji;13;CPImageView.jc;13006;
+i;8;CPView.ji;13;CPImageView.jc;13222;
 var _CPWindowViewResizeIndicatorImage = nil;
 {var the_class = objj_allocateClassPair(CPView, "_CPWindowView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_styleMask"), new objj_ivar("_resizeIndicator"), new objj_ivar("_resizeIndicatorOffset"), new objj_ivar("_toolbarView"), new objj_ivar("_resizeFrame"), new objj_ivar("_mouseDraggedPoint"), new objj_ivar("_cachedScreenFrame")]);
@@ -65,7 +65,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
         _resizeFrame = CGRectMake(location.x, location.y, CGRectGetWidth(frame), CGRectGetHeight(frame));
     }
     else if (type === CPLeftMouseDragged)
-        objj_msgSend(theWindow, "setFrameSize:", CGSizeMake(CGRectGetWidth(_resizeFrame) + location.x - CGRectGetMinX(_resizeFrame), CGRectGetHeight(_resizeFrame) + location.y - CGRectGetMinY(_resizeFrame)));
+    {
+     var newSize = CGSizeMake(CGRectGetWidth(_resizeFrame) + location.x - CGRectGetMinX(_resizeFrame), CGRectGetHeight(_resizeFrame) + location.y - CGRectGetMinY(_resizeFrame));
+        if (theWindow._isSheet && theWindow._parentView && (theWindow._frame.size.width !== newSize.width))
+     objj_msgSend(theWindow._parentView, "_setAttachedSheetFrameOrigin");
+  objj_msgSend(theWindow, "setFrameSize:", newSize);
+    }
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackResizeWithEvent:"), CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
 }
 },["void","CPEvent"]), new objj_method(sel_getUid("_pointWithinScreenFrame:"), function $_CPWindowView___pointWithinScreenFrame_(self, _cmd, aPoint)

@@ -1,4 +1,4 @@
-I;21;Foundation/CPBundle.ji;12;CGGeometry.ji;9;CPImage.ji;13;CPImageView.ji;8;CPView.jc;7793;
+I;21;Foundation/CPBundle.ji;12;CGGeometry.ji;9;CPImage.ji;13;CPImageView.ji;8;CPView.jc;7979;
 CPLightShadow = 0;
 CPHeavyShadow = 1;
 var CPShadowViewLightBackgroundColor = nil,
@@ -27,7 +27,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setWeight:"), function $CPShadowView__setWeight_(self, _cmd, aWeight)
+},["id","CGRect"]), new objj_method(sel_getUid("setWeight:"), function $CPShadowView__setWeight_(self, _cmd, aWeight)
 { with(self)
 {
     if (_weight == aWeight)
@@ -38,51 +38,51 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "setBackgroundColor:", CPShadowViewHeavyBackgroundColor);
 }
-}), new objj_method(sel_getUid("leftInset"), function $CPShadowView__leftInset(self, _cmd)
+},["void","CPShadowWeight"]), new objj_method(sel_getUid("leftInset"), function $CPShadowView__leftInset(self, _cmd)
 { with(self)
 {
     return _weight == CPLightShadow ? LIGHT_LEFT_INSET : HEAVY_LEFT_INSET;
 }
-}), new objj_method(sel_getUid("rightInset"), function $CPShadowView__rightInset(self, _cmd)
+},["float"]), new objj_method(sel_getUid("rightInset"), function $CPShadowView__rightInset(self, _cmd)
 { with(self)
 {
     return _weight == CPLightShadow ? LIGHT_RIGHT_INSET : HEAVY_RIGHT_INSET;
 }
-}), new objj_method(sel_getUid("topInset"), function $CPShadowView__topInset(self, _cmd)
+},["float"]), new objj_method(sel_getUid("topInset"), function $CPShadowView__topInset(self, _cmd)
 { with(self)
 {
     return _weight == CPLightShadow ? LIGHT_TOP_INSET : HEAVY_TOP_INSET;
 }
-}), new objj_method(sel_getUid("bottomInset"), function $CPShadowView__bottomInset(self, _cmd)
+},["float"]), new objj_method(sel_getUid("bottomInset"), function $CPShadowView__bottomInset(self, _cmd)
 { with(self)
 {
     return _weight == CPLightShadow ? LIGHT_BOTTOM_INSET : HEAVY_BOTTOM_INSET;
 }
-}), new objj_method(sel_getUid("horizontalInset"), function $CPShadowView__horizontalInset(self, _cmd)
+},["float"]), new objj_method(sel_getUid("horizontalInset"), function $CPShadowView__horizontalInset(self, _cmd)
 { with(self)
 {
     if (_weight == CPLightShadow)
         return LIGHT_LEFT_INSET + LIGHT_RIGHT_INSET;
     return HEAVY_LEFT_INSET + HEAVY_RIGHT_INSET;
 }
-}), new objj_method(sel_getUid("verticalInset"), function $CPShadowView__verticalInset(self, _cmd)
+},["float"]), new objj_method(sel_getUid("verticalInset"), function $CPShadowView__verticalInset(self, _cmd)
 { with(self)
 {
     if (_weight == CPLightShadow)
         return LIGHT_TOP_INSET + LIGHT_BOTTOM_INSET;
     return HEAVY_TOP_INSET + HEAVY_BOTTOM_INSET;
 }
-}), new objj_method(sel_getUid("frameForContentFrame:"), function $CPShadowView__frameForContentFrame_(self, _cmd, aFrame)
+},["float"]), new objj_method(sel_getUid("frameForContentFrame:"), function $CPShadowView__frameForContentFrame_(self, _cmd, aFrame)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "class"), "frameForContentFrame:withWeight:", aFrame, _weight);
 }
-}), new objj_method(sel_getUid("setFrameForContentFrame:"), function $CPShadowView__setFrameForContentFrame_(self, _cmd, aFrame)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("setFrameForContentFrame:"), function $CPShadowView__setFrameForContentFrame_(self, _cmd, aFrame)
 { with(self)
 {
     objj_msgSend(self, "setFrame:", objj_msgSend(self, "frameForContentFrame:", aFrame));
 }
-})]);
+},["void","CGRect"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPShadowView__initialize(self, _cmd)
 { with(self)
 {
@@ -114,7 +114,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
             objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPShadowView/CPShadowViewHeavyBottomRight.png"), CGSizeMake(17.0, 17.0))
         ]));
 }
-}), new objj_method(sel_getUid("frameForContentFrame:withWeight:"), function $CPShadowView__frameForContentFrame_withWeight_(self, _cmd, aFrame, aWeight)
+},["void"]), new objj_method(sel_getUid("frameForContentFrame:withWeight:"), function $CPShadowView__frameForContentFrame_withWeight_(self, _cmd, aFrame, aWeight)
 { with(self)
 {
     if (aWeight == CPLightShadow)
@@ -122,6 +122,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
     else
         return CGRectMake((aFrame.origin.x) - HEAVY_LEFT_INSET, (aFrame.origin.y) - HEAVY_TOP_INSET, (aFrame.size.width) + HEAVY_LEFT_INSET + HEAVY_RIGHT_INSET, (aFrame.size.height) + HEAVY_TOP_INSET + HEAVY_BOTTOM_INSET);
 }
-})]);
+},["CGRect","CGRect","CPShadowWeight"])]);
 }
 

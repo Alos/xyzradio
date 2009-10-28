@@ -1,6 +1,7 @@
-i;10;CPWindow.jc;1152;
+i;10;CPWindow.jc;1179;
 CPOKButton=1;
 CPCancelButton=0;
+CPDocModalWindowMask=1<<6;
 var _1=objj_allocateClassPair(CPWindow,"CPPanel"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_becomesKeyOnlyIfNeeded"),new objj_ivar("_worksWhenModal")]);
 objj_registerClassPair(_1);

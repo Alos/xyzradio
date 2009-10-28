@@ -1,4 +1,4 @@
-i;8;CPFont.ji;10;CPShadow.ji;8;CPView.jc;23439;
+i;8;CPFont.ji;10;CPShadow.ji;8;CPView.jc;23693;
 CPLeftTextAlignment = 0;
 CPRightTextAlignment = 1;
 CPCenterTextAlignment = 2;
@@ -117,7 +117,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _trackingWasWithinFrame = isWithinFrame;
     _previousTrackingLocation = currentLocation;
 }
-},["void","CPEvent"]), new objj_method(sel_getUid("performClick:"), function $CPControl__performClick_(self, _cmd, sender)
+},["void","CPEvent"]), new objj_method(sel_getUid("setState:"), function $CPControl__setState_(self, _cmd, state)
+{ with(self)
+{
+}
+},["void","int"]), new objj_method(sel_getUid("nextState"), function $CPControl__nextState(self, _cmd)
+{ with(self)
+{
+    return 0;
+}
+},["int"]), new objj_method(sel_getUid("performClick:"), function $CPControl__performClick_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "highlight:", YES);

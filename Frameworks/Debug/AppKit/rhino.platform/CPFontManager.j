@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;15;AppKit/CPFont.jc;4835;
+I;21;Foundation/CPObject.jI;15;AppKit/CPFont.jc;4905;
 var CPSharedFontManager = nil,
     CPFontManagerFactory = Nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPFontManager"),
@@ -28,12 +28,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("availableFonts"), funct
     }
     return _availableFonts;
 }
-}), new objj_method(sel_getUid("fontWithNameIsAvailable:"), function $CPFontManager__fontWithNameIsAvailable_(self, _cmd, aFontName)
+},["CPArray"]), new objj_method(sel_getUid("fontWithNameIsAvailable:"), function $CPFontManager__fontWithNameIsAvailable_(self, _cmd, aFontName)
 { with(self)
 {
     return _CPFontDetectFontAvailable(aFontName);
 }
-})]);
+},["CPArray","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("sharedFontManager"), function $CPFontManager__sharedFontManager(self, _cmd)
 { with(self)
 {
@@ -41,12 +41,12 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("sharedFontManager"), f
         CPSharedFontManager = objj_msgSend(objj_msgSend(CPFontManagerFactory, "alloc"), "init");
     return CPSharedFontManager;
 }
-}), new objj_method(sel_getUid("setFontManagerFactory:"), function $CPFontManager__setFontManagerFactory_(self, _cmd, aClass)
+},["CPFontManager"]), new objj_method(sel_getUid("setFontManagerFactory:"), function $CPFontManager__setFontManagerFactory_(self, _cmd, aClass)
 { with(self)
 {
     CPFontManagerFactory = aClass;
 }
-})]);
+},["void","Class"])]);
 }
 var _CPFontDetectSpan,
     _CPFontDetectReferenceFonts,

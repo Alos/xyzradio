@@ -1,4 +1,4 @@
-i;13;CPTextField.jc;388;
+i;13;CPTextField.jc;397;
 
 
 
@@ -11,6 +11,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("isSecure"), function $C
 {
     return YES;
 }
-})]);
+},["BOOL"])]);
 }
 

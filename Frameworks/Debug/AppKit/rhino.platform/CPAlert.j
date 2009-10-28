@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPString.jI;22;AppKit/CPApplication.jI;17;AppKit/CPButton.jI;16;AppKit/CPColor.jI;15;AppKit/CPFont.jI;16;AppKit/CPImage.jI;20;AppKit/CPImageView.jI;16;AppKit/CPPanel.jI;20;AppKit/CPTextField.jc;7565;
+I;21;Foundation/CPObject.jI;21;Foundation/CPString.jI;22;AppKit/CPApplication.jI;17;AppKit/CPButton.jI;16;AppKit/CPColor.jI;15;AppKit/CPFont.jI;16;AppKit/CPImage.jI;20;AppKit/CPImageView.jI;16;AppKit/CPPanel.jI;20;AppKit/CPTextField.jc;7836;
 CPWarningAlertStyle = 0;
 CPInformationalAlertStyle = 1;
 CPCriticalAlertStyle = 2;
@@ -12,17 +12,11 @@ objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.pat
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAlert__init(self, _cmd)
 { with(self)
 {
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
-    if (self)
+    if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init"))
     {
         _buttonCount = 0;
         _buttons = objj_msgSend(CPArray, "array");
         _alertStyle = CPWarningAlertStyle;
-        _messageLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:", CGRectMake(57.0, 10.0, 220.0, 80.0));
-        objj_msgSend(_messageLabel, "setFont:", objj_msgSend(CPFont, "systemFontOfSize:", 12.0));
-        objj_msgSend(_messageLabel, "setLineBreakMode:", CPLineBreakByWordWrapping);
-        objj_msgSend(_messageLabel, "setAlignment:", CPJustifiedTextAlignment);
-        _alertImageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(15.0, 12.0, 32.0, 32.0));
         objj_msgSend(self, "setWindowStyle:", nil);
     }
     return self;
@@ -31,17 +25,26 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
 { with(self)
 {
     _windowStyle = styleMask;
-    _alertPanel = objj_msgSend(objj_msgSend(CPPanel, "alloc"), "initWithContentRect:styleMask:", CGRectMake(0.0, 0.0, 300.0, 130.0), styleMask ? styleMask | CPTitledWindowMask : CPTitledWindowMask);
+    _alertPanel = objj_msgSend(objj_msgSend(CPPanel, "alloc"), "initWithContentRect:styleMask:", CGRectMake(0.0, 0.0, 400.0, 110.0), styleMask ? styleMask | CPTitledWindowMask : CPTitledWindowMask);
     objj_msgSend(_alertPanel, "setFloatingPanel:", YES);
     objj_msgSend(_alertPanel, "center");
-    objj_msgSend(_messageLabel, "setTextColor:", (styleMask == CPHUDBackgroundWindowMask) ? objj_msgSend(CPColor, "whiteColor") : objj_msgSend(CPColor, "blackColor"));
+    objj_msgSend(_messageLabel, "setTextColor:", (styleMask & CPHUDBackgroundWindowMask) ? objj_msgSend(CPColor, "whiteColor") : objj_msgSend(CPColor, "blackColor"));
     var count = objj_msgSend(_buttons, "count");
     for(var i=0; i < count; i++)
     {
         var button = _buttons[i];
         objj_msgSend(button, "setFrameSize:", CGSizeMake(objj_msgSend(button, "frame").size.width, (styleMask == CPHUDBackgroundWindowMask) ? 20.0 : 24.0));
-        objj_msgSend(button, "setBezelStyle:", (styleMask == CPHUDBackgroundWindowMask) ? CPHUDBezelStyle : CPRoundedBezelStyle);
+        objj_msgSend(button, "setBezelStyle:", (styleMask & CPHUDBackgroundWindowMask) ? CPHUDBezelStyle : CPRoundedBezelStyle);
         objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "addSubview:", button);
+    }
+    if (!_messageLabel)
+    {
+        var bounds = objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "bounds");
+        _messageLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:", CGRectMake(57.0, 10.0, CGRectGetWidth(bounds) - 73.0, 62.0));
+        objj_msgSend(_messageLabel, "setFont:", objj_msgSend(CPFont, "boldSystemFontOfSize:", 13.0));
+        objj_msgSend(_messageLabel, "setLineBreakMode:", CPLineBreakByWordWrapping);
+        objj_msgSend(_messageLabel, "setAlignment:", CPJustifiedTextAlignment);
+        _alertImageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(15.0, 12.0, 32.0, 32.0));
     }
     objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "addSubview:", _messageLabel);
     objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "addSubview:", _alertImageView);
@@ -94,7 +97,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPAle
 },["CPString"]), new objj_method(sel_getUid("addButtonWithTitle:"), function $CPAlert__addButtonWithTitle_(self, _cmd, title)
 { with(self)
 {
-    var button = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(200.0 - (_buttonCount * 90.0), 98.0, 80.0, (_windowStyle == CPHUDBackgroundWindowMask) ? 20.0 : 24.0));
+    var bounds = objj_msgSend(objj_msgSend(_alertPanel, "contentView"), "bounds"),
+        button = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(CGRectGetWidth(bounds) - ((_buttonCount + 1) * 90.0), CGRectGetHeight(bounds) - 34.0, 80.0, (_windowStyle == CPHUDBackgroundWindowMask) ? 20.0 : 24.0));
     objj_msgSend(button, "setTitle:", title);
     objj_msgSend(button, "setTarget:", self);
     objj_msgSend(button, "setTag:", _buttonCount);

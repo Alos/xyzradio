@@ -1,4 +1,4 @@
-i;15;_CPWindowView.jc;14081;
+i;15;_CPWindowView.jc;16135;
 var GRADIENT_HEIGHT = 41.0;
 var _CPTexturedWindowHeadGradientColor = nil,
     _CPTexturedWindowHeadSolidColor = nil;
@@ -23,14 +23,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $_CPTexturedWindowHeadView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
+},["id","CGRect"]), new objj_method(sel_getUid("resizeSubviewsWithOldSize:"), function $_CPTexturedWindowHeadView__resizeSubviewsWithOldSize_(self, _cmd, aSize)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds");
     objj_msgSend(_gradientView, "setFrameSize:", CGSizeMake(CGRectGetWidth(bounds), GRADIENT_HEIGHT));
     objj_msgSend(_solidView, "setFrameSize:", CGSizeMake(CGRectGetWidth(bounds), CGRectGetHeight(bounds) - GRADIENT_HEIGHT));
 }
-})]);
+},["void","CGSize"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("gradientColor"), function $_CPTexturedWindowHeadView__gradientColor(self, _cmd)
 { with(self)
 {
@@ -47,24 +47,26 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("gradientColor"), funct
     }
     return _CPTexturedWindowHeadGradientColor;
 }
-}), new objj_method(sel_getUid("solidColor"), function $_CPTexturedWindowHeadView__solidColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("solidColor"), function $_CPTexturedWindowHeadView__solidColor(self, _cmd)
 { with(self)
 {
     if (!_CPTexturedWindowHeadSolidColor)
         _CPTexturedWindowHeadSolidColor = objj_msgSend(CPColor, "colorWithCalibratedRed:green:blue:alpha:", 195.0 / 255.0, 195.0 / 255.0, 195.0 / 255.0, 1.0);
     return _CPTexturedWindowHeadSolidColor;
 }
-})]);
+},["CPColor"])]);
 }
 var _CPStandardWindowViewBodyBackgroundColor = nil,
     _CPStandardWindowViewDividerBackgroundColor = nil,
     _CPStandardWindowViewTitleBackgroundColor = nil,
     _CPStandardWindowViewCloseButtonImage = nil,
-    _CPStandardWindowViewCloseButtonHighlightedImage = nil;
+    _CPStandardWindowViewCloseButtonHighlightedImage = nil,
+    _CPStandardWindowViewMinimizeButtonImage = nil,
+    _CPStandardWindowViewMinimizeButtonHighlightedImage = nil;
 var STANDARD_GRADIENT_HEIGHT = 41.0;
     STANDARD_TITLEBAR_HEIGHT = 25.0;
 {var the_class = objj_allocateClassPair(_CPWindowView, "_CPStandardWindowView"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_headView"), new objj_ivar("_dividerView"), new objj_ivar("_bodyView"), new objj_ivar("_toolbarView"), new objj_ivar("_titleField"), new objj_ivar("_closeButton")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_headView"), new objj_ivar("_dividerView"), new objj_ivar("_bodyView"), new objj_ivar("_toolbarView"), new objj_ivar("_titleField"), new objj_ivar("_closeButton"), new objj_ivar("_minimizeButton")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect:"), function $_CPStandardWindowView__contentRectForFrameRect_(self, _cmd, aFrameRect)
@@ -80,7 +82,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
     }
     return contentRect;
 }
-}), new objj_method(sel_getUid("frameRectForContentRect:"), function $_CPStandardWindowView__frameRectForContentRect_(self, _cmd, aContentRect)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("frameRectForContentRect:"), function $_CPStandardWindowView__frameRectForContentRect_(self, _cmd, aContentRect)
 { with(self)
 {
     var frameRect = objj_msgSend(objj_msgSend(self, "class"), "frameRectForContentRect:", aContentRect),
@@ -93,7 +95,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
     }
     return frameRect;
 }
-}), new objj_method(sel_getUid("initWithFrame:styleMask:"), function $_CPStandardWindowView__initWithFrame_styleMask_(self, _cmd, aFrame, aStyleMask)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("initWithFrame:styleMask:"), function $_CPStandardWindowView__initWithFrame_styleMask_(self, _cmd, aFrame, aStyleMask)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPWindowView") }, "initWithFrame:styleMask:", aFrame, aStyleMask);
@@ -143,22 +145,38 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
             objj_msgSend(_closeButton, "setAlternateImage:", _CPStandardWindowViewCloseButtonHighlightedImage);
             objj_msgSend(self, "addSubview:", _closeButton);
         }
+        if (_styleMask & CPMiniaturizableWindowMask && !objj_msgSend(CPPlatform, "isBrowser"))
+        {
+            if (!_CPStandardWindowViewMinimizeButtonImage)
+            {
+                var bundle = objj_msgSend(CPBundle, "bundleForClass:", objj_msgSend(CPWindow, "class"));
+                _CPStandardWindowViewMinimizeButtonImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPWindow/Standard/CPWindowStandardMinimizeButton.png"), CGSizeMake(16.0, 16.0));
+                _CPStandardWindowViewMinimizeButtonHighlightedImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(bundle, "pathForResource:", "CPWindow/Standard/CPWindowStandardMinimizeButtonHighlighted.png"), CGSizeMake(16.0, 16.0));
+            }
+            _minimizeButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(27.0, 7.0, 16.0, 16.0));
+            objj_msgSend(_minimizeButton, "setBordered:", NO);
+            objj_msgSend(_minimizeButton, "setImage:", _CPStandardWindowViewMinimizeButtonImage);
+            objj_msgSend(_minimizeButton, "setAlternateImage:", _CPStandardWindowViewMinimizeButtonHighlightedImage);
+            objj_msgSend(self, "addSubview:", _minimizeButton);
+        }
         objj_msgSend(self, "tile");
     }
     return self;
 }
-}), new objj_method(sel_getUid("viewDidMoveToWindow"), function $_CPStandardWindowView__viewDidMoveToWindow(self, _cmd)
+},["id","CPRect","unsigned"]), new objj_method(sel_getUid("viewDidMoveToWindow"), function $_CPStandardWindowView__viewDidMoveToWindow(self, _cmd)
 { with(self)
 {
     objj_msgSend(_closeButton, "setTarget:", objj_msgSend(self, "window"));
     objj_msgSend(_closeButton, "setAction:", sel_getUid("performClose:"));
+    objj_msgSend(_minimizeButton, "setTarget:", objj_msgSend(self, "window"));
+    objj_msgSend(_minimizeButton, "setAction:", sel_getUid("performMiniaturize:"));
 }
-}), new objj_method(sel_getUid("toolbarOffset"), function $_CPStandardWindowView__toolbarOffset(self, _cmd)
+},["void"]), new objj_method(sel_getUid("toolbarOffset"), function $_CPStandardWindowView__toolbarOffset(self, _cmd)
 { with(self)
 {
     return CGSizeMake(0.0, objj_msgSend(objj_msgSend(self, "class"), "titleBarHeight"));
 }
-}), new objj_method(sel_getUid("tile"), function $_CPStandardWindowView__tile(self, _cmd)
+},["CGSize"]), new objj_method(sel_getUid("tile"), function $_CPStandardWindowView__tile(self, _cmd)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPWindowView") }, "tile");
@@ -169,22 +187,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRectForFrameRect
     objj_msgSend(_dividerView, "setFrame:", CGRectMake(0.0, CGRectGetMaxY(objj_msgSend(_headView, "frame")), width, 1.0));
     var dividerMaxY = CGRectGetMaxY(objj_msgSend(_dividerView, "frame"));
     objj_msgSend(_bodyView, "setFrame:", CGRectMake(0.0, dividerMaxY, width, CGRectGetHeight(bounds) - dividerMaxY));
-    objj_msgSend(_titleField, "setFrame:", CGRectMake(10.0, 3.0, width - 20.0, CGRectGetHeight(objj_msgSend(_titleField, "frame"))));
+    var leftOffset = 8;
+    if (_closeButton)
+        leftOffset += 19.0;
+    if (_minimizeButton)
+        leftOffset += 19.0;
+    objj_msgSend(_titleField, "setFrame:", CGRectMake(leftOffset, 5.0, width - leftOffset*2.0, CGRectGetHeight(objj_msgSend(_titleField, "frame"))));
     objj_msgSend(objj_msgSend(theWindow, "contentView"), "setFrameOrigin:", CGPointMake(0.0, CGRectGetMaxY(objj_msgSend(_dividerView, "frame"))));
 }
-}), new objj_method(sel_getUid("setTitle:"), function $_CPStandardWindowView__setTitle_(self, _cmd, aTitle)
+},["void"]), new objj_method(sel_getUid("setTitle:"), function $_CPStandardWindowView__setTitle_(self, _cmd, aTitle)
 { with(self)
 {
     objj_msgSend(_titleField, "setStringValue:", aTitle);
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $_CPStandardWindowView__mouseDown_(self, _cmd, anEvent)
+},["void","CPString"]), new objj_method(sel_getUid("mouseDown:"), function $_CPStandardWindowView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     if (CGRectContainsPoint(objj_msgSend(_headView, "frame"), objj_msgSend(self, "convertPoint:fromView:", objj_msgSend(anEvent, "locationInWindow"), nil)))
         return objj_msgSend(self, "trackMoveWithEvent:", anEvent);
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("_CPWindowView") }, "mouseDown:", anEvent);
 }
-})]);
+},["void","CPEvent"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("bodyBackgroundColor"), function $_CPStandardWindowView__bodyBackgroundColor(self, _cmd)
 { with(self)
 {
@@ -192,21 +215,21 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bodyBackgroundColor"),
         _CPStandardWindowViewBodyBackgroundColor = objj_msgSend(CPColor, "colorWithWhite:alpha:", 0.96, 1.0);
     return _CPStandardWindowViewBodyBackgroundColor;
 }
-}), new objj_method(sel_getUid("dividerBackgroundColor"), function $_CPStandardWindowView__dividerBackgroundColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("dividerBackgroundColor"), function $_CPStandardWindowView__dividerBackgroundColor(self, _cmd)
 { with(self)
 {
     if (!_CPStandardWindowViewDividerBackgroundColor)
         _CPStandardWindowViewDividerBackgroundColor = objj_msgSend(CPColor, "colorWithCalibratedRed:green:blue:alpha:", 125.0 / 255.0, 125.0 / 255.0, 125.0 / 255.0, 1.0);
     return _CPStandardWindowViewDividerBackgroundColor;
 }
-}), new objj_method(sel_getUid("titleColor"), function $_CPStandardWindowView__titleColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("titleColor"), function $_CPStandardWindowView__titleColor(self, _cmd)
 { with(self)
 {
     if (!_CPStandardWindowViewTitleBackgroundColor)
         _CPStandardWindowViewTitleBackgroundColor = objj_msgSend(CPColor, "colorWithCalibratedRed:green:blue:alpha:", 44.0 / 255.0, 44.0 / 255.0, 44.0 / 255.0, 1.0);
     return _CPStandardWindowViewTitleBackgroundColor;
 }
-}), new objj_method(sel_getUid("contentRectForFrameRect:"), function $_CPStandardWindowView__contentRectForFrameRect_(self, _cmd, aFrameRect)
+},["CPColor"]), new objj_method(sel_getUid("contentRectForFrameRect:"), function $_CPStandardWindowView__contentRectForFrameRect_(self, _cmd, aFrameRect)
 { with(self)
 {
     var contentRect = CGRectMakeCopy(aFrameRect),
@@ -215,7 +238,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bodyBackgroundColor"),
     contentRect.size.height -= titleBarHeight;
     return contentRect;
 }
-}), new objj_method(sel_getUid("frameRectForContentRect:"), function $_CPStandardWindowView__frameRectForContentRect_(self, _cmd, aContentRect)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("frameRectForContentRect:"), function $_CPStandardWindowView__frameRectForContentRect_(self, _cmd, aContentRect)
 { with(self)
 {
     var frameRect = CGRectMakeCopy(aContentRect),
@@ -224,11 +247,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bodyBackgroundColor"),
     frameRect.size.height += titleBarHeight;
     return frameRect;
 }
-}), new objj_method(sel_getUid("titleBarHeight"), function $_CPStandardWindowView__titleBarHeight(self, _cmd)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("titleBarHeight"), function $_CPStandardWindowView__titleBarHeight(self, _cmd)
 { with(self)
 {
     return STANDARD_TITLEBAR_HEIGHT;
 }
-})]);
+},["float"])]);
 }
 

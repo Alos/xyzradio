@@ -1,4 +1,4 @@
-i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;22593;
+i;11;CPControl.ji;17;CPStringDrawing.ji;17;CPCompatibility.jc;22584;
 CPLineBreakByWordWrapping = 0;
 CPLineBreakByCharWrapping = 1;
 CPLineBreakByClipping = 2;
@@ -145,8 +145,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 },["BOOL"]), new objj_method(sel_getUid("becomeFirstResponder"), function $CPTextField__becomeFirstResponder(self, _cmd)
 { with(self)
 {
-    if (CPTextFieldInputOwner && objj_msgSend(CPTextFieldInputOwner, "window") !== objj_msgSend(self, "window"))
-        objj_msgSend(objj_msgSend(CPTextFieldInputOwner, "window"), "makeFirstResponder:", nil);
     objj_msgSend(self, "setThemeState:", CPThemeStateEditing);
     objj_msgSend(self, "_updatePlaceholderState");
     objj_msgSend(self, "setNeedsLayout");
@@ -158,7 +156,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "unsetThemeState:", CPThemeStateEditing);
     objj_msgSend(self, "_updatePlaceholderState");
     objj_msgSend(self, "setNeedsLayout");
-    objj_msgSend(self, "textDidEndEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidBeginEditingNotification, self, nil));
+    objj_msgSend(self, "textDidEndEditing:", objj_msgSend(CPNotification, "notificationWithName:object:userInfo:", CPControlTextDidEndEditingNotification, self, nil));
     return YES;
 }
 },["BOOL"]), new objj_method(sel_getUid("mouseDown:"), function $CPTextField__mouseDown_(self, _cmd, anEvent)
@@ -174,7 +172,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "objectValue");
 }
-},["id"]), new objj_method(sel_getUid("setObjectValue:"), function $CPTextField__setObjectValue_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("_setStringValue:"), function $CPTextField___setStringValue_(self, _cmd, aValue)
+{ with(self)
+{
+    objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setObjectValue:", String(aValue));
+    objj_msgSend(self, "_updatePlaceholderState");
+}
+},["void","id"]), new objj_method(sel_getUid("setObjectValue:"), function $CPTextField__setObjectValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setObjectValue:", aValue);
@@ -184,7 +188,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 { with(self)
 {
     var string = objj_msgSend(self, "stringValue");
-    if ((!string || objj_msgSend(string, "length") === 0) && !objj_msgSend(self, "hasThemeState:", CPThemeStateEditing))
+    if ((!string || string.length === 0) && !objj_msgSend(self, "hasThemeState:", CPThemeStateEditing))
         objj_msgSend(self, "setThemeState:", CPTextFieldStatePlaceholder);
     else
         objj_msgSend(self, "unsetThemeState:", CPTextFieldStatePlaceholder);
@@ -395,11 +399,7 @@ var secureStringForString = function(aString)
 {
     if (!aString)
         return "";
-    var secureString = "",
-        length = aString.length;
-    while (length--)
-        secureString += CPSecureTextFieldCharacter;
-    return secureString;
+    return Array(aString.length).join(CPSecureTextFieldCharacter);
 }
 var CPTextFieldIsEditableKey = "CPTextFieldIsEditableKey",
     CPTextFieldIsSelectableKey = "CPTextFieldIsSelectableKey",

@@ -1,4 +1,4 @@
-i;10;CPObject.ji;14;CPDictionary.ji;14;CPURLRequest.jc;5166;
+i;10;CPObject.ji;14;CPDictionary.ji;14;CPURLRequest.jc;5481;
 {var the_class = objj_allocateClassPair(CPObject, "CPBundle"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
@@ -13,16 +13,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPath:"), functi
     }
     return self;
 }
-}), new objj_method(sel_getUid("classNamed:"), function $CPBundle__classNamed_(self, _cmd, aString)
+},["id","CPString"]), new objj_method(sel_getUid("classNamed:"), function $CPBundle__classNamed_(self, _cmd, aString)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("bundlePath"), function $CPBundle__bundlePath(self, _cmd)
+},["Class","CPString"]), new objj_method(sel_getUid("bundlePath"), function $CPBundle__bundlePath(self, _cmd)
 { with(self)
 {
     return objj_msgSend(path, "stringByDeletingLastPathComponent");
 }
-}), new objj_method(sel_getUid("resourcePath"), function $CPBundle__resourcePath(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("resourcePath"), function $CPBundle__resourcePath(self, _cmd)
 { with(self)
 {
     var resourcePath = objj_msgSend(self, "bundlePath");
@@ -30,34 +30,34 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPath:"), functi
         resourcePath += '/';
     return resourcePath + "Resources";
 }
-}), new objj_method(sel_getUid("principalClass"), function $CPBundle__principalClass(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("principalClass"), function $CPBundle__principalClass(self, _cmd)
 { with(self)
 {
     var className = objj_msgSend(self, "objectForInfoDictionaryKey:", "CPPrincipalClass");
     return className ? CPClassFromString(className) : Nil;
 }
-}), new objj_method(sel_getUid("pathForResource:"), function $CPBundle__pathForResource_(self, _cmd, aFilename)
+},["Class"]), new objj_method(sel_getUid("pathForResource:"), function $CPBundle__pathForResource_(self, _cmd, aFilename)
 { with(self)
 {
     return objj_msgSend(self, "resourcePath") + '/' + aFilename;
 }
-}), new objj_method(sel_getUid("infoDictionary"), function $CPBundle__infoDictionary(self, _cmd)
+},["CPString","CPString"]), new objj_method(sel_getUid("infoDictionary"), function $CPBundle__infoDictionary(self, _cmd)
 { with(self)
 {
     return info;
 }
-}), new objj_method(sel_getUid("objectForInfoDictionaryKey:"), function $CPBundle__objectForInfoDictionaryKey_(self, _cmd, aKey)
+},["CPDictionary"]), new objj_method(sel_getUid("objectForInfoDictionaryKey:"), function $CPBundle__objectForInfoDictionaryKey_(self, _cmd, aKey)
 { with(self)
 {
     return objj_msgSend(info, "objectForKey:", aKey);
 }
-}), new objj_method(sel_getUid("loadWithDelegate:"), function $CPBundle__loadWithDelegate_(self, _cmd, aDelegate)
+},["id","CPString"]), new objj_method(sel_getUid("loadWithDelegate:"), function $CPBundle__loadWithDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     self._delegate = aDelegate;
     self._infoConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", objj_msgSend(CPURLRequest, "requestWithURL:", objj_msgSend(self, "bundlePath") + "/Info.plist"), self);
 }
-}), new objj_method(sel_getUid("connection:didReceiveData:"), function $CPBundle__connection_didReceiveData_(self, _cmd, aConnection, data)
+},["void","id"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $CPBundle__connection_didReceiveData_(self, _cmd, aConnection, data)
 { with(self)
 {
     if (aConnection === self._infoConnection)
@@ -93,37 +93,37 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithPath:"), functi
             objj_msgSend(_delegate, "bundleDidFinishLoading:", self);
     }
 }
-}), new objj_method(sel_getUid("connection:didFailWithError:"), function $CPBundle__connection_didFailWithError_(self, _cmd, aConnection, anError)
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $CPBundle__connection_didFailWithError_(self, _cmd, aConnection, anError)
 { with(self)
 {
     alert("Couldnot find bundle:" + anError)
 }
-}), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $CPBundle__connectionDidFinishLoading_(self, _cmd, aConnection)
+},["void","CPURLConnection","CPError"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $CPBundle__connectionDidFinishLoading_(self, _cmd, aConnection)
 { with(self)
 {
 }
-})]);
+},["void","CPURLConnection"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPBundle__alloc(self, _cmd)
 { with(self)
 {
     return new objj_bundle;
 }
-}), new objj_method(sel_getUid("bundleWithPath:"), function $CPBundle__bundleWithPath_(self, _cmd, aPath)
+},["id"]), new objj_method(sel_getUid("bundleWithPath:"), function $CPBundle__bundleWithPath_(self, _cmd, aPath)
 { with(self)
 {
     return objj_getBundleWithPath(aPath);
 }
-}), new objj_method(sel_getUid("bundleForClass:"), function $CPBundle__bundleForClass_(self, _cmd, aClass)
+},["CPBundle","CPString"]), new objj_method(sel_getUid("bundleForClass:"), function $CPBundle__bundleForClass_(self, _cmd, aClass)
 { with(self)
 {
     return objj_bundleForClass(aClass);
 }
-}), new objj_method(sel_getUid("mainBundle"), function $CPBundle__mainBundle(self, _cmd)
+},["CPBundle","Class"]), new objj_method(sel_getUid("mainBundle"), function $CPBundle__mainBundle(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPBundle, "bundleWithPath:", "Info.plist");
 }
-})]);
+},["CPBundle"])]);
 }
 objj_bundle.prototype.isa = CPBundle;
 

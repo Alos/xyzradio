@@ -1,4 +1,4 @@
-i;9;CPEvent.jc;3157;
+i;9;CPEvent.jc;3168;
 CPUnknownBrowserEngine=0;
 CPGeckoBrowserEngine=1;
 CPInternetExplorerBrowserEngine=2;
@@ -48,7 +48,7 @@ _3|=CPJavascriptClipboardEventsFeature;
 _3|=CPJavascriptClipboardAccessFeature;
 _3|=CPJavaScriptShadowFeature;
 var _4=_1.indexOf("AppleWebKit/")+"AppleWebKit/".length,_5=_1.indexOf(" ",_4),_6=_1.substring(_4,_5),_7=_6.indexOf("."),_8=parseInt(_6.substring(0,_7)),_9=parseInt(_6.substr(_7+1));
-if((_1.indexOf("Safari")!==CPNotFound&&(_8>=525&&_9>14))||_1.indexOf("Chrome")!==CPNotFound){
+if((_1.indexOf("Safari")!==CPNotFound&&(_8>525||(_8===525&&_9>14)))||_1.indexOf("Chrome")!==CPNotFound){
 _3|=CPJavascriptRemedialKeySupport;
 }
 }else{

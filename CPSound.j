@@ -21,7 +21,6 @@
  */
 
 
-@import <AppKit/CPDOMWindowBridge.j>
 @import <Foundation/CPObject.j>
 @import <Foundation/CPString.j>
 @import <Foundation/CPDictionary.j>

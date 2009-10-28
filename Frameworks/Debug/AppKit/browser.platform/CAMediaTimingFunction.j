@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;25;Foundation/CPDictionary.jI;21;Foundation/CPString.jc;3065;
+I;21;Foundation/CPObject.jI;25;Foundation/CPDictionary.jI;21;Foundation/CPString.jc;3192;
 kCAMediaTimingFunctionLinear = "kCAMediaTimingFunctionLinear";
 kCAMediaTimingFunctionEaseIn = "kCAMediaTimingFunctionEaseIn";
 kCAMediaTimingFunctionEaseOut = "kCAMediaTimingFunctionEaseOut";
@@ -21,7 +21,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithControlPoints::
     }
     return self;
 }
-}), new objj_method(sel_getUid("getControlPointAtIndex:values:"), function $CAMediaTimingFunction__getControlPointAtIndex_values_(self, _cmd, anIndex, reference)
+},["id","float","float","float","float"]), new objj_method(sel_getUid("getControlPointAtIndex:values:"), function $CAMediaTimingFunction__getControlPointAtIndex_values_(self, _cmd, anIndex, reference)
 { with(self)
 {
     if (anIndex == 0)
@@ -45,7 +45,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithControlPoints::
         reference[1] = 1.0;
     }
 }
-})]);
+},["void","unsigned","float[2]"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("functionWithName:"), function $CAMediaTimingFunction__functionWithName_(self, _cmd, aName)
 { with(self)
 {
@@ -59,11 +59,11 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("functionWithName:"), f
     }
     return objj_msgSend(CAMediaNamedTimingFunctions, "objectForKey:", aName);
 }
-}), new objj_method(sel_getUid("functionWithControlPoints::::"), function $CAMediaTimingFunction__functionWithControlPoints____(self, _cmd, c1x, c1y, c2x, c2y)
+},["id","CPString"]), new objj_method(sel_getUid("functionWithControlPoints::::"), function $CAMediaTimingFunction__functionWithControlPoints____(self, _cmd, c1x, c1y, c2x, c2y)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithControlPoints::::", c1x , c1y , c2x , c2y);
 }
-})]);
+},["id","float","float","float","float"])]);
 }
 

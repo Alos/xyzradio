@@ -1,41 +1,29 @@
-i;9;CPRange.ji;10;CPObject.jc;19024;
+i;9;CPRange.ji;10;CPObject.jc;20859;
 {var the_class = objj_allocateClassPair(CPObject, "CPIndexSet"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_count"), new objj_ivar("_cachedRangeIndex"), new objj_ivar("_ranges")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_count"), new objj_ivar("_ranges")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPIndexSet__init(self, _cmd)
 { with(self)
 {
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
-    if (self)
-    {
-        _count = 0;
-        _ranges = [];
-        _cachedRangeIndex = 0;
-    }
-    return self;
+    return objj_msgSend(self, "initWithIndexesInRange:", { location:(0), length:0 });
 }
 },["id"]), new objj_method(sel_getUid("initWithIndex:"), function $CPIndexSet__initWithIndex_(self, _cmd, anIndex)
 { with(self)
 {
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
-    if (self)
-    {
-        _count = 1;
-        _ranges = objj_msgSend(CPArray, "arrayWithObject:", CPMakeRange(anIndex, 1));
-        _cachedRangeIndex = 0;
-    }
-    return self;
+    return objj_msgSend(self, "initWithIndexesInRange:", { location:(anIndex), length:1 });
 }
-},["id","int"]), new objj_method(sel_getUid("initWithIndexesInRange:"), function $CPIndexSet__initWithIndexesInRange_(self, _cmd, aRange)
+},["id","CPInteger"]), new objj_method(sel_getUid("initWithIndexesInRange:"), function $CPIndexSet__initWithIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
     if (self)
     {
-        _count = aRange.length;
-        _ranges = objj_msgSend(CPArray, "arrayWithObject:", aRange);
-        _cachedRangeIndex = 0;
+        _count = MAX(0, aRange.length);
+        if (_count > 0)
+            _ranges = [aRange];
+        else
+            _ranges = [];
     }
     return self;
 }
@@ -47,78 +35,74 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
     {
         _count = objj_msgSend(anIndexSet, "count");
         _ranges = [];
-        _cachedRangeIndex = 0;
-        var index = 0,
-            count = anIndexSet._ranges.length;
-        for (; index < count; ++index)
-            _ranges.push(CPCopyRange(anIndexSet._ranges[index]));
+        var otherRanges = anIndexSet._ranges,
+            otherRangesCount = otherRanges.length;
+        while (otherRangesCount--)
+            _ranges[otherRangesCount] = { location:(otherRanges[otherRangesCount]).location, length:(otherRanges[otherRangesCount]).length };
     }
     return self;
 }
 },["id","CPIndexSet"]), new objj_method(sel_getUid("isEqualToIndexSet:"), function $CPIndexSet__isEqualToIndexSet_(self, _cmd, anIndexSet)
 { with(self)
 {
- if (self == anIndexSet)
-    return YES;
-    var i = 0,
-        count = _ranges.length;
+    if (!anIndexSet)
+        return NO;
+    if (self === anIndexSet)
+       return YES;
+    var rangesCount = _ranges.length,
         otherRanges = anIndexSet._ranges;
- if (count != otherRanges.length || _count != objj_msgSend(anIndexSet, "count"))
-    return NO;
- for (; i < count; ++i)
-  if (!CPEqualRanges(_ranges[i], otherRanges[i]))
-   return NO;
- return YES;
+    if (rangesCount !== otherRanges.length || _count !== anIndexSet._count)
+        return NO;
+    while (rangesCount--)
+        if (!CPEqualRanges(_ranges[rangesCount], otherRanges[rangesCount]))
+            return NO;
+    return YES;
 }
 },["BOOL","CPIndexSet"]), new objj_method(sel_getUid("containsIndex:"), function $CPIndexSet__containsIndex_(self, _cmd, anIndex)
 { with(self)
 {
-    return objj_msgSend(self, "containsIndexesInRange:", CPMakeRange(anIndex, 1));
+    return positionOfIndex(_ranges, anIndex) !== CPNotFound;
 }
-},["BOOL","unsigned"]), new objj_method(sel_getUid("containsIndexesInRange:"), function $CPIndexSet__containsIndexesInRange_(self, _cmd, aRange)
+},["BOOL","CPInteger"]), new objj_method(sel_getUid("containsIndexesInRange:"), function $CPIndexSet__containsIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
-    if(!_count)
+    if (aRange.length <= 0)
         return NO;
-    var i = SOERangeIndex(self, aRange.location),
-     lower = aRange.location,
-     upper = CPMaxRange(aRange),
-     count = _ranges.length;
-    for(;i < count && _ranges[i].location < upper; ++i)
-     if (_ranges[i].location <= lower && CPMaxRange(_ranges[i]) >= upper)
-     {
-            _cachedRangeIndex = i;
-            return YES;
-        }
-    _cachedRangeIndex = i;
-    return NO;
+    if(_count < aRange.length)
+        return NO;
+    var rangeIndex = positionOfIndex(_ranges, aRange.location);
+    if (rangeIndex === CPNotFound)
+        return NO;
+    var range = _ranges[rangeIndex];
+    return CPIntersectionRange(range, aRange).length === aRange.length;
 }
 },["BOOL","CPRange"]), new objj_method(sel_getUid("containsIndexes:"), function $CPIndexSet__containsIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
-    if(!objj_msgSend(anIndexSet, "count"))
+    var otherCount = anIndexSet._count;
+    if(otherCount <= 0)
         return YES;
-    if(!_count)
+    if (_count < otherCount)
         return NO;
-    var i = 0,
-        count = _ranges.length;
-    for(; i < count; ++i)
-        if (!objj_msgSend(anIndexSet, "containsIndexesInRange:", _ranges[i]))
+    var otherRanges = anIndexSet._ranges,
+        otherRangesCount = otherRanges.length;
+    while (otherRangesCount--)
+        if (!objj_msgSend(self, "containsIndexesInRange:", otherRanges[otherRangesCount]))
             return NO;
     return YES;
 }
 },["BOOL","CPIndexSet"]), new objj_method(sel_getUid("intersectsIndexesInRange:"), function $CPIndexSet__intersectsIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
-    if(!_count)
+    if (_count <= 0)
         return NO;
-    var i = SOERangeIndex(self, aRange.location),
-        count = _ranges.length,
-        upper = CPMaxRange(aRange);
-    for (; i < count && _ranges[i].location < upper; ++i)
-        if(CPIntersectionRange(aRange, _ranges[i]).length)
-            return YES;
-    return NO;
+    var lhsRangeIndex = assumedPositionOfIndex(_ranges, aRange.location);
+    if (FLOOR(lhsRangeIndex) === lhsRangeIndex)
+        return YES;
+    var rhsRangeIndex = assumedPositionOfIndex(_ranges, ((aRange).location + (aRange).length) - 1);
+    if (FLOOR(rhsRangeIndex) === rhsRangeIndex)
+        return YES;
+    return lhsRangeIndex !== rhsRangeIndex;
 }
 },["BOOL","CPRange"]), new objj_method(sel_getUid("count"), function $CPIndexSet__count(self, _cmd)
 { with(self)
@@ -128,123 +112,151 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPInd
 },["int"]), new objj_method(sel_getUid("firstIndex"), function $CPIndexSet__firstIndex(self, _cmd)
 { with(self)
 {
-    return _count ? _ranges[0].location : CPNotFound;
-}
-},["int"]), new objj_method(sel_getUid("lastIndex"), function $CPIndexSet__lastIndex(self, _cmd)
-{ with(self)
-{
-    return _count ? CPMaxRange(_ranges[_ranges.length - 1]) - 1 : CPNotFound;
-}
-},["int"]), new objj_method(sel_getUid("indexGreaterThanIndex:"), function $CPIndexSet__indexGreaterThanIndex_(self, _cmd, anIndex)
-{ with(self)
-{
-    if(!_count)
-        return CPNotFound;
-    var i = SOERangeIndex(self, anIndex++),
-        count = _ranges.length;
-    for(; i < count && anIndex >= CPMaxRange(_ranges[i]); ++i) ;
-    if (i == count)
-        return CPNotFound;
-    _cachedRangeIndex = i;
-    if (anIndex < _ranges[i].location)
-        return _ranges[i].location;
-    return anIndex;
-}
-},["unsigned","unsigned"]), new objj_method(sel_getUid("indexLessThanIndex:"), function $CPIndexSet__indexLessThanIndex_(self, _cmd, anIndex)
-{ with(self)
-{
-    if (!_count)
-        return CPNotFound;
-    var i = GOERangeIndex(self, anIndex--);
-    for (; i >= 0 && anIndex < _ranges[i].location; --i) ;
-    if(i < 0)
-        return CPNotFound;
-    _cachedRangeIndex = i;
-   if (CPLocationInRange(anIndex, _ranges[i]))
-        return anIndex;
-    if (CPMaxRange(_ranges[i]) - 1 < anIndex)
-        return CPMaxRange(_ranges[i]) - 1;
+    if (_count > 0)
+        return _ranges[0].location;
     return CPNotFound;
 }
-},["unsigned","unsigned"]), new objj_method(sel_getUid("indexGreaterThanOrEqualToIndex:"), function $CPIndexSet__indexGreaterThanOrEqualToIndex_(self, _cmd, anIndex)
+},["CPInteger"]), new objj_method(sel_getUid("lastIndex"), function $CPIndexSet__lastIndex(self, _cmd)
 { with(self)
 {
- return objj_msgSend(self, "indexGreaterThanIndex:", anIndex - 1);
+    if (_count > 0)
+        return ((_ranges[_ranges.length - 1]).location + (_ranges[_ranges.length - 1]).length) - 1;
+    return CPNotFound;
 }
-},["unsignedint","unsigned"]), new objj_method(sel_getUid("indexLessThanOrEqualToIndex:"), function $CPIndexSet__indexLessThanOrEqualToIndex_(self, _cmd, anIndex)
+},["CPInteger"]), new objj_method(sel_getUid("indexGreaterThanIndex:"), function $CPIndexSet__indexGreaterThanIndex_(self, _cmd, anIndex)
 { with(self)
 {
- return objj_msgSend(self, "indexLessThanIndex:", anIndex + 1);
+    ++anIndex;
+    var rangeIndex = assumedPositionOfIndex(_ranges, anIndex);
+    if (rangeIndex === CPNotFound)
+        return CPNotFound;
+    rangeIndex = CEIL(rangeIndex);
+    if (rangeIndex >= _ranges.length)
+        return CPNotFound;
+    var range = _ranges[rangeIndex];
+    if (CPLocationInRange(anIndex, range))
+        return anIndex;
+    return range.location;
 }
-},["unsignedint","unsigned"]), new objj_method(sel_getUid("getIndexes:maxCount:inIndexRange:"), function $CPIndexSet__getIndexes_maxCount_inIndexRange_(self, _cmd, anArray, aMaxCount, aRangePointer)
+},["CPInteger","CPInteger"]), new objj_method(sel_getUid("indexLessThanIndex:"), function $CPIndexSet__indexLessThanIndex_(self, _cmd, anIndex)
 { with(self)
 {
-    if (!_count || aMaxCount <= 0 || aRangePointer && !aRangePointer.length)
-        return 0;
-    var i = SOERangeIndex(self, aRangePointer? aRangePointer.location : 0),
-        total = 0,
-        count = _ranges.length;
-    for (; i < count; ++i)
+    --anIndex;
+    var rangeIndex = assumedPositionOfIndex(_ranges, anIndex);
+    if (rangeIndex === CPNotFound)
+        return CPNotFound;
+    rangeIndex = FLOOR(rangeIndex);
+    if (rangeIndex < 0)
+        return CPNotFound;
+    var range = _ranges[rangeIndex];
+    if (CPLocationInRange(anIndex, range))
+        return anIndex;
+    return ((range).location + (range).length) - 1;
+}
+},["CPInteger","CPInteger"]), new objj_method(sel_getUid("indexGreaterThanOrEqualToIndex:"), function $CPIndexSet__indexGreaterThanOrEqualToIndex_(self, _cmd, anIndex)
+{ with(self)
+{
+    return objj_msgSend(self, "indexGreaterThanIndex:", anIndex - 1);
+}
+},["CPInteger","CPInteger"]), new objj_method(sel_getUid("indexLessThanOrEqualToIndex:"), function $CPIndexSet__indexLessThanOrEqualToIndex_(self, _cmd, anIndex)
+{ with(self)
+{
+    return objj_msgSend(self, "indexLessThanIndex:", anIndex + 1);
+}
+},["CPInteger","CPInteger"]), new objj_method(sel_getUid("getIndexes:maxCount:inIndexRange:"), function $CPIndexSet__getIndexes_maxCount_inIndexRange_(self, _cmd, anArray, aMaxCount, aRange)
+{ with(self)
+{
+    if (!_count || aMaxCount === 0 || aRange && !aRange.length)
     {
-        var intersection = aRangePointer ? CPIntersectionRange(_ranges[i], aRangePointer) : _ranges[i],
-            index = intersection.location,
-            maximum = CPMaxRange(intersection);
-        for (; index < maximum; ++index)
+        if (aRange)
+            aRange.length = 0;
+        return 0;
+    }
+    var total = 0;
+    if (aRange)
+    {
+        var firstIndex = aRange.location,
+            lastIndex = ((aRange).location + (aRange).length) - 1,
+            rangeIndex = CEIL(assumedPositionOfIndex(_ranges, firstIndex)),
+            lastRangeIndex = FLOOR(assumedPositionOfIndex(_ranges, lastIndex));
+    }
+    else
+    {
+        var firstIndex = objj_msgSend(self, "firstIndex"),
+            lastIndex = objj_msgSend(self, "lastIndex"),
+            rangeIndex = 0,
+            lastRangeIndex = _ranges.length - 1;
+    }
+    while (rangeIndex <= lastRangeIndex)
+    {
+        var range = _ranges[rangeIndex],
+            index = MAX(firstIndex, range.location),
+            maxRange = MIN(lastIndex + 1, ((range).location + (range).length));
+        for (; index < maxRange; ++index)
         {
             anArray[total++] = index;
-            if (total == aMaxCount)
+            if (total === aMaxCount)
             {
-                if (aRangePointer)
+                if (aRange)
                 {
-                    var upper = CPMaxRange(aRangePointer);
-                    aRangePointer.location = index + 1;
-                    aRangePointer.length = upper - index - 1;
+                    aRange.location = index + 1;
+                    aRange.length = lastIndex + 1 - index - 1;
                 }
                 return aMaxCount;
             }
         }
+        ++rangeIndex;
     }
-    if (aRangePointer)
+    if (aRange)
     {
-        aRangePointer.location = CPNotFound;
-        aRangePointer.length = 0;
+        aRange.location = CPNotFound;
+        aRange.length = 0;
     }
     return total;
 }
-},["unsigned","CPArray","unsigned","CPRange"]), new objj_method(sel_getUid("description"), function $CPIndexSet__description(self, _cmd)
+},["CPInteger","CPArray","CPInteger","CPRange"]), new objj_method(sel_getUid("description"), function $CPIndexSet__description(self, _cmd)
 { with(self)
 {
-    var desc = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "description") + " ";
- if (_count)
- {
-  desc += "[number of indexes: " + _count + " (in " + _ranges.length + " ranges), indexes: (";
-  for (i = 0; i < _ranges.length; i++)
-  {
-   desc += _ranges[i].location;
-   if (_ranges[i].length > 1) desc += "-" + (CPMaxRange(_ranges[i])-1) + ":"+_ranges[i].length+":";
-   if (i+1 < _ranges.length) desc += " ";
-  }
-  desc += ")]";
- }
- else
-  desc += "(no indexes)";
- return desc;
+    var description = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "description");
+    if (_count)
+    {
+        var index = 0,
+            count = _ranges.length;
+        description += "[number of indexes: " + _count + " (in " + count;
+        if (count === 1)
+            description += " range), indexes: (";
+        else
+            description += " ranges), indexes: (";
+        for (; index < count; ++index)
+        {
+            var range = _ranges[index];
+            description += range.location;
+            if (range.length > 1)
+                description += "-" + (CPMaxRange(range) - 1);
+            if (index + 1 < count)
+                description += " ";
+        }
+        description += ")]";
+    }
+    else
+        description += "(no indexes)";
+    return description;
 }
 },["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("indexSet"), function $CPIndexSet__indexSet(self, _cmd)
 { with(self)
 {
- return objj_msgSend(objj_msgSend(self, "alloc"), "init");
+    return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
 },["id"]), new objj_method(sel_getUid("indexSetWithIndex:"), function $CPIndexSet__indexSetWithIndex_(self, _cmd, anIndex)
 { with(self)
 {
- return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndex:", anIndex);
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndex:", anIndex);
 }
 },["id","int"]), new objj_method(sel_getUid("indexSetWithIndexesInRange:"), function $CPIndexSet__indexSetWithIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
- return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndexesInRange:", aRange);
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithIndexesInRange:", aRange);
 }
 },["id","CPRange"])]);
 }
@@ -254,134 +266,143 @@ if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundExceptio
 var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("addIndex:"), function $CPIndexSet__addIndex_(self, _cmd, anIndex)
 { with(self)
 {
-    objj_msgSend(self, "addIndexesInRange:", CPMakeRange(anIndex, 1));
+    objj_msgSend(self, "addIndexesInRange:", { location:(anIndex), length:1 });
 }
-},["void","unsigned"]), new objj_method(sel_getUid("addIndexes:"), function $CPIndexSet__addIndexes_(self, _cmd, anIndexSet)
+},["void","CPInteger"]), new objj_method(sel_getUid("addIndexes:"), function $CPIndexSet__addIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
-    var i = 0,
-        ranges = anIndexSet._ranges,
-        count = ranges.length;
-    for(; i < count; ++i)
-        objj_msgSend(self, "addIndexesInRange:", ranges[i]);
+    var otherRanges = anIndexSet._ranges,
+        otherRangesCount = otherRanges.length;
+    while (otherRangesCount--)
+        objj_msgSend(self, "addIndexesInRange:", otherRanges[otherRangesCount]);
 }
 },["void","CPIndexSet"]), new objj_method(sel_getUid("addIndexesInRange:"), function $CPIndexSet__addIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
-    if (_ranges.length == 0)
+    if (aRange.length <= 0)
+        return;
+    if (_count <= 0)
     {
         _count = aRange.length;
-        return objj_msgSend(_ranges, "addObject:", CPCopyRange(aRange));
+        _ranges = [aRange];
+        return;
     }
-    var i = SOERangeIndex(self, aRange.location),
-        count = _ranges.length,
-        padded = CPMakeRange(aRange.location - 1, aRange.length + 2),
-        maximum = CPMaxRange(aRange);
-    if (count && CPMaxRange(_ranges[count - 1]) < aRange.location)
-        objj_msgSend(_ranges, "addObject:", CPCopyRange(aRange));
+    var rangeCount = _ranges.length,
+        lhsRangeIndex = assumedPositionOfIndex(_ranges, aRange.location - 1),
+        lhsRangeIndexCEIL = CEIL(lhsRangeIndex);
+    if (lhsRangeIndexCEIL === lhsRangeIndex && lhsRangeIndexCEIL < rangeCount)
+        aRange = CPUnionRange(aRange, _ranges[lhsRangeIndexCEIL]);
+    var rhsRangeIndex = assumedPositionOfIndex(_ranges, CPMaxRange(aRange)),
+        rhsRangeIndexFLOOR = FLOOR(rhsRangeIndex);
+    if (rhsRangeIndexFLOOR === rhsRangeIndex && rhsRangeIndexFLOOR >= 0)
+        aRange = CPUnionRange(aRange, _ranges[rhsRangeIndexFLOOR]);
+    var removalCount = rhsRangeIndexFLOOR - lhsRangeIndexCEIL + 1;
+    if (removalCount === _ranges.length)
+    {
+        _ranges = [aRange];
+        _count = aRange.length;
+    }
+    else if (removalCount === 1)
+    {
+        if (lhsRangeIndexCEIL < _ranges.length)
+            _count -= _ranges[lhsRangeIndexCEIL].length;
+        _count += aRange.length;
+        _ranges[lhsRangeIndexCEIL] = aRange;
+    }
     else
-        for (; i < count; ++i)
+    {
+        if (removalCount > 0)
         {
-            if (maximum < _ranges[i].location)
-            {
-                _count += aRange.length;
-                if (i < _cachedRangeIndex) ++_cachedRangeIndex;
-                return objj_msgSend(_ranges, "insertObject:atIndex:", CPCopyRange(aRange), i);
-            }
-            if (CPIntersectionRange(_ranges[i], padded).length)
-            {
-                var union = CPUnionRange(_ranges[i], aRange);
-                if (union.length == _ranges[i].length)
-                    return;
-                 ++union.length;
-                var j = i;
-                for(; j < count; ++j)
-                    if(CPIntersectionRange(union, _ranges[j]).length)
-                        _count -= _ranges[j].length;
-                    else
-                        break;
-                --union.length;
-                _ranges[i] = union;
-                if (j - i - 1 > 0)
-                {
-                    var remove = CPMakeRange(i + 1, j - i - 1);
-                    _ranges[i] = CPUnionRange(_ranges[i], _ranges[j - 1]);
-                    objj_msgSend(_ranges, "removeObjectsInRange:", remove);
-                    if (_cachedRangeIndex >= CPMaxRange(remove)) _cachedRangedIndex -= remove.length;
-                    else if (CPLocationInRange(_cachedRangeIndex, remove)) _cachedRangeIndex = i;
-                }
-                _count += _ranges[i].length;
-                return;
-            }
+            var removal = lhsRangeIndexCEIL,
+                lastRemoval = lhsRangeIndexCEIL + removalCount - 1;
+            for (; removal <= lastRemoval; ++removal)
+                _count -= _ranges[removal].length;
+            objj_msgSend(_ranges, "removeObjectsInRange:", { location:(lhsRangeIndexCEIL), length:removalCount });
         }
-    _count += aRange.length;
+        objj_msgSend(_ranges, "insertObject:atIndex:", aRange, lhsRangeIndexCEIL);
+        _count += aRange.length;
+    }
 }
 },["void","CPRange"]), new objj_method(sel_getUid("removeIndex:"), function $CPIndexSet__removeIndex_(self, _cmd, anIndex)
 { with(self)
 {
-    objj_msgSend(self, "removeIndexesInRange:", CPMakeRange(anIndex, 1));
+    objj_msgSend(self, "removeIndexesInRange:", { location:(anIndex), length:1 });
 }
-},["void","unsignedint"]), new objj_method(sel_getUid("removeIndexes:"), function $CPIndexSet__removeIndexes_(self, _cmd, anIndexSet)
+},["void","CPInteger"]), new objj_method(sel_getUid("removeIndexes:"), function $CPIndexSet__removeIndexes_(self, _cmd, anIndexSet)
 { with(self)
 {
-    var i = 0,
-        ranges = anIndexSet._ranges,
-        count = ranges.length;
-    for(; i < count; ++i)
-        objj_msgSend(self, "removeIndexesInRange:", ranges[i]);
+    var otherRanges = anIndexSet._ranges,
+        otherRangesCount = otherRanges.length;
+    while (otherRangesCount--)
+        objj_msgSend(self, "removeIndexesInRange:", otherRanges[otherRangesCount]);
 }
 },["void","CPIndexSet"]), new objj_method(sel_getUid("removeAllIndexes"), function $CPIndexSet__removeAllIndexes(self, _cmd)
 { with(self)
 {
     _ranges = [];
- _count = 0;
-    _cachedRangeIndex = 0;
+    _count = 0;
 }
 },["void"]), new objj_method(sel_getUid("removeIndexesInRange:"), function $CPIndexSet__removeIndexesInRange_(self, _cmd, aRange)
 { with(self)
 {
-    var i = SOERangeIndex(self, aRange.location),
-        count = _ranges.length,
-        maximum = CPMaxRange(aRange),
-        removal = CPMakeRange(CPNotFound, 0);
-    for (; i < count; ++i)
+    if (aRange.length <= 0)
+        return;
+    if (_count <= 0)
+        return;
+    var rangeCount = _ranges.length,
+        lhsRangeIndex = assumedPositionOfIndex(_ranges, aRange.location),
+        lhsRangeIndexCEIL = CEIL(lhsRangeIndex);
+    if (lhsRangeIndex === lhsRangeIndexCEIL && lhsRangeIndexCEIL < rangeCount)
     {
-        var range = _ranges[i];
-        if (maximum < range.location)
-            break;
-        var intersection = CPIntersectionRange(range, aRange);
-        if (!intersection.length)
-            continue;
-        else if (intersection.length == range.length)
+        var existingRange = _ranges[lhsRangeIndexCEIL];
+        if (aRange.location !== existingRange.location)
         {
-            if (removal.location == CPNotFound)
-                removal = CPMakeRange(i, 1);
+            var maxRange = CPMaxRange(aRange),
+                existingMaxRange = CPMaxRange(existingRange);
+            existingRange.length = aRange.location - existingRange.location;
+            if (maxRange < existingMaxRange)
+            {
+                _count -= aRange.length;
+                objj_msgSend(_ranges, "insertObject:atIndex:", { location:(maxRange), length:existingMaxRange - maxRange }, lhsRangeIndexCEIL + 1);
+                return;
+            }
             else
-                ++removal.length;
+            {
+                _count -= existingMaxRange - aRange.location;
+                lhsRangeIndexCEIL += 1;
+            }
         }
-        else if (intersection.location > range.location && CPMaxRange(intersection) < CPMaxRange(range))
-        {
-            var insert = CPMakeRange(CPMaxRange(intersection), CPMaxRange(range) - CPMaxRange(intersection));
-            range.length = intersection.location - range.location;
-            _count -= intersection.length;
-            return objj_msgSend(_ranges, "insertObject:atIndex:", insert, i + 1);
-        }
-        else
-        {
-            range.length -= intersection.length;
-            if (intersection.location <= range.location)
-                range.location += intersection.length;
-        }
-        _count -= intersection.length;
     }
-    if (removal.length)
-        objj_msgSend(_ranges, "removeObjectsInRange:", removal);
+    var rhsRangeIndex = assumedPositionOfIndex(_ranges, CPMaxRange(aRange) - 1),
+        rhsRangeIndexFLOOR = FLOOR(rhsRangeIndex);
+    if (rhsRangeIndex === rhsRangeIndexFLOOR && rhsRangeIndexFLOOR >= 0)
+    {
+        var maxRange = CPMaxRange(aRange),
+            existingRange = _ranges[rhsRangeIndexFLOOR],
+            existingMaxRange = CPMaxRange(existingRange);
+        if (maxRange !== existingMaxRange)
+        {
+            _count -= maxRange - existingRange.location;
+            rhsRangeIndexFLOOR -= 1;
+            existingRange.location = maxRange;
+            existingRange.length = existingMaxRange - maxRange;
+        }
+    }
+    var removalCount = rhsRangeIndexFLOOR - lhsRangeIndexCEIL + 1;
+    if (removalCount > 0)
+    {
+        var removal = lhsRangeIndexCEIL,
+            lastRemoval = lhsRangeIndexCEIL + removalCount - 1;
+        for (; removal <= lastRemoval; ++removal)
+            _count -= _ranges[removal].length;
+        objj_msgSend(_ranges, "removeObjectsInRange:", { location:(lhsRangeIndexCEIL), length:removalCount });
+    }
 }
 },["void","CPRange"]), new objj_method(sel_getUid("shiftIndexesStartingAtIndex:by:"), function $CPIndexSet__shiftIndexesStartingAtIndex_by_(self, _cmd, anIndex, aDelta)
 { with(self)
 {
- if (!_count || aDelta == 0)
-    return;
+    if (!_count || aDelta == 0)
+       return;
     var i = _ranges.length - 1,
         shifted = CPMakeRange(CPNotFound, 0);
     for(; i >= 0; --i)
@@ -426,10 +447,9 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
             objj_msgSend(self, "addIndexesInRange:", shifted);
     }
 }
-},["void","unsigned","int"])]);
+},["void","CPInteger","int"])]);
 }
 var CPIndexSetCountKey = "CPIndexSetCountKey",
-    CPIndexSetCachedRangeIndexKey = "CPIndexSetCachedRangeIndexKey",
     CPIndexSetRangeStringsKey = "CPIndexSetRangeStringsKey";
 {
 var the_class = objj_getClass("CPIndexSet")
@@ -441,7 +461,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     if (self)
     {
         _count = objj_msgSend(aCoder, "decodeIntForKey:", CPIndexSetCountKey);
-        _cachedRangeIndex = objj_msgSend(aCoder, "decodeIntForKey:", CPIndexSetCachedRangeIndexKey);
         _ranges = [];
         var rangeStrings = objj_msgSend(aCoder, "decodeObjectForKey:", CPIndexSetRangeStringsKey),
             index = 0,
@@ -455,7 +474,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 { with(self)
 {
     objj_msgSend(aCoder, "encodeInt:forKey:", _count, CPIndexSetCountKey);
-    objj_msgSend(aCoder, "encodeInt:forKey:", _cachedRangeIndex, CPIndexSetCachedRangeIndexKey);
     var index = 0,
         count = _ranges.length,
         rangeStrings = [];
@@ -484,20 +502,55 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 meta_class = the_class.isa;objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 }
-var SOERangeIndex = function(anIndexSet, anIndex)
+var positionOfIndex = function(ranges, anIndex)
 {
-    var ranges = anIndexSet._ranges,
-        cachedRangeIndex = 0;
-    if(cachedRangeIndex < ranges.length && anIndex >= ranges[cachedRangeIndex].location)
-        return cachedRangeIndex;
-    return 0;
+    var low = 0,
+        high = ranges.length - 1;
+    while (low <= high)
+    {
+        var middle = FLOOR(low + (high - low) / 2),
+            range = ranges[middle];
+        if (anIndex < range.location)
+            high = middle - 1;
+        else if (anIndex >= CPMaxRange(range))
+            low = middle + 1;
+        else
+            return middle;
+   }
+   return CPNotFound;
 }
-var GOERangeIndex = function(anIndexSet, anIndex)
+var assumedPositionOfIndex = function(ranges, anIndex)
 {
-    var ranges = anIndexSet._ranges,
-        cachedRangeIndex = anIndexSet._ranges.length;
-    if(cachedRangeIndex < ranges.length && anIndex <= ranges[cachedRangeIndex].location)
-        return cachedRangeIndex;
-    return ranges.length - 1;
+    var count = ranges.length;
+    if (count <= 0)
+        return CPNotFound;
+    var low = 0,
+        high = count * 2;
+    while (low <= high)
+    {
+        var middle = FLOOR(low + (high - low) / 2),
+            position = middle / 2,
+            positionFLOOR = FLOOR(position);
+        if (position === positionFLOOR)
+        {
+            if (positionFLOOR - 1 >= 0 && anIndex < CPMaxRange(ranges[positionFLOOR - 1]))
+                high = middle - 1;
+            else if (positionFLOOR < count && anIndex >= ranges[positionFLOOR].location)
+                low = middle + 1;
+            else
+                return positionFLOOR - 0.5;
+        }
+        else
+        {
+            var range = ranges[positionFLOOR];
+            if (anIndex < range.location)
+                high = middle - 1;
+            else if (anIndex >= CPMaxRange(range))
+                low = middle + 1;
+            else
+                return positionFLOOR;
+        }
+    }
+   return CPNotFound;
 }
 

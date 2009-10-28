@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;18;Foundation/CPSet.ji;10;CPButton.jc;6807;
+I;21;Foundation/CPObject.jI;18;Foundation/CPSet.ji;10;CPButton.jc;7166;
 {var the_class = objj_allocateClassPair(CPButton, "CPRadio"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_radioGroup")]);
 objj_registerClassPair(the_class);
@@ -18,17 +18,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:radioGrou
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $CPRadio__initWithFrame_(self, _cmd, aFrame)
+},["id","CGRect","CPRadioGroup"]), new objj_method(sel_getUid("initWithFrame:"), function $CPRadio__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     return objj_msgSend(self, "initWithFrame:radioGroup:", aFrame, nil);
 }
-}), new objj_method(sel_getUid("nextState"), function $CPRadio__nextState(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("nextState"), function $CPRadio__nextState(self, _cmd)
 { with(self)
 {
     return CPOnState;
 }
-}), new objj_method(sel_getUid("setRadioGroup:"), function $CPRadio__setRadioGroup_(self, _cmd, aRadioGroup)
+},["CPInteger"]), new objj_method(sel_getUid("setRadioGroup:"), function $CPRadio__setRadioGroup_(self, _cmd, aRadioGroup)
 { with(self)
 {
     if (_radioGroup === aRadioGroup)
@@ -37,42 +37,42 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:radioGrou
     _radioGroup = aRadioGroup;
     objj_msgSend(_radioGroup, "_addRadio:", self);
 }
-}), new objj_method(sel_getUid("radioGroup"), function $CPRadio__radioGroup(self, _cmd)
+},["void","CPRadioGroup"]), new objj_method(sel_getUid("radioGroup"), function $CPRadio__radioGroup(self, _cmd)
 { with(self)
 {
     return _radioGroup;
 }
-}), new objj_method(sel_getUid("setObjectValue:"), function $CPRadio__setObjectValue_(self, _cmd, aValue)
+},["CPRadioGroup"]), new objj_method(sel_getUid("setObjectValue:"), function $CPRadio__setObjectValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPButton") }, "setObjectValue:", aValue);
     if (objj_msgSend(self, "state") === CPOnState)
         objj_msgSend(_radioGroup, "_setSelectedRadio:", self);
 }
-})]);
+},["void","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("radioWithTitle:theme:"), function $CPRadio__radioWithTitle_theme_(self, _cmd, aTitle, aTheme)
 { with(self)
 {
     return objj_msgSend(self, "buttonWithTitle:theme:", aTitle, aTheme);
 }
-}), new objj_method(sel_getUid("radioWithTitle:"), function $CPRadio__radioWithTitle_(self, _cmd, aTitle)
+},["id","CPString","CPTheme"]), new objj_method(sel_getUid("radioWithTitle:"), function $CPRadio__radioWithTitle_(self, _cmd, aTitle)
 { with(self)
 {
     return objj_msgSend(self, "buttonWithTitle:", aTitle);
 }
-}), new objj_method(sel_getUid("standardButtonWithTitle:"), function $CPRadio__standardButtonWithTitle_(self, _cmd, aTitle)
+},["id","CPString"]), new objj_method(sel_getUid("standardButtonWithTitle:"), function $CPRadio__standardButtonWithTitle_(self, _cmd, aTitle)
 { with(self)
 {
     var button = objj_msgSend(objj_msgSend(CPRadio, "alloc"), "init");
     objj_msgSend(button, "setTitle:", aTitle);
     return button;
 }
-}), new objj_method(sel_getUid("themeClass"), function $CPRadio__themeClass(self, _cmd)
+},["CPButton","CPString"]), new objj_method(sel_getUid("themeClass"), function $CPRadio__themeClass(self, _cmd)
 { with(self)
 {
     return "radio";
 }
-})]);
+},["CPString"])]);
 }
 var CPRadioRadioGroupKey = "CPRadioRadioGroupKey";
 {
@@ -86,13 +86,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _radioGroup = objj_msgSend(aCoder, "decodeObjectForKey:", CPRadioRadioGroupKey);
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPRadio__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPRadio__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPButton") }, "encodeWithCoder:", aCoder);
     objj_msgSend(aCoder, "encodeObject:forKey:", _radioGroup, CPRadioRadioGroupKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPRadioGroup"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_radios"), new objj_ivar("_selectedRadio")]);
@@ -109,21 +109,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRad
     }
     return self;
 }
-}), new objj_method(sel_getUid("_addRadio:"), function $CPRadioGroup___addRadio_(self, _cmd, aRadio)
+},["id"]), new objj_method(sel_getUid("_addRadio:"), function $CPRadioGroup___addRadio_(self, _cmd, aRadio)
 { with(self)
 {
     objj_msgSend(_radios, "addObject:", aRadio);
     if (objj_msgSend(aRadio, "state") === CPOnState)
         objj_msgSend(self, "_setSelectedRadio:", aRadio);
 }
-}), new objj_method(sel_getUid("_removeRadio:"), function $CPRadioGroup___removeRadio_(self, _cmd, aRadio)
+},["void","CPRadio"]), new objj_method(sel_getUid("_removeRadio:"), function $CPRadioGroup___removeRadio_(self, _cmd, aRadio)
 { with(self)
 {
     if (_selectedRadio === aRadio)
         _selectedRadio = nil;
     objj_msgSend(_radios, "removeObject:", aRadio);
 }
-}), new objj_method(sel_getUid("_setSelectedRadio:"), function $CPRadioGroup___setSelectedRadio_(self, _cmd, aRadio)
+},["void","CPRadio"]), new objj_method(sel_getUid("_setSelectedRadio:"), function $CPRadioGroup___setSelectedRadio_(self, _cmd, aRadio)
 { with(self)
 {
     if (_selectedRadio === aRadio)
@@ -131,17 +131,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRad
     objj_msgSend(_selectedRadio, "setState:", CPOffState);
     _selectedRadio = aRadio;
 }
-}), new objj_method(sel_getUid("selectedRadio"), function $CPRadioGroup__selectedRadio(self, _cmd)
+},["void","CPRadio"]), new objj_method(sel_getUid("selectedRadio"), function $CPRadioGroup__selectedRadio(self, _cmd)
 { with(self)
 {
     return _selectedRadio;
 }
-}), new objj_method(sel_getUid("radios"), function $CPRadioGroup__radios(self, _cmd)
+},["CPRadio"]), new objj_method(sel_getUid("radios"), function $CPRadioGroup__radios(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_radios, "allObjects");
 }
-})]);
+},["CPArray"])]);
 }
 var CPRadioGroupRadiosKey = "CPRadioGroupRadiosKey",
     CPRadioGroupSelectedRadioKey = "CPRadioGroupSelectedRadioKey";
@@ -159,12 +159,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPRadioGroup__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPRadioGroup__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _radios, CPRadioGroupRadiosKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _selectedRadio, CPRadioGroupSelectedRadioKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

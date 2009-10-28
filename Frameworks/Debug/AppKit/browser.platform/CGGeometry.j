@@ -1,4 +1,4 @@
-c;7658;CGPointMake= function(x, y) { return { x:x, y:y }; }
+c;7773;CGPointMake= function(x, y) { return { x:x, y:y }; }
 CGPointMakeZero= function() { return { x:0.0, y:0.0 }; }
 CGPointMakeCopy= function(aPoint) { return { x:aPoint.x, y:aPoint.y }; }
 CGPointCreateCopy= function(aPoint) { return { x:aPoint.x, y:aPoint.y }; }
@@ -33,6 +33,7 @@ CGInsetMake= function(top, right, bottom, left) { return { top:(top), right:(rig
 CGInsetMakeZero= function() { return { top:(0), right:(0), bottom:(0), left:(0) }; }
 CGInsetMakeCopy= function(anInset) { return { top:(anInset.top), right:(anInset.right), bottom:(anInset.bottom), left:(anInset.left) }; }
 CGInsetIsEmpty= function(anInset) { return ((anInset).top === 0 && (anInset).right === 0 && (anInset).bottom === 0 && (anInset).left === 0); }
+CGRectNull = { origin: { x:Infinity, y:Infinity }, size: { width:0.0, height:0.0 } };
 CGRectContainsRect= function(lhsRect, rhsRect)
 {
     var union = CGRectUnion(lhsRect, rhsRect);
@@ -65,18 +66,14 @@ CGRectStandardize= function(aRect)
 {
     var width = (aRect.size.width),
         height = (aRect.size.height),
-        standardized = aRect;
+        standardized = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
     if (width < 0.0)
     {
-        if (standardized == aRect)
-            standardized = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
         standardized.origin.x += width;
         standardized.size.width = -width;
     }
     if (height < 0.0)
     {
-        if (standardized == aRect)
-            standardized = { origin: { x:aRect.origin.x, y:aRect.origin.y }, size: { width:aRect.size.width, height:aRect.size.height } };
         standardized.origin.y += height;
         standardized.size.height = -height;
     }
@@ -84,6 +81,12 @@ CGRectStandardize= function(aRect)
 }
 CGRectUnion= function(lhsRect, rhsRect)
 {
+    var lhsRectIsNull = !lhsRect || lhsRect === CGRectNull,
+        rhsRectIsNull = !rhsRect || rhsRect === CGRectNull;
+    if (lhsRectIsNull)
+        return rhsRectIsNull ? CGRectNull : rhsRect;
+    if (rhsRectIsNull)
+        return lhsRectIsNull ? CGRectNull : lhsRect;
     var minX = MIN((lhsRect.origin.x), (rhsRect.origin.x)),
         minY = MIN((lhsRect.origin.y), (rhsRect.origin.y)),
         maxX = MAX((lhsRect.origin.x + lhsRect.size.width), (rhsRect.origin.x + rhsRect.size.width)),

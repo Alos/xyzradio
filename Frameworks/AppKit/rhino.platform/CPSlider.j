@@ -1,4 +1,4 @@
-i;11;CPControl.jc;11216;
+i;11;CPControl.jc;11368;
 CPLinearSlider=0;
 CPCircularSlider=1;
 var _1=objj_allocateClassPair(CPControl,"CPSlider"),_2=_1.isa;
@@ -27,6 +27,8 @@ var _9=objj_msgSend(_6,"doubleValue");
 if(_9<_minValue){
 objj_msgSend(_6,"setDoubleValue:",_minValue);
 }
+objj_msgSend(_6,"setNeedsLayout");
+objj_msgSend(_6,"setNeedsDisplay:",YES);
 }
 }),new objj_method(sel_getUid("minValue"),function(_a,_b){
 with(_a){
@@ -42,6 +44,8 @@ var _f=objj_msgSend(_c,"doubleValue");
 if(_f>_maxValue){
 objj_msgSend(_c,"setDoubleValue:",_maxValue);
 }
+objj_msgSend(_c,"setNeedsLayout");
+objj_msgSend(_c,"setNeedsDisplay:",YES);
 }
 }),new objj_method(sel_getUid("maxValue"),function(_10,_11){
 with(_10){

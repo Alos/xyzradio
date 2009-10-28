@@ -1,4 +1,4 @@
-i;15;CPTableColumn.ji;13;CPTableView.ji;8;CPView.jc;2621;
+i;15;CPTableColumn.ji;13;CPTableView.ji;8;CPView.jc;3366;
 var _1=objj_allocateClassPair(CPView,"CPTableHeaderView"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_resizedColumn"),new objj_ivar("_draggedColumn"),new objj_ivar("_draggedDistance"),new objj_ivar("_tableView")]);
 objj_registerClassPair(_1);
@@ -69,6 +69,21 @@ _25.size.width=objj_msgSend(_27,"width")+_26.width;
 objj_msgSend(_28,"setFrame:",_25);
 _25.origin.x+=objj_msgSend(_27,"width")+_26.width;
 objj_msgSend(_21,"addSubview:",_28);
+}
+}
+}),new objj_method(sel_getUid("drawRect:"),function(_29,_2a,_2b){
+with(_29){
+objj_msgSend(objj_msgSend(_tableView,"gridColor"),"setStroke");
+var _2c=objj_msgSend(objj_msgSend(CPGraphicsContext,"currentContext"),"graphicsPort"),_2d=_2d=objj_msgSend(_tableView,"columnIndexesInRect:",_2b),_2e=[];
+objj_msgSend(_2d,"getIndexes:maxCount:inIndexRange:",_2e,-1,nil);
+var _2f=0,_30=_2e.length;
+for(;_2f<_30;++_2f){
+var _31=objj_msgSend(_29,"headerRectOfColumn:",_2f);
+CGContextBeginPath(_2c);
+CGContextMoveToPoint(_2c,ROUND(_31.origin.x+_31.size.width)-0.5,ROUND(_31.origin.y)-0.5);
+CGContextAddLineToPoint(_2c,ROUND(_31.origin.x+_31.size.width)-0.5,ROUND(_31.origin.y+_31.size.height)-0.5);
+CGContextSetLineWidth(_2c,1);
+CGContextStrokePath(_2c);
 }
 }
 })]);

@@ -1,4 +1,4 @@
-i;10;CPObject.jc;1309;
+i;10;CPObject.jc;1355;
 {var the_class = objj_allocateClassPair(CPObject, "CPURLResponse"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_URL")]);
 objj_registerClassPair(the_class);
@@ -11,12 +11,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithURL:"), functio
         _URL = aURL;
     return self;
 }
-}), new objj_method(sel_getUid("URL"), function $CPURLResponse__URL(self, _cmd)
+},["id","CPURL"]), new objj_method(sel_getUid("URL"), function $CPURLResponse__URL(self, _cmd)
 { with(self)
 {
     return _URL;
 }
-})]);
+},["CPURL"])]);
 }
 {var the_class = objj_allocateClassPair(CPURLResponse, "CPHTTPURLResponse"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_statusCode")]);
@@ -27,11 +27,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_setStatusCode:"), func
 {
     _statusCode = aStatusCode;
 }
-}), new objj_method(sel_getUid("statusCode"), function $CPHTTPURLResponse__statusCode(self, _cmd)
+},["id","int"]), new objj_method(sel_getUid("statusCode"), function $CPHTTPURLResponse__statusCode(self, _cmd)
 { with(self)
 {
     return _statusCode;
 }
-})]);
+},["int"])]);
 }
 

@@ -1,7 +1,7 @@
-I;21;Foundation/CPObject.jc;3687;
+I;21;Foundation/CPObject.jc;3467;
 var _1=NULL;
 var _2=objj_allocateClassPair(CPObject,"CPPlatformWindow"),_3=_2.isa;
-class_addIvars(_2,[new objj_ivar("_contentRect"),new objj_ivar("_level"),new objj_ivar("_hasShadow")]);
+class_addIvars(_2,[new objj_ivar("_contentRect"),new objj_ivar("_level"),new objj_ivar("_hasShadow"),new objj_ivar("_shadowStyle")]);
 objj_registerClassPair(_2);
 objj_addClassForBundle(_2,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(_2,[new objj_method(sel_getUid("initWithContentRect:"),function(_4,_5,_6){
@@ -46,55 +46,44 @@ with(_14){
 if(!_16||((_contentRect.origin.x==_16.origin.x&&_contentRect.origin.y==_16.origin.y)&&(_contentRect.size.width==_16.size.width&&_contentRect.size.height==_16.size.height))){
 return;
 }
-objj_msgSend(_14,"setContentOrigin:",_16.origin);
-objj_msgSend(_14,"setContentSize:",_16.size);
+_contentRect={origin:{x:_16.origin.x,y:_16.origin.y},size:{width:_16.size.width,height:_16.size.height}};
+objj_msgSend(_14,"updateNativeContentRect");
 }
-}),new objj_method(sel_getUid("setContentOrigin:"),function(_17,_18,_19){
+}),new objj_method(sel_getUid("updateFromNativeContentRect"),function(_17,_18){
 with(_17){
-var _1a=_contentRect.origin;
-if(!_19||(_1a.x==_19.x&&_1a.y==_19.y)){
-return;
+objj_msgSend(_17,"setContentRect:",objj_msgSend(_17,"nativeContentRect"));
 }
-_1a.x=_19.x;
-_1a.y=_19.y;
-objj_msgSend(_17,"updateNativeContentOrigin");
+}),new objj_method(sel_getUid("convertBaseToScreen:"),function(_19,_1a,_1b){
+with(_19){
+var _1c=objj_msgSend(_19,"contentRect");
+return {x:_1b.x+(_1c.origin.x),y:_1b.y+(_1c.origin.y)};
 }
-}),new objj_method(sel_getUid("setContentSize:"),function(_1b,_1c,_1d){
-with(_1b){
-var _1e=_contentRect.size;
-if(!_1d||(_1e.width==_1d.width&&_1e.height==_1d.height)){
-return;
+}),new objj_method(sel_getUid("convertScreenToBase:"),function(_1d,_1e,_1f){
+with(_1d){
+var _20=objj_msgSend(_1d,"contentRect");
+return {x:_1f.x-(_20.origin.x),y:_1f.y-(_20.origin.y)};
 }
-var _1f={width:_1d.width-_1e.width,height:_1d.height-_1e.height};
-_1e.width=_1d.width;
-_1e.height=_1d.height;
-objj_msgSend(_1b,"updateNativeContentSize");
-}
-}),new objj_method(sel_getUid("updateFromNativeContentRect"),function(_20,_21){
-with(_20){
-objj_msgSend(_20,"setContentRect:",objj_msgSend(_20,"nativeContentRect"));
-}
-}),new objj_method(sel_getUid("convertBaseToScreen:"),function(_22,_23,_24){
-with(_22){
-var _25=objj_msgSend(_22,"contentRect");
-return {x:_24.x+(_25.origin.x),y:_24.y+(_25.origin.y)};
-}
-}),new objj_method(sel_getUid("convertScreenToBase:"),function(_26,_27,_28){
-with(_26){
-var _29=objj_msgSend(_26,"contentRect");
-return {x:_28.x-(_29.origin.x),y:_28.y-(_29.origin.y)};
-}
-}),new objj_method(sel_getUid("isVisible"),function(_2a,_2b){
-with(_2a){
+}),new objj_method(sel_getUid("isVisible"),function(_21,_22){
+with(_21){
 return NO;
 }
-}),new objj_method(sel_getUid("setLevel:"),function(_2c,_2d,_2e){
-with(_2c){
-_level=_2e;
+}),new objj_method(sel_getUid("deminiaturize:"),function(_23,_24,_25){
+with(_23){
 }
-}),new objj_method(sel_getUid("setHasShadow:"),function(_2f,_30,_31){
+}),new objj_method(sel_getUid("miniaturize:"),function(_26,_27,_28){
+with(_26){
+}
+}),new objj_method(sel_getUid("setLevel:"),function(_29,_2a,_2b){
+with(_29){
+_level=_2b;
+}
+}),new objj_method(sel_getUid("setHasShadow:"),function(_2c,_2d,_2e){
+with(_2c){
+_hasShadow=_2e;
+}
+}),new objj_method(sel_getUid("setShadowStyle:"),function(_2f,_30,_31){
 with(_2f){
-_hasShadow=_31;
+_shadowStyle=_31;
 }
 }),new objj_method(sel_getUid("supportsFullPlatformWindows"),function(_32,_33){
 with(_32){

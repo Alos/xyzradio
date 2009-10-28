@@ -1,4 +1,4 @@
-i;15;_CPWindowView.jc;2460;
+i;15;_CPWindowView.jc;2481;
 var _CPToolbarViewBackgroundColor = nil;
 {var the_class = objj_allocateClassPair(_CPWindowView, "_CPBorderlessBridgeWindowView"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_toolbarBackgroundView")]);
@@ -29,7 +29,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("tile"), function $_CPBo
     frame.size = objj_msgSend(_toolbarView, "frame").size;
     objj_msgSend(_toolbarBackgroundView, "setFrame:", frame);
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("toolbarBackgroundColor"), function $_CPBorderlessBridgeWindowView__toolbarBackgroundColor(self, _cmd)
 { with(self)
 {
@@ -37,6 +37,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("toolbarBackgroundColor
         _CPToolbarViewBackgroundColor = objj_msgSend(CPColor, "colorWithPatternImage:", objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", objj_msgSend(_CPBorderlessBridgeWindowView, "class")), "pathForResource:", "_CPToolbarView/_CPToolbarViewBackground.png"), CGSizeMake(1.0, 59.0)));
     return _CPToolbarViewBackgroundColor;
 }
-})]);
+},["CPColor"])]);
 }
 

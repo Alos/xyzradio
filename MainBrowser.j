@@ -18,12 +18,12 @@ This file is part of XYZRadio.
     You should have received a copy of the GNU Lesser General Public License
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
-@import "XYZPlayList.j"
+@import "XYZPlayListWindow.j"
 @import "XYZColumnModel.j"
 @import "XYZTable.j"
 
 /*The Music browser*/
-@implementation MainBrowser : XYZPlayList
+@implementation MainBrowser : XYZPlayListWindow
 {
 }
 

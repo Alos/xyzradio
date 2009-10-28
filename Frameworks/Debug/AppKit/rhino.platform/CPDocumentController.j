@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPBundle.ji;12;CPDocument.jc;8583;
+I;21;Foundation/CPObject.jI;21;Foundation/CPBundle.ji;12;CPDocument.ji;13;CPOpenPanel.jc;9117;;
 var CPSharedDocumentController = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPDocumentController"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_documents"), new objj_ivar("_documentTypes")]);
@@ -91,7 +91,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 {
     objj_msgSend(self, "openUntitledDocumentOfType:display:", objj_msgSend(objj_msgSend(_documentTypes, "objectAtIndex:", 0), "objectForKey:", "CPBundleTypeName"), YES);
 }
-},["CFAction","id"]), new objj_method(sel_getUid("documents"), function $CPDocumentController__documents(self, _cmd)
+},["CFAction","id"]), new objj_method(sel_getUid("openDocument:"), function $CPDocumentController__openDocument_(self, _cmd, aSender)
+{ with(self)
+{
+    var openPanel = objj_msgSend(CPOpenPanel, "openPanel");
+    objj_msgSend(openPanel, "runModal");
+    var URLs = objj_msgSend(openPanel, "URLs"),
+        index = 0,
+        count = objj_msgSend(URLs, "count");
+    for (; index < count; ++index)
+        objj_msgSend(self, "openDocumentWithContentsOfURL:display:error:", objj_msgSend(CPURL, "URLWithString:", URLs[index]), YES, nil);
+}
+},["void","id"]), new objj_method(sel_getUid("documents"), function $CPDocumentController__documents(self, _cmd)
 { with(self)
 {
     return _documents;

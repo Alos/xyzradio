@@ -1,4 +1,4 @@
-i;10;CPObject.jc;2026;
+i;10;CPObject.jc;2151;
 var _1=objj_allocateClassPair(CPObject,"CPURLRequest"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_URL"),new objj_ivar("_HTTPBody"),new objj_ivar("_HTTPMethod"),new objj_ivar("_HTTPHeaderFields")]);
 objj_registerClassPair(_1);
@@ -7,7 +7,11 @@ class_addMethods(_1,[new objj_method(sel_getUid("initWithURL:"),function(_3,_4,_
 with(_3){
 _3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("CPObject")},"init");
 if(_3){
+if(objj_msgSend(_5,"isKindOfClass:",objj_msgSend(CPString,"class"))){
+_URL=objj_msgSend(CPURL,"URLWithString:",_5);
+}else{
 _URL=_5;
+}
 _HTTPBody="";
 _HTTPMethod="GET";
 _HTTPHeaderFields=objj_msgSend(CPDictionary,"dictionary");

@@ -1,4 +1,4 @@
-i;13;CPTextField.jc;17825;
+i;13;CPTextField.jc;17963;
 CPSearchFieldRecentsTitleMenuItemTag=1000;
 CPSearchFieldRecentsMenuItemTag=1001;
 CPSearchFieldClearRecentsMenuItemTag=1002;
@@ -24,9 +24,11 @@ objj_msgSend(_7,"setDelegate:",_7);
 _cancelButton=objj_msgSend(objj_msgSend(CPButton,"alloc"),"initWithFrame:",CPMakeRect(_9.size.width-27,(_9.size.height-22)/2,22,22));
 objj_msgSend(_7,"resetCancelButton");
 objj_msgSend(_cancelButton,"setHidden:",YES);
+objj_msgSend(_cancelButton,"setAutoresizingMask:",CPViewMinXMargin);
 objj_msgSend(_7,"addSubview:",_cancelButton);
 _searchButton=objj_msgSend(objj_msgSend(CPButton,"alloc"),"initWithFrame:",CPMakeRect(5,(_9.size.height-25)/2,25,25));
 objj_msgSend(_searchButton,"setBezelStyle:",CPRegularSquareBezelStyle);
+objj_msgSend(_searchButton,"setAutoresizingMask:",CPViewMaxXMargin);
 objj_msgSend(_searchButton,"setBordered:",NO);
 objj_msgSend(_searchButton,"setImageScaling:",CPScaleToFit);
 objj_msgSend(_7,"setSearchMenuTemplate:",objj_msgSend(_7,"_searchMenuTemplate"));

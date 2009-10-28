@@ -1,4 +1,4 @@
-I;15;AppKit/CPView.jc;2246;
+I;15;AppKit/CPView.jc;2337;
 
 
 
@@ -14,7 +14,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("rectForEphemeralSubview
 
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "rectForEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPButtonBar__createEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CPString"]), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPButtonBar__createEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "bezel-view")
@@ -28,7 +28,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("rectForEphemeralSubview
 
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "createEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPButtonBar__layoutSubviews(self, _cmd)
+},["CPView","CPString"]), new objj_method(sel_getUid("layoutSubviews"), function $CPButtonBar__layoutSubviews(self, _cmd)
 { with(self)
 {
     var bezelView = objj_msgSend(self, "layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:", "bezel-view", CPWindowBelow, "");
@@ -36,24 +36,24 @@ class_addMethods(the_class, [new objj_method(sel_getUid("rectForEphemeralSubview
     if (bezelView)
         objj_msgSend(bezelView, "setBackgroundColor:", objj_msgSend(self, "currentValueForThemeAttribute:", "bezel-color"));
 }
-}), new objj_method(sel_getUid("addSubview:"), function $CPButtonBar__addSubview_(self, _cmd, aSubview)
+},["void"]), new objj_method(sel_getUid("addSubview:"), function $CPButtonBar__addSubview_(self, _cmd, aSubview)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "addSubview:", aSubview);
 
     objj_msgSend(aSubview, "setAutoresizingMask:", CPViewMinXMargin);
 }
-})]);
+},["void","CPView"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("themeClass"), function $CPButtonBar__themeClass(self, _cmd)
 { with(self)
 {
     return "button-bar";
 }
-}), new objj_method(sel_getUid("themeAttributes"), function $CPButtonBar__themeAttributes(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("themeAttributes"), function $CPButtonBar__themeAttributes(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [nil], ["bezel-color"]);
 }
-})]);
+},["id"])]);
 }
 

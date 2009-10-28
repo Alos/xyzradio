@@ -1,4 +1,4 @@
-i;9;CPEvent.jc;4551;
+i;9;CPEvent.jc;4576;
 CPUnknownBrowserEngine = 0;
 CPGeckoBrowserEngine = 1;
 CPInternetExplorerBrowserEngine = 2;
@@ -57,7 +57,7 @@ else if (USER_AGENT.indexOf("AppleWebKit/") != -1)
         versionDivision = versionString.indexOf('.'),
         majorVersion = parseInt(versionString.substring(0, versionDivision)),
         minorVersion = parseInt(versionString.substr(versionDivision + 1));
-    if((USER_AGENT.indexOf("Safari") !== CPNotFound && (majorVersion >= 525 && minorVersion > 14)) || USER_AGENT.indexOf("Chrome") !== CPNotFound)
+    if((USER_AGENT.indexOf("Safari") !== CPNotFound && (majorVersion > 525 || (majorVersion === 525 && minorVersion > 14))) || USER_AGENT.indexOf("Chrome") !== CPNotFound)
         PLATFORM_FEATURES |= CPJavascriptRemedialKeySupport;
 }
 else if (USER_AGENT.indexOf("KHTML") != -1)

@@ -51,11 +51,13 @@
 		<string>CPString.j</string>
 		<string>CPTimer.j</string>
 		<string>CPUndoManager.j</string>
+		<string>CPURL.j</string>
 		<string>CPURLConnection.j</string>
 		<string>CPURLRequest.j</string>
 		<string>CPURLResponse.j</string>
 		<string>CPUserSessionManager.j</string>
 		<string>CPValue.j</string>
+		<string>CPWebDAVManager.j</string>
 		<string>Foundation.j</string>
 	</array>
 	<key>CPBundleVersion</key>

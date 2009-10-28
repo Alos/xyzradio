@@ -1,4 +1,4 @@
-i;9;CPArray.ji;14;CPDictionary.ji;16;CPNotification.ji;13;CPException.jc;10381;
+i;9;CPArray.ji;14;CPDictionary.ji;16;CPNotification.ji;13;CPException.jc;10263;
 var CPNotificationDefaultCenter = nil;
 {var the_class = objj_allocateClassPair(CPObject, "CPNotificationCenter"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_namedRegistries"), new objj_ivar("_unnamedRegistry")]);
@@ -85,15 +85,19 @@ var _CPNotificationCenterPostNotification = function( self, aNotification)
     objj_msgSend(objj_msgSend(self._namedRegistries, "objectForKey:", objj_msgSend(aNotification, "name")), "postNotification:", aNotification);
 }
 {var the_class = objj_allocateClassPair(CPObject, "_CPNotificationRegistry"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_objectObservers"), new objj_ivar("_observerRemoval"), new objj_ivar("_postingObservers")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_objectObservers"), new objj_ivar("_observerRemovalCount")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNotificationRegistry__init(self, _cmd)
 { with(self)
 {
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
     if (self)
+    {
+        _observerRemovalCount = 0;
         _objectObservers = objj_msgSend(CPDictionary, "dictionary");
-   return self;
+    }
+    return self;
 }
 },["id"]), new objj_method(sel_getUid("addObserver:object:"), function $_CPNotificationRegistry__addObserver_object_(self, _cmd, anObserver, anObject)
 { with(self)
@@ -106,8 +110,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
         observers = [];
         objj_msgSend(_objectObservers, "setObject:forKey:", observers, objj_msgSend(anObject, "UID"));
     }
-    if (observers == _postingObservers)
-        _postingObservers = objj_msgSend(observers, "copy");
     observers.push(anObserver);
 }
 },["void","_CPNotificationObserver","id"]), new objj_method(sel_getUid("removeObserver:object:"), function $_CPNotificationRegistry__removeObserver_object_(self, _cmd, anObserver, anObject)
@@ -125,9 +127,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
             while (count--)
                 if (objj_msgSend(observers[count], "observer") == anObserver)
                 {
-                    _observerRemoval = YES;
-                    if (observers == _postingObservers)
-                        _postingObservers = objj_msgSend(observers, "copy");
+                    ++_observerRemovalCount;
                     observers.splice(count, 1);
                 }
             if (!observers || observers.length == 0)
@@ -142,9 +142,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
         while (count--)
             if (objj_msgSend(observers[count], "observer") == anObserver)
             {
-                _observerRemoval = YES;
-                if (observers == _postingObservers)
-                    _postingObservers = objj_msgSend(observers, "copy");
+                ++_observerRemovalCount;
                 observers.splice(count, 1)
             }
         if (!observers || observers.length == 0)
@@ -157,32 +155,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPNo
 },["void","id","id"]), new objj_method(sel_getUid("postNotification:"), function $_CPNotificationRegistry__postNotification_(self, _cmd, aNotification)
 { with(self)
 {
-    var object = objj_msgSend(aNotification, "object");
-    if (object != nil && (_postingObservers = objj_msgSend(_objectObservers, "objectForKey:", objj_msgSend(object, "UID"))))
+    var observerRemovalCount = _observerRemovalCount,
+        object = objj_msgSend(aNotification, "object"),
+        observers = nil;
+    if (object != nil && (observers = objj_msgSend(objj_msgSend(_objectObservers, "objectForKey:", objj_msgSend(object, "UID")), "copy")))
     {
-        var observers = _postingObservers,
+        var currentObservers = observers,
             count = observers.length;
-        _observerRemoval = NO;
         while (count--)
         {
-            var observer = _postingObservers[count];
-            if (!_observerRemoval || objj_msgSend(observers, "indexOfObjectIdenticalTo:", observer) != CPNotFound)
+            var observer = observers[count];
+            if ((observerRemovalCount === _observerRemovalCount) || objj_msgSend(currentObservers, "indexOfObjectIdenticalTo:", observer) !== CPNotFound)
                 objj_msgSend(observer, "postNotification:", aNotification);
         }
     }
-    _postingObservers = objj_msgSend(_objectObservers, "objectForKey:", objj_msgSend(objj_msgSend(CPNull, "null"), "UID"));
-    if (!_postingObservers)
+    observers = objj_msgSend(objj_msgSend(_objectObservers, "objectForKey:", objj_msgSend(objj_msgSend(CPNull, "null"), "UID")), "copy");
+    if (!observers)
         return;
-    var observers = _postingObservers,
-        count = observers.length;
-    _observerRemoval = NO;
+    var observerRemovalCount = _observerRemovalCount,
+        count = observers.length,
+        currentObservers = observers;
     while (count--)
     {
-        var observer = _postingObservers[count];
-        if (!_observerRemoval || objj_msgSend(observers, "indexOfObjectIdenticalTo:", observer) != CPNotFound)
+        var observer = observers[count];
+        if ((observerRemovalCount === _observerRemovalCount) || objj_msgSend(currentObservers, "indexOfObjectIdenticalTo:", observer) !== CPNotFound)
             objj_msgSend(observer, "postNotification:", aNotification);
     }
-    _postingObservers = nil;
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("count"), function $_CPNotificationRegistry__count(self, _cmd)
 { with(self)

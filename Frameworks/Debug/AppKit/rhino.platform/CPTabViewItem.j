@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;15;AppKit/CPView.jc;3722;
+I;21;Foundation/CPObject.jI;15;AppKit/CPView.jc;4075;
 CPSelectedTab = 0;
 CPBackgroundTab = 1;
 CPPressedTab = 2;
@@ -6,7 +6,12 @@ CPPressedTab = 2;
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_identifier"), new objj_ivar("_label"), new objj_ivar("_view"), new objj_ivar("_auxiliaryView")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), function $CPTabViewItem__initWithIdentifier_(self, _cmd, anIdentifier)
+class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPTabViewItem__init(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(self, "initWithIdentifier:", "");
+}
+},["id"]), new objj_method(sel_getUid("initWithIdentifier:"), function $CPTabViewItem__initWithIdentifier_(self, _cmd, anIdentifier)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -14,57 +19,57 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithIdentifier:"), 
         _identifier = anIdentifier;
     return self;
 }
-}), new objj_method(sel_getUid("setLabel:"), function $CPTabViewItem__setLabel_(self, _cmd, aLabel)
+},["id","id"]), new objj_method(sel_getUid("setLabel:"), function $CPTabViewItem__setLabel_(self, _cmd, aLabel)
 { with(self)
 {
     _label = aLabel;
 }
-}), new objj_method(sel_getUid("label"), function $CPTabViewItem__label(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("label"), function $CPTabViewItem__label(self, _cmd)
 { with(self)
 {
     return _label;
 }
-}), new objj_method(sel_getUid("tabState"), function $CPTabViewItem__tabState(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("tabState"), function $CPTabViewItem__tabState(self, _cmd)
 { with(self)
 {
     return _tabState;
 }
-}), new objj_method(sel_getUid("setIdentifier:"), function $CPTabViewItem__setIdentifier_(self, _cmd, anIdentifier)
+},["CPTabState"]), new objj_method(sel_getUid("setIdentifier:"), function $CPTabViewItem__setIdentifier_(self, _cmd, anIdentifier)
 { with(self)
 {
     _identifier = anIdentifier;
 }
-}), new objj_method(sel_getUid("identifier"), function $CPTabViewItem__identifier(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("identifier"), function $CPTabViewItem__identifier(self, _cmd)
 { with(self)
 {
     return _identifier;
 }
-}), new objj_method(sel_getUid("setView:"), function $CPTabViewItem__setView_(self, _cmd, aView)
+},["id"]), new objj_method(sel_getUid("setView:"), function $CPTabViewItem__setView_(self, _cmd, aView)
 { with(self)
 {
     _view = aView;
 }
-}), new objj_method(sel_getUid("view"), function $CPTabViewItem__view(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("view"), function $CPTabViewItem__view(self, _cmd)
 { with(self)
 {
     return _view;
 }
-}), new objj_method(sel_getUid("setAuxiliaryView:"), function $CPTabViewItem__setAuxiliaryView_(self, _cmd, anAuxiliaryView)
+},["CPView"]), new objj_method(sel_getUid("setAuxiliaryView:"), function $CPTabViewItem__setAuxiliaryView_(self, _cmd, anAuxiliaryView)
 { with(self)
 {
     _auxiliaryView = anAuxiliaryView;
 }
-}), new objj_method(sel_getUid("auxiliaryView"), function $CPTabViewItem__auxiliaryView(self, _cmd)
+},["void","CPView"]), new objj_method(sel_getUid("auxiliaryView"), function $CPTabViewItem__auxiliaryView(self, _cmd)
 { with(self)
 {
     return _auxiliaryView;
 }
-}), new objj_method(sel_getUid("tabView"), function $CPTabViewItem__tabView(self, _cmd)
+},["CPView"]), new objj_method(sel_getUid("tabView"), function $CPTabViewItem__tabView(self, _cmd)
 { with(self)
 {
     return _tabView;
 }
-})]);
+},["CPTabView"])]);
 }
 var CPTabViewItemIdentifierKey = "CPTabViewItemIdentifierKey",
     CPTabViewItemLabelKey = "CPTabViewItemLabelKey",
@@ -86,7 +91,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTabViewItem__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTabViewItem__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _identifier, CPTabViewItemIdentifierKey);
@@ -94,6 +99,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _view, CPTabViewItemViewKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _auxiliaryView, CPTabViewItemAuxViewKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

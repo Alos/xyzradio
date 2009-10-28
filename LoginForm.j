@@ -1,4 +1,3 @@
-/**USED TO LOGIN**/
 
 @implementation	LoginForm : CPView{
 	//for the login

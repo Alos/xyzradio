@@ -1,59 +1,58 @@
-I;16;AppKit/CPPanel.jc;1797;
-var _1=nil;
-var _2=objj_allocateClassPair(CPPanel,"CPOpenPanel"),_3=_2.isa;
-class_addIvars(_2,[new objj_ivar("_files"),new objj_ivar("_canChooseFiles"),new objj_ivar("_canChooseDirectories"),new objj_ivar("_allowsMultipleSelection")]);
-objj_registerClassPair(_2);
-objj_addClassForBundle(_2,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
-class_addMethods(_2,[new objj_method(sel_getUid("canChooseFiles"),function(_4,_5){
-with(_4){
+I;16;AppKit/CPPanel.jc;2075;
+var _1=objj_allocateClassPair(CPPanel,"CPOpenPanel"),_2=_1.isa;
+class_addIvars(_1,[new objj_ivar("_canChooseFiles"),new objj_ivar("_canChooseDirectories"),new objj_ivar("_allowsMultipleSelection"),new objj_ivar("_directoryURL"),new objj_ivar("_URLs")]);
+objj_registerClassPair(_1);
+objj_addClassForBundle(_1,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
+class_addMethods(_1,[new objj_method(sel_getUid("canChooseFiles"),function(_3,_4){
+with(_3){
 return _canChooseFiles;
 }
-}),new objj_method(sel_getUid("setCanChooseFiles:"),function(_6,_7,_8){
-with(_6){
-_canChooseFiles=_8;
+}),new objj_method(sel_getUid("setCanChooseFiles:"),function(_5,_6,_7){
+with(_5){
+_canChooseFiles=_7;
 }
-}),new objj_method(sel_getUid("canChooseDirectories"),function(_9,_a){
-with(_9){
+}),new objj_method(sel_getUid("canChooseDirectories"),function(_8,_9){
+with(_8){
 return _canChooseDirectories;
 }
-}),new objj_method(sel_getUid("setCanChooseDirectories:"),function(_b,_c,_d){
-with(_b){
-_canChooseDirectories=_d;
+}),new objj_method(sel_getUid("setCanChooseDirectories:"),function(_a,_b,_c){
+with(_a){
+_canChooseDirectories=_c;
 }
-}),new objj_method(sel_getUid("allowsMultipleSelection"),function(_e,_f){
-with(_e){
+}),new objj_method(sel_getUid("allowsMultipleSelection"),function(_d,_e){
+with(_d){
 return _allowsMultipleSelection;
 }
-}),new objj_method(sel_getUid("setAllowsMultipleSelection:"),function(_10,_11,_12){
-with(_10){
-_allowsMultipleSelection=_12;
+}),new objj_method(sel_getUid("setAllowsMultipleSelection:"),function(_f,_10,_11){
+with(_f){
+_allowsMultipleSelection=_11;
 }
-}),new objj_method(sel_getUid("init"),function(_13,_14){
-with(_13){
-if(_13=objj_msgSendSuper({receiver:_13,super_class:objj_getClass("CPPanel")},"init")){
-_files=[];
-_canChooseFiles=YES;
+}),new objj_method(sel_getUid("directoryURL"),function(_12,_13){
+with(_12){
+return _directoryURL;
 }
-return _13;
+}),new objj_method(sel_getUid("setDirectoryURL:"),function(_14,_15,_16){
+with(_14){
+_directoryURL=_16;
 }
-}),new objj_method(sel_getUid("filenames"),function(_15,_16){
-with(_15){
-return _files;
-}
-}),new objj_method(sel_getUid("runModalForDirectory:file:types:"),function(_17,_18,_19,_1a,_1b){
+}),new objj_method(sel_getUid("runModal"),function(_17,_18){
 with(_17){
+if(typeof window["cpOpenPanel"]==="function"){
+objj_msgSend(objj_msgSend(CPRunLoop,"currentRunLoop"),"limitDateForMode:",CPDefaultRunLoopMode);
+var _19={directoryURL:objj_msgSend(_17,"directoryURL"),canChooseFiles:objj_msgSend(_17,"canChooseFiles"),canChooseDirectories:objj_msgSend(_17,"canChooseDirectories"),allowsMultipleSelection:objj_msgSend(_17,"allowsMultipleSelection")};
+var _1a=window.cpOpenPanel(_19);
+_URLs=_1a.URLs;
+return _1a.button;
 }
-}),new objj_method(sel_getUid("runModalForTypes:"),function(_1c,_1d,_1e){
-with(_1c){
-alert("HERE");
-objj_msgSend(_1c,"runModalForDirectory:file:types:","/",nil,_1e);
+throw "-runModal is unimplemented.";
+}
+}),new objj_method(sel_getUid("URLs"),function(_1b,_1c){
+with(_1b){
+return _URLs;
 }
 })]);
-class_addMethods(_3,[new objj_method(sel_getUid("openPanel"),function(_1f,_20){
-with(_1f){
-if(!_1){
-_1=objj_msgSend(objj_msgSend(CPOpenPanel,"alloc"),"init");
-}
-return _1;
+class_addMethods(_2,[new objj_method(sel_getUid("openPanel"),function(_1d,_1e){
+with(_1d){
+return objj_msgSend(objj_msgSend(CPOpenPanel,"alloc"),"init");
 }
 })]);

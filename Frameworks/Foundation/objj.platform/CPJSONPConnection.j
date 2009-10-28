@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;3285;
+I;21;Foundation/CPObject.jc;3347;
 CPJSONPConnectionCallbacks={};
 CPJSONPCallbackReplacementString="${JSONP_CALLBACK}";
 var _1=objj_allocateClassPair(CPObject,"CPJSONPConnection"),_2=_1.isa;
@@ -15,7 +15,7 @@ _8=objj_msgSendSuper({receiver:_8,super_class:objj_getClass("CPObject")},"init")
 _request=_a;
 _delegate=_c;
 _callbackParameter=_b;
-if(!_callbackParameter&&objj_msgSend(_request,"URL").indexOf(CPJSONPCallbackReplacementString)<0){
+if(!_callbackParameter&&objj_msgSend(objj_msgSend(_request,"URL"),"absoluteString").indexOf(CPJSONPCallbackReplacementString)<0){
 objj_msgSend(CPException,"raise:reason:",CPInvalidArgumentException,"JSONP source specified without callback parameter or CPJSONPCallbackReplacementString in URL.");
 }
 if(_d){
@@ -31,7 +31,7 @@ objj_msgSend(_delegate,"connection:didReceiveData:",_e,_10);
 objj_msgSend(_e,"removeScriptTag");
 objj_msgSend(objj_msgSend(CPRunLoop,"currentRunLoop"),"limitDateForMode:",CPDefaultRunLoopMode);
 };
-var _11=document.getElementsByTagName("head").item(0),_12=objj_msgSend(_request,"URL");
+var _11=document.getElementsByTagName("head").item(0),_12=objj_msgSend(objj_msgSend(_request,"URL"),"absoluteString");
 if(_callbackParameter){
 _12+=(_12.indexOf("?")<0)?"?":"&";
 _12+=_callbackParameter+"=CPJSONPConnectionCallbacks.callback"+objj_msgSend(_e,"UID");

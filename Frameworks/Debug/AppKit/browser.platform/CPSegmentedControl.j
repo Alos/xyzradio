@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.ji;11;CPControl.jc;29816;
+I;20;Foundation/CPArray.ji;11;CPControl.jc;30438;
 CPSegmentSwitchTrackingSelectOne = 0;
 CPSegmentSwitchTrackingSelectAny = 1;
 CPSegmentSwitchTrackingMomentary = 2;
@@ -223,7 +223,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     var thickness = objj_msgSend(self, "currentValueForThemeAttribute:", "divider-thickness");
     return objj_msgSend(self, "_leftOffsetForSegment:", segment - 1) + objj_msgSend(self, "widthForSegment:", segment - 1) + thickness;
 }
-},["float","unsigned"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPSegmentedControl__rectForEphemeralSubviewNamed_(self, _cmd, aName)
+},["float","unsigned"]), new objj_method(sel_getUid("_indexOfLastSegment"), function $CPSegmentedControl___indexOfLastSegment(self, _cmd)
+{ with(self)
+{
+    var lastSegmentIndex = objj_msgSend(_segments, "count") - 1;
+    if (lastSegmentIndex < 0)
+        lastSegmentIndex = 0;
+    return lastSegmentIndex;
+}
+},["unsigned"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPSegmentedControl__rectForEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     var height = objj_msgSend(self, "currentValueForThemeAttribute:", "default-height"),
@@ -236,7 +244,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     else if (aName === "right-segment-bezel")
     {
-        return CGRectMake(CGRectGetMaxX(bounds) - contentInset.right - bezelInset.right, bezelInset.top, contentInset.right, height);
+        var lastSegmentLeftOffset = objj_msgSend(self, "_leftOffsetForSegment:", objj_msgSend(self, "_indexOfLastSegment"));
+        return CPRectMake(lastSegmentLeftOffset + objj_msgSend(self, "widthForSegment:", objj_msgSend(self, "_indexOfLastSegment")) - contentInset.right,
+                            bezelInset.top,
+                            contentInset.right,
+                            height);
     }
     else if (aName.substring(0, "segment-bezel".length) == "segment-bezel")
     {
@@ -276,6 +288,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 },["CPView","CPString"]), new objj_method(sel_getUid("layoutSubviews"), function $CPSegmentedControl__layoutSubviews(self, _cmd)
 { with(self)
 {
+    if (_segments.length <= 0)
+        return;
     var leftCapColor = objj_msgSend(self, "valueForThemeAttribute:inState:", "left-segment-bezel-color", _themeStates[0]);
     var leftBezelView = objj_msgSend(self, "layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:", "left-segment-bezel", CPWindowBelow, nil);
     objj_msgSend(leftBezelView, "setBackgroundColor:", leftCapColor);

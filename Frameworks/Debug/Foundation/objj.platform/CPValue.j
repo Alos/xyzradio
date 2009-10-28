@@ -1,4 +1,4 @@
-i;10;CPObject.ji;9;CPCoder.jc;2179;
+i;10;CPObject.ji;9;CPCoder.jc;2264;
 {var the_class = objj_allocateClassPair(CPObject, "CPValue"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_JSObject")]);
 objj_registerClassPair(the_class);
@@ -11,18 +11,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithJSObject:"), fu
         _JSObject = aJSObject;
     return self;
 }
-}), new objj_method(sel_getUid("JSObject"), function $CPValue__JSObject(self, _cmd)
+},["id","JSObject"]), new objj_method(sel_getUid("JSObject"), function $CPValue__JSObject(self, _cmd)
 { with(self)
 {
     return _JSObject;
 }
-})]);
+},["JSObject"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("valueWithJSObject:"), function $CPValue__valueWithJSObject_(self, _cmd, aJSObject)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithJSObject:", aJSObject);
 }
-})]);
+},["id","JSObject"])]);
 }
 var CPValueValueKey = "CPValueValueKey";
 {
@@ -36,12 +36,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         _JSObject = JSON.parse(objj_msgSend(aCoder, "decodeObjectForKey:", CPValueValueKey));
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPValue__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPValue__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", JSON.stringify(_JSObject), CPValueValueKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 CPJSObjectCreateJSON= function(aJSObject)
 {

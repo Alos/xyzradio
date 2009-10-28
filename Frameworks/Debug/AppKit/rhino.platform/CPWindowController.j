@@ -1,6 +1,6 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPString.ji;13;CPResponder.ji;10;CPWindow.ji;12;CPDocument.jc;9673;
+I;21;Foundation/CPObject.jI;21;Foundation/CPString.ji;13;CPResponder.ji;10;CPWindow.ji;12;CPDocument.jc;11212;
 {var the_class = objj_allocateClassPair(CPResponder, "CPWindowController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_document"), new objj_ivar("_shouldCloseDocument"), new objj_ivar("_cibOwner"), new objj_ivar("_windowCibName"), new objj_ivar("_windowCibPath"), new objj_ivar("_isWindowLoading"), new objj_ivar("_shouldDisplayWindowWhenLoaded")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_document"), new objj_ivar("_shouldCloseDocument"), new objj_ivar("_cibOwner"), new objj_ivar("_windowCibName"), new objj_ivar("_windowCibPath"), new objj_ivar("_viewController"), new objj_ivar("_viewControllerContainerView")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWindowController__init(self, _cmd)
@@ -17,8 +17,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWin
         objj_msgSend(self, "setWindow:", aWindow);
         objj_msgSend(self, "setShouldCloseDocument:", NO);
         objj_msgSend(self, "setNextResponder:", CPApp);
-        if (aWindow)
-            objj_msgSend(self, "windowDidLoad");
     }
     return self;
 }
@@ -52,34 +50,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWin
 },["id","CPString","id"]), new objj_method(sel_getUid("loadWindow"), function $CPWindowController__loadWindow(self, _cmd)
 { with(self)
 {
-    if (objj_msgSend(self, "isWindowLoaded"))
-        return YES;
-    if (!objj_msgSend(self, "isWindowLoading"))
-    {
-        _isWindowLoading = YES;
-        objj_msgSend(self, "windowWillLoad");
-        objj_msgSend(CPBundle, "loadCibFile:externalNameTable:loadDelegate:", objj_msgSend(self, "windowCibPath"), objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", _cibOwner, CPCibOwner), self);
-    }
-    return NO;
-}
-},["BOOL"]), new objj_method(sel_getUid("cibDidFinishLoading:"), function $CPWindowController__cibDidFinishLoading_(self, _cmd, aCib)
-{ with(self)
-{
-    if (_window === nil && _document !== nil && _cibOwner === _document)
-        objj_msgSend(self, "setWindow:", objj_msgSend(_document, "valueForKey:", "window"));
-    objj_msgSend(self, "synchronizeWindowTitleWithDocumentName");
-    objj_msgSend(self, "windowDidLoad");
-    if (_shouldDisplayWindowWhenLoaded)
-        objj_msgSend(self, "showWindow:", self);
-}
-},["void","CPCib"]), new objj_method(sel_getUid("showWindow:"), function $CPWindowController__showWindow_(self, _cmd, aSender)
-{ with(self)
-{
-    if (!objj_msgSend(self, "loadWindow"))
-    {
-        _shouldDisplayWindowWhenLoaded = YES;
+    if (_window)
         return;
-    }
+    objj_msgSend(objj_msgSend(CPBundle, "bundleForClass:", objj_msgSend(_cibOwner, "class")), "loadCibFile:externalNameTable:", objj_msgSend(self, "windowCibPath"), objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", _cibOwner, CPCibOwner));
+}
+},["void"]), new objj_method(sel_getUid("showWindow:"), function $CPWindowController__showWindow_(self, _cmd, aSender)
+{ with(self)
+{
     var theWindow = objj_msgSend(self, "window");
  if (objj_msgSend(theWindow, "respondsToSelector:", sel_getUid("becomesKeyOnlyIfNeeded")) && objj_msgSend(theWindow, "becomesKeyOnlyIfNeeded"))
         objj_msgSend(theWindow, "orderFront:", aSender);
@@ -91,16 +68,20 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWin
 {
     return _window !== nil;
 }
-},["BOOL"]), new objj_method(sel_getUid("isWindowLoading"), function $CPWindowController__isWindowLoading(self, _cmd)
-{ with(self)
-{
-    return _isWindowLoading;
-}
 },["BOOL"]), new objj_method(sel_getUid("window"), function $CPWindowController__window(self, _cmd)
 { with(self)
 {
     if (!_window)
-         objj_msgSend(self, "loadWindow");
+    {
+        objj_msgSend(self, "windowWillLoad");
+        objj_msgSend(_document, "windowControllerWillLoadCib:", self);
+        objj_msgSend(self, "loadWindow");
+        if (_window === nil && objj_msgSend(_cibOwner, "isKindOfClass:", objj_msgSend(CPDocument, "class")))
+            objj_msgSend(self, "setWindow:", objj_msgSend(_cibOwner, "valueForKey:", "window"));
+        objj_msgSend(self, "windowDidLoad");
+        objj_msgSend(_document, "windowControllerDidLoadCib:", self);
+        objj_msgSend(self, "synchronizeWindowTitleWithDocumentName");
+    }
     return _window;
 }
 },["CPWindow"]), new objj_method(sel_getUid("setWindow:"), function $CPWindowController__setWindow_(self, _cmd, aWindow)
@@ -114,13 +95,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWin
 },["void","CPWindow"]), new objj_method(sel_getUid("windowDidLoad"), function $CPWindowController__windowDidLoad(self, _cmd)
 { with(self)
 {
-    objj_msgSend(_document, "windowControllerDidLoadCib:", self);
-    objj_msgSend(self, "synchronizeWindowTitleWithDocumentName");
 }
 },["void"]), new objj_method(sel_getUid("windowWillLoad"), function $CPWindowController__windowWillLoad(self, _cmd)
 { with(self)
 {
-    objj_msgSend(_document, "windowControllerWillLoadCib:", self);
 }
 },["void"]), new objj_method(sel_getUid("setDocument:"), function $CPWindowController__setDocument_(self, _cmd, aDocument)
 { with(self)
@@ -142,9 +120,57 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPWin
         objj_msgSend(defaultCenter, "addObserver:selector:name:object:", self, sel_getUid("_documentDidFailToSave:"), CPDocumentDidFailToSaveNotification, _document);
         objj_msgSend(self, "setDocumentEdited:", objj_msgSend(_document, "isDocumentEdited"));
     }
+    var viewController = objj_msgSend(_document, "viewControllerForWindowController:", self);
+    if (viewController)
+        objj_msgSend(self, "setViewController:", viewController);
     objj_msgSend(self, "synchronizeWindowTitleWithDocumentName");
 }
-},["void","CPDocument"]), new objj_method(sel_getUid("_documentWillSave:"), function $CPWindowController___documentWillSave_(self, _cmd, aNotification)
+},["void","CPDocument"]), new objj_method(sel_getUid("setViewController:"), function $CPWindowController__setViewController_(self, _cmd, aViewController)
+{ with(self)
+{
+    var containerView = objj_msgSend(self, "viewControllerContainerView") || objj_msgSend(objj_msgSend(self, "window"), "contentView"),
+        view = objj_msgSend(_viewController, "view"),
+        frame = view ? objj_msgSend(view, "frame") : objj_msgSend(containerView, "bounds");
+    objj_msgSend(view, "removeFromSuperview");
+    _viewController = aViewController;
+    view = objj_msgSend(_viewController, "view");
+    if (view)
+    {
+        objj_msgSend(view, "setFrame:", frame);
+        objj_msgSend(containerView, "addSubview:", view);
+    }
+}
+},["void","CPViewController"]), new objj_method(sel_getUid("setViewControllerContainerView:"), function $CPWindowController__setViewControllerContainerView_(self, _cmd, aView)
+{ with(self)
+{
+    _viewControllerContainerView = aView;
+}
+},["void","CPView"]), new objj_method(sel_getUid("viewControllerContainerView"), function $CPWindowController__viewControllerContainerView(self, _cmd)
+{ with(self)
+{
+    return _viewControllerContainerView;
+}
+},["void"]), new objj_method(sel_getUid("setViewController:"), function $CPWindowController__setViewController_(self, _cmd, aViewController)
+{ with(self)
+{
+    var containerView = objj_msgSend(self, "viewControllerContainerView") || objj_msgSend(objj_msgSend(self, "window"), "contentView"),
+        view = objj_msgSend(_viewController, "view"),
+        frame = view ? objj_msgSend(view, "frame") : objj_msgSend(containerView, "bounds");
+    objj_msgSend(view, "removeFromSuperview");
+    _viewController = aViewController;
+    view = objj_msgSend(_viewController, "view");
+    if (view)
+    {
+        objj_msgSend(view, "setFrame:", frame);
+        objj_msgSend(containerView, "addSubview:", view);
+    }
+}
+},["void","CPViewController"]), new objj_method(sel_getUid("viewController"), function $CPWindowController__viewController(self, _cmd)
+{ with(self)
+{
+    return _viewController;
+}
+},["CPViewController"]), new objj_method(sel_getUid("_documentWillSave:"), function $CPWindowController___documentWillSave_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(objj_msgSend(self, "window"), "setDocumentSaving:", YES);

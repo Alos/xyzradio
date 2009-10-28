@@ -1,4 +1,4 @@
-i;9;CPImage.ji;8;CPView.jc;23361;
+i;9;CPImage.ji;8;CPView.jc;23425;
 CPSplitViewDidResizeSubviewsNotification = "CPSplitViewDidResizeSubviewsNotification";
 CPSplitViewWillResizeSubviewsNotification = "CPSplitViewWillResizeSubviewsNotification";
 var CPSplitViewHorizontalImage = nil,
@@ -222,6 +222,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
                 }
             }
         }
+        if (_currentDivider === CPNotFound)
+            return;
     }
     else if (type == CPLeftMouseDragged && _currentDivider != CPNotFound)
     {

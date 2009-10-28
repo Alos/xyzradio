@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;3349;
+I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;2965;
 {var the_class = objj_allocateClassPair(CPObject, "CPDOMWindowLayer"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_level"), new objj_ivar("_windows"), new objj_ivar("_DOMElement")]);
 objj_registerClassPair(the_class);
@@ -20,19 +20,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithLevel:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("level"), function $CPDOMWindowLayer__level(self, _cmd)
+},["id","int"]), new objj_method(sel_getUid("level"), function $CPDOMWindowLayer__level(self, _cmd)
 { with(self)
 {
     return _level;
 }
-}), new objj_method(sel_getUid("removeWindow:"), function $CPDOMWindowLayer__removeWindow_(self, _cmd, aWindow)
+},["int"]), new objj_method(sel_getUid("removeWindow:"), function $CPDOMWindowLayer__removeWindow_(self, _cmd, aWindow)
 { with(self)
 {
     if (!aWindow._isVisible)
         return;
     var index = aWindow._index,
         count = _windows.length - 1;
-    CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 8; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = aWindow._DOMElement;;
+    _DOMElement.removeChild(aWindow._DOMElement);
     objj_msgSend(_windows, "removeObjectAtIndex:", aWindow._index);
     for (; index < count; ++index)
     {
@@ -41,7 +41,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithLevel:"), funct
     }
     aWindow._isVisible = NO;
 }
-}), new objj_method(sel_getUid("insertWindow:atIndex:"), function $CPDOMWindowLayer__insertWindow_atIndex_(self, _cmd, aWindow, anIndex)
+},["void","CPWindow"]), new objj_method(sel_getUid("insertWindow:atIndex:"), function $CPDOMWindowLayer__insertWindow_atIndex_(self, _cmd, aWindow, anIndex)
 { with(self)
 {
     var count = objj_msgSend(_windows, "count"),
@@ -63,19 +63,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithLevel:"), funct
         _windows[zIndex]._index = zIndex;
         _windows[zIndex]._DOMElement.style.zIndex = zIndex;
     }
-    if (!isVisible)
+    if (aWindow._DOMElement.parentNode !== _DOMElement)
     {
-        if (aWindow._DOMElement.CPDOMDisplayContext) aWindow._DOMElement.CPDOMDisplayContext[0] = -1; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = 6; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = _DOMElement; CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++] = aWindow._DOMElement;;
+        _DOMElement.appendChild(aWindow._DOMElement);
         aWindow._isVisible = YES;
         if (objj_msgSend(aWindow, "isFullBridge"))
             objj_msgSend(aWindow, "setFrame:", objj_msgSend(aWindow._platformWindow, "usableContentFrame"));
     }
 }
-}), new objj_method(sel_getUid("orderedWindows"), function $CPDOMWindowLayer__orderedWindows(self, _cmd)
+},["void","CPWindow","unsigned"]), new objj_method(sel_getUid("orderedWindows"), function $CPDOMWindowLayer__orderedWindows(self, _cmd)
 { with(self)
 {
     return _windows;
 }
-})]);
+},["CPArray"])]);
 }
 

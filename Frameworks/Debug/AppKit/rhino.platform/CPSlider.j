@@ -1,4 +1,4 @@
-i;11;CPControl.jc;15669;
+i;11;CPControl.jc;16337;
 CPLinearSlider = 0;
 CPCircularSlider = 1;
 {var the_class = objj_allocateClassPair(CPControl, "CPSlider"),
@@ -19,7 +19,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("setMinValue:"), function $CPSlider__setMinValue_(self, _cmd, aMinimumValue)
+},["id","CGRect"]), new objj_method(sel_getUid("setMinValue:"), function $CPSlider__setMinValue_(self, _cmd, aMinimumValue)
 { with(self)
 {
     if (_minValue === aMinimumValue)
@@ -28,13 +28,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     var doubleValue = objj_msgSend(self, "doubleValue");
     if (doubleValue < _minValue)
         objj_msgSend(self, "setDoubleValue:", _minValue);
+    objj_msgSend(self, "setNeedsLayout");
+    objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("minValue"), function $CPSlider__minValue(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("minValue"), function $CPSlider__minValue(self, _cmd)
 { with(self)
 {
     return _minValue;
 }
-}), new objj_method(sel_getUid("setMaxValue:"), function $CPSlider__setMaxValue_(self, _cmd, aMaximumValue)
+},["float"]), new objj_method(sel_getUid("setMaxValue:"), function $CPSlider__setMaxValue_(self, _cmd, aMaximumValue)
 { with(self)
 {
     if (_maxValue === aMaximumValue)
@@ -43,20 +45,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     var doubleValue = objj_msgSend(self, "doubleValue");
     if (doubleValue > _maxValue)
         objj_msgSend(self, "setDoubleValue:", _maxValue);
+    objj_msgSend(self, "setNeedsLayout");
+    objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("maxValue"), function $CPSlider__maxValue(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("maxValue"), function $CPSlider__maxValue(self, _cmd)
 { with(self)
 {
     return _maxValue;
 }
-}), new objj_method(sel_getUid("setObjectValue:"), function $CPSlider__setObjectValue_(self, _cmd, aValue)
+},["float"]), new objj_method(sel_getUid("setObjectValue:"), function $CPSlider__setObjectValue_(self, _cmd, aValue)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setObjectValue:", MIN(MAX(aValue, _minValue), _maxValue));
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("setSliderType:"), function $CPSlider__setSliderType_(self, _cmd, aSliderType)
+},["void","id"]), new objj_method(sel_getUid("setSliderType:"), function $CPSlider__setSliderType_(self, _cmd, aSliderType)
 { with(self)
 {
     if (aSliderType === CPCircularSlider)
@@ -64,12 +68,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         objj_msgSend(self, "unsetThemeState:", CPThemeStateCircular);
 }
-}), new objj_method(sel_getUid("sliderType"), function $CPSlider__sliderType(self, _cmd)
+},["void","CPSliderType"]), new objj_method(sel_getUid("sliderType"), function $CPSlider__sliderType(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "hasThemeState:", CPThemeStateCircular) ? CPCircularSlider : CPLinearSlider;
 }
-}), new objj_method(sel_getUid("trackRectForBounds:"), function $CPSlider__trackRectForBounds_(self, _cmd, bounds)
+},["CPSliderType"]), new objj_method(sel_getUid("trackRectForBounds:"), function $CPSlider__trackRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     if (objj_msgSend(self, "hasThemeState:", CPThemeStateCircular))
@@ -100,7 +104,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return bounds;
 }
-}), new objj_method(sel_getUid("knobRectForBounds:"), function $CPSlider__knobRectForBounds_(self, _cmd, bounds)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("knobRectForBounds:"), function $CPSlider__knobRectForBounds_(self, _cmd, bounds)
 { with(self)
 {
     var knobSize = objj_msgSend(self, "currentValueForThemeAttribute:", "knob-size");
@@ -129,7 +133,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return knobRect;
 }
-}), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPSlider__rectForEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CGRect"]), new objj_method(sel_getUid("rectForEphemeralSubviewNamed:"), function $CPSlider__rectForEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "track-view")
@@ -138,7 +142,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return objj_msgSend(self, "knobRectForBounds:", objj_msgSend(self, "bounds"));
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "rectForEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPSlider__createEphemeralSubviewNamed_(self, _cmd, aName)
+},["CGRect","CPString"]), new objj_method(sel_getUid("createEphemeralSubviewNamed:"), function $CPSlider__createEphemeralSubviewNamed_(self, _cmd, aName)
 { with(self)
 {
     if (aName === "track-view" || aName === "knob-view")
@@ -149,23 +153,23 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "createEphemeralSubviewNamed:", aName);
 }
-}), new objj_method(sel_getUid("setAltIncrementValue:"), function $CPSlider__setAltIncrementValue_(self, _cmd, anAltIncrementValue)
+},["CPView","CPString"]), new objj_method(sel_getUid("setAltIncrementValue:"), function $CPSlider__setAltIncrementValue_(self, _cmd, anAltIncrementValue)
 { with(self)
 {
     _altIncrementValue = anAltIncrementValue;
 }
-}), new objj_method(sel_getUid("altIncrementValue"), function $CPSlider__altIncrementValue(self, _cmd)
+},["void","float"]), new objj_method(sel_getUid("altIncrementValue"), function $CPSlider__altIncrementValue(self, _cmd)
 { with(self)
 {
     return _altIncrementValue;
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $CPSlider__setFrameSize_(self, _cmd, aSize)
+},["float"]), new objj_method(sel_getUid("setFrameSize:"), function $CPSlider__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "setFrameSize:", aSize);
     objj_msgSend(self, "_recalculateIsVertical");
 }
-}), new objj_method(sel_getUid("_recalculateIsVertical"), function $CPSlider___recalculateIsVertical(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("_recalculateIsVertical"), function $CPSlider___recalculateIsVertical(self, _cmd)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds"),
@@ -177,12 +181,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else if (_isVertical === 0)
         objj_msgSend(self, "unsetThemeState:", CPThemeStateVertical);
 }
-}), new objj_method(sel_getUid("isVertical"), function $CPSlider__isVertical(self, _cmd)
+},["void"]), new objj_method(sel_getUid("isVertical"), function $CPSlider__isVertical(self, _cmd)
 { with(self)
 {
     return _isVertical;
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPSlider__layoutSubviews(self, _cmd)
+},["int"]), new objj_method(sel_getUid("layoutSubviews"), function $CPSlider__layoutSubviews(self, _cmd)
 { with(self)
 {
     var trackView = objj_msgSend(self, "layoutEphemeralSubviewNamed:positioned:relativeToEphemeralSubviewNamed:", "track-view", CPWindowBelow, "knob-view");
@@ -192,12 +196,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     if (knobView)
         objj_msgSend(knobView, "setBackgroundColor:", objj_msgSend(self, "currentValueForThemeAttribute:", "knob-color"));
 }
-}), new objj_method(sel_getUid("tracksMouseOutsideOfFrame"), function $CPSlider__tracksMouseOutsideOfFrame(self, _cmd)
+},["void"]), new objj_method(sel_getUid("tracksMouseOutsideOfFrame"), function $CPSlider__tracksMouseOutsideOfFrame(self, _cmd)
 { with(self)
 {
     return YES;
 }
-}), new objj_method(sel_getUid("_valueAtPoint:"), function $CPSlider___valueAtPoint_(self, _cmd, aPoint)
+},["BOOL"]), new objj_method(sel_getUid("_valueAtPoint:"), function $CPSlider___valueAtPoint_(self, _cmd, aPoint)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds"),
@@ -230,7 +234,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return MAX(0.0, MIN(1.0, (aPoint.x - (trackRect.origin.x)) / (trackRect.size.width))) * (objj_msgSend(self, "maxValue") - minValue) + minValue;
     }
 }
-}), new objj_method(sel_getUid("startTrackingAt:"), function $CPSlider__startTrackingAt_(self, _cmd, aPoint)
+},["float","CGPoint"]), new objj_method(sel_getUid("startTrackingAt:"), function $CPSlider__startTrackingAt_(self, _cmd, aPoint)
 { with(self)
 {
     var bounds = objj_msgSend(self, "bounds"),
@@ -253,13 +257,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsDisplay:", YES);
     return YES;
 }
-}), new objj_method(sel_getUid("continueTracking:at:"), function $CPSlider__continueTracking_at_(self, _cmd, lastPoint, aPoint)
+},["BOOL","CGPoint"]), new objj_method(sel_getUid("continueTracking:at:"), function $CPSlider__continueTracking_at_(self, _cmd, lastPoint, aPoint)
 { with(self)
 {
     objj_msgSend(self, "setObjectValue:", objj_msgSend(self, "_valueAtPoint:", { x:aPoint.x + _dragOffset.width, y:aPoint.y + _dragOffset.height }));
     return YES;
 }
-}), new objj_method(sel_getUid("stopTracking:at:mouseIsUp:"), function $CPSlider__stopTracking_at_mouseIsUp_(self, _cmd, lastPoint, aPoint, mouseIsUp)
+},["BOOL","CGPoint","CGPoint"]), new objj_method(sel_getUid("stopTracking:at:mouseIsUp:"), function $CPSlider__stopTracking_at_mouseIsUp_(self, _cmd, lastPoint, aPoint, mouseIsUp)
 { with(self)
 {
     objj_msgSend(self, "setHighlighted:", NO);
@@ -268,7 +272,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "setNeedsLayout");
     objj_msgSend(self, "setNeedsDisplay:", YES);
 }
-}), new objj_method(sel_getUid("setContinuous:"), function $CPSlider__setContinuous_(self, _cmd, flag)
+},["void","CGPoint","CGPoint","BOOL"]), new objj_method(sel_getUid("setContinuous:"), function $CPSlider__setContinuous_(self, _cmd, flag)
 { with(self)
 {
     if (flag)
@@ -276,18 +280,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         _sendActionOn &= ~CPLeftMouseDraggedMask;
 }
-})]);
+},["void","BOOL"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("themeClass"), function $CPSlider__themeClass(self, _cmd)
 { with(self)
 {
     return "slider";
 }
-}), new objj_method(sel_getUid("themeAttributes"), function $CPSlider__themeAttributes(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("themeAttributes"), function $CPSlider__themeAttributes(self, _cmd)
 { with(self)
 {
     return objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [nil, { width:0.0, height:0.0 }, 0.0, nil], ["knob-color", "knob-size", "track-width", "track-color"]);
 }
-})]);
+},["id"])]);
 }
 var CPSliderMinValueKey = "CPSliderMinValueKey",
     CPSliderMaxValueKey = "CPSliderMaxValueKey",
@@ -311,7 +315,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSlider__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSlider__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "encodeWithCoder:", aCoder);
@@ -319,7 +323,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeDouble:forKey:", _maxValue, CPSliderMaxValueKey);
     objj_msgSend(aCoder, "encodeDouble:forKey:", _altIncrementValue, CPSliderAltIncrValueKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 {
 var the_class = objj_getClass("CPSlider")
@@ -330,12 +334,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     CPLog.warn("[CPSlider value] is deprecated, use doubleValue or objectValue instead.");
     return objj_msgSend(self, "doubleValue");
 }
-}), new objj_method(sel_getUid("setValue:"), function $CPSlider__setValue_(self, _cmd, aValue)
+},["id"]), new objj_method(sel_getUid("setValue:"), function $CPSlider__setValue_(self, _cmd, aValue)
 { with(self)
 {
     CPLog.warn("[CPSlider setValue:] is deprecated, use setDoubleValue: or setObjectValue: instead.");
     objj_msgSend(self, "setObjectValue:", aValue);
 }
-})]);
+},["void","id"])]);
 }
 

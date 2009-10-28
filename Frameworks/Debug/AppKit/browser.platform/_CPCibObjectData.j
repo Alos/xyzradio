@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jI;21;Foundation/CPString.ji;7;CPCib.ji;17;_CPCibConnector.jc;9597;
+I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jI;21;Foundation/CPString.ji;7;CPCib.ji;16;CPCibConnector.ji;23;CPCibControlConnector.ji;22;CPCibOutletConnector.jc;9331;
 {var the_class = objj_allocateClassPair(CPObject, "_CPCibObjectData"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_namesKeys"), new objj_ivar("_namesValues"), new objj_ivar("_accessibilityConnectors"), new objj_ivar("_accessibilityOidsKeys"), new objj_ivar("_accessibilityOidsValues"), new objj_ivar("_classesKeys"), new objj_ivar("_classesValues"), new objj_ivar("_connections"), new objj_ivar("_fontManager"), new objj_ivar("_framework"), new objj_ivar("_nextOid"), new objj_ivar("_objectsKeys"), new objj_ivar("_objectsValues"), new objj_ivar("_oidKeys"), new objj_ivar("_oidValues"), new objj_ivar("_fileOwner"), new objj_ivar("_visibleWindows"), new objj_ivar("_replacementObjects")]);
 objj_registerClassPair(the_class);
@@ -25,19 +25,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPCi
     }
     return self;
 }
-}), new objj_method(sel_getUid("mainMenu"), function $_CPCibObjectData__mainMenu(self, _cmd)
-{ with(self)
-{
-    var index = objj_msgSend(_namesValues, "indexOfObjectIdenticalTo:", "MainMenu");
-    if (index === CPNotFound)
-    {
-        index = objj_msgSend(_namesValues, "indexOfObjectIdenticalTo:", "Main Menu");
-        if (index === CPNotFound)
-            return nil;
-    }
-    return _namesKeys[index];
-}
-}), new objj_method(sel_getUid("displayVisibleWindows"), function $_CPCibObjectData__displayVisibleWindows(self, _cmd)
+},["id"]), new objj_method(sel_getUid("displayVisibleWindows"), function $_CPCibObjectData__displayVisibleWindows(self, _cmd)
 { with(self)
 {
     var object = nil,
@@ -45,7 +33,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPCi
     while (object = objj_msgSend(objectEnumerator, "nextObject"))
         objj_msgSend(_replacementObjects[objj_msgSend(object, "UID")], "makeKeyAndOrderFront:", self);
 }
-})]);
+},["void"])]);
 }
 var _CPCibObjectDataNamesKeysKey = "_CPCibObjectDataNamesKeysKey",
     _CPCibObjectDataNamesValuesKey = "_CPCibObjectDataNamesValuesKey",
@@ -90,7 +78,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibObjectData__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibObjectData__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _namesKeys, _CPCibObjectDataNamesKeysKey);
@@ -107,7 +95,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeObject:forKey:", _fileOwner, _CPCibObjectDataFileOwnerKey);
     objj_msgSend(aCoder, "encodeObject:forKey:", _visibleWindows, _CPCibObjectDataVisibleWindowsKey);
 }
-}), new objj_method(sel_getUid("instantiateWithOwner:topLevelObjects:"), function $_CPCibObjectData__instantiateWithOwner_topLevelObjects_(self, _cmd, anOwner, topLevelObjects)
+},["void","CPCoder"]), new objj_method(sel_getUid("instantiateWithOwner:topLevelObjects:"), function $_CPCibObjectData__instantiateWithOwner_topLevelObjects_(self, _cmd, anOwner, topLevelObjects)
 { with(self)
 {
     var count = objj_msgSend(_objectsKeys, "count");
@@ -138,7 +126,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
             topLevelObjects.push(instantiatedObject);
     }
 }
-}), new objj_method(sel_getUid("establishConnectionsWithOwner:topLevelObjects:"), function $_CPCibObjectData__establishConnectionsWithOwner_topLevelObjects_(self, _cmd, anOwner, topLevelObjects)
+},["void","id","CPMutableArray"]), new objj_method(sel_getUid("establishConnectionsWithOwner:topLevelObjects:"), function $_CPCibObjectData__establishConnectionsWithOwner_topLevelObjects_(self, _cmd, anOwner, topLevelObjects)
 { with(self)
 {
     _replacementObjects[objj_msgSend(_fileOwner, "UID")] = anOwner;
@@ -151,7 +139,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
         objj_msgSend(connection, "establishConnection");
     }
 }
-}), new objj_method(sel_getUid("awakeWithOwner:topLevelObjects:"), function $_CPCibObjectData__awakeWithOwner_topLevelObjects_(self, _cmd, anOwner, topLevelObjects)
+},["void","id","CPMutableArray"]), new objj_method(sel_getUid("awakeWithOwner:topLevelObjects:"), function $_CPCibObjectData__awakeWithOwner_topLevelObjects_(self, _cmd, anOwner, topLevelObjects)
 { with(self)
 {
     var count = objj_msgSend(_objectsKeys, "count");
@@ -167,6 +155,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     if (objj_msgSend(anOwner, "respondsToSelector:", sel_getUid("awakeFromCib")))
         objj_msgSend(anOwner, "awakeFromCib");
 }
-})]);
+},["void","id","CPMutableArray"])]);
 }
 

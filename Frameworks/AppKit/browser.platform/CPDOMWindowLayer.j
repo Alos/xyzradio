@@ -1,4 +1,4 @@
-I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;2430;
+I;20;Foundation/CPArray.jI;21;Foundation/CPObject.jc;1985;
 var _1=objj_allocateClassPair(CPObject,"CPDOMWindowLayer"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_level"),new objj_ivar("_windows"),new objj_ivar("_DOMElement")]);
 objj_registerClassPair(_1);
@@ -28,9 +28,7 @@ if(!_a._isVisible){
 return;
 }
 var _b=_a._index,_c=_windows.length-1;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=8;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_DOMElement;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_a._DOMElement;
+_DOMElement.removeChild(_a._DOMElement);
 objj_msgSend(_windows,"removeObjectAtIndex:",_a._index);
 for(;_b<_c;++_b){
 _windows[_b]._index=_b;
@@ -56,13 +54,8 @@ for(;_12<_11;++_12){
 _windows[_12]._index=_12;
 _windows[_12]._DOMElement.style.zIndex=_12;
 }
-if(!_13){
-if(_f._DOMElement.CPDOMDisplayContext){
-_f._DOMElement.CPDOMDisplayContext[0]=-1;
-}
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=6;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_DOMElement;
-CPDOMDisplayServerInstructions[CPDOMDisplayServerInstructionCount++]=_f._DOMElement;
+if(_f._DOMElement.parentNode!==_DOMElement){
+_DOMElement.appendChild(_f._DOMElement);
 _f._isVisible=YES;
 if(objj_msgSend(_f,"isFullBridge")){
 objj_msgSend(_f,"setFrame:",objj_msgSend(_f._platformWindow,"usableContentFrame"));

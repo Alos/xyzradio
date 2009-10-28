@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;23158;
+I;21;Foundation/CPString.ji;9;CPColor.ji;8;CPFont.ji;9;CPImage.ji;13;CPTextField.ji;8;CPView.jc;22848;
 CPTopVerticalTextAlignment = 1,
 CPCenterVerticalTextAlignment = 2,
 CPBottomVerticalTextAlignment = 3;
@@ -414,7 +414,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:control:"
         }
         else if (_imagePosition === CPImageAbove)
         {
-            if (!_DOMImageElement.CPDOMDisplayContext) _DOMImageElement.CPDOMDisplayContext = []; var __index = _DOMImageElement.CPDOMDisplayContext[0]; if (!(__index >= 0)) { __index = _DOMImageElement.CPDOMDisplayContext[0] = CPDOMDisplayServerInstructionCount; CPDOMDisplayServerInstructionCount += 5; } CPDOMDisplayServerInstructions[__index] = 0; CPDOMDisplayServerInstructions[__index + 1] = _DOMImageElement; CPDOMDisplayServerInstructions[__index + 2] = NULL; CPDOMDisplayServerInstructions[__index + 3] = FLOOR(centerX - imageWidth / 2.0); CPDOMDisplayServerInstructions[__index + 4] = 0;;
+            if (NULL) var ____p = _CGPointApplyAffineTransform(CGPointMake(FLOOR(centerX - imageWidth / 2.0), 0), NULL); else var ____p = { x:FLOOR(centerX - imageWidth / 2.0), y:0 }; _DOMImageElement.style.left = ROUND(____p.x) + "px";_DOMImageElement.style.top = ROUND(____p.y) + "px";;
             textRect.origin.y += imageHeight + VERTICAL_MARGIN;
             textRect.size.height = size.height - imageHeight - VERTICAL_MARGIN;
         }

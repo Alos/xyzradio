@@ -1,4 +1,4 @@
-c;3659;var _CPFonts = {};
+c;3864;var _CPFonts = {};
     _CPFontSystemFontFace = "Arial";
 {var the_class = objj_allocateClassPair(CPObject, "CPFont"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_name"), new objj_ivar("_size"), new objj_ivar("_isBold"), new objj_ivar("_cssString")]);
@@ -18,43 +18,43 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_initWithName:size:bold
     }
     return self;
 }
-}), new objj_method(sel_getUid("size"), function $CPFont__size(self, _cmd)
+},["id","CPString","float","BOOL"]), new objj_method(sel_getUid("size"), function $CPFont__size(self, _cmd)
 { with(self)
 {
     return _size;
 }
-}), new objj_method(sel_getUid("cssString"), function $CPFont__cssString(self, _cmd)
+},["float"]), new objj_method(sel_getUid("cssString"), function $CPFont__cssString(self, _cmd)
 { with(self)
 {
     return _cssString;
 }
-}), new objj_method(sel_getUid("familyName"), function $CPFont__familyName(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("familyName"), function $CPFont__familyName(self, _cmd)
 { with(self)
 {
     return _name;
 }
-})]);
+},["CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("fontWithName:size:"), function $CPFont__fontWithName_size_(self, _cmd, aName, aSize)
 { with(self)
 {
     return _CPFonts[(NO ? "bold " : "") + ROUND(aSize) + "px '" + aName + "'"] || objj_msgSend(objj_msgSend(CPFont, "alloc"), "_initWithName:size:bold:", aName, aSize, NO);
 }
-}), new objj_method(sel_getUid("boldFontWithName:size:"), function $CPFont__boldFontWithName_size_(self, _cmd, aName, aSize)
+},["CPFont","CPString","float"]), new objj_method(sel_getUid("boldFontWithName:size:"), function $CPFont__boldFontWithName_size_(self, _cmd, aName, aSize)
 { with(self)
 {
     return _CPFonts[(YES ? "bold " : "") + ROUND(aSize) + "px '" + aName + "'"] || objj_msgSend(objj_msgSend(CPFont, "alloc"), "_initWithName:size:bold:", aName, aSize, YES);
 }
-}), new objj_method(sel_getUid("systemFontOfSize:"), function $CPFont__systemFontOfSize_(self, _cmd, aSize)
+},["CPFont","CPString","float"]), new objj_method(sel_getUid("systemFontOfSize:"), function $CPFont__systemFontOfSize_(self, _cmd, aSize)
 { with(self)
 {
     return _CPFonts[(NO ? "bold " : "") + ROUND(aSize) + "px '" + _CPFontSystemFontFace + "'"] || objj_msgSend(objj_msgSend(CPFont, "alloc"), "_initWithName:size:bold:", _CPFontSystemFontFace, aSize, NO);
 }
-}), new objj_method(sel_getUid("boldSystemFontOfSize:"), function $CPFont__boldSystemFontOfSize_(self, _cmd, aSize)
+},["CPFont","CPSize"]), new objj_method(sel_getUid("boldSystemFontOfSize:"), function $CPFont__boldSystemFontOfSize_(self, _cmd, aSize)
 { with(self)
 {
     return _CPFonts[(YES ? "bold " : "") + ROUND(aSize) + "px '" + _CPFontSystemFontFace + "'"] || objj_msgSend(objj_msgSend(CPFont, "alloc"), "_initWithName:size:bold:", _CPFontSystemFontFace, aSize, YES);
 }
-})]);
+},["CPFont","CPSize"])]);
 }
 var CPFontNameKey = "CPFontNameKey",
     CPFontSizeKey = "CPFontSizeKey",
@@ -67,13 +67,13 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(self, "_initWithName:size:bold:", objj_msgSend(aCoder, "decodeObjectForKey:", CPFontNameKey), objj_msgSend(aCoder, "decodeFloatForKey:", CPFontSizeKey), objj_msgSend(aCoder, "decodeBoolForKey:", CPFontIsBoldKey));
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPFont__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPFont__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _name, CPFontNameKey);
     objj_msgSend(aCoder, "encodeFloat:forKey:", _size, CPFontSizeKey);
     objj_msgSend(aCoder, "encodeBool:forKey:", _isBold, CPFontIsBoldKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 

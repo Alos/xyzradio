@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;1126;
+I;21;Foundation/CPObject.jc;1866;
 
 
 
@@ -32,6 +32,25 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bootstrap"), function 
 {
     return CPFeatureIsCompatible(CPHTMLDragAndDropFeature);
 }
-},["BOOL"])]);
+},["BOOL"]), new objj_method(sel_getUid("supportsNativeMainMenu"), function $CPPlatform__supportsNativeMainMenu(self, _cmd)
+{ with(self)
+{
+    return (typeof window["cpSetMainMenu"] === "function");
+}
+},["BOOL"]), new objj_method(sel_getUid("terminateApplication"), function $CPPlatform__terminateApplication(self, _cmd)
+{ with(self)
+{
+    if (typeof window["cpTerminate"] === "function")
+        window.cpTerminate();
+}
+},["void"]), new objj_method(sel_getUid("activateIgnoringOtherApps:"), function $CPPlatform__activateIgnoringOtherApps_(self, _cmd, shouldIgnoreOtherApps)
+{ with(self)
+{
+
+    if (typeof window["cpActivateIgnoringOtherApps"] === "function")
+        window.cpActivateIgnoringOtherApps(!!shouldIgnoreOtherApps);
+
+}
+},["void","BOOL"])]);
 }
 

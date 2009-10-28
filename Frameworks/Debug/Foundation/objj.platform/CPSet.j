@@ -1,4 +1,4 @@
-i;10;CPObject.ji;9;CPArray.ji;10;CPNumber.ji;14;CPEnumerator.jc;10676;
+i;10;CPObject.ji;9;CPArray.ji;10;CPNumber.ji;14;CPEnumerator.jc;11321;
 {var the_class = objj_allocateClassPair(CPObject, "CPSet"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_contents"), new objj_ivar("_count")]);
 objj_registerClassPair(the_class);
@@ -13,7 +13,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithArray:"), function $CPSet__initWithArray_(self, _cmd, anArray)
+},["id"]), new objj_method(sel_getUid("initWithArray:"), function $CPSet__initWithArray_(self, _cmd, anArray)
 { with(self)
 {
     if (self = objj_msgSend(self, "init"))
@@ -24,12 +24,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithObjects:count:"), function $CPSet__initWithObjects_count_(self, _cmd, objects, count)
+},["id","CPArray"]), new objj_method(sel_getUid("initWithObjects:count:"), function $CPSet__initWithObjects_count_(self, _cmd, objects, count)
 { with(self)
 {
     return objj_msgSend(self, "initWithArray:", objects.splice(0, count));
 }
-}), new objj_method(sel_getUid("initWithObjects:"), function $CPSet__initWithObjects_(self, _cmd, anObject)
+},["id","id","unsigned"]), new objj_method(sel_getUid("initWithObjects:"), function $CPSet__initWithObjects_(self, _cmd, anObject)
 { with(self)
 {
     if (self = objj_msgSend(self, "init"))
@@ -41,12 +41,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return self;
 }
-}), new objj_method(sel_getUid("initWithSet:"), function $CPSet__initWithSet_(self, _cmd, aSet)
+},["id","id"]), new objj_method(sel_getUid("initWithSet:"), function $CPSet__initWithSet_(self, _cmd, aSet)
 { with(self)
 {
     return objj_msgSend(self, "initWithSet:copyItems:", aSet, NO);
 }
-}), new objj_method(sel_getUid("initWithSet:copyItems:"), function $CPSet__initWithSet_copyItems_(self, _cmd, aSet, shouldCopyItems)
+},["id","CPSet"]), new objj_method(sel_getUid("initWithSet:copyItems:"), function $CPSet__initWithSet_copyItems_(self, _cmd, aSet, shouldCopyItems)
 { with(self)
 {
     self = objj_msgSend(self, "init");
@@ -65,7 +65,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return self;
 }
-}), new objj_method(sel_getUid("allObjects"), function $CPSet__allObjects(self, _cmd)
+},["id","CPSet","BOOL"]), new objj_method(sel_getUid("allObjects"), function $CPSet__allObjects(self, _cmd)
 { with(self)
 {
     var array = [];
@@ -76,7 +76,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return array;
 }
-}), new objj_method(sel_getUid("anyObject"), function $CPSet__anyObject(self, _cmd)
+},["CPArray"]), new objj_method(sel_getUid("anyObject"), function $CPSet__anyObject(self, _cmd)
 { with(self)
 {
     for (var property in _contents)
@@ -86,19 +86,19 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return nil;
 }
-}), new objj_method(sel_getUid("containsObject:"), function $CPSet__containsObject_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("containsObject:"), function $CPSet__containsObject_(self, _cmd, anObject)
 { with(self)
 {
     if (_contents[objj_msgSend(anObject, "UID")] && objj_msgSend(_contents[objj_msgSend(anObject, "UID")], "isEqual:", anObject))
         return YES;
     return NO;
 }
-}), new objj_method(sel_getUid("count"), function $CPSet__count(self, _cmd)
+},["BOOL","id"]), new objj_method(sel_getUid("count"), function $CPSet__count(self, _cmd)
 { with(self)
 {
     return _count;
 }
-}), new objj_method(sel_getUid("intersectsSet:"), function $CPSet__intersectsSet_(self, _cmd, set)
+},["unsigned"]), new objj_method(sel_getUid("intersectsSet:"), function $CPSet__intersectsSet_(self, _cmd, set)
 { with(self)
 {
     var items = objj_msgSend(set, "allObjects");
@@ -109,12 +109,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return NO;
 }
-}), new objj_method(sel_getUid("isEqualToSet:"), function $CPSet__isEqualToSet_(self, _cmd, set)
+},["BOOL","CPSet"]), new objj_method(sel_getUid("isEqualToSet:"), function $CPSet__isEqualToSet_(self, _cmd, set)
 { with(self)
 {
     return self === set || (objj_msgSend(self, "count") === objj_msgSend(set, "count") && objj_msgSend(set, "isSubsetOfSet:", self));
 }
-}), new objj_method(sel_getUid("isSubsetOfSet:"), function $CPSet__isSubsetOfSet_(self, _cmd, set)
+},["BOOL","CPSet"]), new objj_method(sel_getUid("isSubsetOfSet:"), function $CPSet__isSubsetOfSet_(self, _cmd, set)
 { with(self)
 {
     var items = objj_msgSend(self, "allObjects");
@@ -125,12 +125,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
     }
     return YES;
 }
-}), new objj_method(sel_getUid("makeObjectsPerformSelector:"), function $CPSet__makeObjectsPerformSelector_(self, _cmd, aSelector)
+},["BOOL","CPSet"]), new objj_method(sel_getUid("makeObjectsPerformSelector:"), function $CPSet__makeObjectsPerformSelector_(self, _cmd, aSelector)
 { with(self)
 {
     objj_msgSend(self, "makeObjectsPerformSelector:withObject:", aSelector, nil);
 }
-}), new objj_method(sel_getUid("makeObjectsPerformSelector:withObject:"), function $CPSet__makeObjectsPerformSelector_withObject_(self, _cmd, aSelector, argument)
+},["void","SEL"]), new objj_method(sel_getUid("makeObjectsPerformSelector:withObject:"), function $CPSet__makeObjectsPerformSelector_withObject_(self, _cmd, aSelector, argument)
 { with(self)
 {
     var items = objj_msgSend(self, "allObjects");
@@ -139,44 +139,46 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
         objj_msgSend(items[i], "performSelector:withObject:", aSelector, argument);
     }
 }
-}), new objj_method(sel_getUid("member:"), function $CPSet__member_(self, _cmd, object)
+},["void","SEL","id"]), new objj_method(sel_getUid("member:"), function $CPSet__member_(self, _cmd, object)
 { with(self)
 {
     if (objj_msgSend(self, "containsObject:", object))
         return object;
     return nil;
 }
-}), new objj_method(sel_getUid("objectEnumerator"), function $CPSet__objectEnumerator(self, _cmd)
+},["id","id"]), new objj_method(sel_getUid("objectEnumerator"), function $CPSet__objectEnumerator(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "allObjects"), "objectEnumerator");
 }
-}), new objj_method(sel_getUid("initWithCapacity:"), function $CPSet__initWithCapacity_(self, _cmd, numItems)
+},["CPEnumerator"]), new objj_method(sel_getUid("initWithCapacity:"), function $CPSet__initWithCapacity_(self, _cmd, numItems)
 { with(self)
 {
     self = objj_msgSend(self, "init");
     return self;
 }
-}), new objj_method(sel_getUid("setSet:"), function $CPSet__setSet_(self, _cmd, set)
+},["id","unsigned"]), new objj_method(sel_getUid("setSet:"), function $CPSet__setSet_(self, _cmd, set)
 { with(self)
 {
     objj_msgSend(self, "removeAllObjects");
     objj_msgSend(self, "addObjectsFromArray:", objj_msgSend(set, "allObjects"));
 }
-}), new objj_method(sel_getUid("addObject:"), function $CPSet__addObject_(self, _cmd, anObject)
+},["void","CPSet"]), new objj_method(sel_getUid("addObject:"), function $CPSet__addObject_(self, _cmd, anObject)
 { with(self)
 {
+    if (objj_msgSend(self, "containsObject:", anObject))
+        return;
     _contents[objj_msgSend(anObject, "UID")] = anObject;
     _count++;
 }
-}), new objj_method(sel_getUid("addObjectsFromArray:"), function $CPSet__addObjectsFromArray_(self, _cmd, objects)
+},["void","id"]), new objj_method(sel_getUid("addObjectsFromArray:"), function $CPSet__addObjectsFromArray_(self, _cmd, objects)
 { with(self)
 {
     var count = objj_msgSend(objects, "count");
     while (count--)
         objj_msgSend(self, "addObject:", objects[count]);
 }
-}), new objj_method(sel_getUid("removeObject:"), function $CPSet__removeObject_(self, _cmd, anObject)
+},["void","CPArray"]), new objj_method(sel_getUid("removeObject:"), function $CPSet__removeObject_(self, _cmd, anObject)
 { with(self)
 {
     if (objj_msgSend(self, "containsObject:", anObject))
@@ -185,20 +187,20 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
         _count--;
     }
 }
-}), new objj_method(sel_getUid("removeObjectsInArray:"), function $CPSet__removeObjectsInArray_(self, _cmd, objects)
+},["void","id"]), new objj_method(sel_getUid("removeObjectsInArray:"), function $CPSet__removeObjectsInArray_(self, _cmd, objects)
 { with(self)
 {
     var count = objj_msgSend(objects, "count");
     while (count--)
         objj_msgSend(self, "removeObject:", objects[count]);
 }
-}), new objj_method(sel_getUid("removeAllObjects"), function $CPSet__removeAllObjects(self, _cmd)
+},["void","CPArray"]), new objj_method(sel_getUid("removeAllObjects"), function $CPSet__removeAllObjects(self, _cmd)
 { with(self)
 {
     _contents = {};
     _count = 0;
 }
-}), new objj_method(sel_getUid("intersectSet:"), function $CPSet__intersectSet_(self, _cmd, set)
+},["void"]), new objj_method(sel_getUid("intersectSet:"), function $CPSet__intersectSet_(self, _cmd, set)
 { with(self)
 {
     var items = objj_msgSend(self, "allObjects");
@@ -208,7 +210,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
             objj_msgSend(self, "removeObject:", items[i]);
     }
 }
-}), new objj_method(sel_getUid("minusSet:"), function $CPSet__minusSet_(self, _cmd, set)
+},["void","CPSet"]), new objj_method(sel_getUid("minusSet:"), function $CPSet__minusSet_(self, _cmd, set)
 { with(self)
 {
     var items = objj_msgSend(set, "allObjects");
@@ -218,7 +220,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
             objj_msgSend(self, "removeObject:", items[i]);
     }
 }
-}), new objj_method(sel_getUid("unionSet:"), function $CPSet__unionSet_(self, _cmd, set)
+},["void","CPSet"]), new objj_method(sel_getUid("unionSet:"), function $CPSet__unionSet_(self, _cmd, set)
 { with(self)
 {
     var items = objj_msgSend(set, "allObjects");
@@ -227,28 +229,28 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPSet
         objj_msgSend(self, "addObject:", items[i]);
     }
 }
-})]);
+},["void","CPSet"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("set"), function $CPSet__set(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "init");
 }
-}), new objj_method(sel_getUid("setWithArray:"), function $CPSet__setWithArray_(self, _cmd, array)
+},["id"]), new objj_method(sel_getUid("setWithArray:"), function $CPSet__setWithArray_(self, _cmd, array)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithArray:", array);
 }
-}), new objj_method(sel_getUid("setWithObject:"), function $CPSet__setWithObject_(self, _cmd, anObject)
+},["id","CPArray"]), new objj_method(sel_getUid("setWithObject:"), function $CPSet__setWithObject_(self, _cmd, anObject)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithArray:", [anObject]);
 }
-}), new objj_method(sel_getUid("setWithObjects:count:"), function $CPSet__setWithObjects_count_(self, _cmd, objects, count)
+},["id","id"]), new objj_method(sel_getUid("setWithObjects:count:"), function $CPSet__setWithObjects_count_(self, _cmd, objects, count)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithObjects:count:", objects, count);
 }
-}), new objj_method(sel_getUid("setWithObjects:"), function $CPSet__setWithObjects_(self, _cmd, anObject)
+},["id","id","unsigned"]), new objj_method(sel_getUid("setWithObjects:"), function $CPSet__setWithObjects_(self, _cmd, anObject)
 { with(self)
 {
     var set = objj_msgSend(objj_msgSend(self, "alloc"), "init"),
@@ -258,17 +260,17 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("set"), function $CPSet
         objj_msgSend(set, "addObject:", argument);
     return set;
 }
-}), new objj_method(sel_getUid("setWithSet:"), function $CPSet__setWithSet_(self, _cmd, set)
+},["id","id"]), new objj_method(sel_getUid("setWithSet:"), function $CPSet__setWithSet_(self, _cmd, set)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithSet:", set);
 }
-}), new objj_method(sel_getUid("setWithCapacity:"), function $CPSet__setWithCapacity_(self, _cmd, numItems)
+},["id","CPSet"]), new objj_method(sel_getUid("setWithCapacity:"), function $CPSet__setWithCapacity_(self, _cmd, numItems)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithCapacity:", numItems);
 }
-})]);
+},["id","unsigned"])]);
 }
 {
 var the_class = objj_getClass("CPSet")
@@ -278,12 +280,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(objj_msgSend(CPSet, "alloc"), "initWithSet:", self);
 }
-}), new objj_method(sel_getUid("mutableCopy"), function $CPSet__mutableCopy(self, _cmd)
+},["id"]), new objj_method(sel_getUid("mutableCopy"), function $CPSet__mutableCopy(self, _cmd)
 { with(self)
 {
     return objj_msgSend(self, "copy");
 }
-})]);
+},["id"])]);
 }
 var CPSetObjectsKey = "CPSetObjectsKey";
 {
@@ -294,12 +296,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 {
     return objj_msgSend(self, "initWithArray:", objj_msgSend(aCoder, "decodeObjectForKey:", CPSetObjectsKey));
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSet__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPSet__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", objj_msgSend(self, "allObjects"), CPSetObjectsKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 {var the_class = objj_allocateClassPair(CPSet, "CPMutableSet"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);

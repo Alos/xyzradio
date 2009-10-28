@@ -1,4 +1,4 @@
-i;10;CPObject.ji;10;CPString.jc;2933;
+i;10;CPObject.ji;10;CPString.jc;3094;
 {var the_class = objj_allocateClassPair(CPObject, "CPData"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_plistObject")]);
 objj_registerClassPair(the_class);
@@ -11,7 +11,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         string = aString;
     return self;
 }
-}), new objj_method(sel_getUid("initWithPlistObject:"), function $CPData__initWithPlistObject_(self, _cmd, aPlistObject)
+},["id","CPString"]), new objj_method(sel_getUid("initWithPlistObject:"), function $CPData__initWithPlistObject_(self, _cmd, aPlistObject)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -19,64 +19,64 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithString:"), func
         _plistObject = aPlistObject;
     return self;
 }
-}), new objj_method(sel_getUid("length"), function $CPData__length(self, _cmd)
+},["id","id"]), new objj_method(sel_getUid("length"), function $CPData__length(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "string"), "length");
 }
-}), new objj_method(sel_getUid("description"), function $CPData__description(self, _cmd)
+},["int"]), new objj_method(sel_getUid("description"), function $CPData__description(self, _cmd)
 { with(self)
 {
     return string;
 }
-}), new objj_method(sel_getUid("string"), function $CPData__string(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("string"), function $CPData__string(self, _cmd)
 { with(self)
 {
     if (!string && _plistObject)
         string = objj_msgSend(objj_msgSend(CPPropertyListSerialization, "dataFromPropertyList:format:errorDescription:", _plistObject, CPPropertyList280NorthFormat_v1_0, NULL), "string");
     return string;
 }
-}), new objj_method(sel_getUid("setString:"), function $CPData__setString_(self, _cmd, aString)
+},["CPString"]), new objj_method(sel_getUid("setString:"), function $CPData__setString_(self, _cmd, aString)
 { with(self)
 {
     string = aString;
     _plistObject = nil;
 }
-}), new objj_method(sel_getUid("plistObject"), function $CPData__plistObject(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("plistObject"), function $CPData__plistObject(self, _cmd)
 { with(self)
 {
     if (string && !_plistObject)
         _plistObject = objj_msgSend(CPPropertyListSerialization, "propertyListFromData:format:errorDescription:", self, 0, NULL);
     return _plistObject;
 }
-}), new objj_method(sel_getUid("setPlistObject:"), function $CPData__setPlistObject_(self, _cmd, aPlistObject)
+},["id"]), new objj_method(sel_getUid("setPlistObject:"), function $CPData__setPlistObject_(self, _cmd, aPlistObject)
 { with(self)
 {
     string = nil;
     _plistObject = aPlistObject;
 }
-})]);
+},["void","id"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("alloc"), function $CPData__alloc(self, _cmd)
 { with(self)
 {
     return new objj_data();
 }
-}), new objj_method(sel_getUid("data"), function $CPData__data(self, _cmd)
+},["id"]), new objj_method(sel_getUid("data"), function $CPData__data(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithPlistObject:", nil);
 }
-}), new objj_method(sel_getUid("dataWithString:"), function $CPData__dataWithString_(self, _cmd, aString)
+},["CPData"]), new objj_method(sel_getUid("dataWithString:"), function $CPData__dataWithString_(self, _cmd, aString)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithString:", aString);
 }
-}), new objj_method(sel_getUid("dataWithPlistObject:"), function $CPData__dataWithPlistObject_(self, _cmd, aPlistObject)
+},["CPData","CPString"]), new objj_method(sel_getUid("dataWithPlistObject:"), function $CPData__dataWithPlistObject_(self, _cmd, aPlistObject)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithPlistObject:", aPlistObject);
 }
-})]);
+},["CPData","id"])]);
 }
 objj_data.prototype.isa = CPData;
 

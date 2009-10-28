@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;865;
+I;21;Foundation/CPObject.jc;1359;
 var _1=objj_allocateClassPair(CPObject,"CPPlatform"),_2=_1.isa;
 objj_registerClassPair(_1);
 objj_addClassForBundle(_1,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
@@ -20,5 +20,21 @@ return typeof window.cpIsDesktop==="undefined";
 }),new objj_method(sel_getUid("supportsDragAndDrop"),function(_8,_9){
 with(_8){
 return CPFeatureIsCompatible(CPHTMLDragAndDropFeature);
+}
+}),new objj_method(sel_getUid("supportsNativeMainMenu"),function(_a,_b){
+with(_a){
+return (typeof window["cpSetMainMenu"]==="function");
+}
+}),new objj_method(sel_getUid("terminateApplication"),function(_c,_d){
+with(_c){
+if(typeof window["cpTerminate"]==="function"){
+window.cpTerminate();
+}
+}
+}),new objj_method(sel_getUid("activateIgnoringOtherApps:"),function(_e,_f,_10){
+with(_e){
+if(typeof window["cpActivateIgnoringOtherApps"]==="function"){
+window.cpActivateIgnoringOtherApps(!!_10);
+}
 }
 })]);

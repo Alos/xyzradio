@@ -1,4 +1,4 @@
-I;21;Foundation/CPBundle.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.jI;21;Foundation/CPString.ji;12;CPGeometry.jc;12661;
+I;21;Foundation/CPBundle.jI;33;Foundation/CPNotificationCenter.jI;21;Foundation/CPObject.jI;22;Foundation/CPRunLoop.jI;21;Foundation/CPString.ji;12;CPGeometry.jc;12831;
 CPImageLoadStatusInitialized = 0;
 CPImageLoadStatusLoading = 1;
 CPImageLoadStatusCompleted = 2;
@@ -29,7 +29,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_size"), new objj_ivar("_filename"), new objj_ivar("_delegate"), new objj_ivar("_loadStatus"), new objj_ivar("_image")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
-class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:size:"), function $CPImage__initByReferencingFile_size_(self, _cmd, aFilename, aSize)
+class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPImage__init(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(self, "initByReferencingFile:size:", "", CGSizeMake(-1, -1));
+}
+},["id"]), new objj_method(sel_getUid("initByReferencingFile:size:"), function $CPImage__initByReferencingFile_size_(self, _cmd, aFilename, aSize)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -41,7 +46,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
     }
     return self;
 }
-},["CPImage","CPString","CGSize"]), new objj_method(sel_getUid("initWithContentsOfFile:size:"), function $CPImage__initWithContentsOfFile_size_(self, _cmd, aFilename, aSize)
+},["id","CPString","CGSize"]), new objj_method(sel_getUid("initWithContentsOfFile:size:"), function $CPImage__initWithContentsOfFile_size_(self, _cmd, aFilename, aSize)
 { with(self)
 {
     self = objj_msgSend(self, "initByReferencingFile:size:", aFilename, aSize);
@@ -49,15 +54,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initByReferencingFile:s
         objj_msgSend(self, "load");
     return self;
 }
-},["CPImage","CPString","CGSize"]), new objj_method(sel_getUid("initWithContentsOfFile:"), function $CPImage__initWithContentsOfFile_(self, _cmd, aFilename)
+},["id","CPString","CGSize"]), new objj_method(sel_getUid("initWithContentsOfFile:"), function $CPImage__initWithContentsOfFile_(self, _cmd, aFilename)
 { with(self)
 {
-    self = objj_msgSend(self, "initByReferencingFile:size:", aFilename,  CGSizeMake(-1, -1));
+    self = objj_msgSend(self, "initByReferencingFile:size:", aFilename, CGSizeMake(-1, -1));
     if (self)
         objj_msgSend(self, "load");
     return self;
 }
-},["CPImage","CPString"]), new objj_method(sel_getUid("filename"), function $CPImage__filename(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("filename"), function $CPImage__filename(self, _cmd)
 { with(self)
 {
     return _filename;

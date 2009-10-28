@@ -1,4 +1,4 @@
-i;10;CPObject.ji;9;CPArray.ji;10;CPString.jc;9636;
+i;10;CPObject.ji;9;CPArray.ji;10;CPString.jc;10004;
 CPDefaultRunLoopMode = "CPDefaultRunLoopMode";
 _CPRunLoopPerformCompare= function(lhs, rhs)
 {
@@ -25,27 +25,27 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSelector:target
     }
     return self;
 }
-}), new objj_method(sel_getUid("selector"), function $_CPRunLoopPerform__selector(self, _cmd)
+},["id","SEL","SEL","id","unsigned","CPArray"]), new objj_method(sel_getUid("selector"), function $_CPRunLoopPerform__selector(self, _cmd)
 { with(self)
 {
     return _selector;
 }
-}), new objj_method(sel_getUid("target"), function $_CPRunLoopPerform__target(self, _cmd)
+},["SEL"]), new objj_method(sel_getUid("target"), function $_CPRunLoopPerform__target(self, _cmd)
 { with(self)
 {
     return _target;
 }
-}), new objj_method(sel_getUid("argument"), function $_CPRunLoopPerform__argument(self, _cmd)
+},["id"]), new objj_method(sel_getUid("argument"), function $_CPRunLoopPerform__argument(self, _cmd)
 { with(self)
 {
     return _argument;
 }
-}), new objj_method(sel_getUid("order"), function $_CPRunLoopPerform__order(self, _cmd)
+},["id"]), new objj_method(sel_getUid("order"), function $_CPRunLoopPerform__order(self, _cmd)
 { with(self)
 {
     return _order;
 }
-}), new objj_method(sel_getUid("fireInMode:"), function $_CPRunLoopPerform__fireInMode_(self, _cmd, aRunLoopMode)
+},["unsigned"]), new objj_method(sel_getUid("fireInMode:"), function $_CPRunLoopPerform__fireInMode_(self, _cmd, aRunLoopMode)
 { with(self)
 {
     if (!_isValid)
@@ -57,12 +57,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSelector:target
     }
     return NO;
 }
-}), new objj_method(sel_getUid("invalidate"), function $_CPRunLoopPerform__invalidate(self, _cmd)
+},["BOOL","CPString"]), new objj_method(sel_getUid("invalidate"), function $_CPRunLoopPerform__invalidate(self, _cmd)
 { with(self)
 {
     _isValid = NO;
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("_poolPerform:"), function $_CPRunLoopPerform___poolPerform_(self, _cmd, aPerform)
 { with(self)
 {
@@ -70,7 +70,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("_poolPerform:"), funct
         return;
     _CPRunLoopPerformPool.push(aPerform);
 }
-}), new objj_method(sel_getUid("performWithSelector:target:argument:order:modes:"), function $_CPRunLoopPerform__performWithSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
+},["void","_CPRunLoopPerform"]), new objj_method(sel_getUid("performWithSelector:target:argument:order:modes:"), function $_CPRunLoopPerform__performWithSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
 { with(self)
 {
     if (_CPRunLoopPerformPool.length)
@@ -86,7 +86,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("_poolPerform:"), funct
     }
     return objj_msgSend(objj_msgSend(self, "alloc"), "initWithSelector:target:argument:order:modes:", aSelector, aTarget, anArgument, anOrder, modes);
 }
-})]);
+},["_CPRunLoopPerform","SEL","id","id","unsigned","CPArray"])]);
 }
 var CPRunLoopLastNativeRunLoop = 0;
 {var the_class = objj_allocateClassPair(CPObject, "CPRunLoop"),
@@ -106,7 +106,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
     }
     return self;
 }
-}), new objj_method(sel_getUid("performSelector:target:argument:order:modes:"), function $CPRunLoop__performSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
+},["id"]), new objj_method(sel_getUid("performSelector:target:argument:order:modes:"), function $CPRunLoop__performSelector_target_argument_order_modes_(self, _cmd, aSelector, aTarget, anArgument, anOrder, modes)
 { with(self)
 {
     var perform = objj_msgSend(_CPRunLoopPerform, "performWithSelector:target:argument:order:modes:", aSelector, aTarget, anArgument, anOrder, modes),
@@ -116,7 +116,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
             break;
     _orderedPerforms.splice(count + 1, 0, perform);
 }
-}), new objj_method(sel_getUid("cancelPerformSelector:target:argument:"), function $CPRunLoop__cancelPerformSelector_target_argument_(self, _cmd, aSelector, aTarget, anArgument)
+},["void","SEL","id","id","int","CPArray"]), new objj_method(sel_getUid("cancelPerformSelector:target:argument:"), function $CPRunLoop__cancelPerformSelector_target_argument_(self, _cmd, aSelector, aTarget, anArgument)
 { with(self)
 {
     var count = _orderedPerforms.length;
@@ -127,12 +127,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
             objj_msgSend(_orderedPerforms[count], "invalidate");
     }
 }
-}), new objj_method(sel_getUid("performSelectors"), function $CPRunLoop__performSelectors(self, _cmd)
+},["void","SEL","id","id"]), new objj_method(sel_getUid("performSelectors"), function $CPRunLoop__performSelectors(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "limitDateForMode:", CPDefaultRunLoopMode);
 }
-}), new objj_method(sel_getUid("addTimer:forMode:"), function $CPRunLoop__addTimer_forMode_(self, _cmd, aTimer, aMode)
+},["void"]), new objj_method(sel_getUid("addTimer:forMode:"), function $CPRunLoop__addTimer_forMode_(self, _cmd, aTimer, aMode)
 { with(self)
 {
     if (_timersForModes[aMode])
@@ -144,7 +144,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
         aTimer._lastNativeRunLoopsForModes = {};
     aTimer._lastNativeRunLoopsForModes[aMode] = CPRunLoopLastNativeRunLoop;
 }
-}), new objj_method(sel_getUid("limitDateForMode:"), function $CPRunLoop__limitDateForMode_(self, _cmd, aMode)
+},["void","CPTimer","CPString"]), new objj_method(sel_getUid("limitDateForMode:"), function $CPRunLoop__limitDateForMode_(self, _cmd, aMode)
 { with(self)
 {
     if (_runLoopLock)
@@ -219,7 +219,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPRun
     _runLoopLock = NO;
     return nextFireDate;
 }
-})]);
+},["CPDate","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPRunLoop__initialize(self, _cmd)
 { with(self)
 {
@@ -227,16 +227,16 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function
         return;
     CPMainRunLoop = objj_msgSend(objj_msgSend(CPRunLoop, "alloc"), "init");
 }
-}), new objj_method(sel_getUid("currentRunLoop"), function $CPRunLoop__currentRunLoop(self, _cmd)
+},["void"]), new objj_method(sel_getUid("currentRunLoop"), function $CPRunLoop__currentRunLoop(self, _cmd)
 { with(self)
 {
     return CPMainRunLoop;
 }
-}), new objj_method(sel_getUid("mainRunLoop"), function $CPRunLoop__mainRunLoop(self, _cmd)
+},["CPRunLoop"]), new objj_method(sel_getUid("mainRunLoop"), function $CPRunLoop__mainRunLoop(self, _cmd)
 { with(self)
 {
     return CPMainRunLoop;
 }
-})]);
+},["CPRunLoop"])]);
 }
 

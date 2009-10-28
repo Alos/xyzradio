@@ -20,7 +20,6 @@ This file is part of XYZRadio.
 @import "PreferencesWindow.j"
 @import "XYZSong.j"
 @import "UsersWindow.j"
-@import "CPSound.j"
 @import "XYZAddSongView.j"
 @import "DCFormController.j"
 @import "UserCell.j"
@@ -28,7 +27,7 @@ This file is part of XYZRadio.
 @import "UserProfileWindow.j"
 @import "XYZUser.j"
 @import "EventListenerManager.j"
-@import "ProfileWindow.j"
+@import "MainUserProfileWindow.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
@@ -52,7 +51,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     CPWindow theWindow;
     CPView contentView;
     UsersWindow usersWindow;
-    ProfileWindow profileWindow;
+    MainUserProfileWindow mainUserProfileWindow;
     CPCollectionView listCollectionView;
     CPWindow contentUsers;
     CGRect bounds;
@@ -110,7 +109,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 	playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
     
-    [self openLoginWindow];
+    //[self openLoginWindow];
 
 }
 
@@ -262,15 +261,15 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 //Abre la ventana de perfil de usuario
 -(void)openProfile{
-  if(!profileWindow){
-    profileWindow = [[ProfileWindow alloc] initWithContentRect:CGRectMake(100,200,300,400) styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
-    [profileWindow setFrameOrigin:(CPPointMake(100, 200))];			
-    [profileWindow orderFront:self];
+  if(!mainUserProfileWindow){
+    mainUserProfileWindow = [[MainUserProfileWindow alloc] initWithContentRect:CGRectMake(100,200,300,400) styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
+    [mainUserProfileWindow setFrameOrigin:(CPPointMake(100, 200))];			
+    [mainUserProfileWindow orderFront:self];
   }else{	
-    if([profileWindow isVisible]){
-	[profileWindow close];
+    if([mainUserProfileWindow isVisible]){
+	[mainUserProfileWindow close];
     }else{
-	[profileWindow orderFront:self];
+	[mainUserProfileWindow orderFront:self];
     }
   }
 }
@@ -375,8 +374,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
 
     }else if(anItemIdentifier == ProfileItemIdentifier){
-	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuario.png" size:CPSizeMake(27, 27)],
-        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuariosOff.png" size:CPSizeMake(27, 27)];
+	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/miperfiloff.png" size:CPSizeMake(27, 27)],
+        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/miperfilon.png" size:CPSizeMake(27, 27)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];

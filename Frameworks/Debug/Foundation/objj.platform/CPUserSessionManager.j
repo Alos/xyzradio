@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPString.jc;2478;
+I;21;Foundation/CPObject.jI;21;Foundation/CPString.jc;2580;
 CPUserSessionUndeterminedStatus = 0;
 CPUserSessionLoggedInStatus = 1;
 CPUserSessionLoggedOutStatus = 2;
@@ -17,12 +17,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPUse
         _status = CPUserSessionUndeterminedStatus;
     return self;
 }
-}), new objj_method(sel_getUid("status"), function $CPUserSessionManager__status(self, _cmd)
+},["id"]), new objj_method(sel_getUid("status"), function $CPUserSessionManager__status(self, _cmd)
 { with(self)
 {
     return _status;
 }
-}), new objj_method(sel_getUid("setStatus:"), function $CPUserSessionManager__setStatus_(self, _cmd, aStatus)
+},["CPUserSessionStatus"]), new objj_method(sel_getUid("setStatus:"), function $CPUserSessionManager__setStatus_(self, _cmd, aStatus)
 { with(self)
 {
     if (_status == aStatus)
@@ -32,12 +32,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPUse
     if (_status != CPUserSessionLoggedInStatus)
         objj_msgSend(self, "setUserIdentifier:", nil);
 }
-}), new objj_method(sel_getUid("userIdentifier"), function $CPUserSessionManager__userIdentifier(self, _cmd)
+},["void","CPUserSessionStatus"]), new objj_method(sel_getUid("userIdentifier"), function $CPUserSessionManager__userIdentifier(self, _cmd)
 { with(self)
 {
     return _userIdentifier;
 }
-}), new objj_method(sel_getUid("setUserIdentifier:"), function $CPUserSessionManager__setUserIdentifier_(self, _cmd, anIdentifier)
+},["CPString"]), new objj_method(sel_getUid("setUserIdentifier:"), function $CPUserSessionManager__setUserIdentifier_(self, _cmd, anIdentifier)
 { with(self)
 {
     if (_userIdentifier == anIdentifier)
@@ -45,7 +45,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPUse
     _userIdentifier = anIdentifier;
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPUserSessionManagerUserIdentifierDidChangeNotification, self);
 }
-})]);
+},["void","CPString"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("defaultManager"), function $CPUserSessionManager__defaultManager(self, _cmd)
 { with(self)
 {
@@ -53,6 +53,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("defaultManager"), func
         CPDefaultUserSessionManager = objj_msgSend(objj_msgSend(CPUserSessionManager, "alloc"), "init");
     return CPDefaultUserSessionManager;
 }
-})]);
+},["id"])]);
 }
 

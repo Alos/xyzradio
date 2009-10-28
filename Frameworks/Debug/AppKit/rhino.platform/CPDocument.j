@@ -1,4 +1,4 @@
-I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;20;CPWindowController.jc;18318;
+I;21;Foundation/CPString.jI;20;Foundation/CPArray.ji;13;CPResponder.ji;13;CPSavePanel.ji;18;CPViewController.ji;20;CPWindowController.jc;26522;
 CPSaveOperation = 0;
 CPSaveAsOperation = 1;
 CPSaveToOperation = 2;
@@ -13,7 +13,7 @@ CPDocumentDidSaveNotification = "CPDocumentDidSaveNotification";
 CPDocumentDidFailToSaveNotification = "CPDocumentDidFailToSaveNotification";
 var CPDocumentUntitledCount = 0;
 {var the_class = objj_allocateClassPair(CPResponder, "CPDocument"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_fileURL"), new objj_ivar("_fileType"), new objj_ivar("_windowControllers"), new objj_ivar("_untitledDocumentIndex"), new objj_ivar("_hasUndoManager"), new objj_ivar("_undoManager"), new objj_ivar("_changeCount"), new objj_ivar("_readConnection"), new objj_ivar("_writeRequest")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window"), new objj_ivar("_view"), new objj_ivar("_viewControllersForWindowControllers"), new objj_ivar("_fileURL"), new objj_ivar("_fileType"), new objj_ivar("_windowControllers"), new objj_ivar("_untitledDocumentIndex"), new objj_ivar("_hasUndoManager"), new objj_ivar("_undoManager"), new objj_ivar("_changeCount"), new objj_ivar("_readConnection"), new objj_ivar("_writeRequest"), new objj_ivar("_canCloseAlert")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDocument__init(self, _cmd)
@@ -23,6 +23,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     if (self)
     {
         _windowControllers = [];
+        _viewControllersForWindowControllers = objj_msgSend(CPDictionary, "dictionary");
         _hasUndoManager = YES;
         _changeCount = 0;
         objj_msgSend(self, "setNextResponder:", CPApp);
@@ -43,9 +44,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     self = objj_msgSend(self, "init");
     if (self)
     {
-        objj_msgSend(self, "readFromURL:ofType:delegate:didReadSelector:contextInfo:", anAbsoluteURL, aType, aDelegate, aDidReadSelector, aContextInfo);
         objj_msgSend(self, "setFileURL:", anAbsoluteURL);
         objj_msgSend(self, "setFileType:", aType);
+        objj_msgSend(self, "readFromURL:ofType:delegate:didReadSelector:contextInfo:", anAbsoluteURL, aType, aDelegate, aDidReadSelector, aContextInfo);
     }
     return self;
 }
@@ -55,9 +56,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     self = objj_msgSend(self, "init");
     if (self)
     {
-        objj_msgSend(self, "readFromURL:ofType:delegate:didReadSelector:contextInfo:", absoluteContentsURL, aType, aDelegate, aDidReadSelector, aContextInfo);
         objj_msgSend(self, "setFileURL:", anAbsoluteURL);
         objj_msgSend(self, "setFileType:", aType);
+        objj_msgSend(self, "readFromURL:ofType:delegate:didReadSelector:contextInfo:", absoluteContentsURL, aType, aDelegate, aDidReadSelector, aContextInfo);
     }
     return self;
 }
@@ -71,12 +72,51 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 {
     objj_msgSend(CPException, "raise:reason:", CPUnsupportedMethodException, "readFromData:ofType: must be overridden by the document subclass.");
 }
-},["void","CPData","CPString","CPError"]), new objj_method(sel_getUid("makeWindowControllers"), function $CPDocument__makeWindowControllers(self, _cmd)
+},["void","CPData","CPString","CPError"]), new objj_method(sel_getUid("viewControllerWillLoadCib:"), function $CPDocument__viewControllerWillLoadCib_(self, _cmd, aViewController)
 { with(self)
 {
-    var windowCibName = objj_msgSend(self, "windowCibName");
-    if (windowCibName)
-        objj_msgSend(self, "addWindowController:", objj_msgSend(objj_msgSend(CPWindowController, "alloc"), "initWithWindowCibName:owner:", windowCibName, self));
+}
+},["void","CPViewController"]), new objj_method(sel_getUid("viewControllerDidLoadCib:"), function $CPDocument__viewControllerDidLoadCib_(self, _cmd, aViewController)
+{ with(self)
+{
+}
+},["void","CPViewController"]), new objj_method(sel_getUid("firstEligibleExistingWindowController"), function $CPDocument__firstEligibleExistingWindowController(self, _cmd)
+{ with(self)
+{
+    return nil;
+}
+},["CPWindowController"]), new objj_method(sel_getUid("makeWindowControllers"), function $CPDocument__makeWindowControllers(self, _cmd)
+{ with(self)
+{
+    objj_msgSend(self, "makeViewAndWindowControllers");
+}
+},["void"]), new objj_method(sel_getUid("makeViewAndWindowControllers"), function $CPDocument__makeViewAndWindowControllers(self, _cmd)
+{ with(self)
+{
+    var viewCibName = objj_msgSend(self, "viewCibName"),
+        viewController = nil,
+        windowController = nil;
+    if (objj_msgSend(viewCibName, "length"))
+        viewController = objj_msgSend(objj_msgSend(CPViewController, "alloc"), "initWithCibName:bundle:owner:", viewCibName, nil, self);
+    if (viewController)
+        windowController = objj_msgSend(self, "firstEligibleExistingWindowController");
+    if (!windowController)
+    {
+        var windowCibName = objj_msgSend(self, "windowCibName");
+        if (objj_msgSend(windowCibName, "length"))
+            windowController = objj_msgSend(objj_msgSend(CPWindowController, "alloc"), "initWithWindowCibName:owner:", windowCibName, self);
+        else if (viewController)
+        {
+            var view = objj_msgSend(viewController, "view"),
+                theWindow = objj_msgSend(objj_msgSend(CPWindow, "alloc"), "initWithContentRect:styleMask:", objj_msgSend(view, "frame"), CPTitledWindowMask | CPClosableWindowMask | CPMiniaturizableWindowMask | CPResizableWindowMask);
+            objj_msgSend(theWindow, "setSupportsMultipleDocuments:", YES);
+            windowController = objj_msgSend(objj_msgSend(CPWindowController, "alloc"), "initWithWindow:", theWindow);
+        }
+    }
+    if (windowController)
+        objj_msgSend(self, "addWindowController:", windowController);
+    if (viewController)
+        objj_msgSend(self, "addViewController:forWindowController:", viewController, windowController);
 }
 },["void"]), new objj_method(sel_getUid("windowControllers"), function $CPDocument__windowControllers(self, _cmd)
 { with(self)
@@ -88,14 +128,39 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 {
     objj_msgSend(_windowControllers, "addObject:", aWindowController);
     if (objj_msgSend(aWindowController, "document") !== self)
-    {
-        objj_msgSend(aWindowController, "setNextResponder:", self);
         objj_msgSend(aWindowController, "setDocument:", self);
-    }
 }
-},["void","CPWindowController"]), new objj_method(sel_getUid("showWindows"), function $CPDocument__showWindows(self, _cmd)
+},["void","CPWindowController"]), new objj_method(sel_getUid("view"), function $CPDocument__view(self, _cmd)
 { with(self)
 {
+    return _view;
+}
+},["CPView"]), new objj_method(sel_getUid("viewControllers"), function $CPDocument__viewControllers(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(_viewControllersForWindowControllers, "allValues");
+}
+},["CPArray"]), new objj_method(sel_getUid("addViewController:forWindowController:"), function $CPDocument__addViewController_forWindowController_(self, _cmd, aViewController, aWindowController)
+{ with(self)
+{
+    objj_msgSend(_viewControllersForWindowControllers, "setObject:forKey:", aViewController, objj_msgSend(aWindowController, "UID"));
+    if (objj_msgSend(aWindowController, "document") === self)
+        objj_msgSend(aWindowController, "setViewController:", aViewController);
+}
+},["void","CPViewController","CPWindowController"]), new objj_method(sel_getUid("removeViewController:"), function $CPDocument__removeViewController_(self, _cmd, aViewController)
+{ with(self)
+{
+    objj_msgSend(_viewControllersForWindowControllers, "removeObject:", aViewController);
+}
+},["void","CPViewController"]), new objj_method(sel_getUid("viewControllerForWindowController:"), function $CPDocument__viewControllerForWindowController_(self, _cmd, aWindowController)
+{ with(self)
+{
+    return objj_msgSend(_viewControllersForWindowControllers, "objectForKey:", objj_msgSend(aWindowController, "UID"));
+}
+},["CPViewController","CPWindowController"]), new objj_method(sel_getUid("showWindows"), function $CPDocument__showWindows(self, _cmd)
+{ with(self)
+{
+    objj_msgSend(_windowControllers, "makeObjectsPerformSelector:withObject:", sel_getUid("setDocument:"), self);
     objj_msgSend(_windowControllers, "makeObjectsPerformSelector:withObject:", sel_getUid("showWindow:"), self);
 }
 },["void"]), new objj_method(sel_getUid("displayName"), function $CPDocument__displayName(self, _cmd)
@@ -108,6 +173,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
  if (_untitledDocumentIndex == 1)
     return "Untitled";
  return "Untitled " + _untitledDocumentIndex;
+}
+},["CPString"]), new objj_method(sel_getUid("viewCibName"), function $CPDocument__viewCibName(self, _cmd)
+{ with(self)
+{
+    return nil;
 }
 },["CPString"]), new objj_method(sel_getUid("windowCibName"), function $CPDocument__windowCibName(self, _cmd)
 { with(self)
@@ -137,7 +207,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 },["CPURL"]), new objj_method(sel_getUid("setFileURL:"), function $CPDocument__setFileURL_(self, _cmd, aFileURL)
 { with(self)
 {
-    if (_fileURL == aFileURL)
+    if (_fileURL === aFileURL)
         return;
     _fileURL = aFileURL;
     objj_msgSend(_windowControllers, "makeObjectsPerformSelector:", sel_getUid("synchronizeWindowTitleWithDocumentName"));
@@ -148,7 +218,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     var data = objj_msgSend(self, "dataOfType:error:", objj_msgSend(self, "fileType"), nil),
         oldChangeCount = _changeCount;
     _writeRequest = objj_msgSend(CPURLRequest, "requestWithURL:", anAbsoluteURL);
-    objj_msgSend(_writeRequest, "setHTTPMethod:", "POST");
+    if (objj_msgSend(CPPlatform, "isBrowser"))
+        objj_msgSend(_writeRequest, "setHTTPMethod:", "POST");
+    else
+        objj_msgSend(_writeRequest, "setHTTPMethod:", "PUT");
     objj_msgSend(_writeRequest, "setHTTPBody:", objj_msgSend(data, "string"));
     objj_msgSend(_writeRequest, "setValue:forHTTPHeaderField:", "close", "Connection");
     if (aSaveOperation == CPSaveOperation)
@@ -192,6 +265,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
                 }
                 _writeRequest = nil;
                 objj_msgSend(session.delegate, session.didSaveSelector, self, NO, session.contextInfo);
+                objj_msgSend(self, "_sendDocumentSavedNotification:", NO);
             }
         }
     }
@@ -211,6 +285,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
             objj_msgSend(self, "setFileURL:", session.absoluteURL);
         _writeRequest = nil;
         objj_msgSend(session.delegate, session.didSaveSelector, self, YES, session.contextInfo);
+        objj_msgSend(self, "_sendDocumentSavedNotification:", YES);
     }
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $CPDocument__connection_didFailWithError_(self, _cmd, aConnection, anError)
@@ -229,6 +304,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
         _writeRequest = nil;
         alert("There was an error saving the document.");
         objj_msgSend(session.delegate, session.didSaveSelector, self, NO, session.contextInfo);
+        objj_msgSend(self, "_sendDocumentSavedNotification:", NO);
     }
 }
 },["void","CPURLConnection","CPError"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $CPDocument__connectionDidFinishLoading_(self, _cmd, aConnection)
@@ -328,24 +404,36 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
 },["CPUndoManager","CPWindow"]), new objj_method(sel_getUid("saveDocument:"), function $CPDocument__saveDocument_(self, _cmd, aSender)
 { with(self)
 {
+    objj_msgSend(self, "saveDocumentWithDelegate:didSaveSelector:contextInfo:", nil, nil, nil);
+}
+},["void","id"]), new objj_method(sel_getUid("saveDocumentWithDelegate:didSaveSelector:contextInfo:"), function $CPDocument__saveDocumentWithDelegate_didSaveSelector_contextInfo_(self, _cmd, delegate, didSaveSelector, contextInfo)
+{ with(self)
+{
     if (_fileURL)
     {
         objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPDocumentWillSaveNotification, self);
-        objj_msgSend(self, "saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:", _fileURL, objj_msgSend(self, "fileType"), CPSaveOperation, self, sel_getUid("document:didSave:contextInfo:"), NULL);
+        objj_msgSend(self, "saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:", _fileURL, objj_msgSend(self, "fileType"), CPSaveOperation, delegate, didSaveSelector, contextInfo);
     }
     else
-        objj_msgSend(self, "saveDocumentAs:", self);
+        objj_msgSend(self, "_saveDocumentAsWithDelegate:didSaveSelector:contextInfo:", delegate, didSaveSelector, contextInfo);
 }
-},["void","id"]), new objj_method(sel_getUid("saveDocumentAs:"), function $CPDocument__saveDocumentAs_(self, _cmd, aSender)
+},["void","id","SEL","Object"]), new objj_method(sel_getUid("saveDocumentAs:"), function $CPDocument__saveDocumentAs_(self, _cmd, aSender)
 { with(self)
 {
-    _documentName = window.prompt("Document Name:");
-    if (!_documentName)
-        return;
-    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPDocumentWillSaveNotification, self);
-    objj_msgSend(self, "saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:", objj_msgSend(self, "proposedFileURL"), objj_msgSend(self, "fileType"), CPSaveAsOperation, self, sel_getUid("document:didSave:contextInfo:"), NULL);
+    objj_msgSend(self, "_saveDocumentAsWithDelegate:didSaveSelector:contextInfo:", nil, nil, nil);
 }
-},["void","id"]), new objj_method(sel_getUid("document:didSave:contextInfo:"), function $CPDocument__document_didSave_contextInfo_(self, _cmd, aDocument, didSave, aContextInfo)
+},["void","id"]), new objj_method(sel_getUid("_saveDocumentAsWithDelegate:didSaveSelector:contextInfo:"), function $CPDocument___saveDocumentAsWithDelegate_didSaveSelector_contextInfo_(self, _cmd, delegate, didSaveSelector, contextInfo)
+{ with(self)
+{
+    var savePanel = objj_msgSend(CPSavePanel, "savePanel"),
+        response = objj_msgSend(savePanel, "runModal");
+    if (!response)
+        return;
+    var saveURL = objj_msgSend(savePanel, "URL");
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPDocumentWillSaveNotification, self);
+    objj_msgSend(self, "saveToURL:ofType:forSaveOperation:delegate:didSaveSelector:contextInfo:", saveURL, objj_msgSend(self, "fileType"), CPSaveAsOperation, delegate, didSaveSelector, contextInfo);
+}
+},["void","id","SEL","Object"]), new objj_method(sel_getUid("_sendDocumentSavedNotification:"), function $CPDocument___sendDocumentSavedNotification_(self, _cmd, didSave)
 { with(self)
 {
     if (didSave)
@@ -353,7 +441,57 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPDoc
     else
         objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPDocumentDidFailToSaveNotification, self);
 }
-},["void","id","BOOL","id"])]);
+},["void","BOOL"])]);
+}
+{
+var the_class = objj_getClass("CPDocument")
+if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, "*** Could not find definition for class \"CPDocument\""));
+var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_getUid("close"), function $CPDocument__close(self, _cmd)
+{ with(self)
+{
+    objj_msgSend(_windowControllers, "makeObjectsPerformSelector:", sel_getUid("close"));
+    objj_msgSend(objj_msgSend(CPDocumentController, "sharedDocumentController"), "removeDocument:", self);
+}
+},["void"]), new objj_method(sel_getUid("shouldCloseWindowController:delegate:shouldCloseSelector:contextInfo:"), function $CPDocument__shouldCloseWindowController_delegate_shouldCloseSelector_contextInfo_(self, _cmd, controller, delegate, selector, info)
+{ with(self)
+{
+    if (objj_msgSend(controller, "shouldCloseDocument") || (objj_msgSend(_windowControllers, "count") < 2 && objj_msgSend(_windowControllers, "indexOfObject:", controller) !== CPNotFound))
+        objj_msgSend(self, "canCloseDocumentWithDelegate:shouldCloseSelector:contextInfo:", delegate, selector, info);
+    else if (objj_msgSend(delegate, "respondsToSelector:", selector))
+        objj_msgSend(delegate, selector, self, YES, info);
+}
+},["void","CPWindowController","id","SEL","Object"]), new objj_method(sel_getUid("canCloseDocumentWithDelegate:shouldCloseSelector:contextInfo:"), function $CPDocument__canCloseDocumentWithDelegate_shouldCloseSelector_contextInfo_(self, _cmd, aDelegate, aSelector, context)
+{ with(self)
+{
+    if (!objj_msgSend(self, "isDocumentEdited"))
+        return objj_msgSend(aDelegate, "respondsToSelector:", aSelector) && objj_msgSend(aDelegate, aSelector, self, YES, context);
+    _canCloseAlert = objj_msgSend(objj_msgSend(CPAlert, "alloc"), "init");
+    objj_msgSend(_canCloseAlert, "setDelegate:", self);
+    objj_msgSend(_canCloseAlert, "setAlertStyle:", CPWarningAlertStyle);
+    objj_msgSend(_canCloseAlert, "setTitle:", "Unsaved Document");
+    objj_msgSend(_canCloseAlert, "setMessageText:", sprintf("Do you want to save the changes you've made to the document \"%@\"?",
+                                        objj_msgSend(self, "displayName") || objj_msgSend(self, "fileName")));
+    objj_msgSend(_canCloseAlert, "addButtonWithTitle:", "Save");
+    objj_msgSend(_canCloseAlert, "addButtonWithTitle:", "Cancel");
+    objj_msgSend(_canCloseAlert, "addButtonWithTitle:", "Don't Save");
+    _canCloseAlert._context = {delegate:aDelegate, selector:aSelector, context:context};
+    objj_msgSend(_canCloseAlert, "runModal");
+}
+},["void","id","SEL","Object"]), new objj_method(sel_getUid("alertDidEnd:returnCode:"), function $CPDocument__alertDidEnd_returnCode_(self, _cmd, alert, returnCode)
+{ with(self)
+{
+    if (alert !== _canCloseAlert)
+        return;
+    var delegate = alert._context.delegate,
+        selector = alert._context.selector,
+        context = alert._context.context;
+    if (returnCode === 0)
+        objj_msgSend(self, "saveDocumentWithDelegate:didSaveSelector:contextInfo:", delegate, selector, context);
+    else
+        objj_msgSend(delegate, selector, self, returnCode === 2, context);
+    _canCloseAlert = nil;
+}
+},["void","CPAlert","int"])]);
 }
 var _CPReadSessionMake = function(aType, aDelegate, aDidReadSelector, aContextInfo)
 {

@@ -1,4 +1,4 @@
-i;8;CPView.jc;611;
+i;8;CPView.jc;627;
 
 {var the_class = objj_allocateClassPair(CPView, "_CPCornerView"),
 meta_class = the_class.isa;objj_registerClassPair(the_class);
@@ -13,6 +13,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
 
     return self;
 }
-})]);
+},["id","CGRect"])]);
 }
 

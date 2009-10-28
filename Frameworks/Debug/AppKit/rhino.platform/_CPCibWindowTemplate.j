@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;5928;
+I;21;Foundation/CPObject.jc;6024;
 
 
 var _CPCibWindowTemplateMinSizeKey = "_CPCibWindowTemplateMinSizeKey",
@@ -37,7 +37,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPCi
 
     return self;
 }
-}), new objj_method(sel_getUid("initWithCoder:"), function $_CPCibWindowTemplate__initWithCoder_(self, _cmd, aCoder)
+},["id"]), new objj_method(sel_getUid("initWithCoder:"), function $_CPCibWindowTemplate__initWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -63,7 +63,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPCi
 
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibWindowTemplate__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibWindowTemplate__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     if (_minSize)
@@ -82,22 +82,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPCi
 
     objj_msgSend(aCoder, "encodeObject:forKey:", _windowIsFullBridge, _CPCibWindowTemplateWindowIsFullBridgeKey);
 }
-}), new objj_method(sel_getUid("customClassName"), function $_CPCibWindowTemplate__customClassName(self, _cmd)
+},["void","CPCoder"]), new objj_method(sel_getUid("customClassName"), function $_CPCibWindowTemplate__customClassName(self, _cmd)
 { with(self)
 {
     return _windowClass;
 }
-}), new objj_method(sel_getUid("setCustomClassName:"), function $_CPCibWindowTemplate__setCustomClassName_(self, _cmd, aClassName)
+},["CPString"]), new objj_method(sel_getUid("setCustomClassName:"), function $_CPCibWindowTemplate__setCustomClassName_(self, _cmd, aClassName)
 { with(self)
 {
     _windowClass = aClassName;
 }
-}), new objj_method(sel_getUid("windowClass"), function $_CPCibWindowTemplate__windowClass(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("windowClass"), function $_CPCibWindowTemplate__windowClass(self, _cmd)
 { with(self)
 {
     return _windowClass;
 }
-}), new objj_method(sel_getUid("_cibInstantiate"), function $_CPCibWindowTemplate___cibInstantiate(self, _cmd)
+},["CPString"]), new objj_method(sel_getUid("_cibInstantiate"), function $_CPCibWindowTemplate___cibInstantiate(self, _cmd)
 { with(self)
 {
     var windowClass = CPClassFromString(objj_msgSend(self, "windowClass"));
@@ -133,6 +133,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $_CPCi
 
     return theWindow;
 }
-})]);
+},["id"])]);
 }
 

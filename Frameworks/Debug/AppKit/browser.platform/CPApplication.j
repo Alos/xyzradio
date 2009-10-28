@@ -1,4 +1,4 @@
-I;21;Foundation/CPBundle.ji;17;CPCompatibility.ji;9;CPEvent.ji;8;CPMenu.ji;13;CPResponder.ji;22;CPDocumentController.ji;14;CPThemeBlend.ji;14;CPCibLoading.ji;12;CPPlatform.jc;25102;
+I;21;Foundation/CPBundle.ji;17;CPCompatibility.ji;9;CPEvent.ji;8;CPMenu.ji;13;CPResponder.ji;22;CPDocumentController.ji;14;CPThemeBlend.ji;14;CPCibLoading.ji;12;CPPlatform.jc;28130;
 var CPMainCibFile = "CPMainCibFile",
     CPMainCibFileHumanFriendly = "Main cib file base name";
 CPApp = nil;
@@ -8,7 +8,7 @@ CPRunStoppedResponse = -1000;
 CPRunAbortedResponse = -1001;
 CPRunContinuesResponse = -1002;
 {var the_class = objj_allocateClassPair(CPResponder, "CPApplication"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_eventListeners"), new objj_ivar("_currentEvent"), new objj_ivar("_windows"), new objj_ivar("_keyWindow"), new objj_ivar("_mainWindow"), new objj_ivar("_mainMenu"), new objj_ivar("_documentController"), new objj_ivar("_currentSession"), new objj_ivar("_delegate"), new objj_ivar("_namedArgs"), new objj_ivar("_args"), new objj_ivar("_fullArgsString")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_eventListeners"), new objj_ivar("_currentEvent"), new objj_ivar("_windows"), new objj_ivar("_keyWindow"), new objj_ivar("_mainWindow"), new objj_ivar("_mainMenu"), new objj_ivar("_documentController"), new objj_ivar("_currentSession"), new objj_ivar("_delegate"), new objj_ivar("_finishedLaunching"), new objj_ivar("_namedArgs"), new objj_ivar("_args"), new objj_ivar("_fullArgsString")]);
 objj_registerClassPair(the_class);
 objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApplication__init(self, _cmd)
@@ -98,12 +98,31 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
     }
     var defaultCenter = objj_msgSend(CPNotificationCenter, "defaultCenter");
     objj_msgSend(defaultCenter, "postNotificationName:object:", CPApplicationWillFinishLaunchingNotification, self);
-    if (_documentController)
+    var filename = window.cpOpeningFilename && window.cpOpeningFilename(),
+        needsUntitled = !!_documentController;
+    if (objj_msgSend(filename, "length"))
+    {
+        needsUntitled = !objj_msgSend(self, "_openFile:", filename);
+    }
+    if (needsUntitled && objj_msgSend(_delegate, "respondsToSelector:",  sel_getUid("applicationShouldOpenUntitledFile:")))
+        needsUntitled = objj_msgSend(_delegate, "applicationShouldOpenUntitledFile:", self);
+    if (needsUntitled)
         objj_msgSend(_documentController, "newDocument:", self);
     objj_msgSend(defaultCenter, "postNotificationName:object:", CPApplicationDidFinishLaunchingNotification, self);
     objj_msgSend(objj_msgSend(CPRunLoop, "currentRunLoop"), "limitDateForMode:", CPDefaultRunLoopMode);
+    _finishedLaunching = YES;
 }
-},["void"]), new objj_method(sel_getUid("run"), function $CPApplication__run(self, _cmd)
+},["void"]), new objj_method(sel_getUid("terminate:"), function $CPApplication__terminate_(self, _cmd, aSender)
+{ with(self)
+{
+    objj_msgSend(CPPlatform, "terminateApplication");
+}
+},["void","id"]), new objj_method(sel_getUid("activateIgnoringOtherApps:"), function $CPApplication__activateIgnoringOtherApps_(self, _cmd, shouldIgnoreOtherApps)
+{ with(self)
+{
+    objj_msgSend(CPPlatform, "activateIgnoringOtherApps:", shouldIgnoreOtherApps);
+}
+},["void","BOOL"]), new objj_method(sel_getUid("run"), function $CPApplication__run(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "finishLaunching");
@@ -227,7 +246,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
 },["CPMenu"]), new objj_method(sel_getUid("setMainMenu:"), function $CPApplication__setMainMenu_(self, _cmd, aMenu)
 { with(self)
 {
-    _mainMenu = aMenu;
+    if (objj_msgSend(aMenu, "_menuName") === "CPMainMenu")
+    {
+        if (_mainMenu === aMenu)
+            return;
+        _mainMenu = aMenu;
+        if (objj_msgSend(CPPlatform, "supportsNativeMainMenu"))
+            window.cpSetMainMenu(_mainMenu);
+    }
+    else
+        objj_msgSend(aMenu, "_setMenuName:", "CPMainMenu");
 }
 },["void","CPMenu"]), new objj_method(sel_getUid("orderFrontColorPanel:"), function $CPApplication__orderFrontColorPanel_(self, _cmd, aSender)
 { with(self)
@@ -339,9 +367,36 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
 },["CPEvent"]), new objj_method(sel_getUid("beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:"), function $CPApplication__beginSheet_modalForWindow_modalDelegate_didEndSelector_contextInfo_(self, _cmd, aSheet, aWindow, aModalDelegate, aDidEndSelector, aContextInfo)
 { with(self)
 {
+    var styleMask = objj_msgSend(aSheet, "styleMask");
+    if (!(styleMask & CPDocModalWindowMask))
+    {
+        objj_msgSend(CPException, "raise:reason:", CPInternalInconsistencyException, "Currently only CPDocModalWindowMask style mask is supported for attached sheets");
+        return;
+    }
     objj_msgSend(aWindow, "_attachSheet:modalDelegate:didEndSelector:contextInfo:", aSheet, aModalDelegate, aDidEndSelector, aContextInfo);
 }
-},["void","CPWindow","CPWindow","id","SEL","id"]), new objj_method(sel_getUid("arguments"), function $CPApplication__arguments(self, _cmd)
+},["void","CPWindow","CPWindow","id","SEL","id"]), new objj_method(sel_getUid("endSheet:returnCode:"), function $CPApplication__endSheet_returnCode_(self, _cmd, sheet, returnCode)
+{ with(self)
+{
+    var count = objj_msgSend(_windows, "count");
+    while (--count >= 0)
+    {
+        var aWindow = objj_msgSend(_windows, "objectAtIndex:", count);
+        var context = aWindow._sheetContext;
+        if (context != nil && context["sheet"] === sheet)
+        {
+            context["returnCode"] = returnCode;
+            objj_msgSend(aWindow, "_detachSheetWindow");
+            return;
+        }
+    }
+}
+},["void","CPWindow","int"]), new objj_method(sel_getUid("endSheet:"), function $CPApplication__endSheet_(self, _cmd, sheet)
+{ with(self)
+{
+   objj_msgSend(self, "endSheet:returnCode:", sheet, 0);
+}
+},["void","CPWindow"]), new objj_method(sel_getUid("arguments"), function $CPApplication__arguments(self, _cmd)
 { with(self)
 {
     if(_fullArgsString != window.location.hash)
@@ -380,7 +435,21 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $CPApp
 {
     return _namedArgs;
 }
-},["CPDictionary"])]);
+},["CPDictionary"]), new objj_method(sel_getUid("_openFile:"), function $CPApplication___openFile_(self, _cmd, aFilename)
+{ with(self)
+{
+    if (_delegate && objj_msgSend(_delegate, "respondsToSelector:", sel_getUid("application:openFile:")))
+        return objj_msgSend(_delegate, "application:openFile:", self, aFilename);
+    else
+        return objj_msgSend(_documentController, "openDocumentWithContentsOfURL:display:error:", aFilename, YES, NULL);
+}
+},["BOOL","CPString"]), new objj_method(sel_getUid("_didResignActive"), function $CPApplication___didResignActive(self, _cmd)
+{ with(self)
+{
+    if (self._activeMenu)
+        objj_msgSend(self._activeMenu, "cancelTracking");
+}
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("sharedApplication"), function $CPApplication__sharedApplication(self, _cmd)
 { with(self)
 {

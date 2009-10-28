@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;21;Foundation/CPString.jc;2019;
+I;21;Foundation/CPObject.jI;21;Foundation/CPString.jc;2066;
 var _CPCibClassSwapperClassNameKey = "_CPCibClassSwapperClassNameKey",
     _CPCibClassSwapperOriginalClassNameKey = "_CPCibClassSwapperOriginalClassNameKey";
 {var the_class = objj_allocateClassPair(CPObject, "_CPCibClassSwapper"),
@@ -16,7 +16,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("allocObjectWithCoder:c
     }
     return objj_msgSend(theClass, "alloc");
 }
-}), new objj_method(sel_getUid("allocWithCoder:"), function $_CPCibClassSwapper__allocWithCoder_(self, _cmd, aCoder)
+},["void","CPCoder","CPString"]), new objj_method(sel_getUid("allocWithCoder:"), function $_CPCibClassSwapper__allocWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     if (objj_msgSend(aCoder, "respondsToSelector:", sel_getUid("usesOriginalClasses")) && objj_msgSend(aCoder, "usesOriginalClasses"))
@@ -38,6 +38,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("allocObjectWithCoder:c
         objj_msgSend(CPException, "raise:reason:", CPInvalidArgumentException, "Unable to find class " + theClassName + " in cib file.");
     return object;
 }
-})]);
+},["id","CPCoder"])]);
 }
 

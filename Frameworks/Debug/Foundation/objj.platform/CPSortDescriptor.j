@@ -1,4 +1,4 @@
-i;10;CPObject.ji;15;CPObjJRuntime.jc;2249;
+i;10;CPObject.ji;15;CPObjJRuntime.jc;2938;
 CPOrderedAscending = -1;
 CPOrderedSame = 0;
 CPOrderedDescending = 1;
@@ -49,5 +49,16 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithKey:ascending:"
     return objj_msgSend(objj_msgSend(objj_msgSend(self, "class"), "alloc"), "initWithKey:ascending:selector:", _key, !_ascending, _selector);
 }
 },["id"])]);
+class_addMethods(meta_class, [new objj_method(sel_getUid("sortDescriptorWithKey:ascending:"), function $CPSortDescriptor__sortDescriptorWithKey_ascending_(self, _cmd, aKey, isAscending)
+{ with(self)
+{
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithKey:ascending:", aKey, isAscending);
+}
+},["id","CPString","BOOL"]), new objj_method(sel_getUid("sortDescriptorWithKey:ascending:selector:"), function $CPSortDescriptor__sortDescriptorWithKey_ascending_selector_(self, _cmd, aKey, isAscending, aSelector)
+{ with(self)
+{
+    return objj_msgSend(objj_msgSend(self, "alloc"), "initWithKey:ascending:selector:", aKey, isAscending, aSelector);
+}
+},["id","CPString","BOOL","SEL"])]);
 }
 

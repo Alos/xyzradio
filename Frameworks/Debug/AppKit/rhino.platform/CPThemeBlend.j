@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jI;16;AppKit/CPTheme.jI;29;AppKit/_CPCibCustomResource.jI;30;AppKit/_CPCibKeyedUnarchiver.jc;1992;
+I;21;Foundation/CPObject.jI;16;AppKit/CPTheme.jI;29;AppKit/_CPCibCustomResource.jI;30;AppKit/_CPCibKeyedUnarchiver.jc;2048;
 {var the_class = objj_allocateClassPair(CPObject, "CPThemeBlend"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_bundle"), new objj_ivar("_themes"), new objj_ivar("_loadDelegate")]);
 objj_registerClassPair(the_class);
@@ -8,7 +8,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("themes"), function $CPT
 {
 return _themes;
 }
-}), new objj_method(sel_getUid("initWithContentsOfURL:"), function $CPThemeBlend__initWithContentsOfURL_(self, _cmd, aURL)
+},["id"]), new objj_method(sel_getUid("initWithContentsOfURL:"), function $CPThemeBlend__initWithContentsOfURL_(self, _cmd, aURL)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "init");
@@ -18,13 +18,13 @@ return _themes;
     }
     return self;
 }
-}), new objj_method(sel_getUid("loadWithDelegate:"), function $CPThemeBlend__loadWithDelegate_(self, _cmd, aDelegate)
+},["id","CPURL"]), new objj_method(sel_getUid("loadWithDelegate:"), function $CPThemeBlend__loadWithDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     _loadDelegate = aDelegate;
     objj_msgSend(_bundle, "loadWithDelegate:", self);
 }
-}), new objj_method(sel_getUid("bundleDidFinishLoading:"), function $CPThemeBlend__bundleDidFinishLoading_(self, _cmd, aBundle)
+},["void","id"]), new objj_method(sel_getUid("bundleDidFinishLoading:"), function $CPThemeBlend__bundleDidFinishLoading_(self, _cmd, aBundle)
 { with(self)
 {
     var paths = objj_msgSend(_bundle, "objectForInfoDictionaryKey:", "CPBundleReplacedFiles"),
@@ -43,6 +43,6 @@ return _themes;
     }
     objj_msgSend(_loadDelegate, "blendDidFinishLoading:", self);
 }
-})]);
+},["void","CPBundle"])]);
 }
 

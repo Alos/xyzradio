@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;9;CGColor.ji;17;CPCompatibility.ji;9;CPImage.jc;22382;
+I;21;Foundation/CPObject.ji;9;CGColor.ji;17;CPCompatibility.ji;9;CPImage.jc;22892;
 var _redComponent = 0,
     _greenComponent = 1,
     _blueComponent = 2,
@@ -356,6 +356,16 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("colorWithRed:green:blu
     if (!cachedClearColor)
         cachedClearColor = objj_msgSend(self, "colorWithCalibratedWhite:alpha:", 0.0, 0.0);
     return cachedClearColor;
+}
+},["CPColor"]), new objj_method(sel_getUid("alternateSelectedControlColor"), function $CPColor__alternateSelectedControlColor(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.22, 0.46, 0.84, 1.0]);
+}
+},["CPColor"]), new objj_method(sel_getUid("secondarySelectedControlColor"), function $CPColor__secondarySelectedControlColor(self, _cmd)
+{ with(self)
+{
+    return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.83, 0.83, 0.83, 1.0]);
 }
 },["CPColor"]), new objj_method(sel_getUid("colorWithPatternImage:"), function $CPColor__colorWithPatternImage_(self, _cmd, anImage)
 { with(self)

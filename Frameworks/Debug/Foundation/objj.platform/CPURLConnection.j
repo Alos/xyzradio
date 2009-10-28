@@ -1,4 +1,4 @@
-i;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.ji;15;CPURLResponse.jc;6873;
+i;10;CPObject.ji;11;CPRunLoop.ji;14;CPURLRequest.ji;15;CPURLResponse.jc;6957;
 var XMLHTTPRequestUninitialized = 0,
     XMLHTTPRequestLoading = 1,
     XMLHTTPRequestLoaded = 2,
@@ -18,9 +18,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRequest:delegat
         _request = aRequest;
         _delegate = aDelegate;
         _isCanceled = NO;
-        var path = objj_msgSend(_request, "URL");
-        _isLocalFileConnection = path.indexOf("file:") === 0 ||
-                                    ((path.indexOf("http:") !== 0 || path.indexOf("https:") !== 0) &&
+        var URL = objj_msgSend(_request, "URL"),
+            scheme = objj_msgSend(URL, "scheme");
+        _isLocalFileConnection = scheme === "file" ||
+                                    ((scheme !== "http" || scheme !== "https:") &&
                                     window.location &&
                                     (window.location.protocol === "file:" || window.location.protocol === "app:"));
         _XMLHTTPRequest = objj_request_xmlhttp();
@@ -45,7 +46,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithRequest:delegat
     _isCanceled = NO;
     try
     {
-        _XMLHTTPRequest.open(objj_msgSend(_request, "HTTPMethod"), objj_msgSend(_request, "URL"), YES);
+        _XMLHTTPRequest.open(objj_msgSend(_request, "HTTPMethod"), objj_msgSend(objj_msgSend(_request, "URL"), "absoluteString"), YES);
         _XMLHTTPRequest.onreadystatechange = function() { objj_msgSend(self, "_readyStateDidChange"); }
         var fields = objj_msgSend(_request, "allHTTPHeaderFields"),
             key = nil,
@@ -127,7 +128,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("setClassDelegate:"), f
     try
     {
         var request = objj_request_xmlhttp();
-        request.open(objj_msgSend(aRequest, "HTTPMethod"), objj_msgSend(aRequest, "URL"), NO);
+        request.open(objj_msgSend(aRequest, "HTTPMethod"), objj_msgSend(objj_msgSend(aRequest, "URL"), "absoluteString"), NO);
         var fields = objj_msgSend(aRequest, "allHTTPHeaderFields"),
             key = nil,
             keys = objj_msgSend(fields, "keyEnumerator");

@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.ji;23;CAMediaTimingFunction.jc;4269;
+I;21;Foundation/CPObject.ji;23;CAMediaTimingFunction.jc;5384;
 CPAnimationEaseInOut=0;
 CPAnimationEaseIn=1;
 CPAnimationEaseOut=2;
@@ -14,14 +14,14 @@ _3=objj_msgSendSuper({receiver:_3,super_class:objj_getClass("CPObject")},"init")
 if(_3){
 _progress=0;
 _duration=MAX(0,_5);
-_animationCurve=_6;
 _frameRate=60;
+objj_msgSend(_3,"setAnimationCurve:",_6);
 }
 return _3;
 }
 }),new objj_method(sel_getUid("setAnimationCurve:"),function(_7,_8,_9){
 with(_7){
-switch(_animationCurve){
+switch(_9){
 case CPAnimationEaseInOut:
 timingFunctionName=kCAMediaTimingFunctionEaseInEaseOut;
 break;
@@ -77,7 +77,7 @@ _delegate=_1a;
 }
 }),new objj_method(sel_getUid("startAnimation"),function(_1b,_1c){
 with(_1b){
-if(_timer||_delegate&&objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("animationShouldStart"))&&!objj_msgSend(_delegate,"animationShouldStart:",_1b)){
+if(_timer||_delegate&&objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("animationShouldStart:"))&&!objj_msgSend(_delegate,"animationShouldStart:",_1b)){
 return;
 }
 if(_progress===1){
@@ -126,12 +126,81 @@ return _progress;
 }
 }),new objj_method(sel_getUid("currentValue"),function(_2b,_2c){
 with(_2b){
+var t=objj_msgSend(_2b,"currentProgress");
 if(objj_msgSend(_delegate,"respondsToSelector:",sel_getUid("animation:valueForProgress:"))){
-return objj_msgSend(_delegate,"animation:valueForProgress:",_2b,_progress);
+return objj_msgSend(_delegate,"animation:valueForProgress:",_2b,t);
 }
-if(_animationCurve==CPAnimationLinear){
-return _progress;
-}
-alert("IMPLEMENT ANIMATION CURVES!!!");
+var c1=[],c2=[];
+objj_msgSend(_timingFunction,"getControlPointAtIndex:values:",1,c1);
+objj_msgSend(_timingFunction,"getControlPointAtIndex:values:",2,c2);
+return _30(t,c1[0],c1[1],c2[0],c2[1],_duration);
 }
 })]);
+var _30=_30=function(t,p1x,p1y,p2x,p2y,_36){
+var ax=0,bx=0,cx=0,ay=0,by=0,cy=0;
+sampleCurveX=function(t){
+return ((ax*t+bx)*t+cx)*t;
+};
+sampleCurveY=function(t){
+return ((ay*t+by)*t+cy)*t;
+};
+sampleCurveDerivativeX=function(t){
+return (3*ax*t+2*bx)*t+cx;
+};
+solveEpsilon=function(_40){
+return 1/(200*_40);
+};
+solve=function(x,_42){
+return sampleCurveY(solveCurveX(x,_42));
+};
+solveCurveX=function(x,_44){
+var t0,t1,t2,x2,d2,i;
+fabs=function(n){
+if(n>=0){
+return n;
+}else{
+return 0-n;
+}
+};
+for(t2=x,i=0;i<8;i++){
+x2=sampleCurveX(t2)-x;
+if(fabs(x2)<_44){
+return t2;
+}
+d2=sampleCurveDerivativeX(t2);
+if(fabs(d2)<0.000001){
+break;
+}
+t2=t2-x2/d2;
+}
+t0=0;
+t1=1;
+t2=x;
+if(t2<t0){
+return t0;
+}
+if(t2>t1){
+return t1;
+}
+while(t0<t1){
+x2=sampleCurveX(t2);
+if(fabs(x2-x)<_44){
+return t2;
+}
+if(x>x2){
+t0=t2;
+}else{
+t1=t2;
+}
+t2=(t1-t0)*0.5+t0;
+}
+return t2;
+};
+cx=3*p1x;
+bx=3*(p2x-p1x)-cx;
+ax=1-cx-bx;
+cy=3*p1y;
+by=3*(p2y-p1y)-cy;
+ay=1-cy-by;
+return solve(t,solveEpsilon(_36));
+};

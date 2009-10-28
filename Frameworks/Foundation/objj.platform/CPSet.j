@@ -1,4 +1,4 @@
-i;10;CPObject.ji;9;CPArray.ji;10;CPNumber.ji;14;CPEnumerator.jc;7779;
+i;10;CPObject.ji;9;CPArray.ji;10;CPNumber.ji;14;CPEnumerator.jc;7834;
 var _1=objj_allocateClassPair(CPObject,"CPSet"),_2=_1.isa;
 class_addIvars(_1,[new objj_ivar("_contents"),new objj_ivar("_count")]);
 objj_registerClassPair(_1);
@@ -145,6 +145,9 @@ objj_msgSend(_45,"addObjectsFromArray:",objj_msgSend(set,"allObjects"));
 }
 }),new objj_method(sel_getUid("addObject:"),function(_48,_49,_4a){
 with(_48){
+if(objj_msgSend(_48,"containsObject:",_4a)){
+return;
+}
 _contents[objj_msgSend(_4a,"UID")]=_4a;
 _count++;
 }

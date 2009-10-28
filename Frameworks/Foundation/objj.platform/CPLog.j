@@ -2,7 +2,7 @@ c;6885;
 window.CPLogDisable=false;
 var _1="Cappuccino";
 var _2=["fatal","error","warn","info","debug","trace"];
-var _3=_2[0];
+var _3=_2[3];
 var _4={};
 for(var i=0;i<_2.length;i++){
 _4[_2[i]]=i;

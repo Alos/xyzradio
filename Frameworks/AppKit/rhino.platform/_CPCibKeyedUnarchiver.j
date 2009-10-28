@@ -1,6 +1,6 @@
-I;30;Foundation/CPKeyedUnarchiver.jc;1054;
+I;30;Foundation/CPKeyedUnarchiver.jc;1437;
 var _1=objj_allocateClassPair(CPKeyedUnarchiver,"_CPCibKeyedUnarchiver"),_2=_1.isa;
-class_addIvars(_1,[new objj_ivar("_bundle"),new objj_ivar("_awakenCustomResources")]);
+class_addIvars(_1,[new objj_ivar("_bundle"),new objj_ivar("_awakenCustomResources"),new objj_ivar("_externalObjectsForProxyIdentifiers")]);
 objj_registerClassPair(_1);
 objj_addClassForBundle(_1,objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));
 class_addMethods(_1,[new objj_method(sel_getUid("initForReadingWithData:bundle:awakenCustomResources:"),function(_3,_4,_5,_6,_7){
@@ -21,12 +21,20 @@ return _bundle;
 with(_a){
 return _awakenCustomResources;
 }
-}),new objj_method(sel_getUid("replaceObjectAtUID:withObject:"),function(_c,_d,_e,_f){
+}),new objj_method(sel_getUid("setExternalObjectsForProxyIdentifiers:"),function(_c,_d,_e){
 with(_c){
-_objects[_e]=_f;
+_externalObjectsForProxyIdentifiers=_e;
 }
-}),new objj_method(sel_getUid("objectAtUID:"),function(_10,_11,_12){
-with(_10){
-return _objects[_12];
+}),new objj_method(sel_getUid("externalObjectForProxyIdentifier:"),function(_f,_10,_11){
+with(_f){
+return objj_msgSend(_externalObjectsForProxyIdentifiers,"objectForKey:",_11);
+}
+}),new objj_method(sel_getUid("replaceObjectAtUID:withObject:"),function(_12,_13,_14,_15){
+with(_12){
+_objects[_14]=_15;
+}
+}),new objj_method(sel_getUid("objectAtUID:"),function(_16,_17,_18){
+with(_16){
+return _objects[_18];
 }
 })]);

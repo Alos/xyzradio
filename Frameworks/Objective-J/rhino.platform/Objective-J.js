@@ -71,7 +71,7 @@ function objj_printf(string)
 {
     objj_fprintf(alert, string);
 }
-var warning_stream = function (aString) { Packages.java.lang.System.out.println(aString) };
+var warning_stream = function (aString) { print(aString) };
 var _sprintfFormatRegex = new RegExp("([^%]+|%[\\+\\-\\ \\#0]*[0-9\\*]*(.[0-9\\*]+)?[hlL]?[cbBdieEfgGosuxXpn%@])", "g");
 var _sprintfTagRegex = new RegExp("(%)([\\+\\-\\ \\#0]*)([0-9\\*]*)((.[0-9\\*]+)?)([hlL]?)([cbBdieEfgGosuxXpn%@])");
 function sprintf(format)
@@ -212,10 +212,7 @@ var _sprintf_justify = function(sign, prefix, string, suffix, width, leftJustify
 }
 var _sprintf_pad = function(n, ch)
 {
-    var result = "";
-    for (var i = 0; i < n; i++)
-        result += ch;
-    return result;
+    return Array(MAX(0,n)).join(ch);
 }
 var base64_map_to = [
         "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
@@ -812,6 +809,11 @@ function objj_dictionary()
     this._buckets = {};
     this.__address = (OBJECT_COUNT++);
 }
+objj_dictionary.prototype.containsKey = function(aKey) { return dictionary_containsKey(this, aKey); }
+objj_dictionary.prototype.getCount = function() { return dictionary_getCount(this); }
+objj_dictionary.prototype.getValue = function(aKey) { return dictionary_getValue(this, aKey); }
+objj_dictionary.prototype.setValue = function(aKey, aValue) { return dictionary_setValue(this, aKey, aValue); }
+objj_dictionary.prototype.removeValue = function(aKey) { return dictionary_removeValue(this, aKey); }
 function dictionary_containsKey(aDictionary, aKey)
 {
     return aDictionary._buckets[aKey] != NULL;
@@ -1849,6 +1851,7 @@ objj_stringBuffer.prototype.isEmpty = function()
 }
 var objj_preprocessor = function(aString, aSourceFile, aBundle, flags)
 {
+    this._currentSelector = "";
     this._currentClass = "";
     this._currentSuperClass = "";
     this._currentSuperMetaClass = "";
@@ -1880,16 +1883,16 @@ objj_preprocessor.prototype.accessors = function(tokens)
         var name = token,
             value = true;
         if (!/^\w+$/.test(name))
-            objj_exception_throw(new objj_exception(OBJJParseException, "*** @property attribute name not valid."));
+            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** @property attribute name not valid.")));
         if ((token = tokens.skip_whitespace()) == TOKEN_EQUAL)
         {
             value = tokens.skip_whitespace();
             if (!/^\w+$/.test(value))
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** @property attribute value not valid."));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** @property attribute value not valid.")));
             if (name == "setter")
             {
                 if ((token = tokens.next()) != TOKEN_COLON)
-                    objj_exception_throw(new objj_exception(OBJJParseException, "*** @property setter attribute requires argument with \":\" at end of selector name."));
+                    objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** @property setter attribute requires argument with \":\" at end of selector name.")));
                 value += ":";
             }
             token = tokens.skip_whitespace();
@@ -1898,7 +1901,7 @@ objj_preprocessor.prototype.accessors = function(tokens)
         if (token == TOKEN_CLOSE_PARENTHESIS)
             break;
         if (token != TOKEN_COMMA)
-            objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected ',' or ')' in @property attribute list."));
+            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected ',' or ')' in @property attribute list.")));
     }
     return attributes;
 }
@@ -1981,17 +1984,18 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
         instance_methods = new objj_stringBuffer(),
         class_methods = new objj_stringBuffer();
     if (!(/^\w/).test(class_name))
-        objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected class name, found \"" + class_name + "\"."));
+        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected class name, found \"" + class_name + "\".")));
     this._currentSuperClass = NULL;
     this._currentSuperMetaClass = NULL;
     this._currentClass = class_name;
+    this._currentSelector = "";
     if((token = tokens.skip_whitespace()) == TOKEN_OPEN_PARENTHESIS)
     {
         token = tokens.skip_whitespace();
         if (token == TOKEN_CLOSE_PARENTHESIS)
-            objj_exception_throw(new objj_exception(OBJJParseException, "*** Can't Have Empty Category Name for class \"" + class_name + "\"."));
+            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Can't Have Empty Category Name for class \"" + class_name + "\".")));
         if (tokens.skip_whitespace() != TOKEN_CLOSE_PARENTHESIS)
-            objj_exception_throw(new objj_exception(OBJJParseException, "*** Improper Category Definition for class \"" + class_name + "\"."));
+            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Improper Category Definition for class \"" + class_name + "\".")));
         buffer.atoms[buffer.atoms.length] = "{\nvar the_class = objj_getClass(\"" + class_name + "\")\n";
         buffer.atoms[buffer.atoms.length] = "if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, \"*** Could not find definition for class \\\"" + class_name + "\\\"\"));\n";
         buffer.atoms[buffer.atoms.length] = "var meta_class = the_class.isa;";
@@ -2013,7 +2017,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
         {
             token = tokens.skip_whitespace();
             if (!TOKEN_IDENTIFIER.test(token))
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected class name, found \"" + token + "\"."));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected class name, found \"" + token + "\".")));
             superclass_name = token;
             this._currentSuperClass = "objj_getClass(\"" + superclass_name + "\")";
             this._currentSuperMetaClass = "objj_getMetaClass(\"" + superclass_name + "\")";
@@ -2050,11 +2054,11 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                     declaration.push(token);
             }
             if (declaration.length)
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected ';' in ivar declaration, found '}'."));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected ';' in ivar declaration, found '}'.")));
             if (ivar_count)
                 buffer.atoms[buffer.atoms.length] = "]);\n";
             if (!token)
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected '}'"));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected '}'")));
             for (ivar_name in accessors)
             {
                 var accessor = accessors[ivar_name],
@@ -2108,7 +2112,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
             if ((token = tokens.next()) == TOKEN_END)
                 break;
             else
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected \"@end\", found \"@" + token + "\"."));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected \"@end\", found \"@" + token + "\".")));
         }
     }
     if (instance_methods.atoms.length !== 0)
@@ -2124,6 +2128,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
         buffer.atoms[buffer.atoms.length] = "]);\n";
     }
     buffer.atoms[buffer.atoms.length] = '}';
+    this._currentClass = "";
 }
 objj_preprocessor.prototype._import = function(tokens)
 {
@@ -2136,12 +2141,12 @@ objj_preprocessor.prototype._import = function(tokens)
         while((token = tokens.next()) && token != TOKEN_GREATER_THAN)
             path += token;
         if(!token)
-            objj_exception_throw(new objj_exception(OBJJParseException, "*** Unterminated import statement."));
+            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Unterminated import statement.")));
     }
     else if (token.charAt(0) == TOKEN_DOUBLE_QUOTE)
         path = token.substr(1, token.length - 2);
     else
-        objj_exception_throw(new objj_exception(OBJJParseException, "*** Expecting '<' or '\"', found \"" + token + "\"."));
+        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expecting '<' or '\"', found \"" + token + "\".")));
     this._fragments.push(fragment_create_file(path, NULL, isLocal, this._file));
 }
 objj_preprocessor.prototype.method = function(tokens)
@@ -2177,7 +2182,7 @@ objj_preprocessor.prototype.method = function(tokens)
         else if (token == TOKEN_COMMA)
         {
             if ((token = tokens.skip_whitespace()) != TOKEN_PERIOD || tokens.next() != TOKEN_PERIOD || tokens.next() != TOKEN_PERIOD)
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** Argument list expected after ','."));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Argument list expected after ','.")));
         }
         else
             selector += token;
@@ -2187,6 +2192,7 @@ objj_preprocessor.prototype.method = function(tokens)
     buffer.atoms[buffer.atoms.length] = "new objj_method(sel_getUid(\"";
     buffer.atoms[buffer.atoms.length] = selector;
     buffer.atoms[buffer.atoms.length] = "\"), function";
+    this._currentSelector = selector;
     if (this._flags & OBJJ_PREPROCESSOR_DEBUG_SYMBOLS)
         buffer.atoms[buffer.atoms.length] = " $" + this._currentClass + "__" + selector.replace(/:/g, "_");
     buffer.atoms[buffer.atoms.length] = "(self, _cmd";
@@ -2201,6 +2207,7 @@ objj_preprocessor.prototype.method = function(tokens)
     if (this._flags & OBJJ_PREPROCESSOR_DEBUG_SYMBOLS)
         buffer.atoms[buffer.atoms.length] = ","+JSON.stringify(types);
     buffer.atoms[buffer.atoms.length] = ")";
+    this._currentSelector = "";
     return buffer;
 }
 objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, terminator, instigator, tuple)
@@ -2316,7 +2323,7 @@ objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, termina
             buffer.atoms[buffer.atoms.length] = token;
     }
     if (tuple)
-        objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected ']' - Unterminated message send or array."));
+        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected ']' - Unterminated message send or array.")));
     if (!aStringBuffer)
         return buffer;
 }
@@ -2325,10 +2332,10 @@ objj_preprocessor.prototype.selector = function(tokens, aStringBuffer)
     var buffer = aStringBuffer ? aStringBuffer : new objj_stringBuffer();
     buffer.atoms[buffer.atoms.length] = "sel_getUid(\"";
     if (tokens.skip_whitespace() != TOKEN_OPEN_PARENTHESIS)
-        objj_exception_throw(new objj_exception(OBJJParseException, "*** Expected '('"));
+        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected '('")));
     var selector = tokens.skip_whitespace();
     if (selector == TOKEN_CLOSE_PARENTHESIS)
-        objj_exception_throw(new objj_exception(OBJJParseException, "*** Unexpected ')', can't have empty @selector()"));
+        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Unexpected ')', can't have empty @selector()")));
     aStringBuffer.atoms[aStringBuffer.atoms.length] = selector;
     var token,
         starting = true;
@@ -2340,9 +2347,9 @@ objj_preprocessor.prototype.selector = function(tokens, aStringBuffer)
                 if (tokens.skip_whitespace() == TOKEN_CLOSE_PARENTHESIS)
                     break;
                 else
-                    objj_exception_throw(new objj_exception(OBJJParseException, "*** Unexpected whitespace in @selector()."));
+                    objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Unexpected whitespace in @selector().")));
             else
-                objj_exception_throw(new objj_exception(OBJJParseException, "*** Illegal character '" + token + "' in @selector()."));
+                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Illegal character '" + token + "' in @selector().")));
         }
         buffer.atoms[buffer.atoms.length] = token;
         starting = (token == TOKEN_COLON);
@@ -2350,6 +2357,12 @@ objj_preprocessor.prototype.selector = function(tokens, aStringBuffer)
     buffer.atoms[buffer.atoms.length] = "\")";
     if (!aStringBuffer)
         return buffer;
+}
+objj_preprocessor.prototype.error_message = function(errorMessage)
+{
+    return errorMessage + " <Context File: "+ this._file.path +
+                                (this._currentClass ? " Class: "+this._currentClass : "") +
+                                (this._currentSelector ? " Method: "+this._currentSelector : "") +">";
 }
 var objj_included_files = { };
 var FRAGMENT_CODE = 1,
@@ -2433,20 +2446,17 @@ function fragment_evaluate_code(aFragment)
     OBJJ_CURRENT_BUNDLE = aFragment.bundle;
     try
     {
-        compiled = eval("function(){"+aFragment.info+"}");
+        var functionText = "function(){"+aFragment.info+"/**/\n}";
+        if (typeof system !== "undefined" && system.engine === "rhino")
+            compiled = Packages.org.mozilla.javascript.Context.getCurrentContext().compileFunction(window, functionText, aFragment.file.path, 0, null);
+        else
+            compiled = eval("("+functionText+")");
     }
     catch(anException)
     {
         objj_exception_report(anException, aFragment.file);
     }
-    try
-    {
-        compiled();
-    }
-    catch(anException)
-    {
-        objj_exception_report(anException, aFragment.file);
-    }
+    compiled();
     return NO;
 }
 function fragment_evaluate_file(aFragment)

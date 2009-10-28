@@ -1,4 +1,4 @@
-i;13;CPTextField.jc;24651;
+i;13;CPTextField.jc;24812;
 CPSearchFieldRecentsTitleMenuItemTag = 1000;
 CPSearchFieldRecentsMenuItemTag = 1001;
 CPSearchFieldClearRecentsMenuItemTag = 1002;
@@ -29,9 +29,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
           _cancelButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CPMakeRect(frame.size.width - 27,(frame.size.height-22)/2,22,22));
           objj_msgSend(self, "resetCancelButton");
           objj_msgSend(_cancelButton, "setHidden:", YES);
+          objj_msgSend(_cancelButton, "setAutoresizingMask:", CPViewMinXMargin);
           objj_msgSend(self, "addSubview:", _cancelButton);
           _searchButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CPMakeRect(5,(frame.size.height-25)/2,25,25));
           objj_msgSend(_searchButton, "setBezelStyle:", CPRegularSquareBezelStyle);
+          objj_msgSend(_searchButton, "setAutoresizingMask:", CPViewMaxXMargin)
           objj_msgSend(_searchButton, "setBordered:", NO);
           objj_msgSend(_searchButton, "setImageScaling:", CPScaleToFit);
     _cancelButton._DOMElement.style.cursor = "default";

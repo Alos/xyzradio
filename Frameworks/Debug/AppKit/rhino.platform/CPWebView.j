@@ -1,4 +1,4 @@
-I;15;AppKit/CPView.jc;17440;
+I;15;AppKit/CPView.jc;18234;
 CPWebViewProgressStartedNotification = "CPWebViewProgressStartedNotification";
 CPWebViewProgressFinishedNotification = "CPWebViewProgressFinishedNotification";
 CPWebViewScrollAppKit = 1;
@@ -16,7 +16,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     return self
 }
-}), new objj_method(sel_getUid("initWithFrame:"), function $CPWebView__initWithFrame_(self, _cmd, aFrame)
+},["id","CPRect","CPString","CPString"]), new objj_method(sel_getUid("initWithFrame:"), function $CPWebView__initWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     if (self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "initWithFrame:", aFrame))
@@ -29,7 +29,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     return self;
 }
-}), new objj_method(sel_getUid("_initDOMWithFrame:"), function $CPWebView___initDOMWithFrame_(self, _cmd, aFrame)
+},["id","CPRect"]), new objj_method(sel_getUid("_initDOMWithFrame:"), function $CPWebView___initDOMWithFrame_(self, _cmd, aFrame)
 { with(self)
 {
     _ignoreLoadStart = YES;
@@ -72,13 +72,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     objj_msgSend(self, "_setScrollMode:", _scrollMode);
     objj_msgSend(self, "addSubview:", _scrollView);
 }
-}), new objj_method(sel_getUid("setFrameSize:"), function $CPWebView__setFrameSize_(self, _cmd, aSize)
+},["id","CPRect"]), new objj_method(sel_getUid("setFrameSize:"), function $CPWebView__setFrameSize_(self, _cmd, aSize)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "setFrameSize:", aSize);
     objj_msgSend(self, "_resizeWebFrame");
 }
-}), new objj_method(sel_getUid("_resizeWebFrame"), function $CPWebView___resizeWebFrame(self, _cmd)
+},["void","CPSize"]), new objj_method(sel_getUid("_resizeWebFrame"), function $CPWebView___resizeWebFrame(self, _cmd)
 { with(self)
 {
     if (_scrollMode === CPWebViewScrollAppKit)
@@ -108,14 +108,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
         }
     }
 }
-}), new objj_method(sel_getUid("setScrollMode:"), function $CPWebView__setScrollMode_(self, _cmd, aScrollMode)
+},["BOOL"]), new objj_method(sel_getUid("setScrollMode:"), function $CPWebView__setScrollMode_(self, _cmd, aScrollMode)
 { with(self)
 {
     if (_scrollMode == aScrollMode)
         return;
     objj_msgSend(self, "_setScrollMode:", aScrollMode);
 }
-}), new objj_method(sel_getUid("_setScrollMode:"), function $CPWebView___setScrollMode_(self, _cmd, aScrollMode)
+},["void","int"]), new objj_method(sel_getUid("_setScrollMode:"), function $CPWebView___setScrollMode_(self, _cmd, aScrollMode)
 { with(self)
 {
     _scrollMode = aScrollMode;
@@ -138,12 +138,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     parent.appendChild(_iframe);
 }
-}), new objj_method(sel_getUid("loadHTMLString:"), function $CPWebView__loadHTMLString_(self, _cmd, aString)
+},["void","int"]), new objj_method(sel_getUid("loadHTMLString:"), function $CPWebView__loadHTMLString_(self, _cmd, aString)
 { with(self)
 {
     objj_msgSend(self, "loadHTMLString:baseURL:", aString, nil);
 }
-}), new objj_method(sel_getUid("loadHTMLString:baseURL:"), function $CPWebView__loadHTMLString_baseURL_(self, _cmd, aString, URL)
+},["void","CPString"]), new objj_method(sel_getUid("loadHTMLString:baseURL:"), function $CPWebView__loadHTMLString_baseURL_(self, _cmd, aString, URL)
 { with(self)
 {
     objj_msgSend(self, "_setScrollMode:", CPWebViewScrollAppKit);
@@ -154,7 +154,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     _html = aString;
     objj_msgSend(self, "_load");
 }
-}), new objj_method(sel_getUid("_loadMainFrameURL"), function $CPWebView___loadMainFrameURL(self, _cmd)
+},["void","CPString","CPURL"]), new objj_method(sel_getUid("_loadMainFrameURL"), function $CPWebView___loadMainFrameURL(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "_setScrollMode:", CPWebViewScrollNative);
@@ -165,7 +165,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     _html = null;
     objj_msgSend(self, "_load");
 }
-}), new objj_method(sel_getUid("_load"), function $CPWebView___load(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_load"), function $CPWebView___load(self, _cmd)
 { with(self)
 {
     if (_url)
@@ -182,14 +182,14 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
         }, 0);
     }
 }
-}), new objj_method(sel_getUid("_startedLoading"), function $CPWebView___startedLoading(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_startedLoading"), function $CPWebView___startedLoading(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", CPWebViewProgressStartedNotification, self);
     if (objj_msgSend(_frameLoadDelegate, "respondsToSelector:", sel_getUid("webView:didStartProvisionalLoadForFrame:")))
         objj_msgSend(_frameLoadDelegate, "webView:didStartProvisionalLoadForFrame:", self, nil);
 }
-}), new objj_method(sel_getUid("_finishedLoading"), function $CPWebView___finishedLoading(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_finishedLoading"), function $CPWebView___finishedLoading(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "_resizeWebFrame");
@@ -197,12 +197,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     if (objj_msgSend(_frameLoadDelegate, "respondsToSelector:", sel_getUid("webView:didFinishLoadForFrame:")))
         objj_msgSend(_frameLoadDelegate, "webView:didFinishLoadForFrame:", self, nil);
 }
-}), new objj_method(sel_getUid("mainFrameURL"), function $CPWebView__mainFrameURL(self, _cmd)
+},["void"]), new objj_method(sel_getUid("mainFrameURL"), function $CPWebView__mainFrameURL(self, _cmd)
 { with(self)
 {
     return _mainFrameURL;
 }
-}), new objj_method(sel_getUid("setMainFrameURL:"), function $CPWebView__setMainFrameURL_(self, _cmd, URLString)
+},["CPString"]), new objj_method(sel_getUid("setMainFrameURL:"), function $CPWebView__setMainFrameURL_(self, _cmd, URLString)
 { with(self)
 {
     if (_mainFrameURL)
@@ -211,7 +211,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     objj_msgSend(_forwardStack, "removeAllObjects");
     objj_msgSend(self, "_loadMainFrameURL");
 }
-}), new objj_method(sel_getUid("goBack"), function $CPWebView__goBack(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("goBack"), function $CPWebView__goBack(self, _cmd)
 { with(self)
 {
     if (_backwardStack.length > 0)
@@ -225,7 +225,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     return NO;
 }
-}), new objj_method(sel_getUid("goForward"), function $CPWebView__goForward(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("goForward"), function $CPWebView__goForward(self, _cmd)
 { with(self)
 {
     if (_forwardStack.length > 0)
@@ -239,32 +239,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     return NO;
 }
-}), new objj_method(sel_getUid("canGoBack"), function $CPWebView__canGoBack(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("canGoBack"), function $CPWebView__canGoBack(self, _cmd)
 { with(self)
 {
     return (_backwardStack.length > 0);
 }
-}), new objj_method(sel_getUid("canGoForward"), function $CPWebView__canGoForward(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("canGoForward"), function $CPWebView__canGoForward(self, _cmd)
 { with(self)
 {
     return (_forwardStack.length > 0);
 }
-}), new objj_method(sel_getUid("backForwardList"), function $CPWebView__backForwardList(self, _cmd)
+},["BOOL"]), new objj_method(sel_getUid("backForwardList"), function $CPWebView__backForwardList(self, _cmd)
 { with(self)
 {
     return { back: _backwardStack, forward: _forwardStack };
 }
-}), new objj_method(sel_getUid("close"), function $CPWebView__close(self, _cmd)
+},["WebBackForwardList"]), new objj_method(sel_getUid("close"), function $CPWebView__close(self, _cmd)
 { with(self)
 {
     _iframe.parentNode.removeChild(_iframe);
 }
-}), new objj_method(sel_getUid("DOMWindow"), function $CPWebView__DOMWindow(self, _cmd)
+},["void"]), new objj_method(sel_getUid("DOMWindow"), function $CPWebView__DOMWindow(self, _cmd)
 { with(self)
 {
     return (_iframe.contentDocument && _iframe.contentDocument.defaultView) || _iframe.contentWindow;
 }
-}), new objj_method(sel_getUid("windowScriptObject"), function $CPWebView__windowScriptObject(self, _cmd)
+},["DOMWindow"]), new objj_method(sel_getUid("windowScriptObject"), function $CPWebView__windowScriptObject(self, _cmd)
 { with(self)
 {
     var win = objj_msgSend(self, "DOMWindow");
@@ -277,18 +277,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     return _wso;
 }
-}), new objj_method(sel_getUid("stringByEvaluatingJavaScriptFromString:"), function $CPWebView__stringByEvaluatingJavaScriptFromString_(self, _cmd, script)
+},["CPWebScriptObject"]), new objj_method(sel_getUid("stringByEvaluatingJavaScriptFromString:"), function $CPWebView__stringByEvaluatingJavaScriptFromString_(self, _cmd, script)
 { with(self)
 {
     var result = objj_msgSend(self, "objectByEvaluatingJavaScriptFromString:", script);
     return result ? String(result) : nil;
 }
-}), new objj_method(sel_getUid("objectByEvaluatingJavaScriptFromString:"), function $CPWebView__objectByEvaluatingJavaScriptFromString_(self, _cmd, script)
+},["CPString","CPString"]), new objj_method(sel_getUid("objectByEvaluatingJavaScriptFromString:"), function $CPWebView__objectByEvaluatingJavaScriptFromString_(self, _cmd, script)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(self, "windowScriptObject"), "evaluateWebScript:", script);
 }
-}), new objj_method(sel_getUid("computedStyleForElement:pseudoElement:"), function $CPWebView__computedStyleForElement_pseudoElement_(self, _cmd, element, pseudoElement)
+},["JSObject","CPString"]), new objj_method(sel_getUid("computedStyleForElement:pseudoElement:"), function $CPWebView__computedStyleForElement_pseudoElement_(self, _cmd, element, pseudoElement)
 { with(self)
 {
     var win = objj_msgSend(objj_msgSend(self, "windowScriptObject"), "window");
@@ -298,41 +298,41 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
     }
     return nil;
 }
-}), new objj_method(sel_getUid("drawsBackground"), function $CPWebView__drawsBackground(self, _cmd)
+},["DOMCSSStyleDeclaration","DOMElement","CPString"]), new objj_method(sel_getUid("drawsBackground"), function $CPWebView__drawsBackground(self, _cmd)
 { with(self)
 {
     return _iframe.style.backgroundColor != "";
 }
-}), new objj_method(sel_getUid("setDrawsBackground:"), function $CPWebView__setDrawsBackground_(self, _cmd, drawsBackround)
+},["BOOL"]), new objj_method(sel_getUid("setDrawsBackground:"), function $CPWebView__setDrawsBackground_(self, _cmd, drawsBackround)
 { with(self)
 {
     _iframe.style.backgroundColor = drawsBackround ? "white" : "";
 }
-}), new objj_method(sel_getUid("takeStringURLFrom:"), function $CPWebView__takeStringURLFrom_(self, _cmd, sender)
+},["void","BOOL"]), new objj_method(sel_getUid("takeStringURLFrom:"), function $CPWebView__takeStringURLFrom_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "setMainFrameURL:", objj_msgSend(sender, "stringValue"));
 }
-}), new objj_method(sel_getUid("goBack:"), function $CPWebView__goBack_(self, _cmd, sender)
+},["IBAction","id"]), new objj_method(sel_getUid("goBack:"), function $CPWebView__goBack_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "goBack");
 }
-}), new objj_method(sel_getUid("goForward:"), function $CPWebView__goForward_(self, _cmd, sender)
+},["IBAction","id"]), new objj_method(sel_getUid("goForward:"), function $CPWebView__goForward_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "goForward");
 }
-}), new objj_method(sel_getUid("stopLoading:"), function $CPWebView__stopLoading_(self, _cmd, sender)
+},["IBAction","id"]), new objj_method(sel_getUid("stopLoading:"), function $CPWebView__stopLoading_(self, _cmd, sender)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("reload:"), function $CPWebView__reload_(self, _cmd, sender)
+},["IBAction","id"]), new objj_method(sel_getUid("reload:"), function $CPWebView__reload_(self, _cmd, sender)
 { with(self)
 {
     objj_msgSend(self, "_loadMainFrameURL");
 }
-}), new objj_method(sel_getUid("print:"), function $CPWebView__print_(self, _cmd, sender)
+},["IBAction","id"]), new objj_method(sel_getUid("print:"), function $CPWebView__print_(self, _cmd, sender)
 { with(self)
 {
     try
@@ -344,57 +344,57 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:frameName
         alert('Please click the webpage and select "Print" from the "File" menu');
     }
 }
-}), new objj_method(sel_getUid("downloadDelegate"), function $CPWebView__downloadDelegate(self, _cmd)
+},["IBAction","id"]), new objj_method(sel_getUid("downloadDelegate"), function $CPWebView__downloadDelegate(self, _cmd)
 { with(self)
 {
     return _downloadDelegate;
 }
-}), new objj_method(sel_getUid("setDownloadDelegate:"), function $CPWebView__setDownloadDelegate_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("setDownloadDelegate:"), function $CPWebView__setDownloadDelegate_(self, _cmd, anObject)
 { with(self)
 {
     _downloadDelegate = anObject;
 }
-}), new objj_method(sel_getUid("frameLoadDelegate"), function $CPWebView__frameLoadDelegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("frameLoadDelegate"), function $CPWebView__frameLoadDelegate(self, _cmd)
 { with(self)
 {
     return _frameLoadDelegate;
 }
-}), new objj_method(sel_getUid("setFrameLoadDelegate:"), function $CPWebView__setFrameLoadDelegate_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("setFrameLoadDelegate:"), function $CPWebView__setFrameLoadDelegate_(self, _cmd, anObject)
 { with(self)
 {
     _frameLoadDelegate = anObject;
 }
-}), new objj_method(sel_getUid("policyDelegate"), function $CPWebView__policyDelegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("policyDelegate"), function $CPWebView__policyDelegate(self, _cmd)
 { with(self)
 {
     return _policyDelegate;
 }
-}), new objj_method(sel_getUid("setPolicyDelegate:"), function $CPWebView__setPolicyDelegate_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("setPolicyDelegate:"), function $CPWebView__setPolicyDelegate_(self, _cmd, anObject)
 { with(self)
 {
     _policyDelegate = anObject;
 }
-}), new objj_method(sel_getUid("resourceLoadDelegate"), function $CPWebView__resourceLoadDelegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("resourceLoadDelegate"), function $CPWebView__resourceLoadDelegate(self, _cmd)
 { with(self)
 {
     return _resourceLoadDelegate;
 }
-}), new objj_method(sel_getUid("setResourceLoadDelegate:"), function $CPWebView__setResourceLoadDelegate_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("setResourceLoadDelegate:"), function $CPWebView__setResourceLoadDelegate_(self, _cmd, anObject)
 { with(self)
 {
     _resourceLoadDelegate = anObject;
 }
-}), new objj_method(sel_getUid("UIDelegate"), function $CPWebView__UIDelegate(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("UIDelegate"), function $CPWebView__UIDelegate(self, _cmd)
 { with(self)
 {
     return _UIDelegate;
 }
-}), new objj_method(sel_getUid("setUIDelegate:"), function $CPWebView__setUIDelegate_(self, _cmd, anObject)
+},["id"]), new objj_method(sel_getUid("setUIDelegate:"), function $CPWebView__setUIDelegate_(self, _cmd, anObject)
 { with(self)
 {
     _UIDelegate = anObject;
 }
-})]);
+},["void","id"])]);
 }
 {var the_class = objj_allocateClassPair(CPObject, "CPWebScriptObject"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("_window")]);
@@ -409,7 +409,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithWindow:"), func
     }
     return self;
 }
-}), new objj_method(sel_getUid("callWebScriptMethod:withArguments:"), function $CPWebScriptObject__callWebScriptMethod_withArguments_(self, _cmd, methodName, args)
+},["id","Window"]), new objj_method(sel_getUid("callWebScriptMethod:withArguments:"), function $CPWebScriptObject__callWebScriptMethod_withArguments_(self, _cmd, methodName, args)
 { with(self)
 {
     if (typeof _window[methodName] == "function")
@@ -421,7 +421,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithWindow:"), func
     }
     return undefined;
 }
-}), new objj_method(sel_getUid("evaluateWebScript:"), function $CPWebScriptObject__evaluateWebScript_(self, _cmd, script)
+},["id","CPString","CPArray"]), new objj_method(sel_getUid("evaluateWebScript:"), function $CPWebScriptObject__evaluateWebScript_(self, _cmd, script)
 { with(self)
 {
     try {
@@ -430,12 +430,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithWindow:"), func
     }
     return undefined;
 }
-}), new objj_method(sel_getUid("window"), function $CPWebScriptObject__window(self, _cmd)
+},["id","CPString"]), new objj_method(sel_getUid("window"), function $CPWebScriptObject__window(self, _cmd)
 { with(self)
 {
     return _window;
 }
-})]);
+},["Window"])]);
 }
 {
 var the_class = objj_getClass("CPWebView")
@@ -454,7 +454,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPWebView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPWebView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     var actualSubviews = _subviews;
@@ -462,6 +462,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPView") }, "encodeWithCoder:", aCoder);
     _subviews = actualSubviews;
 }
-})]);
+},["void","CPCoder"])]);
 }
 

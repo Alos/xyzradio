@@ -1,4 +1,4 @@
-i;11;CPControl.ji;15;CPTableColumn.ji;9;CPColor.ji;13;CPTextField.jc;40333;
+i;11;CPControl.ji;15;CPTableColumn.ji;9;CPColor.ji;13;CPTextField.jc;41238;
 CPTableViewColumnDidMoveNotification = "CPTableViewColumnDidMoveNotification";
 CPTableViewColumnDidResizeNotification = "CPTableViewColumnDidResizeNotification";
 CPTableViewSelectionDidChangeNotification = "CPTableViewSelectionDidChangeNotification";
@@ -24,7 +24,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     return self;
 }
-}), new objj_method(sel_getUid("_init"), function $CPTableView___init(self, _cmd)
+},["id","CGRect"]), new objj_method(sel_getUid("_init"), function $CPTableView___init(self, _cmd)
 { with(self)
 {
     _tableColumns = [];
@@ -42,12 +42,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _rowHeights = [];
     _rowMinYs = [];
 }
-}), new objj_method(sel_getUid("_columnHeight"), function $CPTableView___columnHeight(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_columnHeight"), function $CPTableView___columnHeight(self, _cmd)
 { with(self)
 {
     return _columnHeight;
 }
-}), new objj_method(sel_getUid("newCellForRow:column:avoidingRows:"), function $CPTableView__newCellForRow_column_avoidingRows_(self, _cmd, aRowIndex, aColumnIndex, rows)
+},["float"]), new objj_method(sel_getUid("newCellForRow:column:avoidingRows:"), function $CPTableView__newCellForRow_column_avoidingRows_(self, _cmd, aRowIndex, aColumnIndex, rows)
 { with(self)
 {
     var dataView = objj_msgSend(_tableColumns[aColumnIndex], "_newDataViewForRow:avoidingRows:", aRowIndex, rows);
@@ -61,7 +61,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(dataView, "setObjectValue:", _objectValueCache[aColumnIndex][aRowIndex]);
     return dataView;
 }
-}), new objj_method(sel_getUid("clearCells"), function $CPTableView__clearCells(self, _cmd)
+},["void","unsigned","unsigned","CPRange"]), new objj_method(sel_getUid("clearCells"), function $CPTableView__clearCells(self, _cmd)
 { with(self)
 {
     var columnEnd = CPMaxRange(_visibleColumns),
@@ -87,7 +87,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _visibleColumns = CPMakeRange(0,0);
     _visibleRows = CPMakeRange(0,0);
 }
-}), new objj_method(sel_getUid("loadTableCellsInRect:"), function $CPTableView__loadTableCellsInRect_(self, _cmd, aRect)
+},["void"]), new objj_method(sel_getUid("loadTableCellsInRect:"), function $CPTableView__loadTableCellsInRect_(self, _cmd, aRect)
 { with(self)
 {
    if (!_dataSource)
@@ -182,7 +182,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _visibleRows = visibleRows;
     _visibleColumns = visibleColumns;
 }
-}), new objj_method(sel_getUid("setIntercellSpacing:"), function $CPTableView__setIntercellSpacing_(self, _cmd, aSize)
+},["void","CGRect"]), new objj_method(sel_getUid("setIntercellSpacing:"), function $CPTableView__setIntercellSpacing_(self, _cmd, aSize)
 { with(self)
 {
     if (_intercellSpacing.width != aSize.width)
@@ -214,12 +214,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     _intercellSpacing = CPSizeCreateCopy(aSize);
 }
-}), new objj_method(sel_getUid("intercellSpacing"), function $CPTableView__intercellSpacing(self, _cmd)
+},["void","CGSize"]), new objj_method(sel_getUid("intercellSpacing"), function $CPTableView__intercellSpacing(self, _cmd)
 { with(self)
 {
     return _intercellSpacing;
 }
-}), new objj_method(sel_getUid("setRowHeight:"), function $CPTableView__setRowHeight_(self, _cmd, aRowHeight)
+},["CGSize"]), new objj_method(sel_getUid("setRowHeight:"), function $CPTableView__setRowHeight_(self, _cmd, aRowHeight)
 { with(self)
 {
     if (_rowHeight == aRowHeight)
@@ -231,12 +231,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         for (var column = 0; column < _tableColumns.length; ++column)
             objj_msgSend(_tableCells[column][row], "setFrameOrigin:", CPPointMake(0.0, row * (_rowHeight + _intercellSpacing.height)));
 }
-}), new objj_method(sel_getUid("rowHeight"), function $CPTableView__rowHeight(self, _cmd)
+},["void","unsigned"]), new objj_method(sel_getUid("rowHeight"), function $CPTableView__rowHeight(self, _cmd)
 { with(self)
 {
     return _rowHeight;
 }
-}), new objj_method(sel_getUid("addTableColumn:"), function $CPTableView__addTableColumn_(self, _cmd, aTableColumn)
+},["unsigned"]), new objj_method(sel_getUid("addTableColumn:"), function $CPTableView__addTableColumn_(self, _cmd, aTableColumn)
 { with(self)
 {
     var i = 0,
@@ -250,7 +250,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     for (; i < _numberOfRows; ++i)
         _tableCells[_tableColumns.length-1][i] = nil;
 }
-}), new objj_method(sel_getUid("removeTableColumn:"), function $CPTableView__removeTableColumn_(self, _cmd, aTableColumn)
+},["void","CPTableColumn"]), new objj_method(sel_getUid("removeTableColumn:"), function $CPTableView__removeTableColumn_(self, _cmd, aTableColumn)
 { with(self)
 {
     var frame = objj_msgSend(self, "frame"),
@@ -264,18 +264,18 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(_tableColumnViews[index], "setFrameOrigin:", CPPointMake(CPRectGetMinX(objj_msgSend(_tableColumnViews[index], "frame")) - width, 0.0))
     objj_msgSend(self, "setFrameSize:", CPSizeMake(CPRectGetWidth(frame) - width, CPRectGetHeight(frame)));
 }
-}), new objj_method(sel_getUid("moveColumn:toColumn:"), function $CPTableView__moveColumn_toColumn_(self, _cmd, fromIndex, toIndex)
+},["void","CPTableColumn"]), new objj_method(sel_getUid("moveColumn:toColumn:"), function $CPTableView__moveColumn_toColumn_(self, _cmd, fromIndex, toIndex)
 { with(self)
 {
     if (fromIndex == toIndex)
         return;
 }
-}), new objj_method(sel_getUid("tableColumns"), function $CPTableView__tableColumns(self, _cmd)
+},["void","unsigned","unsinged"]), new objj_method(sel_getUid("tableColumns"), function $CPTableView__tableColumns(self, _cmd)
 { with(self)
 {
     return _tableColumns;
 }
-}), new objj_method(sel_getUid("tableColumnWithIdentifier:"), function $CPTableView__tableColumnWithIdentifier_(self, _cmd, anObject)
+},["CPArray"]), new objj_method(sel_getUid("tableColumnWithIdentifier:"), function $CPTableView__tableColumnWithIdentifier_(self, _cmd, anObject)
 { with(self)
 {
     for (var i = 0; i < _tableColumns.length; i++)
@@ -283,22 +283,22 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             return _tableColumns[i];
     return nil;
 }
-}), new objj_method(sel_getUid("numberOfColumns"), function $CPTableView__numberOfColumns(self, _cmd)
+},["CPTableColumn","id"]), new objj_method(sel_getUid("numberOfColumns"), function $CPTableView__numberOfColumns(self, _cmd)
 { with(self)
 {
     return _tableColumns.length;
 }
-}), new objj_method(sel_getUid("numberOfRows"), function $CPTableView__numberOfRows(self, _cmd)
+},["int"]), new objj_method(sel_getUid("numberOfRows"), function $CPTableView__numberOfRows(self, _cmd)
 { with(self)
 {
     return _numberOfRows;
 }
-}), new objj_method(sel_getUid("tile"), function $CPTableView__tile(self, _cmd)
+},["int"]), new objj_method(sel_getUid("tile"), function $CPTableView__tile(self, _cmd)
 { with(self)
 {
     var HEIGHT = 10.0;
 }
-}), new objj_method(sel_getUid("setDataSource:"), function $CPTableView__setDataSource_(self, _cmd, aDataSource)
+},["void"]), new objj_method(sel_getUid("setDataSource:"), function $CPTableView__setDataSource_(self, _cmd, aDataSource)
 { with(self)
 {
     if (!objj_msgSend(aDataSource, "respondsToSelector:", sel_getUid("numberOfRowsInTableView:")))
@@ -308,17 +308,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     _dataSource = aDataSource;
     objj_msgSend(self, "reloadData");
 }
-}), new objj_method(sel_getUid("dataSource"), function $CPTableView__dataSource(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("dataSource"), function $CPTableView__dataSource(self, _cmd)
 { with(self)
 {
     return _dataSource;
 }
-}), new objj_method(sel_getUid("delegate"), function $CPTableView__delegate(self, _cmd)
+},["id"]), new objj_method(sel_getUid("delegate"), function $CPTableView__delegate(self, _cmd)
 { with(self)
 {
     return _delegate;
 }
-}), new objj_method(sel_getUid("setDelegate:"), function $CPTableView__setDelegate_(self, _cmd, aDelegate)
+},["id"]), new objj_method(sel_getUid("setDelegate:"), function $CPTableView__setDelegate_(self, _cmd, aDelegate)
 { with(self)
 {
     if (_delegate === aDelegate)
@@ -362,7 +362,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         _hasVariableHeightRows = NO;
 }
-}), new objj_method(sel_getUid("noteNumberOfRowsChanged"), function $CPTableView__noteNumberOfRowsChanged(self, _cmd)
+},["void","id"]), new objj_method(sel_getUid("noteNumberOfRowsChanged"), function $CPTableView__noteNumberOfRowsChanged(self, _cmd)
 { with(self)
 {
     var numberOfRows = objj_msgSend(_dataSource, "numberOfRowsInTableView:", self);
@@ -372,26 +372,26 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(self, "_recalculateColumnHeight");
     }
 }
-}), new objj_method(sel_getUid("noteHeightOfRowsWithIndexesChanged:"), function $CPTableView__noteHeightOfRowsWithIndexesChanged_(self, _cmd, indexSet)
+},["void"]), new objj_method(sel_getUid("noteHeightOfRowsWithIndexesChanged:"), function $CPTableView__noteHeightOfRowsWithIndexesChanged_(self, _cmd, indexSet)
 { with(self)
 {
     objj_msgSend(self, "_recalculateColumnHeight");
 }
-}), new objj_method(sel_getUid("rectOfRow:"), function $CPTableView__rectOfRow_(self, _cmd, aRowIndex)
+},["void","CPIndexSet"]), new objj_method(sel_getUid("rectOfRow:"), function $CPTableView__rectOfRow_(self, _cmd, aRowIndex)
 { with(self)
 {
     return CPRectMake(0.0, (_hasVariableHeightRows ? _rowMinYs[aRowIndex] : (aRowIndex * (_rowHeight + _intercellSpacing.height))), CPRectGetWidth(objj_msgSend(self, "bounds")), (_hasVariableHeightRows ? _rowHeights[aRowIndex] : _rowHeight));
 }
-}), new objj_method(sel_getUid("rectOfColumn:"), function $CPTableView__rectOfColumn_(self, _cmd, aColumnIndex)
+},["CGRect","int"]), new objj_method(sel_getUid("rectOfColumn:"), function $CPTableView__rectOfColumn_(self, _cmd, aColumnIndex)
 { with(self)
 {
     return objj_msgSend(_tableColumnViews[aColumnIndex], "frame");
 }
-}), new objj_method(sel_getUid("sizeToFit"), function $CPTableView__sizeToFit(self, _cmd)
+},["CGRect","int"]), new objj_method(sel_getUid("sizeToFit"), function $CPTableView__sizeToFit(self, _cmd)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("_recalculateColumnHeight"), function $CPTableView___recalculateColumnHeight(self, _cmd)
+},["void"]), new objj_method(sel_getUid("_recalculateColumnHeight"), function $CPTableView___recalculateColumnHeight(self, _cmd)
 { with(self)
 {
     var oldColumnHeight = _columnHeight;
@@ -412,7 +412,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(_tableColumnViews[count], "setFrameSize:", CGSizeMake(objj_msgSend(_tableColumns[count], "width"), _columnHeight));
     objj_msgSend(self, "setFrameSize:", CGSizeMake(CGRectGetWidth(objj_msgSend(self, "frame")), _columnHeight));
 }
-}), new objj_method(sel_getUid("visibleRectInParent"), function $CPTableView__visibleRectInParent(self, _cmd)
+},["void"]), new objj_method(sel_getUid("visibleRectInParent"), function $CPTableView__visibleRectInParent(self, _cmd)
 { with(self)
 {
     var superview = objj_msgSend(self, "superview");
@@ -420,7 +420,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         return objj_msgSend(self, "bounds");
     return objj_msgSend(self, "convertRect:fromView:", CGRectIntersection(objj_msgSend(superview, "bounds"), objj_msgSend(self, "frame")), superview);
 }
-}), new objj_method(sel_getUid("reloadData"), function $CPTableView__reloadData(self, _cmd)
+},["CGRect"]), new objj_method(sel_getUid("reloadData"), function $CPTableView__reloadData(self, _cmd)
 { with(self)
 {
     var oldNumberOfRows = _numberOfRows;
@@ -434,58 +434,58 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "clearCells");
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("layoutSubviews"), function $CPTableView__layoutSubviews(self, _cmd)
+},["void"]), new objj_method(sel_getUid("layoutSubviews"), function $CPTableView__layoutSubviews(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "loadTableCellsInRect:", objj_msgSend(self, "visibleRectInParent"));
 }
-}), new objj_method(sel_getUid("displaySoon"), function $CPTableView__displaySoon(self, _cmd)
+},["void"]), new objj_method(sel_getUid("displaySoon"), function $CPTableView__displaySoon(self, _cmd)
 { with(self)
 {
     objj_msgSend(_scrollTimer, "invalidate");
     _scrollTimer = objj_msgSend(CPTimer, "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:", 0.05, self, sel_getUid("displayNow"), nil, NO);
 }
-}), new objj_method(sel_getUid("displayNow"), function $CPTableView__displayNow(self, _cmd)
+},["void"]), new objj_method(sel_getUid("displayNow"), function $CPTableView__displayNow(self, _cmd)
 { with(self)
 {
     objj_msgSend(self, "setNeedsLayout");
 }
-}), new objj_method(sel_getUid("viewDidMoveToSuperview"), function $CPTableView__viewDidMoveToSuperview(self, _cmd)
+},["void"]), new objj_method(sel_getUid("viewDidMoveToSuperview"), function $CPTableView__viewDidMoveToSuperview(self, _cmd)
 { with(self)
 {
     objj_msgSend(objj_msgSend(objj_msgSend(self, "enclosingScrollView"), "contentView"), "setPostsBoundsChangedNotifications:", YES);
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("viewBoundsChanged:"), CPViewBoundsDidChangeNotification, objj_msgSend(objj_msgSend(self, "enclosingScrollView"), "contentView"));
 }
-}), new objj_method(sel_getUid("viewBoundsChanged:"), function $CPTableView__viewBoundsChanged_(self, _cmd, aNotification)
+},["void"]), new objj_method(sel_getUid("viewBoundsChanged:"), function $CPTableView__viewBoundsChanged_(self, _cmd, aNotification)
 { with(self)
 {
     objj_msgSend(self, "displayNow");
 }
-}), new objj_method(sel_getUid("setAllowsMultipleSelection:"), function $CPTableView__setAllowsMultipleSelection_(self, _cmd, allowsMultipleSelection)
+},["void","CPNotification"]), new objj_method(sel_getUid("setAllowsMultipleSelection:"), function $CPTableView__setAllowsMultipleSelection_(self, _cmd, allowsMultipleSelection)
 { with(self)
 {
     if (_allowsMultipleSelection === allowsMultipleSelection)
         return;
     _allowsMultipleSelection = allowsMultipleSelection;
 }
-}), new objj_method(sel_getUid("allowsMultipleSelection"), function $CPTableView__allowsMultipleSelection(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("allowsMultipleSelection"), function $CPTableView__allowsMultipleSelection(self, _cmd)
 { with(self)
 {
     return _allowsMultipleSelection;
 }
-}), new objj_method(sel_getUid("setAllowsEmptySelection:"), function $CPTableView__setAllowsEmptySelection_(self, _cmd, allowsEmptySelection)
+},["void"]), new objj_method(sel_getUid("setAllowsEmptySelection:"), function $CPTableView__setAllowsEmptySelection_(self, _cmd, allowsEmptySelection)
 { with(self)
 {
     if (_allowsEmptySelection === allowsEmptySelection)
         return;
     _allowsEmptySelection = allowsEmptySelection;
 }
-}), new objj_method(sel_getUid("allowsEmptySelection"), function $CPTableView__allowsEmptySelection(self, _cmd)
+},["void","BOOL"]), new objj_method(sel_getUid("allowsEmptySelection"), function $CPTableView__allowsEmptySelection(self, _cmd)
 { with(self)
 {
     return _allowsEmptySelection;
 }
-}), new objj_method(sel_getUid("rowAtPoint:"), function $CPTableView__rowAtPoint_(self, _cmd, aPoint)
+},["void"]), new objj_method(sel_getUid("rowAtPoint:"), function $CPTableView__rowAtPoint_(self, _cmd, aPoint)
 { with(self)
 {
     var index = objj_msgSend(self, "_rowAtY:", aPoint.y)
@@ -494,7 +494,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         return CPNotFound;
 }
-}), new objj_method(sel_getUid("columnAtPoint:"), function $CPTableView__columnAtPoint_(self, _cmd, aPoint)
+},["int","CGPoint"]), new objj_method(sel_getUid("columnAtPoint:"), function $CPTableView__columnAtPoint_(self, _cmd, aPoint)
 { with(self)
 {
     var index = objj_msgSend(self, "_columnAtX:", aPoint.x)
@@ -503,7 +503,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         return CPNotFound;
 }
-}), new objj_method(sel_getUid("_rowAtY:"), function $CPTableView___rowAtY_(self, _cmd, y)
+},["int","CGPoint"]), new objj_method(sel_getUid("_rowAtY:"), function $CPTableView___rowAtY_(self, _cmd, y)
 { with(self)
 {
     if (_hasVariableHeightRows)
@@ -528,7 +528,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     else
         return FLOOR(y / (_rowHeight + _intercellSpacing.height));
 }
-}), new objj_method(sel_getUid("_columnAtX:"), function $CPTableView___columnAtX_(self, _cmd, x)
+},["int","float"]), new objj_method(sel_getUid("_columnAtX:"), function $CPTableView___columnAtX_(self, _cmd, x)
 { with(self)
 {
     var a = 0,
@@ -549,7 +549,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
             return half;
     }
 }
-}), new objj_method(sel_getUid("selectRowIndexes:byExtendingSelection:"), function $CPTableView__selectRowIndexes_byExtendingSelection_(self, _cmd, indexes, extend)
+},["int","float"]), new objj_method(sel_getUid("selectRowIndexes:byExtendingSelection:"), function $CPTableView__selectRowIndexes_byExtendingSelection_(self, _cmd, indexes, extend)
 { with(self)
 {
     if (extend)
@@ -558,17 +558,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         _selectedRowIndexes = objj_msgSend(indexes, "copy");
     objj_msgSend(self, "_drawSelection");
 }
-}), new objj_method(sel_getUid("selectedRowIndexes"), function $CPTableView__selectedRowIndexes(self, _cmd)
+},["void","CPIndexSet","BOOL"]), new objj_method(sel_getUid("selectedRowIndexes"), function $CPTableView__selectedRowIndexes(self, _cmd)
 { with(self)
 {
     return _selectedRowIndexes;
 }
-}), new objj_method(sel_getUid("numberOfSelectedRows"), function $CPTableView__numberOfSelectedRows(self, _cmd)
+},["CPIndexSet"]), new objj_method(sel_getUid("numberOfSelectedRows"), function $CPTableView__numberOfSelectedRows(self, _cmd)
 { with(self)
 {
     return objj_msgSend(_selectedRowIndexes, "count");
 }
-}), new objj_method(sel_getUid("deselectAll:"), function $CPTableView__deselectAll_(self, _cmd, sender)
+},["int"]), new objj_method(sel_getUid("deselectAll:"), function $CPTableView__deselectAll_(self, _cmd, sender)
 { with(self)
 {
     if (!_allowsEmptySelection || objj_msgSend(_selectedRowIndexes, "count") === 0 ||
@@ -577,11 +577,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     objj_msgSend(self, "selectRowIndexes:byExtendingSelection:", objj_msgSend(CPIndexSet, "indexSet"), NO);
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", CPTableViewSelectionDidChangeNotification, self, nil);
 }
-}), new objj_method(sel_getUid("editColumn:row:withEvent:select:"), function $CPTableView__editColumn_row_withEvent_select_(self, _cmd, columnIndex, rowIndex, theEvent, flag)
+},["void","id"]), new objj_method(sel_getUid("editColumn:row:withEvent:select:"), function $CPTableView__editColumn_row_withEvent_select_(self, _cmd, columnIndex, rowIndex, theEvent, flag)
 { with(self)
 {
 }
-}), new objj_method(sel_getUid("_updateSelectionWithMouseAtRow:"), function $CPTableView___updateSelectionWithMouseAtRow_(self, _cmd, aRow)
+},["void","int","int","CPEvent","BOOL"]), new objj_method(sel_getUid("_updateSelectionWithMouseAtRow:"), function $CPTableView___updateSelectionWithMouseAtRow_(self, _cmd, aRow)
 { with(self)
 {
     var newSelection;
@@ -623,32 +623,32 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
         objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", CPTableViewSelectionIsChangingNotification, self, nil);
     }
 }
-}), new objj_method(sel_getUid("mouseDown:"), function $CPTableView__mouseDown_(self, _cmd, anEvent)
+},["void","int"]), new objj_method(sel_getUid("mouseDown:"), function $CPTableView__mouseDown_(self, _cmd, anEvent)
 { with(self)
 {
     objj_msgSend(self, "trackSelection:", anEvent);
 }
-}), new objj_method(sel_getUid("setDoubleAction:"), function $CPTableView__setDoubleAction_(self, _cmd, aSelector)
+},["void","CPEvent"]), new objj_method(sel_getUid("setDoubleAction:"), function $CPTableView__setDoubleAction_(self, _cmd, aSelector)
 { with(self)
 {
     _doubleAction = aSelector;
 }
-}), new objj_method(sel_getUid("doubleAction"), function $CPTableView__doubleAction(self, _cmd)
+},["void","SEL"]), new objj_method(sel_getUid("doubleAction"), function $CPTableView__doubleAction(self, _cmd)
 { with(self)
 {
     return _doubleAction;
 }
-}), new objj_method(sel_getUid("clickedColumn"), function $CPTableView__clickedColumn(self, _cmd)
+},["SEL"]), new objj_method(sel_getUid("clickedColumn"), function $CPTableView__clickedColumn(self, _cmd)
 { with(self)
 {
     return _clickedColumn;
 }
-}), new objj_method(sel_getUid("clickedRow"), function $CPTableView__clickedRow(self, _cmd)
+},["int"]), new objj_method(sel_getUid("clickedRow"), function $CPTableView__clickedRow(self, _cmd)
 { with(self)
 {
     return _clickedRow;
 }
-}), new objj_method(sel_getUid("trackSelection:"), function $CPTableView__trackSelection_(self, _cmd, anEvent)
+},["int"]), new objj_method(sel_getUid("trackSelection:"), function $CPTableView__trackSelection_(self, _cmd, anEvent)
 { with(self)
 {
     var type = objj_msgSend(anEvent, "type"),
@@ -690,7 +690,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     objj_msgSend(CPApp, "setTarget:selector:forNextEventMatchingMask:untilDate:inMode:dequeue:", self, sel_getUid("trackSelection:"), CPLeftMouseDraggedMask | CPLeftMouseUpMask, nil, nil, YES);
 }
-}), new objj_method(sel_getUid("_drawSelection"), function $CPTableView___drawSelection(self, _cmd)
+},["void","CPEvent"]), new objj_method(sel_getUid("_drawSelection"), function $CPTableView___drawSelection(self, _cmd)
 { with(self)
 {
     if (!_currentlySelected) {
@@ -753,12 +753,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), funct
     }
     _currentlySelected = objj_msgSend(_selectedRowIndexes, "copy");
 }
-})]);
+},["void"])]);
 class_addMethods(meta_class, [new objj_method(sel_getUid("initialize"), function $CPTableView__initialize(self, _cmd)
 { with(self)
 {
 }
-})]);
+},["void"])]);
 }
 var CPTableViewDataSourceKey = "CPTableViewDataSourceKey",
     CPTableViewDelegateKey = "CPTableViewDelegateKey",
@@ -789,7 +789,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     }
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTableView__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $CPTableView__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPControl") }, "encodeWithCoder:", aCoder);
@@ -801,7 +801,7 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
     objj_msgSend(aCoder, "encodeBool:forKey:", _allowsMultipleSelection, CPTableViewMultipleSelectionKey);
     objj_msgSend(aCoder, "encodeBool:forKey:", _allowsEmptySelection, CPTableViewEmptySelectionKey);
 }
-})]);
+},["void","CPCoder"])]);
 }
 {
 var the_class = objj_getClass("CPColor")
@@ -811,11 +811,11 @@ var meta_class = the_class.isa;class_addMethods(meta_class, [new objj_method(sel
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.22, 0.46, 0.84, 1.0]);
 }
-}), new objj_method(sel_getUid("secondarySelectedControlColor"), function $CPColor__secondarySelectedControlColor(self, _cmd)
+},["CPColor"]), new objj_method(sel_getUid("secondarySelectedControlColor"), function $CPColor__secondarySelectedControlColor(self, _cmd)
 { with(self)
 {
     return objj_msgSend(objj_msgSend(CPColor, "alloc"), "_initWithRGBA:", [0.83, 0.83, 0.83, 1.0]);
 }
-})]);
+},["CPColor"])]);
 }
 

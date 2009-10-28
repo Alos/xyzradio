@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;2902;
+I;21;Foundation/CPObject.jc;2950;
 
 
 
@@ -49,7 +49,7 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bootstrap"), function 
     DOMIFrameDocument.getElementsByTagName("body")[0].appendChild(DOMSpanElement);
 
 }
-}), new objj_method(sel_getUid("sizeOfString:withFont:forWidth:"), function $CPPlatformString__sizeOfString_withFont_forWidth_(self, _cmd, aString, aFont, aWidth)
+},["void"]), new objj_method(sel_getUid("sizeOfString:withFont:forWidth:"), function $CPPlatformString__sizeOfString_withFont_forWidth_(self, _cmd, aString, aFont, aWidth)
 { with(self)
 {
 
@@ -98,6 +98,6 @@ class_addMethods(meta_class, [new objj_method(sel_getUid("bootstrap"), function 
 
 
 }
-})]);
+},["CGSize","CPString","CPFont","float"])]);
 }
 

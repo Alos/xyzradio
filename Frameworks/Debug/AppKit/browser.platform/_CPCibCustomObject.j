@@ -1,4 +1,4 @@
-I;21;Foundation/CPObject.jc;2472;
+I;21;Foundation/CPObject.jc;2561;
 
 
 var _CPCibCustomObjectClassName = "_CPCibCustomObjectClassName";
@@ -12,17 +12,17 @@ class_addMethods(the_class, [new objj_method(sel_getUid("customClassName"), func
 {
     return _className;
 }
-}), new objj_method(sel_getUid("setCustomClassName:"), function $_CPCibCustomObject__setCustomClassName_(self, _cmd, aClassName)
+},["CPString"]), new objj_method(sel_getUid("setCustomClassName:"), function $_CPCibCustomObject__setCustomClassName_(self, _cmd, aClassName)
 { with(self)
 {
     _className = aClassName;
 }
-}), new objj_method(sel_getUid("description"), function $_CPCibCustomObject__description(self, _cmd)
+},["void","CPString"]), new objj_method(sel_getUid("description"), function $_CPCibCustomObject__description(self, _cmd)
 { with(self)
 {
     return objj_msgSendSuper({ receiver:self, super_class:objj_getClass("CPObject") }, "description") + " (" + objj_msgSend(self, "customClassName") + ')';
 }
-})]);
+},["CPString"])]);
 }
 
 {
@@ -38,12 +38,12 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 
     return self;
 }
-}), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibCustomObject__encodeWithCoder_(self, _cmd, aCoder)
+},["id","CPCoder"]), new objj_method(sel_getUid("encodeWithCoder:"), function $_CPCibCustomObject__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
     objj_msgSend(aCoder, "encodeObject:forKey:", _className, _CPCibCustomObjectClassName);
 }
-}), new objj_method(sel_getUid("_cibInstantiate"), function $_CPCibCustomObject___cibInstantiate(self, _cmd)
+},["void","CPCoder"]), new objj_method(sel_getUid("_cibInstantiate"), function $_CPCibCustomObject___cibInstantiate(self, _cmd)
 { with(self)
 {
     var theClass = CPClassFromString(_className);
@@ -69,6 +69,6 @@ var meta_class = the_class.isa;class_addMethods(the_class, [new objj_method(sel_
 
     return objj_msgSend(objj_msgSend(theClass, "alloc"), "init");
 }
-})]);
+},["id"])]);
 }
 
