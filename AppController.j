@@ -113,6 +113,10 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 }
 
+-(CPView) contentView{
+	return contentView;
+}
+
 -(void)setServerIP:(CPString)aURL{
 	serverIP = aURL;
 }

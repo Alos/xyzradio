@@ -115,10 +115,9 @@ This file is part of XYZRadio.
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection{
 	//nothing
+	connection = null;
 }
 
-- (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error
-{
-}
+
 
 @end

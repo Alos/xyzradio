@@ -68,7 +68,6 @@
 			[contentView addSubview: botonOK];
 			[contentView addSubview: wallpaperLabel]; 
 			[contentView addSubview: wallpaperMenus]; 
-			[contentView addSubview: serverIPLabel];  
 			
 		}
 		return self;

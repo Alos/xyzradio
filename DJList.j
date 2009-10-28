@@ -28,7 +28,7 @@
 		CPCollectionView playlistCollectionView;
 		CPArray playlistsArray;
 		NewPlaylistWindow newPlaylistWindow;
-		CPView contentView;
+		CPView djListContentView;
 		CGRect bounds;
 	}
 	
@@ -39,8 +39,8 @@
 		{
 			[self setTitle:@"DJ List"];
 			
-			contentView = [self contentView];
-			bounds = [contentView bounds];
+			djListContentView = [self contentView];
+			bounds = [djListContentView bounds];
 			
 			//This controlls the size of the collection view and makes all the layout work
 			var playlistCollectionViewWidthSize = 150;
@@ -63,7 +63,7 @@
 			var headderLabel = [[CPTextField alloc] initWithFrame: CGRectMake(50, 32, 100, 18)];
 			[headderLabel setStringValue:"Playlists"];
 			[headderLabel setTextColor: [CPColor colorWithHexString:"33FF00"]];
-			[contentView addSubview: headderLabel];
+			[djListContentView addSubview: headderLabel];
 			
 			//the source list
 			//the cells
@@ -88,7 +88,7 @@
 			[playlistCollectionView setMaxItemSize:CPSizeMake(playlistCollectionViewWidthSize, 20)];
 			[playlistCollectionView setContent:playlistsArray];
 			
-			[contentView addSubview:scrollView];
+			[djListContentView addSubview:scrollView];
 			
 			
 			[playlistCollectionView setDelegate: self];
@@ -100,7 +100,7 @@
 			[newPlaylistButton sizeToFit];	        
 			[newPlaylistButton setTarget:self];
 			[newPlaylistButton setAction:@selector(newPlaylist)];  
-			[contentView addSubview: newPlaylistButton];
+			[djListContentView addSubview: newPlaylistButton];
 			
 			var removePlaylistButton = [[CPButton alloc] initWithFrame:CGRectMake(50, 470, 0, 0)];
 			[removePlaylistButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
@@ -108,25 +108,25 @@
 			[removePlaylistButton sizeToFit];	          
 			[removePlaylistButton setTarget:self];
 			[removePlaylistButton setAction:@selector(removePlaylist)];  
-			[contentView addSubview: removePlaylistButton];
+			[djListContentView addSubview: removePlaylistButton];
 			
 			//border for the playlist hedding
 			var border0a = [[CPView alloc] initWithFrame:CGRectMake(2, 30, playlistCollectionViewWidthSize-2, 1)];    
 			[border0a setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
-			[contentView addSubview: border0a];
+			[djListContentView addSubview: border0a];
 			var border0b = [[CPView alloc] initWithFrame:CGRectMake(2, 50, playlistCollectionViewWidthSize-2, 1)];    
 			[border0b setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
-			[contentView addSubview: border0b];
+			[djListContentView addSubview: border0b];
 			
 			//border between source and DJList
 			var border1 = [[CPView alloc] initWithFrame:CGRectMake(playlistCollectionViewWidthSize, 30, 1, CGRectGetHeight(bounds)-32)];    
 			[border1 setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
-			[contentView addSubview: border1];
+			[djListContentView addSubview: border1];
 			
 			//border between source and the buttons space
 			var border2 = [[CPView alloc] initWithFrame:CGRectMake(2, playlistCollectionViewHeightSize+80, playlistCollectionViewWidthSize-2, 1)];    
 			[border2 setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
-			[contentView addSubview: border2];
+			[djListContentView addSubview: border2];
 			
 			
 			//the DJList
@@ -142,7 +142,7 @@
 			//a table
 			theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: CGRectMake(playlistCollectionViewWidthSize, 25	, 450, CGRectGetHeight(bounds)-26)];
 			
-			[contentView addSubview: theTable];    
+			[djListContentView addSubview: theTable];    
 		}    
 		return self;
 	}
@@ -151,10 +151,13 @@
 	 Opens a window to name the playlist
 	 */
 	-(void) newPlaylist{
-		CPLog.info([contentView center]);
+		var mainContentView = [[CPApp delegate] contentView];
+		var windowsCenter = [mainContentView convertPoint:[djListContentView center] fromView:djListContentView];
+		var xpos = windowsCenter.x - 300/2;
+		var ypos = windowsCenter.y - 100/2;
 		if(!newPlaylistWindow)
-			newPlaylistWindow = [[NewPlaylistWindow alloc] initWithContentRect:CGRectMake(0, 0, 200, 150) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
-		[newPlaylistWindow setFrameOrigin:([contentView center])];
+			newPlaylistWindow = [[NewPlaylistWindow alloc] initWithContentRect:CGRectMake(0, 0, 300, 100) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:djListContentView];
+		[newPlaylistWindow setFrameOrigin:(CPPointMake(xpos,ypos))];
 		[newPlaylistWindow orderFront:self];
 	}
 	
@@ -171,6 +174,10 @@
 	-(void)collectionViewDidChangeSelection:(CPCollectionView)collectionView{
 		var index = [collectionView selectionIndexes];
 		CPLog.info([index firstIndex]);
+		
+		var selectedPlaylist = [playlistsArray objectAtIndex: index];
+		
+		[theTable setModel: [selectedPlaylist musicList]];
 	}
 	
 	@end

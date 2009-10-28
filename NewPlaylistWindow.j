@@ -39,19 +39,18 @@
 			var bounds = [contentView bounds];  
 			var center= CGRectGetWidth(bounds)/2.0;
 			
-			var nameLabel = [[CPTextField alloc] initWithFrame: CGRectMake(20, 50, 100, 18)];
+			var nameLabel = [[CPTextField alloc] initWithFrame: CGRectMake(20, 30, 50, 18)];
 			[nameLabel setStringValue:"Name:"];
 			[nameLabel setTextColor: [CPColor colorWithHexString:"33FF00"]];
+			[contentView addSubview:nameLabel];
 			
-			nameTextField = [[CPTextField alloc] initWithFrame: CGRectMake(50, 248, 170, 30)];
+			 nameTextField = [[CPTextField alloc] initWithFrame: CGRectMake(60, 25, 170, 28)];
 			[nameTextField setEditable:YES];
 			[nameTextField setBezeled:YES];
-			[nameTextField setTextColor: [CPColor colorWithHexString:"000000"]];
-			[nameTextField setBackgroundColor:[CPColor colorWithHexString:"FFFFFF"]];
 			[contentView addSubview:nameTextField];
 			
 			
-			botonGuardar = [[CPButton alloc] initWithFrame:CGRectMake(50, 100, 50, 18)];
+			botonGuardar = [[CPButton alloc] initWithFrame:CGRectMake(230, 65, 50, 18)];
 			[botonGuardar setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
 			[botonGuardar setBezelStyle:CPHUDBezelStyle];
 			[botonGuardar setTitle:@"Ok"];	        
