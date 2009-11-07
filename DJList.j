@@ -22,6 +22,7 @@
 @import "XYZPlayListWindow.j"
 @import "XYZMusicList.j"
 @import "NewPlaylistWindow.j"
+@import "SongListDS.j"
 
 @implementation DJList : XYZPlayListWindow
 	{
@@ -30,6 +31,7 @@
 		NewPlaylistWindow newPlaylistWindow;
 		CPView djListContentView;
 		CGRect bounds;
+		SongListDS songListDS;
 	}
 	
 	/*Una bonita contructora*/
@@ -46,19 +48,13 @@
 			var playlistCollectionViewWidthSize = 150;
 			var playlistCollectionViewHeightSize = 380;
 			
+			//the DS to senf info to the server
+			songListDS = [[SongListDS alloc] init];
 			
-			//fake data
+			
+			//getting data
 			playlistsArray = [[CPArray alloc] init];
-			var list1 =[[XYZMusicList alloc] init];
-			[list1 setNameOfList:"Lista1"];
-			var list2 =[[XYZMusicList alloc] init];
-			[list2 setNameOfList:"Lista2"];
-			var list3 =[[XYZMusicList alloc] init];
-			[list3 setNameOfList:"Lista3"];
-			[playlistsArray addObject: list1];
-			[playlistsArray addObject: list2];
-			[playlistsArray addObject: list3]; 
-			
+						
 			//the headder for the collectionview
 			var headderLabel = [[CPTextField alloc] initWithFrame: CGRectMake(50, 32, 100, 18)];
 			[headderLabel setStringValue:"Playlists"];
@@ -143,6 +139,14 @@
 			theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: CGRectMake(playlistCollectionViewWidthSize, 25	, 450, CGRectGetHeight(bounds)-26)];
 			
 			[djListContentView addSubview: theTable];    
+
+
+			
+
+			//register with the NewPlaylistWindow
+			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPlaylist:) name:"NewPlaylistAdded" object:nil];
+			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(playListsRecived:) name:"PlayListsRecived" object:nil];
+
 		}    
 		return self;
 	}
@@ -158,6 +162,7 @@
 		if(!newPlaylistWindow)
 			newPlaylistWindow = [[NewPlaylistWindow alloc] initWithContentRect:CGRectMake(0, 0, 300, 100) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:djListContentView];
 		[newPlaylistWindow setFrameOrigin:(CPPointMake(xpos,ypos))];
+		[newPlaylistWindow clean];
 		[newPlaylistWindow orderFront:self];
 	}
 	
@@ -165,10 +170,47 @@
 	 Removes the relected playlist
 	 */
 	-(void) removePlaylist{
+		for(var i= 0; i<  [playlistsArray count]; i++){
+			CPLog.info(i+"->"+[[playlistsArray objectAtIndex: i] nameOfList]);
+		}
 		var index = [playlistCollectionView selectionIndexes];
-		[playlistsArray removeObjectAtIndex: index];
+		var deletedPlaylist = [playlistsArray  objectAtIndex: [index firstIndex]];
+		var nameOfDeletedPlaylist = [deletedPlaylist nameOfList];
+		CPLog.info("removing: "+nameOfDeletedPlaylist);
+		[playlistsArray removeObjectAtIndex: [index firstIndex]];
+		[playlistCollectionView reloadContent];
+		[songListDS removePlaylist: escape(nameOfDeletedPlaylist)];
+	}
+	
+	/**
+	Adds the playlist form the popup window
+	*/
+	-(void)addNewPlaylist:(CPNotification)aNotification{
+		var info = [aNotification userInfo];
+		var aux = [info objectForKey:"playlistName"];
+		CPLog.info("Adding new playlist!" + aux);
+		var newPlaylist =[[XYZMusicList alloc] init];
+		[newPlaylist setNameOfList:aux];
+		[playlistsArray addObject: newPlaylist];
+		[playlistCollectionView reloadContent];
+		[songListDS addNewPlaylist: aux];
+	}
+	/**
+	Takes the playlists and adds them to the collectionview
+	*/
+	-(void) playListsRecived:(CPNotification)aNotification{
+		var info = [aNotification userInfo];
+		var aux = [info objectForKey:"playlist"];
+		CPLog.info("Recived:"+aux);
+		playlistsArray = aux;
+		[playlistCollectionView setContent:playlistsArray];
 		[playlistCollectionView reloadContent];
 	}
+
+-(void) getUserPlaylists{
+	CPLog.info("Getting playlists...");
+	[songListDS getUserPlaylists];
+}
 	
 	//DELEGATE METHODS
 	-(void)collectionViewDidChangeSelection:(CPCollectionView)collectionView{

@@ -64,8 +64,13 @@
 		return self;
 	}
 	
+	-(void)clean{
+		[nameTextField setStringValue:""];
+	}
+	
 	-(void)savePreferences{
-		
+		var info = [CPDictionary dictionaryWithObject:[nameTextField objectValue] forKey:"playlistName"];   
+		[[CPNotificationCenter defaultCenter] postNotificationName:"NewPlaylistAdded" object:self userInfo:info]; 
 		[self close];
 	}
 	
