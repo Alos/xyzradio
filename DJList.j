@@ -19,12 +19,13 @@
  along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
  */
 @import <AppKit/CPPanel.j>
-@import "XYZPlayListWindow.j"
+@import "XYZPlayListWindowForDJ.j"
 @import "XYZMusicList.j"
+@import "XYZTableForDJ.j"
 @import "NewPlaylistWindow.j"
 @import "SongListDS.j"
 
-@implementation DJList : XYZPlayListWindow
+@implementation DJList : XYZPlayListWindowForDJ
 	{
 		CPCollectionView playlistCollectionView;
 		CPArray playlistsArray;
@@ -136,7 +137,7 @@
 			
 			var fullModel = [CPDictionary dictionaryWithObjects:[titleColumnModel, artistColumnModel, ratingColumnModel] forKeys:["title", "artist", "rating"]];
 			//a table
-			theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: CGRectMake(playlistCollectionViewWidthSize, 25	, 450, CGRectGetHeight(bounds)-26)];
+			theTable = [[XYZTableForDJ alloc] initWithColumnModel:fullModel model:list frame: CGRectMake(playlistCollectionViewWidthSize, 25	, 450, CGRectGetHeight(bounds)-26)];
 			
 			[djListContentView addSubview: theTable];    
 

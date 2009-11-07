@@ -23,7 +23,7 @@ This file is part of XYZRadio.
 @import "StarRatingView.j"
 SongsDragType = @"SongsDragType";
 
-@implementation XYZTable : CPView
+@implementation XYZTableForDJ : CPView
 {
     /*The collection view for the table*/
     CPCollectionView collectionView;
@@ -31,16 +31,18 @@ SongsDragType = @"SongsDragType";
     /*The model for the table*/
     CPDictionary columnModel;
     /*cells*/
-    XYZCell celdas;
+    XYZCellForDJ celdas;
     var pos; 
 }
 
 -(void) initWithColumnModel:(CPDictionary)aColumnModel model:(CPArray)aModel frame:(CGRect)bounds{
+
+	CPLog.info("Inicializando una XYZTableForDJ");
     self = [super initWithFrame:bounds];
     [self setModel:aModel];
 		
     //the cells
-	celdas = [[XYZCell alloc] initWithFrame:CGRectMakeZero()];
+	celdas = [[XYZCellForDJ alloc] initWithFrame:CGRectMakeZero()];
 	[celdas setModel: aColumnModel];
 	
 	//para nuestro grid
@@ -214,12 +216,12 @@ Gets the total of songs in the list
 @end
 
 
-var authorViewSize;
-var titleViewSize;
-var timeViewSize;
-var ratingViewSize;
-var playingViewSize;
-@implementation XYZCell : CPView
+var authorViewSizeForDJ;
+var titleViewSizeForDJ;
+var timeViewSizeForDJ;
+var ratingViewSizeForDJ;
+var playingViewSizeForDJ;
+@implementation XYZCellForDJ : CPView
 {
     CPTextField titleView;
     CPTextField authorView;
@@ -236,34 +238,34 @@ var playingViewSize;
 		var playingColumn = [aModel objectForKey:" "];
 		if(playingColumn){
 			var playingColumnWidth = [playingColumn frame].origin.x;
-			playingViewSize = playingColumnWidth+2;
+			playingViewSizeForDJ = playingColumnWidth+2;
 		}
 		
 		var titleColumn = [aModel objectForKey:"title"];
 		if(titleColumn){
 			var titleColumnWidth = [titleColumn frame].origin.x;
-			titleViewSize = titleColumnWidth+2;
+			titleViewSizeForDJ = titleColumnWidth+2;
 		}
 		
 		var artistColumn = [aModel objectForKey:"artist"];
 		if(artistColumn){
 			var artistColumnWidth = [artistColumn frame].origin.x;
-			authorViewSize = artistColumnWidth+2;
+			authorViewSizeForDJ = artistColumnWidth+2;
 		}
 		
 		var timeColumn = [aModel objectForKey:"time"];
 		if(timeColumn){
 			var timeColumnWidth = [timeColumn frame].origin.x;
-			timeViewSize = timeColumnWidth + 2;
+			timeViewSizeForDJ = timeColumnWidth + 2;
 		}
 		
 		var ratingColumn = [aModel objectForKey:"rating"];
 		if(ratingColumn){
 			var ratingColumnWidth = [ratingColumn frame].origin.x;
-			ratingViewSize = ratingColumnWidth+2;
+			ratingViewSizeForDJ = ratingColumnWidth+2;
 		}
 		
-	    CPLog.info("titleViewSize comun y corriente:"+titleViewSize);
+	    CPLog.info("titleViewSizeForDJ:"+titleViewSizeForDJ);
 	}
 }
 
@@ -281,7 +283,7 @@ var playingViewSize;
     [titleView setStringValue: [anObject songTitle]];
     [titleView sizeToFit];
 
-    [titleView setFrameOrigin: CGPointMake(titleViewSize,0.0)];
+    [titleView setFrameOrigin: CGPointMake(titleViewSizeForDJ,0.0)];
     
     if(!authorView)
     {
@@ -293,7 +295,7 @@ var playingViewSize;
 	
     [authorView setStringValue: [anObject artist]];
     [authorView sizeToFit];
-    [authorView setFrameOrigin: CGPointMake(authorViewSize,0.0)];   
+    [authorView setFrameOrigin: CGPointMake(authorViewSizeForDJ,0.0)];   
     
     if(!timeView)
     {
@@ -305,11 +307,11 @@ var playingViewSize;
 	
     [timeView setStringValue: [anObject time]];
     [timeView sizeToFit];
-    [timeView setFrameOrigin: CGPointMake(timeViewSize,0.0)]; 
+    [timeView setFrameOrigin: CGPointMake(timeViewSizeForDJ,0.0)]; 
 	
 	if(!raterView){
 		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
-		  [raterView setFrameOrigin:CGPointMake(ratingViewSize, 0.0)];
+		  [raterView setFrameOrigin:CGPointMake(ratingViewSizeForDJ, 0.0)];
 		  CPLog.trace("Setting rater for %s width %s", [anObject songTitle], raterView);
 		  [anObject setStarRater: raterView];		  
 		  [self addSubview: raterView];

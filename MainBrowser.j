@@ -27,7 +27,6 @@ This file is part of XYZRadio.
 {
 }
 
-/*Una bonita contructora*/
 - (id)initWithSource:(CPArray)list rectangle:(CGRect)aRectangle{
     //Initializing a window
     self = [super initWithContentRect:aRectangle];
@@ -42,7 +41,7 @@ This file is part of XYZRadio.
 		[self getAllSongs];
 		
         //para los titulos
-		var playingColumnModel = [[XYZColumnModel alloc] initWithFrame:CGRectMake(0, 7, 26, 31) title:" " color:nil];
+		var playingColumnModel = [[XYZColumnModel alloc] initWithFrame:CGRectMake(10, 7, 26, 31) title:" " color:nil];
 		var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(27, 7, 202, 31) title:"Name" color:nil];
         var artistColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(230, 7, 190, 31) title:"Artist" color: nil];
         var timeColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(422, 7, 48, 31) title:"Time" color: nil];
