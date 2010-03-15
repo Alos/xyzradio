@@ -36,25 +36,25 @@ This file is part of XYZRadio.
         [self setTitle:@"Music Browser"];
         var contentView = [self contentView];
         var bounds = [contentView bounds];
-		
-		
-		[self getAllSongs];
-		
+
+        [self getAllSongs];
+        
         //para los titulos
-		var playingColumnModel = [[XYZColumnModel alloc] initWithFrame:CGRectMake(10, 7, 26, 31) title:" " color:nil];
-		var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(27, 7, 202, 31) title:"Name" color:nil];
+        var playingColumnModel = [[XYZColumnModel alloc] initWithFrame:CGRectMake(10, 7, 26, 31) title:" " color:nil];
+        var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(27, 7, 202, 31) title:"Name" color:nil];
         var artistColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(230, 7, 190, 31) title:"Artist" color: nil];
         var timeColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(422, 7, 48, 31) title:"Time" color: nil];
         var ratingColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(470, 7, 48, 31) title:"Rating" color: nil];
-		
-		var fullModel = [CPDictionary dictionaryWithObjects:[playingColumnModel, titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["playing", "title", "artist", "time", "rating"]];
-		
+    
+        var fullModel = [CPDictionary dictionaryWithObjects:[playingColumnModel, titleColumnModel, artistColumnModel, timeColumnModel, ratingColumnModel] forKeys:["playing", "title", "artist", "time", "rating"]];
+        
         theTable = [[XYZTable alloc] initWithColumnModel:fullModel model:list frame: bounds];
         
         [contentView addSubview: theTable];    
-		
-		//this soudl probably 
-		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllSongs:) name:"NewSongAddedXYZEvent" object:nil];
+
+        //refreshes the music list
+        [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllSongs:) name:"NewSongAddedXYZEvent" object:nil];
+        [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(getAllSongs:) name:"SubmitSuccessful" object:nil];
     }
     
     return self;
@@ -72,49 +72,54 @@ This file is part of XYZRadio.
 }
 
 - (void)getAllSongs{
-	app = [CPApp delegate];
-	var url = [app serverIP]+"/GetAllSongs";
-	theRequest = [CPURLRequest requestWithURL: url];
-	serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
+    app = [CPApp delegate];
+    var url = [app serverIP]+"/GetAllSongs";
+    theRequest = [CPURLRequest requestWithURL: url];
+    serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
 }
 
+- (void)getAllSongs:(CPNotification)aNotification{
+    app = [CPApp delegate];
+    var url = [app serverIP]+"/GetAllSongs";
+    theRequest = [CPURLRequest requestWithURL: url];
+    serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
+}
 /*Delegate methods*/
 
 //for the connections delegate
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
-{	
-	var response =  JSON.parse(data);
+{
+    var response =  JSON.parse(data);
 
-	if(!response.error){
-		//Everything is ok now we fill the table with songs!
-		CPLog.info("Filling songs...");
-		var songsArray = [[CPArray alloc] init];
-		for(var i=0; i< response.length; i++){
-			var info = response[i];
-			var newSong = [[XYZSong alloc] init];
-			[newSong setSongTitle:info.songTitle];
-			[newSong setArtist:info.artist];
-			[newSong setTime:info.time];
-			[newSong setGenre:info.genre];
-			[newSong setRating:info.rating];
-			[newSong setSongID:info.songID];
-			[newSong setLocal:info.isLocal];
-			[newSong setPathToSong:info.pathToSong];
-			[newSong setPathToAlbumArt:info.pathToAlbumArt];
-			
-			[songsArray addObject: newSong];
-		}
-		[self addList:songsArray];
-	}else{
-		//no user was found lets ask the new user stuff
-		CPLog.info("No songs found in data!");
-	}
-	
+    if(!response.error){
+        //Everything is ok now we fill the table with songs!
+        CPLog.info("Filling songs...");
+        var songsArray = [[CPArray alloc] init];
+        for(var i=0; i< response.length; i++){
+            var info = response[i];
+            var newSong = [[XYZSong alloc] init];
+            [newSong setSongTitle:info.songTitle];
+            [newSong setArtist:info.artist];
+            [newSong setTime:info.time];
+            [newSong setGenre:info.genre];
+            [newSong setRating:info.rating];
+            [newSong setSongID:info.songID];
+            [newSong setLocal:info.isLocal];
+            [newSong setPathToSong:info.pathToSong];
+            [newSong setPathToAlbumArt:info.pathToAlbumArt];
+            [songsArray addObject: newSong];
+        }
+        [self addList:songsArray];
+    }else{
+        //no user was found lets ask the new user stuff
+        CPLog.info("No songs found in data!");  
+    }
+    
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection{
-	//nothing
-	connection = null;
+    //nothing
+    connection = null;
 }
 
 

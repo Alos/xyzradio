@@ -243,9 +243,9 @@
 	
 	- (void)clearConnection:(CPURLConnection)connection
 	{
-		//we no longer need to hold on to a reference to this connection
-		if (connection == louhiConnection)
-        louhiConnection = nil;
+        //we no longer need to hold on to a reference to this connection
+        if ( connection ==  xyzradioConnectionForLogin)
+            louhiConnection = nil;
 	}
 	@end
 

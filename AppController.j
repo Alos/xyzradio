@@ -111,7 +111,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
 
     playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
     
-    //[self openLoginWindow];
+    [self openLoginWindow];
 
 }
 

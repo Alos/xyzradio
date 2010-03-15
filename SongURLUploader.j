@@ -22,29 +22,40 @@ This file is part of Louhi.
 
 @implementation SongURLUploader: CPObject
 {
-	CPApp app;
-	CPArray answerArray;  
-	CPURLConnection connection;
+    CPApp app;
+    CPURLConnection theConnection;
 }
 
 - (id)init
 {
     self = [super init];
     if(self) {
-       	answerArray = [[CPArray alloc] init];
-		app = [CPApp delegate];
+        app = [CPApp delegate];
     }
     return self;
 }
 
 - (void)uploadSongWithTitle:(CPString)aTitle artist:(CPString)anArtist genere:(CPString)aGenere time:(CPString)aTime pathToAlbumArt:(CPString)aPathToArt songURL:(CPString)aURL {
-	var aURL = [app serverIP] + "/AddSong?songTitle="+aTitle+"&artist="+anArtist+"&genere="+aGenere+"&time="+aTime+"&pathToAlbumArt="+aPathToArt+
-	"&pathToSong="+aURL+"&userid="+[[app userLoggedin] email];
-	CPLog.info("Getting users at: %s", aURL);
-	var request = [CPURLRequest requestWithURL:aURL];
-	connection = [CPURLConnection connectionWithRequest:request delegate:self];
-}
--(void)connectionDidFinishLoading:(CPURLConnection)connection{
-	[[CPNotificationCenter defaultCenter] postNotificationName:"SubmitSuccessful" object:self];
-}
+        var aURL = [app serverIP] + "/AddSong?songTitle="+aTitle+"&artist="+anArtist+"&genere="+aGenere+"&time="+aTime+"&pathToAlbumArt="+aPathToArt+
+        "&pathToSong="+aURL+"&userid="+[[app userLoggedin] email];
+        CPLog.info("Getting users at: %s", aURL);
+        var request = [CPURLRequest requestWithURL:aURL];
+        theConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    }
+    -(void)connectionDidFinishLoading:(CPURLConnection)connection{
+        CPLog.trace("SubmitSuccessful");
+        [[CPNotificationCenter defaultCenter] postNotificationName:"SubmitSuccessful" object:self];
+    }
+    - (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error
+    {
+        CPLog.error(error);
+    }
+
+    - (void)clearConnection:(CPURLConnection)connection
+    {
+        //we no longer need to hold on to a reference to this connection
+        if ( connection ==  theConnection)
+            theConnection = nil;
+    }
+
 @end

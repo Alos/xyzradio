@@ -60,6 +60,8 @@
             [contentView addSubview: typeOfUpload];
     
             currentForm = 0;
+            [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(clearAndClose:) name:"SubmitSuccessful" object:nil];
+
         }
     return self;
     }
@@ -200,5 +202,12 @@
             CPLog.trace("Clearing the LocalForm...");
              [self fadeoutUploadLocalSection];
         }
+    }
+
+    -(void)clearAndClose:(CPNotification)aNotification{
+         //TODO clear the form
+         [self close];
+     }
+
     }
     @end

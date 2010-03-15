@@ -23,35 +23,35 @@ This file is part of XYZRadio.
 
 @implementation XYZPlayListWindowForDJ : CPWindow
 {
-	XYZTableForDJ theTable;
-	CPArray theList;
+    XYZTableForDJ theTable;
+    CPArray theList;
 }
 
 - (id)initWithContentRect:(CGRect)aRectangle{
-	self = [super initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
+    self = [super initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
     if (self){
-		theList = [[CPArray alloc] init];
-		[self registerForDraggedTypes:[SongsDragType]];
+        theList = [[CPArray alloc] init];
+        [self registerForDraggedTypes:[SongsDragType]];
     }
     return self;
 }
 
 -(XYZSong)getSelectedSong{
-	var index = [theTable getSelectedItem]; //we ask the table the selected item	
-	var aux = [theTable getSongByIndex: index]; //we take said item from the list
-	return aux;
+    var index = [theTable getSelectedItem]; //we ask the table the selected item
+    var aux = [theTable getSongByIndex: index]; //we take said item from the list
+    return aux;
 }
 
 -(int)getSongIndex:(XYZSong)aSong{
-	return [theTable getSongIndex:aSong];
+    return [theTable getSongIndex:aSong];
 }
 
 -(XYZSong)getSongByIndex:(int)index{
-	return [theTable getSongByIndex:index];
+    return [theTable getSongByIndex:index];
 }
 
 -(void)setSelectionIndexes:(int)index{
-	[theTable setSelectionIndexes:index];
+    [theTable setSelectionIndexes:index];
 }
 
 -(void)removeSelectedItems{
@@ -59,6 +59,6 @@ This file is part of XYZRadio.
 }
 
 -(int)getSongListSize{
-	return [theTable getSongListSize];
+    return [theTable getSongListSize];
 }
 @end
