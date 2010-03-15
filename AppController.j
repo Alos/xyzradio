@@ -28,15 +28,16 @@ This file is part of XYZRadio.
 @import "XYZUser.j"
 @import "EventListenerManager.j"
 @import "MainUserProfileWindow.j"
+@import "AddSongWindow.j"
 
-var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
+var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
     AddSongToolbarItemIdentifier = "AddSongToolbarItemIdentifier",
     RemoveSongToolbarItemIdentifier = "RemoveSongToolbarItemIdentifier",
     PreferencesItemIdentifier = "PreferencesItemIdentifier",
     UsersItemIdentifier = "UsresItemIdentifier",
-    ProfileItemIdentifier = "ProfileItemIdentifier";	
-	LogoutIdentifier = "LogoutIdentifier";	
+    ProfileItemIdentifier = "ProfileItemIdentifier",
+    LogoutIdentifier = "LogoutIdentifier";
 
 
 @implementation AppController : CPObject
@@ -44,33 +45,35 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     CPArray librarySongs;
     CPToolbar toolbar;
     DJList djList;
-    MainBrowser musicBrowser;
-    PlayerControl playerControl;
-    PreferencesWindow preferencesWindow;
+    MainBrowser musicBrowser; //main music browser
+    PlayerControl playerControl; //the controller that takes care of the playing of songs
+                                 //when its intantiated it creates the PlayerWindow
+    PreferencesWindow preferencesWindow; //ditto
     CPImage bgImage;
     CPWindow theWindow;
     CPView contentView;
-    UsersWindow usersWindow;
-    MainUserProfileWindow mainUserProfileWindow;
+    UsersWindow usersWindow; //Contains a list of all the users friends that are online
+    MainUserProfileWindow mainUserProfileWindow; //a place to configure the user stuff
     CPCollectionView listCollectionView;
     CPWindow contentUsers;
     CGRect bounds;
-	CPURLConnection xyzradioConnectionForLogin;
-	CPString serverIP;
-	LoginWindow loginWindow;
-	UserProfileWindow userProfileWindow;
-	XYZUser userLoggedin;//the full user
-	CPTimer userLoggingTimer;
-	EventListenerManager eventListenerManager;
+    CPURLConnection xyzradioConnectionForLogin; //takes care of the loggin stuff
+    CPString serverIP;
+    LoginWindow loginWindow; //the log window that is presented to the user at the start
+    UserProfileWindow userProfileWindow;
+    XYZUser userLoggedin;//the full user
+    CPTimer userLoggingTimer;
+    EventListenerManager eventListenerManager; //handles the events that might happen on the server side
+    AddSongWindow addSongWindow; //allows the user to upload new songs
 }
 
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-	CPLogRegister(CPLogConsole);
+    CPLogRegister(CPLogConsole);
     CPLog.info("Inicio de ventana");
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
-	contentView = [theWindow contentView];
+    contentView = [theWindow contentView];
     //bg
     bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/xyzradiowallpaper.png" size:CPSizeMake(30, 25)];
     [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
@@ -82,34 +85,33 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
     toolbar= [[CPToolbar alloc] initWithIdentifier:@"main-toolbar"];
     [theWindow setToolbar: toolbar]; 
     [toolbar setDelegate:self];
-	 
-	   
-	serverIP = "http://localhost:8080"; 
-	//serverIP = "http://xyzradioengine.appspot.com";	
-	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
-
-	
    
-	 
-	/*console.log("Opening sound!"); 
-	var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
-	[sound setDelegate:self];
-	[sound play];
-	console.log("playing...");*/		
-	
-	musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
-	[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
+    serverIP = "http://localhost:8888"; 
+    //serverIP = "http://xyzradioengine.appspot.com";	
+    [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
-	djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
-	[djList setFrameOrigin:(CPPointMake(700, 100))];
+
+   
+ 
+    /*console.log("Opening sound!"); 
+    var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
+    [sound setDelegate:self];
+    [sound play];
+    console.log("playing...");*/
+
+    musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+    [musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
+
+    djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
+    [djList setFrameOrigin:(CPPointMake(700, 100))];
 
     //brings the window to the front
     [theWindow orderFront:self];
 
 
-	playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
+    playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
     
-   // [self openLoginWindow];
+    //[self openLoginWindow];
 
 }
 
@@ -207,8 +209,18 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
-  var addSongFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,400,450)]];
-  [addSongFormController startForm];
+  //var addSongFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,400,450)]];
+  //[addSongFormController startForm];
+ if(!addSongWindow)
+        addSongWindow = [[AddSongWindow alloc] initWithContentRect:CGRectMake(500, 50, 500, 400) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask];
+        [addSongWindow setFrameOrigin:(CPPointMake(500, 50))];
+    if([addSongWindow isVisible]){
+        [addSongWindow setFrameOrigin:(CPPointMake(500, 100))];
+        [addSongWindow close];
+    }
+    else    
+        [addSongWindow orderFront:self];
+
 }
 
 /*Abre la lista de canciones del usuario*/
@@ -228,7 +240,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 -(void)openBrowser{
     if(!musicBrowser){
         musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
-		[musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
+        [musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
     }
     if([musicBrowser isVisible]){
         [musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
@@ -238,50 +250,50 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
         [musicBrowser orderFront:self];
 }
 
-//Abre la ventana de usuarios
-	-(void)openUsers{
-		if(!usersWindow){
-			usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,247,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
-			[usersWindow setFrameOrigin:(CPPointMake(5, 70))];
+//Opens the user window, when this is done the timer starts and gets the events from the server every X minutes
+    -(void)openUsers{
+        if(!usersWindow){
+            usersWindow = [[UsersWindow alloc] contentRect:CGRectMake(5,60,247,CGRectGetHeight(bounds)-60) styleMask:CPBorderlessWindowMask];
+            [usersWindow setFrameOrigin:(CPPointMake(5, 70))];
 
-			CPLog.info("Starting timer!");
-			userLoggingTimer = [CPTimer scheduledTimerWithTimeInterval:15.0 target: self selector:"checkForNewUsers:" userInfo:nil repeats:YES ];
-			
-			[usersWindow orderFront:self];
-		}else{	
-			if([usersWindow isVisible]){
-				[usersWindow close];
-				CPLog.info("Stoping the timer");
-				[userLoggingTimer invalidate];
-			}
-			else{
-				CPLog.info("Restarting the timer");
-				userLoggingTimer = [CPTimer scheduledTimerWithTimeInterval:15.0 target: self selector:"checkForNewUsers:" userInfo:nil repeats:YES ];
-			
-				[usersWindow orderFront:self];
-			}
-		}
-	}
+            CPLog.info("Starting timer!");
+            userLoggingTimer = [CPTimer scheduledTimerWithTimeInterval:15.0 target: self selector:"checkForNewUsers:" userInfo:nil repeats:YES ];
+            
+            [usersWindow orderFront:self];
+        }else{
+            if([usersWindow isVisible]){
+                [usersWindow close];
+                CPLog.info("Stoping the timer");
+                [userLoggingTimer invalidate];
+            }
+            else{
+                CPLog.info("Restarting the timer");
+                userLoggingTimer = [CPTimer scheduledTimerWithTimeInterval:15.0 target: self selector:"checkForNewUsers:" userInfo:nil repeats:YES ];
+    
+                [usersWindow orderFront:self];
+            }
+        }
+    }
 
 //Abre la ventana de perfil de usuario
 -(void)openProfile{
   if(!mainUserProfileWindow){
     mainUserProfileWindow = [[MainUserProfileWindow alloc] initWithContentRect:CGRectMake(100,200,300,400) styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
-    [mainUserProfileWindow setFrameOrigin:(CPPointMake(100, 200))];			
+    [mainUserProfileWindow setFrameOrigin:(CPPointMake(100, 200))];
     [mainUserProfileWindow orderFront:self];
-  }else{	
+  }else{
     if([mainUserProfileWindow isVisible]){
-	[mainUserProfileWindow close];
+        [mainUserProfileWindow close];
     }else{
-	[mainUserProfileWindow orderFront:self];
+        [mainUserProfileWindow orderFront:self];
     }
   }
 }
 
 -(void)checkForNewUsers:(CPTimer)theTimer{
-		CPLog.info("Getting events");
-		eventListenerManager = [[EventListenerManager alloc] init];
-		[eventListenerManager getEvents];
+        CPLog.info("Getting events");
+        eventListenerManager = [[EventListenerManager alloc] init];
+        [eventListenerManager getEvents];
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar
@@ -458,3 +470,11 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier" ,
 
 @end
 
+/*@implementation CPPlatfom (myhacks) 
++ (BOOL)supportsDragAndDrop 
+{ 
+return NO; 
+} 
+
+@end 
+*/

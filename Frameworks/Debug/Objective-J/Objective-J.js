@@ -3,7 +3,7 @@
  * Objective-J
  *
  * Created by Francisco Tolmasky.
- * Copyright 2008, 280 North, Inc.
+ * Copyright 2008-2010, 280 North, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,277 +20,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-var NO = false,
-    YES = true,
-    nil = null,
-    Nil = null,
-    NULL = null,
-    ABS = Math.abs,
-    ASIN = Math.asin,
-    ACOS = Math.acos,
-    ATAN = Math.atan,
-    ATAN2 = Math.atan2,
-    SIN = Math.sin,
-    COS = Math.cos,
-    TAN = Math.tan,
-    EXP = Math.exp,
-    POW = Math.pow,
-    CEIL = Math.ceil,
-    FLOOR = Math.floor,
-    ROUND = Math.round,
-    MIN = Math.min,
-    MAX = Math.max,
-    RAND = Math.random,
-    SQRT = Math.sqrt,
-    E = Math.E,
-    LN2 = Math.LN2,
-    LN10 = Math.LN10,
-    LOG2E = Math.LOG2E,
-    LOG10E = Math.LOG10E,
-    PI = Math.PI,
-    PI2 = Math.PI * 2.0,
-    PI_2 = Math.PI / 2.0,
-    SQRT1_2 = Math.SQRT1_2,
-    SQRT2 = Math.SQRT2;
-window.setNativeTimeout = window.setTimeout;
-window.clearNativeTimeout = window.clearTimeout;
-window.setNativeInterval = window.setInterval;
-window.clearNativeInterval = window.clearInterval;
-var objj_continue_alerting = NO;
-function objj_alert(aString)
+
+
+
+var ObjectiveJ = { };
+
+(function (global, exports)
 {
-    if (!objj_continue_alerting)
-        return;
-    objj_continue_alerting = confirm(aString + "\n\nClick cancel to prevent further alerts.");
-}
-function objj_fprintf(stream, string)
-{
-    stream(string);
-}
-function objj_printf(string)
-{
-    objj_fprintf(alert, string);
-}
-if (window.console && window.console.warn)
-    var warning_stream = function(aString) { window.console.warn(aString); }
-else
-    var warning_stream = function(){};
-var _sprintfFormatRegex = new RegExp("([^%]+|%[\\+\\-\\ \\#0]*[0-9\\*]*(.[0-9\\*]+)?[hlL]?[cbBdieEfgGosuxXpn%@])", "g");
-var _sprintfTagRegex = new RegExp("(%)([\\+\\-\\ \\#0]*)([0-9\\*]*)((.[0-9\\*]+)?)([hlL]?)([cbBdieEfgGosuxXpn%@])");
-function sprintf(format)
-{
-    var format = arguments[0],
-        tokens = format.match(_sprintfFormatRegex),
-        index = 0,
-        result = "",
-        arg = 1;
-    for (var i = 0; i < tokens.length; i++)
-    {
-        var t = tokens[i];
-        if (format.substring(index, index + t.length) != t)
-        {
-            return result;
-        }
-        index += t.length;
-        if (t.charAt(0) != "%")
-        {
-            result += t;
-        }
-        else
-        {
-            var subtokens = t.match(_sprintfTagRegex);
-            if (subtokens.length != 8 || subtokens[0] != t)
-            {
-                return result;
-            }
-            var percentSign = subtokens[1],
-                flags = subtokens[2],
-                widthString = subtokens[3],
-                precisionString = subtokens[4],
-                length = subtokens[6],
-                specifier = subtokens[7];
-            var width = null;
-            if (widthString == "*")
-                width = arguments[arg++];
-            else if (widthString != "")
-                width = Number(widthString);
-            var precision = null;
-            if (precisionString == ".*")
-                precision = arguments[arg++];
-            else if (precisionString != "")
-                precision = Number(precisionString.substring(1));
-            var leftJustify = (flags.indexOf("-") >= 0);
-            var padZeros = (flags.indexOf("0") >= 0);
-            var subresult = "";
-            if (RegExp("[bBdiufeExXo]").test(specifier))
-            {
-                var num = Number(arguments[arg++]);
-                var sign = "";
-                if (num < 0)
-                {
-                    sign = "-";
-                }
-                else
-                {
-                    if (flags.indexOf("+") >= 0)
-                        sign = "+";
-                    else if (flags.indexOf(" ") >= 0)
-                        sign = " ";
-                }
-                if (specifier == "d" || specifier == "i" || specifier == "u")
-                {
-                    var number = String(Math.abs(Math.floor(num)));
-                    subresult = _sprintf_justify(sign, "", number, "", width, leftJustify, padZeros)
-                }
-                if (specifier == "f")
-                {
-                    var number = String((precision != null) ? Math.abs(num).toFixed(precision) : Math.abs(num));
-                    var suffix = (flags.indexOf("#") >= 0 && number.indexOf(".") < 0) ? "." : "";
-                    subresult = _sprintf_justify(sign, "", number, suffix, width, leftJustify, padZeros);
-                }
-                if (specifier == "e" || specifier == "E")
-                {
-                    var number = String(Math.abs(num).toExponential(precision != null ? precision : 21));
-                    var suffix = (flags.indexOf("#") >= 0 && number.indexOf(".") < 0) ? "." : "";
-                    subresult = _sprintf_justify(sign, "", number, suffix, width, leftJustify, padZeros);
-                }
-                if (specifier == "x" || specifier == "X")
-                {
-                    var number = String(Math.abs(num).toString(16));
-                    var prefix = (flags.indexOf("#") >= 0 && num != 0) ? "0x" : "";
-                    subresult = _sprintf_justify(sign, prefix, number, "", width, leftJustify, padZeros);
-                }
-                if (specifier == "b" || specifier == "B")
-                {
-                    var number = String(Math.abs(num).toString(2));
-                    var prefix = (flags.indexOf("#") >= 0 && num != 0) ? "0b" : "";
-                    subresult = _sprintf_justify(sign, prefix, number, "", width, leftJustify, padZeros);
-                }
-                if (specifier == "o")
-                {
-                    var number = String(Math.abs(num).toString(8));
-                    var prefix = (flags.indexOf("#") >= 0 && num != 0) ? "0" : "";
-                    subresult = _sprintf_justify(sign, prefix, number, "", width, leftJustify, padZeros);
-                }
-                if (RegExp("[A-Z]").test(specifier))
-                    subresult = subresult.toUpperCase();
-                else
-                    subresult = subresult.toLowerCase();
-            }
-            else
-            {
-                var subresult = "";
-                if (specifier == "%")
-                    subresult = "%";
-                else if (specifier == "c")
-                    subresult = String(arguments[arg++]).charAt(0);
-                else if (specifier == "s" || specifier == "@")
-                    subresult = String(arguments[arg++]);
-                else if (specifier == "p" || specifier == "n")
-                {
-                    arg++;
-                    subresult = "";
-                }
-                subresult = _sprintf_justify("", "", subresult, "", width, leftJustify, false);
-            }
-            result += subresult;
-        }
-    }
-    return result;
-}
-var _sprintf_justify = function(sign, prefix, string, suffix, width, leftJustify, padZeros)
-{
-    var length = (sign.length + prefix.length + string.length + suffix.length);
-    if (leftJustify)
-    {
-        return sign + prefix + string + suffix + _sprintf_pad(width - length, " ");
-    }
-    else
-    {
-        if (padZeros)
-            return sign + prefix + _sprintf_pad(width - length, "0") + string + suffix;
-        else
-            return _sprintf_pad(width - length, " ") + sign + prefix + string + suffix;
-    }
-}
-var _sprintf_pad = function(n, ch)
-{
-    return Array(MAX(0,n)).join(ch);
-}
-var base64_map_to = [
-        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-        "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
-        "0","1","2","3","4","5","6","7","8","9","+","/","="],
-    base64_map_from = [];
-for (var i = 0; i < base64_map_to.length; i++)
-    base64_map_from[base64_map_to[i].charCodeAt(0)] = i;
-function base64_decode_to_array(input, strip)
-{
-    if (strip)
-        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-    var pad = (input[input.length-1] == "=" ? 1 : 0) + (input[input.length-2] == "=" ? 1 : 0),
-        length = input.length,
-        output = [];
-    var i = 0;
-    while (i < length)
-    {
-        var bits = (base64_map_from[input.charCodeAt(i++)] << 18) |
-                    (base64_map_from[input.charCodeAt(i++)] << 12) |
-                    (base64_map_from[input.charCodeAt(i++)] << 6) |
-                    (base64_map_from[input.charCodeAt(i++)]);
-        output.push((bits & 0xFF0000) >> 16);
-        output.push((bits & 0xFF00) >> 8);
-        output.push(bits & 0xFF);
-    }
-    if (pad > 0)
-        return output.slice(0, -1 * pad);
-    return output;
-}
-function base64_encode_array(input)
-{
-    var pad = (3 - (input.length % 3)) % 3,
-        length = input.length + pad,
-        output = [];
-    if (pad > 0) input.push(0);
-    if (pad > 1) input.push(0);
-    var i = 0;
-    while (i < length)
-    {
-        var bits = (input[i++] << 16) |
-                    (input[i++] << 8) |
-                    (input[i++]);
-        output.push(base64_map_to[(bits & 0xFC0000) >> 18]);
-        output.push(base64_map_to[(bits & 0x3F000) >> 12]);
-        output.push(base64_map_to[(bits & 0xFC0) >> 6]);
-        output.push(base64_map_to[bits & 0x3F]);
-    }
-    if (pad > 0)
-    {
-        output[output.length-1] = "=";
-        input.pop();
-    }
-    if (pad > 1)
-    {
-        output[output.length-2] = "=";
-        input.pop();
-    }
-    return output.join("");
-}
-function base64_decode_to_string(input, strip)
-{
-    return bytes_to_string(base64_decode_to_array(input, strip));
-}
-function bytes_to_string(bytes)
-{
-    return String.fromCharCode.apply(null, bytes);
-}
-function base64_encode_string(input)
-{
-    var temp = [];
-    for (var i = 0; i < input.length; i++)
-        temp.push(input.charCodeAt(i));
-    return base64_encode_array(temp);
-}
 if (!this.JSON) {
     JSON = {};
 }
@@ -313,9 +49,9 @@ if (!this.JSON) {
             return this.valueOf();
         };
     }
-    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-        escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-        gap,
+    var cx = new RegExp('[\\u0000\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]', "g");
+    var escapable = new RegExp('[\\\\\\"\\x00-\\x1f\\x7f-\\x9f\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]', "g");
+    var gap,
         indent,
         meta = {
             '\b': '\\b',
@@ -466,525 +202,810 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         };
     }
 }());
-var CLS_CLASS = 0x1,
-    CLS_META = 0x2,
-    CLS_INITIALIZED = 0x4,
-    CLS_INITIALIZING = 0x8;
-function objj_ivar( aName, aType)
+var formatRegex = new RegExp("([^%]+|%[\\+\\-\\ \\#0]*[0-9\\*]*(.[0-9\\*]+)?[hlL]?[cbBdieEfgGosuxXpn%@])", "g");
+var tagRegex = new RegExp("(%)([\\+\\-\\ \\#0]*)([0-9\\*]*)((.[0-9\\*]+)?)([hlL]?)([cbBdieEfgGosuxXpn%@])");
+exports.sprintf = function(format)
 {
-    this.name = aName;
-    this.type = aType;
+    var format = arguments[0],
+        tokens = format.match(formatRegex),
+        index = 0,
+        result = "",
+        arg = 1;
+    for (var i = 0; i < tokens.length; i++)
+    {
+        var t = tokens[i];
+        if (format.substring(index, index + t.length) != t)
+        {
+            return result;
+        }
+        index += t.length;
+        if (t.charAt(0) != "%")
+        {
+            result += t;
+        }
+        else
+        {
+            var subtokens = t.match(tagRegex);
+            if (subtokens.length != 8 || subtokens[0] != t)
+            {
+                return result;
+            }
+            var percentSign = subtokens[1],
+                flags = subtokens[2],
+                widthString = subtokens[3],
+                precisionString = subtokens[4],
+                length = subtokens[6],
+                specifier = subtokens[7];
+            var width = null;
+            if (widthString == "*")
+                width = arguments[arg++];
+            else if (widthString != "")
+                width = Number(widthString);
+            var precision = null;
+            if (precisionString == ".*")
+                precision = arguments[arg++];
+            else if (precisionString != "")
+                precision = Number(precisionString.substring(1));
+            var leftJustify = (flags.indexOf("-") >= 0);
+            var padZeros = (flags.indexOf("0") >= 0);
+            var subresult = "";
+            if (RegExp("[bBdiufeExXo]").test(specifier))
+            {
+                var num = Number(arguments[arg++]);
+                var sign = "";
+                if (num < 0)
+                {
+                    sign = "-";
+                }
+                else
+                {
+                    if (flags.indexOf("+") >= 0)
+                        sign = "+";
+                    else if (flags.indexOf(" ") >= 0)
+                        sign = " ";
+                }
+                if (specifier == "d" || specifier == "i" || specifier == "u")
+                {
+                    var number = String(Math.abs(Math.floor(num)));
+                    subresult = justify(sign, "", number, "", width, leftJustify, padZeros)
+                }
+                if (specifier == "f")
+                {
+                    var number = String((precision != null) ? Math.abs(num).toFixed(precision) : Math.abs(num));
+                    var suffix = (flags.indexOf("#") >= 0 && number.indexOf(".") < 0) ? "." : "";
+                    subresult = justify(sign, "", number, suffix, width, leftJustify, padZeros);
+                }
+                if (specifier == "e" || specifier == "E")
+                {
+                    var number = String(Math.abs(num).toExponential(precision != null ? precision : 21));
+                    var suffix = (flags.indexOf("#") >= 0 && number.indexOf(".") < 0) ? "." : "";
+                    subresult = justify(sign, "", number, suffix, width, leftJustify, padZeros);
+                }
+                if (specifier == "x" || specifier == "X")
+                {
+                    var number = String(Math.abs(num).toString(16));
+                    var prefix = (flags.indexOf("#") >= 0 && num != 0) ? "0x" : "";
+                    subresult = justify(sign, prefix, number, "", width, leftJustify, padZeros);
+                }
+                if (specifier == "b" || specifier == "B")
+                {
+                    var number = String(Math.abs(num).toString(2));
+                    var prefix = (flags.indexOf("#") >= 0 && num != 0) ? "0b" : "";
+                    subresult = justify(sign, prefix, number, "", width, leftJustify, padZeros);
+                }
+                if (specifier == "o")
+                {
+                    var number = String(Math.abs(num).toString(8));
+                    var prefix = (flags.indexOf("#") >= 0 && num != 0) ? "0" : "";
+                    subresult = justify(sign, prefix, number, "", width, leftJustify, padZeros);
+                }
+                if (RegExp("[A-Z]").test(specifier))
+                    subresult = subresult.toUpperCase();
+                else
+                    subresult = subresult.toLowerCase();
+            }
+            else
+            {
+                var subresult = "";
+                if (specifier == "%")
+                    subresult = "%";
+                else if (specifier == "c")
+                    subresult = String(arguments[arg++]).charAt(0);
+                else if (specifier == "s" || specifier == "@")
+                    subresult = String(arguments[arg++]);
+                else if (specifier == "p" || specifier == "n")
+                {
+                    arg++;
+                    subresult = "";
+                }
+                subresult = justify("", "", subresult, "", width, leftJustify, false);
+            }
+            result += subresult;
+        }
+    }
+    return result;
 }
-function objj_method( aName, anImplementation, types)
+function justify(sign, prefix, string, suffix, width, leftJustify, padZeros)
 {
-    this.name = aName;
-    this.method_imp = anImplementation;
-    this.types = types;
+    var length = (sign.length + prefix.length + string.length + suffix.length);
+    if (leftJustify)
+    {
+        return sign + prefix + string + suffix + pad(width - length, " ");
+    }
+    else
+    {
+        if (padZeros)
+            return sign + prefix + pad(width - length, "0") + string + suffix;
+        else
+            return pad(width - length, " ") + sign + prefix + string + suffix;
+    }
 }
-function objj_class()
+function pad(n, ch)
 {
-    this.isa = NULL;
-    this.super_class = NULL;
-    this.sub_classes = [];
-    this.name = NULL;
-    this.info = 0;
-    this.ivars = [];
-    this.method_list = [];
-    this.method_hash = {};
-    this.method_store = function() { };
-    this.method_dtable = this.method_store.prototype;
-    this.allocator = function() { };
-    this.__address = -1;
+    return Array(MAX(0,n)+1).join(ch);
 }
-function objj_object()
+CPLogDisable = false;
+var CPLogDefaultTitle = "Cappuccino";
+var CPLogLevels = ["fatal", "error", "warn", "info", "debug", "trace"];
+var CPLogDefaultLevel = CPLogLevels[3];
+var _CPLogLevelsInverted = {};
+for (var i = 0; i < CPLogLevels.length; i++)
+    _CPLogLevelsInverted[CPLogLevels[i]] = i;
+var _CPLogRegistrations = {};
+CPLogRegister = function(aProvider, aMaxLevel)
 {
-    this.isa = NULL;
-    this.__address = -1;
+    CPLogRegisterRange(aProvider, CPLogLevels[0], aMaxLevel || CPLogLevels[CPLogLevels.length-1]);
 }
+CPLogRegisterRange = function(aProvider, aMinLevel, aMaxLevel)
+{
+    var min = _CPLogLevelsInverted[aMinLevel];
+    var max = _CPLogLevelsInverted[aMaxLevel];
+    if (min !== undefined && max !== undefined)
+        for (var i = 0; i <= max; i++)
+            CPLogRegisterSingle(aProvider, CPLogLevels[i]);
+}
+CPLogRegisterSingle = function(aProvider, aLevel)
+{
+    if (!_CPLogRegistrations[aLevel])
+        _CPLogRegistrations[aLevel] = [];
+    for (var i = 0; i < _CPLogRegistrations[aLevel].length; i++)
+        if (_CPLogRegistrations[aLevel][i] === aProvider)
+            return;
+    _CPLogRegistrations[aLevel].push(aProvider);
+}
+CPLogUnregister = function(aProvider) {
+    for (var aLevel in _CPLogRegistrations)
+        for (var i = 0; i < _CPLogRegistrations[aLevel].length; i++)
+            if (_CPLogRegistrations[aLevel][i] === aProvider)
+                _CPLogRegistrations[aLevel].splice(i--, 1);
+}
+function _CPLogDispatch(parameters, aLevel, aTitle)
+{
+    if (aTitle == undefined)
+        aTitle = CPLogDefaultTitle;
+    if (aLevel == undefined)
+        aLevel = CPLogDefaultLevel;
+    var message = (typeof parameters[0] == "string" && parameters.length > 1) ? exports.sprintf.apply(null, parameters) : String(parameters[0]);
+    if (_CPLogRegistrations[aLevel])
+        for (var i = 0; i < _CPLogRegistrations[aLevel].length; i++)
+             _CPLogRegistrations[aLevel][i](message, aLevel, aTitle);
+}
+CPLog = function() { _CPLogDispatch(arguments); }
+for (var i = 0; i < CPLogLevels.length; i++)
+    CPLog[CPLogLevels[i]] = (function(level) { return function() { _CPLogDispatch(arguments, level); }; })(CPLogLevels[i]);
+var _CPFormatLogMessage = function(aString, aLevel, aTitle)
+{
+    var now = new Date();
+    aLevel = ( aLevel == null ? '' : ' [' + aLevel + ']' );
+    if (typeof exports.sprintf == "function")
+        return exports.sprintf("%4d-%02d-%02d %02d:%02d:%02d.%03d %s%s: %s",
+            now.getFullYear(), now.getMonth(), now.getDate(),
+            now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds(),
+            aTitle, aLevel, aString);
+    else
+        return now + " " + aTitle + aLevel + ": " + aString;
+}
+CPLogConsole = function(aString, aLevel, aTitle)
+{
+    if (typeof console != "undefined")
+    {
+        var message = _CPFormatLogMessage(aString, aLevel, aTitle);
+        var logger = {
+            "fatal": "error",
+            "error": "error",
+            "warn": "warn",
+            "info": "info",
+            "debug": "debug",
+            "trace": "debug"
+        }[aLevel];
+        if (logger && console[logger])
+            console[logger](message);
+        else if (console.log)
+            console.log(message);
+    }
+}
+CPLogAlert = function(aString, aLevel, aTitle)
+{
+    if (typeof alert != "undefined" && !CPLogDisable)
+    {
+        var message = _CPFormatLogMessage(aString, aLevel, aTitle);
+        CPLogDisable = !confirm(message + "\n\n(Click cancel to stop log alerts)");
+    }
+}
+var CPLogWindow = null;
+CPLogPopup = function(aString, aLevel, aTitle)
+{
+    try {
+        if (CPLogDisable || window.open == undefined)
+            return;
+        if (!CPLogWindow || !CPLogWindow.document)
+        {
+            CPLogWindow = window.open("", "_blank", "width=600,height=400,status=no,resizable=yes,scrollbars=yes");
+            if (!CPLogWindow) {
+                CPLogDisable = !confirm(aString + "\n\n(Disable pop-up blocking for CPLog window; Click cancel to stop log alerts)");
+                return;
+            }
+            _CPLogInitPopup(CPLogWindow);
+        }
+        var logDiv = CPLogWindow.document.createElement("div");
+        logDiv.setAttribute("class", aLevel || "fatal");
+        var message = _CPFormatLogMessage(aString, null, aTitle);
+        logDiv.appendChild(CPLogWindow.document.createTextNode(message));
+        CPLogWindow.log.appendChild(logDiv);
+        if (CPLogWindow.focusEnabled.checked)
+            CPLogWindow.focus();
+        if (CPLogWindow.blockEnabled.checked)
+            CPLogWindow.blockEnabled.checked = CPLogWindow.confirm(message+"\nContinue blocking?");
+        if (CPLogWindow.scrollEnabled.checked)
+            CPLogWindow.scrollToBottom();
+    } catch(e) {
+    }
+}
+var CPLogPopupStyle ='<style type="text/css" media="screen"> body{font:10px Monaco,Courier,"Courier New",monospace,mono;padding-top:15px;} div > .fatal,div > .error,div > .warn,div > .info,div > .debug,div > .trace{display:none;overflow:hidden;white-space:pre;padding:0px 5px 0px 5px;margin-top:2px;-moz-border-radius:5px;-webkit-border-radius:5px;} div[wrap="yes"] > div{white-space:normal;} .fatal{background-color:#ffb2b3;} .error{background-color:#ffe2b2;} .warn{background-color:#fdffb2;} .info{background-color:#e4ffb2;} .debug{background-color:#a0e5a0;} .trace{background-color:#99b9ff;} .enfatal .fatal,.enerror .error,.enwarn .warn,.eninfo .info,.endebug .debug,.entrace .trace{display:block;} div#header{background-color:rgba(240,240,240,0.82);position:fixed;top:0px;left:0px;width:100%;border-bottom:1px solid rgba(0,0,0,0.33);text-align:center;} ul#enablers{display:inline-block;margin:1px 15px 0 15px;padding:2px 0 2px 0;} ul#enablers li{display:inline;padding:0px 5px 0px 5px;margin-left:4px;-moz-border-radius:5px;-webkit-border-radius:5px;} [enabled="no"]{opacity:0.25;} ul#options{display:inline-block;margin:0 15px 0px 15px;padding:0 0px;} ul#options li{margin:0 0 0 0;padding:0 0 0 0;display:inline;} </style>';
+function _CPLogInitPopup(logWindow)
+{
+    var doc = logWindow.document;
+    doc.writeln("<html><head><title></title>"+CPLogPopupStyle+"</head><body></body></html>");
+    doc.title = CPLogDefaultTitle + " Run Log";
+    var head = doc.getElementsByTagName("head")[0];
+    var body = doc.getElementsByTagName("body")[0];
+    var base = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    base = base.substring(0,base.lastIndexOf("/")+1);
+    var div = doc.createElement("div");
+    div.setAttribute("id", "header");
+    body.appendChild(div);
+    var ul = doc.createElement("ul");
+    ul.setAttribute("id", "enablers");
+    div.appendChild(ul);
+    for (var i = 0; i < CPLogLevels.length; i++) {
+        var li = doc.createElement("li");
+        li.setAttribute("id", "en"+CPLogLevels[i]);
+        li.setAttribute("class", CPLogLevels[i]);
+        li.setAttribute("onclick", "toggle(this);");
+        li.setAttribute("enabled", "yes");
+        li.appendChild(doc.createTextNode(CPLogLevels[i]));
+        ul.appendChild(li);
+    }
+    var ul = doc.createElement("ul");
+    ul.setAttribute("id", "options");
+    div.appendChild(ul);
+    var options = {"focus":["Focus",false], "block":["Block",false], "wrap":["Wrap",false], "scroll":["Scroll",true], "close":["Close",true]};
+    for (o in options) {
+        var li = doc.createElement("li");
+        ul.appendChild(li);
+        logWindow[o+"Enabled"] = doc.createElement("input");
+        logWindow[o+"Enabled"].setAttribute("id", o);
+        logWindow[o+"Enabled"].setAttribute("type", "checkbox");
+        if (options[o][1])
+            logWindow[o+"Enabled"].setAttribute("checked", "checked");
+        li.appendChild(logWindow[o+"Enabled"]);
+        var label = doc.createElement("label");
+        label.setAttribute("for", o);
+        label.appendChild(doc.createTextNode(options[o][0]));
+        li.appendChild(label);
+    }
+    logWindow.log = doc.createElement("div");
+    logWindow.log.setAttribute("class", "enerror endebug enwarn eninfo enfatal entrace");
+    body.appendChild(logWindow.log);
+    logWindow.toggle = function(elem) {
+        var enabled = (elem.getAttribute("enabled") == "yes") ? "no" : "yes";
+        elem.setAttribute("enabled", enabled);
+        if (enabled == "yes")
+            logWindow.log.className += " " + elem.id
+        else
+            logWindow.log.className = logWindow.log.className.replace(new RegExp("[\\s]*"+elem.id, "g"), "");
+    }
+    logWindow.scrollToBottom = function() {
+        logWindow.scrollTo(0, body.offsetHeight);
+    }
+    logWindow.wrapEnabled.addEventListener("click", function() {
+        logWindow.log.setAttribute("wrap", logWindow.wrapEnabled.checked ? "yes" : "no");
+    }, false);
+    logWindow.addEventListener("keydown", function(e) {
+        var e = e || logWindow.event;
+        if (e.keyCode == 75 && (e.ctrlKey || e.metaKey)) {
+            while (logWindow.log.firstChild) {
+                logWindow.log.removeChild(logWindow.log.firstChild);
+            }
+            e.preventDefault();
+        }
+    }, "false");
+    window.addEventListener("unload", function() {
+        if (logWindow && logWindow.closeEnabled && logWindow.closeEnabled.checked) {
+            CPLogDisable = true;
+            logWindow.close();
+        }
+    }, false);
+    logWindow.addEventListener("unload", function() {
+        if (!CPLogDisable) {
+            CPLogDisable = !confirm("Click cancel to stop logging");
+        }
+    }, false);
+}
+var undefined;
+if (typeof window !== "undefined")
+{
+    window.setNativeTimeout = window.setTimeout;
+    window.clearNativeTimeout = window.clearTimeout;
+    window.setNativeInterval = window.setInterval;
+    window.clearNativeInterval = window.clearNativeInterval;
+}
+NO = false;
+YES = true;
+nil = null;
+Nil = null;
+NULL = null;
+ABS = Math.abs;
+ASIN = Math.asin;
+ACOS = Math.acos;
+ATAN = Math.atan;
+ATAN2 = Math.atan2;
+SIN = Math.sin;
+COS = Math.cos;
+TAN = Math.tan;
+EXP = Math.exp;
+POW = Math.pow;
+CEIL = Math.ceil;
+FLOOR = Math.floor;
+ROUND = Math.round;
+MIN = Math.min;
+MAX = Math.max;
+RAND = Math.random;
+SQRT = Math.sqrt;
+E = Math.E;
+LN2 = Math.LN2;
+LN10 = Math.LN10;
+LOG2E = Math.LOG2E;
+LOG10E = Math.LOG10E;
+PI = Math.PI;
+PI2 = Math.PI * 2.0;
+PI_2 = Math.PI / 2.0;
+SQRT1_2 = Math.SQRT1_2;
+SQRT2 = Math.SQRT2;
+function EventDispatcher( anOwner)
+{
+    this._eventListenersForEventNames = { };
+    this._owner = anOwner;
+}
+EventDispatcher.prototype.addEventListener = function( anEventName, anEventListener)
+{
+    var eventListenersForEventNames = this._eventListenersForEventNames;
+    if (!hasOwnProperty.call(eventListenersForEventNames, anEventName))
+    {
+        var eventListenersForEventName = [];
+        eventListenersForEventNames[anEventName] = eventListenersForEventName;
+    }
+    else
+        var eventListenersForEventName = eventListenersForEventNames[anEventName];
+    var index = eventListenersForEventName.length;
+    while (index--)
+        if (eventListenersForEventName[index] === anEventListener)
+            return;
+    eventListenersForEventName.push(anEventListener);
+}
+EventDispatcher.prototype.removeEventListener = function( anEventName, anEventListener)
+{
+    var eventListenersForEventNames = this._eventListenersForEventNames;
+    if (!hasOwnProperty.call(eventListenersForEventNames, anEventName))
+        return;
+    var eventListenersForEventName = eventListenersForEventNames[anEventName],
+        index = eventListenersForEventName.length;
+    while (index--)
+        if (eventListenersForEventName[index] === anEventListener)
+            return eventListenersForEventName.splice(index, 1);
+}
+EventDispatcher.prototype.dispatchEvent = function( anEvent)
+{
+    var type = anEvent.type,
+        eventListenersForEventNames = this._eventListenersForEventNames;
+    if (hasOwnProperty.call(eventListenersForEventNames, type))
+    {
+        var eventListenersForEventName = this._eventListenersForEventNames[type],
+            index = 0,
+            count = eventListenersForEventName.length;
+        for (; index < count; ++index)
+            eventListenersForEventName[index](anEvent);
+    }
+    var manual = (this._owner || this)["on" + type];
+    if (manual)
+        manual(anEvent);
+}
+var asynchronousTimeoutCount = 0,
+    asynchronousTimeoutId = null,
+    asynchronousFunctionQueue = [];
+function Asynchronous( aFunction)
+{
+    var currentAsynchronousTimeoutCount = asynchronousTimeoutCount;
+    if (asynchronousTimeoutId === null)
+    {
+        window.setNativeTimeout(function()
+        {
+            var queue = asynchronousFunctionQueue,
+                index = 0,
+                count = asynchronousFunctionQueue.length;
+            ++asynchronousTimeoutCount;
+            asynchronousTimeoutId = null;
+            asynchronousFunctionQueue = [];
+            for (; index < count; ++index)
+                queue[index]();
+        }, 0);
+    }
+    return function()
+    {
+        var args = arguments;
+        if (asynchronousTimeoutCount > currentAsynchronousTimeoutCount)
+            aFunction.apply(this, args);
+        else
+            asynchronousFunctionQueue.push(function() { aFunction.apply(this, args) });
+    };
+}
+var NativeRequest = null;
+if (window.ActiveXObject !== undefined)
+{
+    var MSXML_XMLHTTP_OBJECTS = ["Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP.6.0"],
+        index = MSXML_XMLHTTP_OBJECTS.length;
+    while (index--)
+    {
+        try
+        {
+            var MSXML_XMLHTTP = MSXML_XMLHTTP_OBJECTS[index];
+            new ActiveXObject(MSXML_XMLHTTP);
+            NativeRequest = function()
+            {
+                return new ActiveXObject(MSXML_XMLHTTP);
+            }
+            break;
+        }
+        catch (anException)
+        {
+        }
+    }
+}
+if (!NativeRequest)
+    NativeRequest = window.XMLHttpRequest;
+CFHTTPRequest = function()
+{
+    this._eventDispatcher = new EventDispatcher(this);
+    this._nativeRequest = new NativeRequest();
+    var self = this;
+    this._nativeRequest.onreadystatechange = function()
+    {
+        determineAndDispatchHTTPRequestEvents(self);
+    }
+}
+CFHTTPRequest.UninitializedState = 0;
+CFHTTPRequest.LoadingState = 1;
+CFHTTPRequest.LoadedState = 2;
+CFHTTPRequest.InteractiveState = 3;
+CFHTTPRequest.CompleteState = 4;
+CFHTTPRequest.prototype.status = function()
+{
+    try
+    {
+        return this._nativeRequest.status || 0;
+    }
+    catch (anException)
+    {
+        return 0;
+    }
+}
+CFHTTPRequest.prototype.statusText = function()
+{
+    try
+    {
+        return this._nativeRequest.statusText || "";
+    }
+    catch (anException)
+    {
+        return "";
+    }
+}
+CFHTTPRequest.prototype.readyState = function()
+{
+    return this._nativeRequest.readyState;
+}
+CFHTTPRequest.prototype.success = function()
+{
+    var status = this.status();
+    if (status >= 200 && status < 300)
+        return YES;
+    return status === 0 && this.responseText() && this.responseText().length;
+}
+CFHTTPRequest.prototype.responseXML = function()
+{
+    var responseXML = this._nativeRequest.responseXML;
+    if (responseXML && (NativeRequest === window.XMLHttpRequest))
+        return responseXML;
+    return parseXML(this.responseText());
+}
+CFHTTPRequest.prototype.responsePropertyList = function()
+{
+    var responseText = this.responseText();
+    if (CFPropertyList.sniffedFormatOfString(responseText) === CFPropertyList.FormatXML_v1_0)
+        return CFPropertyList.propertyListFromXML(this.responseXML());
+    return CFPropertyList.propertyListFromString(responseText);
+}
+CFHTTPRequest.prototype.responseText = function()
+{
+    return this._nativeRequest.responseText;
+}
+CFHTTPRequest.prototype.setRequestHeader = function( aHeader, aValue)
+{
+    return this._nativeRequest.setRequestHeader(aHeader, aValue);
+}
+CFHTTPRequest.prototype.getResponseHeader = function( aHeader)
+{
+    return this._nativeRequest.getResponseHeader(aHeader);
+}
+CFHTTPRequest.prototype.getAllResponseHeaders = function()
+{
+    return this._nativeRequest.getAllResponseHeaders();
+}
+CFHTTPRequest.prototype.overrideMimeType = function( aMimeType)
+{
+    if ("overrideMimeType" in this._nativeRequest)
+        return this._nativeRequest.overrideMimeType(aMimeType);
+}
+CFHTTPRequest.prototype.open = function( )
+{
+    return this._nativeRequest.open(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+}
+CFHTTPRequest.prototype.send = function( aBody)
+{
+    try
+    {
+        return this._nativeRequest.send(aBody);
+    }
+    catch (anException)
+    {
+        this._eventDispatcher.dispatchEvent({ type:"failure", request:this });
+    }
+}
+CFHTTPRequest.prototype.abort = function()
+{
+    return this._nativeRequest.abort();
+}
+CFHTTPRequest.prototype.addEventListener = function( anEventName, anEventListener)
+{
+    this._eventDispatcher.addEventListener(anEventName, anEventListener);
+}
+CFHTTPRequest.prototype.removeEventListener = function( anEventName, anEventListener)
+{
+    this._eventDispatcher.removeEventListener(anEventName, anEventListener);
+}
+function determineAndDispatchHTTPRequestEvents( aRequest)
+{
+    var eventDispatcher = aRequest._eventDispatcher;
+    eventDispatcher.dispatchEvent({ type:"readystatechange", request:aRequest});
+    var nativeRequest = aRequest._nativeRequest,
+        readyState = ["uninitialized", "loading", "loaded", "interactive", "complete"][aRequest.readyState()];
+    eventDispatcher.dispatchEvent({ type:readyState, request:aRequest});
+    if (readyState === "complete")
+    {
+        var status = "HTTP" + aRequest.status();
+        eventDispatcher.dispatchEvent({ type:status, request:aRequest });
+        var result = aRequest.success() ? "success" : "failure";
+        eventDispatcher.dispatchEvent({ type:result, request:aRequest });
+    }
+}
+function FileRequest( aURL, onsuccess, onfailure)
+{
+    var request = new CFHTTPRequest();
+    if (aURL.pathExtension() === "plist")
+        request.overrideMimeType("text/xml");
+    if (FileRequest.async)
+    {
+        request.onsuccess = Asynchronous(onsuccess);
+        request.onfailure = Asynchronous(onfailure);
+    }
+    else
+    {
+        request.onsuccess = onsuccess;
+        request.onfailure = onfailure;
+    }
+    request.open("GET", aURL.absoluteString(), FileRequest.async);
+    request.send("");
+}
+FileRequest.async = YES;
 var OBJECT_COUNT = 0;
-function _objj_generateObjectHash()
+objj_generateObjectUID = function()
 {
     return OBJECT_COUNT++;
 }
-function class_getName( aClass)
+CFPropertyList = function()
 {
-    if (aClass == Nil)
-        return "";
-    return aClass.name;
+    this._UID = objj_generateObjectUID();
 }
-function class_isMetaClass( aClass)
+CFPropertyList.DTDRE = /^\s*(?:<\?\s*xml\s+version\s*=\s*\"1.0\"[^>]*\?>\s*)?(?:<\!DOCTYPE[^>]*>\s*)?/i
+CFPropertyList.XMLRE = /^\s*(?:<\?\s*xml\s+version\s*=\s*\"1.0\"[^>]*\?>\s*)?(?:<\!DOCTYPE[^>]*>\s*)?<\s*plist[^>]*\>/i;
+CFPropertyList.FormatXMLDTD = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">";
+CFPropertyList.Format280NorthMagicNumber = "280NPLIST";
+CFPropertyList.FormatOpenStep = 1,
+CFPropertyList.FormatXML_v1_0 = 100,
+CFPropertyList.FormatBinary_v1_0 = 200,
+CFPropertyList.Format280North_v1_0 = -1000;
+CFPropertyList.sniffedFormatOfString = function( aString)
 {
-    if (!aClass)
-        return NO;
-    return ((aClass.info & (CLS_META)));
-}
-function class_getSuperclass( aClass)
-{
-    if (aClass == Nil)
-        return Nil;
-    return aClass.super_class;
-}
-function class_setSuperclass( aClass, aSuperClass)
-{
-}
-function class_isMetaClass( aClass)
-{
-    return ((aClass.info & (CLS_META)));
-}
-function class_addIvar( aClass, aName, aType)
-{
-    var thePrototype = aClass.allocator.prototype;
-    if (typeof thePrototype[aName] != "undefined")
-        return NO;
-    aClass.ivars.push(new objj_ivar(aName, aType));
-    thePrototype[aName] = NULL;
-    return YES;
-}
-function class_addIvars( aClass, ivars)
-{
-    var index = 0,
-        count = ivars.length,
-        thePrototype = aClass.allocator.prototype;
-    for (; index < count; ++index)
-    {
-        var ivar = ivars[index],
-            name = ivar.name;
-        if (typeof thePrototype[name] === "undefined")
-        {
-            aClass.ivars.push(ivar);
-            thePrototype[name] = NULL;
-        }
-    }
-}
-function class_copyIvarList( aClass)
-{
-    return aClass.ivars.slice(0);
-}
-function class_addMethod( aClass, aName, anImplementation, aType)
-{
-    if (aClass.method_hash[aName])
-        return NO;
-    var method = new objj_method(aName, anImplementation, aType);
-    aClass.method_list.push(method);
-    aClass.method_dtable[aName] = method;
-    method.method_imp.displayName = (((aClass.info & (CLS_META))) ? '+' : '-') + " [" + class_getName(aClass) + ' ' + method_getName(method) + ']';
-    if (!((aClass.info & (CLS_META))) && (((aClass.info & (CLS_META))) ? aClass : aClass.isa).isa === (((aClass.info & (CLS_META))) ? aClass : aClass.isa))
-        class_addMethod((((aClass.info & (CLS_META))) ? aClass : aClass.isa), method);
-    return YES;
-}
-function class_addMethods( aClass, methods)
-{
-    var index = 0,
-        count = methods.length,
-        method_list = aClass.method_list,
-        method_dtable = aClass.method_dtable;
-    for (; index < count; ++index)
-    {
-        var method = methods[index];
-        if (aClass.method_hash[method.name])
-            continue;
-        method_list.push(method);
-        method_dtable[method.name] = method;
-        method.method_imp.displayName = (((aClass.info & (CLS_META))) ? '+' : '-') + " [" + class_getName(aClass) + ' ' + method_getName(method) + ']';
-    }
-    if (!((aClass.info & (CLS_META))) && (((aClass.info & (CLS_META))) ? aClass : aClass.isa).isa === (((aClass.info & (CLS_META))) ? aClass : aClass.isa))
-        class_addMethods((((aClass.info & (CLS_META))) ? aClass : aClass.isa), methods);
-}
-function class_getInstanceMethod( aClass, aSelector)
-{
-    if (!aClass || !aSelector)
-        return NULL;
-    var method = aClass.method_dtable[aSelector];
-    return method ? method : NULL;
-}
-function class_getClassMethod( aClass, aSelector)
-{
-    if (!aClass || !aSelector)
-        return NULL;
-    var method = (((aClass.info & (CLS_META))) ? aClass : aClass.isa).method_dtable[aSelector];
-    return method ? method : NULL;
-}
-function class_copyMethodList( aClass)
-{
-    return aClass.method_list.slice(0);
-}
-function class_replaceMethod( aClass, aSelector, aMethodImplementation)
-{
-    if (!aClass || !aSelector)
-        return NULL;
-    var method = aClass.method_dtable[aSelector],
-        method_imp = NULL;
-    if (method)
-        method_imp = method.method_imp;
-    method.method_imp = aMethodImplementation;
-    return method_imp;
-}
-var _class_initialize = function( aClass)
-{
-    var meta = (((aClass.info & (CLS_META))) ? aClass : aClass.isa);
-    if ((aClass.info & (CLS_META)))
-        aClass = objj_getClass(aClass.name);
-    if (aClass.super_class && !((((aClass.super_class.info & (CLS_META))) ? aClass.super_class : aClass.super_class.isa).info & (CLS_INITIALIZED)))
-        _class_initialize(aClass.super_class);
-    if (!(meta.info & (CLS_INITIALIZED)) && !(meta.info & (CLS_INITIALIZING)))
-    {
-        meta.info = (meta.info | (CLS_INITIALIZING)) & ~(0);
-        objj_msgSend(aClass, "initialize");
-        meta.info = (meta.info | (CLS_INITIALIZED)) & ~(CLS_INITIALIZING);
-    }
-}
-var _objj_forward = new objj_method("forward", function(self, _cmd)
-{
-    return objj_msgSend(self, "forward::", _cmd, arguments);
-});
-function class_getMethodImplementation( aClass, aSelector)
-{
-    if (!((((aClass.info & (CLS_META))) ? aClass : aClass.isa).info & (CLS_INITIALIZED))) _class_initialize(aClass); var method = aClass.method_dtable[aSelector]; if (!method) method = _objj_forward; var implementation = method.method_imp;;
-    return implementation;
-}
-var GLOBAL_NAMESPACE = window,
-    REGISTERED_CLASSES = {};
-function objj_allocateClassPair( superclass, aName)
-{
-    var classObject = new objj_class(),
-        metaClassObject = new objj_class(),
-        rootClassObject = classObject;
-    if (superclass)
-    {
-        rootClassObject = superclass;
-        while (rootClassObject.superclass)
-            rootClassObject = rootClassObject.superclass;
-        classObject.allocator.prototype = new superclass.allocator;
-        classObject.method_store.prototype = new superclass.method_store;
-        classObject.method_dtable = classObject.method_store.prototype;
-        metaClassObject.method_store.prototype = new superclass.isa.method_store;
-        metaClassObject.method_dtable = metaClassObject.method_store.prototype;
-        classObject.super_class = superclass;
-        metaClassObject.super_class = superclass.isa;
-    }
-    else
-        classObject.allocator.prototype = new objj_object();
-    classObject.isa = metaClassObject;
-    classObject.name = aName;
-    classObject.info = CLS_CLASS;
-    classObject.__address = (OBJECT_COUNT++);
-    metaClassObject.isa = rootClassObject.isa;
-    metaClassObject.name = aName;
-    metaClassObject.info = CLS_META;
-    metaClassObject.__address = (OBJECT_COUNT++);
-    return classObject;
-}
-function objj_registerClassPair( aClass)
-{
-    GLOBAL_NAMESPACE[aClass.name] = aClass;
-    REGISTERED_CLASSES[aClass.name] = aClass;
-}
-function class_createInstance( aClass)
-{
-    if (!aClass)
-        objj_exception_throw(new objj_exception(OBJJNilClassException, "*** Attempting to create object with Nil class."));
-    var object = new aClass.allocator;
-    object.__address = (OBJECT_COUNT++);
-    object.isa = aClass;
-    return object;
-}
-var prototype_bug = function() { }
-prototype_bug.prototype.member = false;
-with (new prototype_bug())
-    member = true;
-if (new prototype_bug().member)
-{
-var fast_class_createInstance = class_createInstance;
-class_createInstance = function( aClass)
-{
-    var object = fast_class_createInstance(aClass);
-    if (object)
-    {
-        var theClass = object.isa,
-            actualClass = theClass;
-        while (theClass)
-        {
-            var ivars = theClass.ivars;
-                count = ivars.length;
-            while (count--)
-                object[ivars[count].name] = NULL;
-            theClass = theClass.super_class;
-        }
-        object.isa = actualClass;
-    }
-    return object;
-}
-}
-function object_getClassName( anObject)
-{
-    if (!anObject)
-        return "";
-    var theClass = anObject.isa;
-    return theClass ? class_getName(theClass) : "";
-}
-function objj_lookUpClass( aName)
-{
-    var theClass = REGISTERED_CLASSES[aName];
-    return theClass ? theClass : Nil;
-}
-function objj_getClass( aName)
-{
-    var theClass = REGISTERED_CLASSES[aName];
-    if (!theClass)
-    {
-    }
-    return theClass ? theClass : Nil;
-}
-function objj_getMetaClass( aName)
-{
-    var theClass = objj_getClass(aName);
-    return (((theClass.info & (CLS_META))) ? theClass : theClass.isa);
-}
-function ivar_getName(anIvar)
-{
-    return anIvar.name;
-}
-function ivar_getTypeEncoding(anIvar)
-{
-    return anIvar.type;
-}
-function objj_msgSend( aReceiver, aSelector)
-{
-    if (aReceiver == nil)
-        return nil;
-    if (!((((aReceiver.isa.info & (CLS_META))) ? aReceiver.isa : aReceiver.isa.isa).info & (CLS_INITIALIZED))) _class_initialize(aReceiver.isa); var method = aReceiver.isa.method_dtable[aSelector]; if (!method) method = _objj_forward; var implementation = method.method_imp;;
-    switch(arguments.length)
-    {
-        case 2: return implementation(aReceiver, aSelector);
-        case 3: return implementation(aReceiver, aSelector, arguments[2]);
-        case 4: return implementation(aReceiver, aSelector, arguments[2], arguments[3]);
-    }
-    return implementation.apply(aReceiver, arguments);
-}
-function objj_msgSendSuper( aSuper, aSelector)
-{
-    var super_class = aSuper.super_class;
-    arguments[0] = aSuper.receiver;
-    if (!((((super_class.info & (CLS_META))) ? super_class : super_class.isa).info & (CLS_INITIALIZED))) _class_initialize(super_class); var method = super_class.method_dtable[aSelector]; if (!method) method = _objj_forward; var implementation = method.method_imp;;
-    return implementation.apply(aSuper.receiver, arguments);
-}
-function method_getName( aMethod)
-{
-    return aMethod.name;
-}
-function method_getImplementation( aMethod)
-{
-    return aMethod.method_imp;
-}
-function method_setImplementation( aMethod, anImplementation)
-{
-    var oldImplementation = aMethod.method_imp;
-    aMethod.method_imp = anImplementation;
-    return oldImplementation;
-}
-function method_exchangeImplementations( lhs, rhs)
-{
-    var lhs_imp = method_getImplementation(lhs),
-        rhs_imp = method_getImplementation(rhs);
-    method_setImplementation(lhs, rhs_imp);
-    method_setImplementation(rhs, lhs_imp);
-}
-function sel_getName(aSelector)
-{
-    return aSelector ? aSelector : "<null selector>";
-}
-function sel_getUid( aName)
-{
-    return aName;
-}
-function sel_isEqual( lhs, rhs)
-{
-    return lhs === rhs;
-}
-function sel_registerName(aName)
-{
-    return aName;
-}
-function objj_dictionary()
-{
-    this._keys = [];
-    this.count = 0;
-    this._buckets = {};
-    this.__address = (OBJECT_COUNT++);
-}
-objj_dictionary.prototype.containsKey = function(aKey) { return dictionary_containsKey(this, aKey); }
-objj_dictionary.prototype.getCount = function() { return dictionary_getCount(this); }
-objj_dictionary.prototype.getValue = function(aKey) { return dictionary_getValue(this, aKey); }
-objj_dictionary.prototype.setValue = function(aKey, aValue) { return dictionary_setValue(this, aKey, aValue); }
-objj_dictionary.prototype.removeValue = function(aKey) { return dictionary_removeValue(this, aKey); }
-function dictionary_containsKey(aDictionary, aKey)
-{
-    return aDictionary._buckets[aKey] != NULL;
-}
-function dictionary_getCount(aDictionary)
-{
-    return aDictionary.count;
-}
-function dictionary_getValue(aDictionary, aKey)
-{
-    return aDictionary._buckets[aKey];
-}
-function dictionary_setValue(aDictionary, aKey, aValue)
-{
-    if (aDictionary._buckets[aKey] == NULL)
-    {
-        aDictionary._keys.push(aKey);
-        ++aDictionary.count;
-    }
-    if ((aDictionary._buckets[aKey] = aValue) == NULL)
-        --aDictionary.count;
-}
-function dictionary_removeValue(aDictionary, aKey)
-{
-    if (aDictionary._buckets[aKey] == NULL)
-        return;
-    --aDictionary.count;
-    if (aDictionary._keys.indexOf)
-        aDictionary._keys.splice(aDictionary._keys.indexOf(aKey), 1);
-    else
-    {
-        var keys = aDictionary._keys,
-            index = 0,
-            count = keys.length;
-        for (; index < count; ++index)
-            if (keys[index] == aKey)
-            {
-                keys.splice(index, 1);
-                break;
-            }
-    }
-    delete aDictionary._buckets[aKey];
-}
-function dictionary_replaceValue(aDictionary, aKey, aValue)
-{
-    if (aDictionary[aKey] == NULL)
-        return;
-}
-function dictionary_description(aDictionary)
-{
-    var str = "{ ";
-    for ( x in aDictionary._buckets)
-        str += x + ":" + aDictionary._buckets[x] + ",";
-    str += " }";
-    return str;
-}
-var kCFPropertyListOpenStepFormat = 1,
-    kCFPropertyListXMLFormat_v1_0 = 100,
-    kCFPropertyListBinaryFormat_v1_0 = 200,
-    kCFPropertyList280NorthFormat_v1_0 = -1000;
-var OBJJPlistParseException = "OBJJPlistParseException",
-    OBJJPlistSerializeException = "OBJJPlistSerializeException";
-var kCFPropertyList280NorthMagicNumber = "280NPLIST";
-function objj_data()
-{
-    this.string = "";
-    this._plistObject = NULL;
-    this.bytes = NULL;
-    this.base64 = NULL;
-}
-var objj_markedStream = function(aString)
-{
-    var index = aString.indexOf(';');
-    this._magicNumber = aString.substr(0, index);
-    this._location = aString.indexOf(';', ++index);
-    this._version = aString.substring(index, this._location++);
-    this._string = aString;
-}
-objj_markedStream.prototype.magicNumber = function()
-{
-    return this._magicNumber;
-}
-objj_markedStream.prototype.version = function()
-{
-    return this._version;
-}
-objj_markedStream.prototype.getMarker = function()
-{
-    var string = this._string,
-        location = this._location;
-    if (location >= string.length)
-        return NULL;
-    var next = string.indexOf(';', location);
-    if (next < 0)
-        return NULL;
-    var marker = string.substring(location, next);
-    this._location = next + 1;
-    return marker;
-}
-objj_markedStream.prototype.getString = function()
-{
-    var string = this._string,
-        location = this._location;
-    if (location >= string.length)
-        return NULL;
-    var next = string.indexOf(';', location);
-    if (next < 0)
-        return NULL;
-    var size = parseInt(string.substring(location, next)),
-        text = string.substr(next + 1, size);
-    this._location = next + 1 + size;
-    return text;
-}
-function CPPropertyListCreateData(aPlistObject, aFormat)
-{
-    if (aFormat == kCFPropertyListXMLFormat_v1_0)
-        return CPPropertyListCreateXMLData(aPlistObject);
-    if (aFormat == kCFPropertyList280NorthFormat_v1_0)
-        return CPPropertyListCreate280NorthData(aPlistObject);
+    if (aString.match(CFPropertyList.XMLRE))
+        return CFPropertyList.FormatXML_v1_0;
+    if (aString.substr(0, CFPropertyList.Format280NorthMagicNumber.length) === CFPropertyList.Format280NorthMagicNumber)
+       return CFPropertyList.Format280North_v1_0;
     return NULL;
 }
-function CPPropertyListCreateFromData(aData, aFormat)
+CFPropertyList.dataFromPropertyList = function( aPropertyList, aFormat)
+{
+    var data = new CFMutableData();
+    data.setRawString(CFPropertyList.stringFromPropertyList(aPropertyList, aFormat));
+    return data;
+}
+CFPropertyList.stringFromPropertyList = function( aPropertyList, aFormat)
 {
     if (!aFormat)
-    {
-        if (aData instanceof objj_data)
-        {
-            var string = aData.string ? aData.string : objj_msgSend(aData, "string");
-            if (string.substr(0, kCFPropertyList280NorthMagicNumber.length) == kCFPropertyList280NorthMagicNumber)
-                aFormat = kCFPropertyList280NorthFormat_v1_0;
-            else
-                aFormat = kCFPropertyListXMLFormat_v1_0;
-        }
-        else
-            aFormat = kCFPropertyListXMLFormat_v1_0;
-    }
-    if (aFormat == kCFPropertyListXMLFormat_v1_0)
-        return CPPropertyListCreateFromXMLData(aData);
-    if (aFormat == kCFPropertyList280NorthFormat_v1_0)
-        return CPPropertyListCreateFrom280NorthData(aData);
-    return NULL;
+        aFormat = CFPropertyList.Format280North_v1_0;
+    var serializers = CFPropertyListSerializers[aFormat];
+    return serializers["start"]() +
+            serializePropertyList(aPropertyList, serializers) +
+            serializers["finish"]();
 }
-var _CPPropertyListSerializeObject = function(aPlist, serializers)
+function serializePropertyList( aPropertyList, serializers)
 {
-    var type = typeof aPlist,
-        valueOf = aPlist.valueOf(),
+    var type = typeof aPropertyList,
+        valueOf = aPropertyList.valueOf(),
         typeValueOf = typeof valueOf;
-    if (type != typeValueOf)
+    if (type !== typeValueOf)
     {
         type = typeValueOf;
-        aPlist = valueOf;
+        aPropertyList = valueOf;
     }
-    if (type == "string")
-        return serializers["string"](aPlist, serializers);
-    else if (aPlist === true || aPlist === false)
-        return serializers["boolean"](aPlist, serializers);
-    else if (type == "number")
+    if (aPropertyList === YES || aPropertyList === NO)
+        type = "boolean";
+    else if (type === "number")
     {
-        var integer = FLOOR(aPlist);
-        if (integer == aPlist)
-            return serializers["integer"](aPlist, serializers);
+        if (FLOOR(aPropertyList) === aPropertyList)
+            type = "integer";
         else
-            return serializers["real"](aPlist, serializers);
+            type = "real";
     }
-    else if (aPlist.slice)
-        return serializers["array"](aPlist, serializers);
-    else
-        return serializers["dictionary"](aPlist, serializers);
+    else if (type !== "string")
+    {
+        if (aPropertyList.slice)
+            type = "array";
+        else
+            type = "dictionary";
+    }
+    return serializers[type](aPropertyList, serializers);
+}
+var CFPropertyListSerializers = { };
+CFPropertyListSerializers[CFPropertyList.FormatXML_v1_0] =
+{
+    "start": function()
+                    {
+                        return CFPropertyList.FormatXMLDTD + "<plist version = \"1.0\">";
+                    },
+    "finish": function()
+                    {
+                        return "</plist>";
+                    },
+    "string": function( aString)
+                    {
+                        return "<string>" + encodeHTMLComponent(aString) + "</string>";;
+                    },
+    "boolean" : function( aBoolean)
+                    {
+                        return aBoolean ? "<true/>" : "<false/>";
+                    },
+    "integer": function( anInteger)
+                    {
+                        return "<integer>" + anInteger + "</integer>";
+                    },
+    "real": function( aFloat)
+                    {
+                        return "<real>" + aFloat + "</real>";
+                    },
+    "array": function( anArray, serializers)
+                    {
+                        var index = 0,
+                            count = anArray.length,
+                            string = "<array>";
+                        for (; index < count; ++index)
+                            string += serializePropertyList(anArray[index], serializers);
+                        return string + "</array>";
+                    },
+    "dictionary": function( aDictionary, serializers)
+                    {
+                        var keys = aDictionary._keys,
+                            index = 0,
+                            count = keys.length,
+                            string = "<dict>";
+                        for (; index < count; ++index)
+                        {
+                            var key = keys[index];
+                            string += "<key>" + key + "</key>";
+                            string += serializePropertyList(aDictionary.valueForKey(key), serializers);
+                        }
+                        return string + "</dict>";
+                    }
+}
+var ARRAY_MARKER = "A",
+    DICTIONARY_MARKER = "D",
+    FLOAT_MARKER = "f",
+    INTEGER_MARKER = "d",
+    STRING_MARKER = "S",
+    TRUE_MARKER = "T",
+    FALSE_MARKER = "F",
+    KEY_MARKER = "K",
+    END_MARKER = "E";
+CFPropertyListSerializers[CFPropertyList.Format280North_v1_0] =
+{
+    "start": function()
+                    {
+                        return CFPropertyList.Format280NorthMagicNumber + ";1.0;";
+                    },
+    "finish": function()
+                    {
+                        return "";
+                    },
+    "string" : function( aString)
+                    {
+                        return STRING_MARKER + ';' + aString.length + ';' + aString;
+                    },
+    "boolean" : function( aBoolean)
+                    {
+                        return (aBoolean ? TRUE_MARKER : FALSE_MARKER) + ';';
+                    },
+    "integer": function( anInteger)
+                    {
+                        var string = "" + anInteger;
+                        return INTEGER_MARKER + ';' + string.length + ';' + string;
+                    },
+    "real": function( aFloat)
+                    {
+                        var string = "" + aFloat;
+                        return FLOAT_MARKER + ';' + string.length + ';' + string;
+                    },
+    "array": function( anArray, serializers)
+                    {
+                        var index = 0,
+                            count = anArray.length,
+                            string = ARRAY_MARKER + ';';
+                        for (; index < count; ++index)
+                            string += serializePropertyList(anArray[index], serializers);
+                        return string + END_MARKER + ';';
+                    },
+    "dictionary": function( aDictionary, serializers)
+                    {
+                        var keys = aDictionary._keys,
+                            index = 0,
+                            count = keys.length,
+                            string = DICTIONARY_MARKER +';';
+                        for (; index < count; ++index)
+                        {
+                            var key = keys[index];
+                            string += KEY_MARKER + ';' + key.length + ';' + key;
+                            string += serializePropertyList(aDictionary.valueForKey(key), serializers);
+                        }
+                        return string + END_MARKER + ';';
+                    }
 }
 var XML_XML = "xml",
     XML_DOCUMENT = "#document",
@@ -1001,17 +1022,17 @@ var XML_XML = "xml",
 var _plist_traverseNextNode = function(anXMLNode, stayWithin, stack)
 {
     var node = anXMLNode;
-    node = (node.firstChild); if (node != NULL && ((node.nodeType) == 8 || (node.nodeType) == 3)) while ((node = (node.nextSibling)) && ((node.nodeType) == 8 || (node.nodeType) == 3)) ;;
+    node = (node.firstChild); if (node !== NULL && ((node.nodeType) === 8 || (node.nodeType) === 3)) while ((node = (node.nextSibling)) && ((node.nodeType) === 8 || (node.nodeType) === 3)) ;;
     if (node)
         return node;
-    if ((String(anXMLNode.nodeName)) == PLIST_ARRAY || (String(anXMLNode.nodeName)) == PLIST_DICTIONARY)
+    if ((String(anXMLNode.nodeName)) === PLIST_ARRAY || (String(anXMLNode.nodeName)) === PLIST_DICTIONARY)
         stack.pop();
     else
     {
-        if (node == stayWithin)
+        if (node === stayWithin)
             return NULL;
         node = anXMLNode;
-        while ((node = (node.nextSibling)) && ((node.nodeType) == 8 || (node.nodeType) == 3)) ;;
+        while ((node = (node.nextSibling)) && ((node.nodeType) === 8 || (node.nodeType) === 3)) ;;
         if (node)
             return node;
     }
@@ -1019,155 +1040,29 @@ var _plist_traverseNextNode = function(anXMLNode, stayWithin, stack)
     while (node)
     {
         var next = node;
-        while ((next = (next.nextSibling)) && ((next.nodeType) == 8 || (next.nodeType) == 3)) ;;
+        while ((next = (next.nextSibling)) && ((next.nodeType) === 8 || (next.nodeType) === 3)) ;;
         if (next)
             return next;
         var node = (node.parentNode);
-        if (stayWithin && node == stayWithin)
+        if (stayWithin && node === stayWithin)
             return NULL;
         stack.pop();
     }
     return NULL;
 }
-function CPPropertyListCreateFromXMLData(XMLNodeOrData)
+CFPropertyList.propertyListFromData = function( aData, aFormat)
 {
-    var XMLNode = XMLNodeOrData;
-    if (XMLNode.string)
-    {
-        if (window.ActiveXObject)
-        {
-            XMLNode = new ActiveXObject("Microsoft.XMLDOM");
-            XMLNode.loadXML(XMLNodeOrData.string.substr(XMLNodeOrData.string.indexOf(".dtd\">") + 6));
-        }
-        else
-            XMLNode = (new DOMParser().parseFromString(XMLNodeOrData.string, "text/xml").documentElement);
-    }
-    while (((String(XMLNode.nodeName)) == XML_DOCUMENT) || ((String(XMLNode.nodeName)) == XML_XML))
-        XMLNode = (XMLNode.firstChild); if (XMLNode != NULL && ((XMLNode.nodeType) == 8 || (XMLNode.nodeType) == 3)) while ((XMLNode = (XMLNode.nextSibling)) && ((XMLNode.nodeType) == 8 || (XMLNode.nodeType) == 3)) ;;
-    if (((XMLNode.nodeType) == 10))
-        while ((XMLNode = (XMLNode.nextSibling)) && ((XMLNode.nodeType) == 8 || (XMLNode.nodeType) == 3)) ;;
-    if (!((String(XMLNode.nodeName)) == PLIST_PLIST))
-        return NULL;
-    var key = "",
-        object = NULL,
-        plistObject = NULL,
-        plistNode = XMLNode,
-        containers = [],
-        currentContainer = NULL;
-    while (XMLNode = _plist_traverseNextNode(XMLNode, plistNode, containers))
-    {
-        var count = containers.length;
-        if (count)
-            currentContainer = containers[count - 1];
-        if ((String(XMLNode.nodeName)) == PLIST_KEY)
-        {
-            key = ((String((XMLNode.firstChild).nodeValue)));
-            while ((XMLNode = (XMLNode.nextSibling)) && ((XMLNode.nodeType) == 8 || (XMLNode.nodeType) == 3)) ;;
-        }
-        switch (String((String(XMLNode.nodeName))))
-        {
-            case PLIST_ARRAY: object = []
-                                        containers.push(object);
-                                        break;
-            case PLIST_DICTIONARY: object = new objj_dictionary();
-                                        containers.push(object);
-                                        break;
-            case PLIST_NUMBER_REAL: object = parseFloat(((String((XMLNode.firstChild).nodeValue))));
-                                        break;
-            case PLIST_NUMBER_INTEGER: object = parseInt(((String((XMLNode.firstChild).nodeValue))));
-                                        break;
-            case PLIST_STRING: object = _decodeHTMLComponent((XMLNode.firstChild) ? ((String((XMLNode.firstChild).nodeValue))) : "");
-                                        break;
-            case PLIST_BOOLEAN_TRUE: object = true;
-                                        break;
-            case PLIST_BOOLEAN_FALSE: object = false;
-                                        break;
-            case PLIST_DATA: object = new objj_data();
-                                        object.bytes = (XMLNode.firstChild) ? base64_decode_to_array(((String((XMLNode.firstChild).nodeValue))), true) : [];
-                                        break;
-            default: objj_exception_throw(new objj_exception(OBJJPlistParseException, "*** " + (String(XMLNode.nodeName)) + " tag not recognized in Plist."));
-        }
-        if (!plistObject)
-            plistObject = object;
-        else if (currentContainer)
-            if (currentContainer.slice)
-                currentContainer.push(object);
-            else
-                { if ((currentContainer)._buckets[key] == NULL) { (currentContainer)._keys.push(key); ++(currentContainer).count; } if (((currentContainer)._buckets[key] = object) == NULL) --(currentContainer).count;};
-    }
-    return plistObject;
+    return CFPropertyList.propertyListFromString(aData.rawString(), aFormat);
 }
-function CPPropertyListCreateXMLData(aPlist)
+CFPropertyList.propertyListFromString = function( aString, aFormat)
 {
-    var data = new objj_data();
-    data.string = "";
-    data.string += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-    data.string += "<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">";
-    data.string += "<plist version = \"1.0\">";
-    _CPPropertyListAppendXMLData(data, aPlist, "");
-    data.string += "</plist>";
-    return data;
-}
-var _CPArrayAppendXMLData = function(XMLData, anArray)
-{
-    var i = 0,
-        count = anArray.length;
-    XMLData.string += "<array>";
-    for (; i < count; ++i)
-        _CPPropertyListAppendXMLData(XMLData, anArray[i]);
-    XMLData.string += "</array>";
-}
-var _CPDictionaryAppendXMLData = function(XMLData, aDictionary)
-{
-    var keys = aDictionary._keys,
-        i = 0,
-        count = keys.length;
-    XMLData.string += "<dict>";
-    for (; i < count; ++i)
-    {
-        XMLData.string += "<key>" + keys[i] + "</key>";
-        _CPPropertyListAppendXMLData(XMLData, ((aDictionary)._buckets[keys[i]]));
-    }
-    XMLData.string += "</dict>";
-}
-var _encodeHTMLComponent = function(aString)
-{
-    return aString.replace('<', "&lt;").replace('>', "&gt;").replace('\"', "&quot;").replace('\'', "&apos;").replace('&', "&amp;");
-}
-var _decodeHTMLComponent = function(aString)
-{
-    return aString.replace("&lt;", '<').replace("&gt;", '>').replace("&quot;", '\"').replace("&apos;", '\'').replace("&amp;", '&');
-}
-var _CPPropertyListAppendXMLData = function(XMLData, aPlist)
-{
-    var type = typeof aPlist,
-        valueOf = aPlist.valueOf(),
-        typeValueOf = typeof valueOf;
-    if (type != typeValueOf)
-    {
-        type = typeValueOf;
-        aPlist = valueOf;
-    }
-    if (type == "string")
-        XMLData.string += "<string>" + _encodeHTMLComponent(aPlist) + "</string>";
-    else if (aPlist === true)
-        XMLData.string += "<true/>";
-    else if (aPlist === false)
-        XMLData.string += "<false/>";
-    else if (type == "number")
-    {
-        var integer = FLOOR(aPlist);
-        if (integer == aPlist)
-            XMLData.string += "<integer>" + aPlist + "</integer>";
-        else
-            XMLData.string += "<real>" + aPlist + "</real>";
-    }
-    else if (aPlist.slice)
-        _CPArrayAppendXMLData(XMLData, aPlist);
-    else if (aPlist._keys)
-        _CPDictionaryAppendXMLData(XMLData, aPlist);
-    else
-        objj_exception_throw(new objj_exception(OBJJPlistSerializeException, "*** unknown plist ("+aPlist+") type: " + type));
+    if (!aFormat)
+        aFormat = CFPropertyList.sniffedFormatOfString(aString);
+    if (aFormat === CFPropertyList.FormatXML_v1_0)
+        return CFPropertyList.propertyListFromXML(aString);
+    if (aFormat === CFPropertyList.Format280North_v1_0)
+        return propertyListFrom280NorthString(aString);
+    return NULL;
 }
 var ARRAY_MARKER = "A",
     DICTIONARY_MARKER = "D",
@@ -1178,9 +1073,9 @@ var ARRAY_MARKER = "A",
     FALSE_MARKER = "F",
     KEY_MARKER = "K",
     END_MARKER = "E";
-function CPPropertyListCreateFrom280NorthData(aData)
+function propertyListFrom280NorthString( aString)
 {
-    var stream = new objj_markedStream(aData.string),
+    var stream = new MarkedStream(aString),
         marker = NULL,
         key = "",
         object = NULL,
@@ -1207,20 +1102,20 @@ function CPPropertyListCreateFrom280NorthData(aData)
             case ARRAY_MARKER: object = []
                                     containers.push(object);
                                     break;
-            case DICTIONARY_MARKER: object = new objj_dictionary();
+            case DICTIONARY_MARKER: object = new CFMutableDictionary();
                                     containers.push(object);
                                     break;
             case FLOAT_MARKER: object = parseFloat(stream.getString());
                                     break;
-            case INTEGER_MARKER: object = parseInt(stream.getString());
+            case INTEGER_MARKER: object = parseInt(stream.getString(), 10);
                                     break;
             case STRING_MARKER: object = stream.getString();
                                     break;
-            case TRUE_MARKER: object = true;
+            case TRUE_MARKER: object = YES;
                                     break;
-            case FALSE_MARKER: object = false;
+            case FALSE_MARKER: object = NO;
                                     break;
-            default: objj_exception_throw(new objj_exception(OBJJPlistParseException, "*** " + marker + " marker not recognized in Plist."));
+            default: throw new Error("*** " + marker + " marker not recognized in Plist.");
         }
         if (!plistObject)
             plistObject = object;
@@ -1228,537 +1123,1723 @@ function CPPropertyListCreateFrom280NorthData(aData)
             if (currentContainer.slice)
                 currentContainer.push(object);
             else
-                { if ((currentContainer)._buckets[key] == NULL) { (currentContainer)._keys.push(key); ++(currentContainer).count; } if (((currentContainer)._buckets[key] = object) == NULL) --(currentContainer).count;};
+                currentContainer.setValueForKey(key, object);
     }
     return plistObject;
 }
-function CPPropertyListCreate280NorthData(aPlist)
+function encodeHTMLComponent( aString)
 {
-    var data = new objj_data();
-    data.string = kCFPropertyList280NorthMagicNumber + ";1.0;" + _CPPropertyListSerializeObject(aPlist, _CPPropertyList280NorthSerializers);
-    return data;
+    return aString.replace(/&/g,'&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-var _CPPropertyList280NorthSerializers = {};
-_CPPropertyList280NorthSerializers["string"] = function(aString)
+function decodeHTMLComponent( aString)
 {
-    return STRING_MARKER + ';' + aString.length + ';' + aString;
+    return aString.replace(/&quot;/g, '"').replace(/&apos;/g, '\'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
 }
-_CPPropertyList280NorthSerializers["boolean"] = function(aBoolean)
+function parseXML( aString)
 {
-    return (aBoolean ? TRUE_MARKER : FALSE_MARKER) + ';';
+    if (window.DOMParser)
+        return (new window.DOMParser().parseFromString(aString, "text/xml").documentElement);
+    else if (window.ActiveXObject)
+    {
+        XMLNode = new ActiveXObject("Microsoft.XMLDOM");
+        var matches = aString.match(CFPropertyList.DTDRE);
+        if (matches)
+            aString = aString.substr(matches[0].length);
+        XMLNode.loadXML(aString);
+        return XMLNode
+    }
+    return NULL;
 }
-_CPPropertyList280NorthSerializers["integer"] = function(anInteger)
+CFPropertyList.propertyListFromXML = function( aStringOrXMLNode)
 {
-    var string = "" + anInteger;
-    return INTEGER_MARKER + ';' + string.length + ';' + string;
+    var XMLNode = aStringOrXMLNode;
+    if (aStringOrXMLNode.valueOf && typeof aStringOrXMLNode.valueOf() === "string")
+        XMLNode = parseXML(aStringOrXMLNode);
+    while (((String(XMLNode.nodeName)) === XML_DOCUMENT) || ((String(XMLNode.nodeName)) === XML_XML))
+        XMLNode = (XMLNode.firstChild); if (XMLNode !== NULL && ((XMLNode.nodeType) === 8 || (XMLNode.nodeType) === 3)) while ((XMLNode = (XMLNode.nextSibling)) && ((XMLNode.nodeType) === 8 || (XMLNode.nodeType) === 3)) ;;
+    if (((XMLNode.nodeType) === 10))
+        while ((XMLNode = (XMLNode.nextSibling)) && ((XMLNode.nodeType) === 8 || (XMLNode.nodeType) === 3)) ;;
+    if (!((String(XMLNode.nodeName)) === PLIST_PLIST))
+        return NULL;
+    var key = "",
+        object = NULL,
+        plistObject = NULL,
+        plistNode = XMLNode,
+        containers = [],
+        currentContainer = NULL;
+    while (XMLNode = _plist_traverseNextNode(XMLNode, plistNode, containers))
+    {
+        var count = containers.length;
+        if (count)
+            currentContainer = containers[count - 1];
+        if ((String(XMLNode.nodeName)) === PLIST_KEY)
+        {
+            key = ((String((XMLNode.firstChild).nodeValue)));
+            while ((XMLNode = (XMLNode.nextSibling)) && ((XMLNode.nodeType) === 8 || (XMLNode.nodeType) === 3)) ;;
+        }
+        switch (String((String(XMLNode.nodeName))))
+        {
+            case PLIST_ARRAY: object = []
+                                        containers.push(object);
+                                        break;
+            case PLIST_DICTIONARY: object = new CFMutableDictionary();
+                                        containers.push(object);
+                                        break;
+            case PLIST_NUMBER_REAL: object = parseFloat(((String((XMLNode.firstChild).nodeValue))));
+                                        break;
+            case PLIST_NUMBER_INTEGER: object = parseInt(((String((XMLNode.firstChild).nodeValue))), 10);
+                                        break;
+            case PLIST_STRING: object = decodeHTMLComponent((XMLNode.firstChild) ? ((String((XMLNode.firstChild).nodeValue))) : "");
+                                        break;
+            case PLIST_BOOLEAN_TRUE: object = YES;
+                                        break;
+            case PLIST_BOOLEAN_FALSE: object = NO;
+                                        break;
+            case PLIST_DATA: object = new CFMutableData();
+                                        object.bytes = (XMLNode.firstChild) ? CFData.decodeBase64ToArray(((String((XMLNode.firstChild).nodeValue))), YES) : [];
+                                        break;
+            default: throw new Error("*** " + (String(XMLNode.nodeName)) + " tag not recognized in Plist.");
+        }
+        if (!plistObject)
+            plistObject = object;
+        else if (currentContainer)
+            if (currentContainer.slice)
+                currentContainer.push(object);
+            else
+                currentContainer.setValueForKey(key, object);
+    }
+    return plistObject;
 }
-_CPPropertyList280NorthSerializers["real"] = function(aFloat)
+kCFPropertyListOpenStepFormat = CFPropertyList.FormatOpenStep;
+kCFPropertyListXMLFormat_v1_0 = CFPropertyList.FormatXML_v1_0;
+kCFPropertyListBinaryFormat_v1_0 = CFPropertyList.FormatBinary_v1_0;
+kCFPropertyList280NorthFormat_v1_0 = CFPropertyList.Format280North_v1_0;
+CFPropertyListCreate = function()
 {
-    var string = "" + aFloat;
-    return FLOAT_MARKER + ';' + string.length + ';' + string;
+    return new CFPropertyList();
 }
-_CPPropertyList280NorthSerializers["array"] = function(anArray, serializers)
+CFPropertyListCreateFromXMLData = function( data)
 {
+    return CFPropertyList.propertyListFromData(data, CFPropertyList.FormatXML_v1_0);
+}
+CFPropertyListCreateXMLData = function( aPropertyList)
+{
+    return CFPropertyList.dataFromPropertyList(aPropertyList, CFPropertyList.FormatXML_v1_0);
+}
+CFPropertyListCreateFrom280NorthData = function( data)
+{
+    return CFPropertyList.propertyListFromData(data, CFPropertyList.Format280North_v1_0);
+}
+CFPropertyListCreate280NorthData = function( aPropertyList)
+{
+    return CFPropertyList.dataFromPropertyList(aPropertyList, CFPropertyList.Format280North_v1_0);
+}
+CPPropertyListCreateFromData = function( data, aFormat)
+{
+    return CFPropertyList.propertyListFromData(data, aFormat);
+}
+CPPropertyListCreateData = function( aPropertyList, aFormat)
+{
+    return CFPropertyList.dataFromPropertyList(aPropertyList, aFormat);
+}
+CFDictionary = function( aDictionary)
+{
+    this._keys = [];
+    this._count = 0;
+    this._buckets = { };
+    this._UID = objj_generateObjectUID();
+}
+var indexOf = Array.prototype.indexOf,
+    hasOwnProperty = Object.prototype.hasOwnProperty;
+CFDictionary.prototype.copy = function()
+{
+    return this;
+}
+CFDictionary.prototype.mutableCopy = function()
+{
+    var newDictionary = new CFMutableDictionary(),
+        keys = this._keys,
+        count = this._count;
+    newDictionary._keys = keys.slice();
+    newDictionary._count = count;
     var index = 0,
-        count = anArray.length,
-        string = ARRAY_MARKER + ';';
-    for (; index < count; ++index)
-        string += _CPPropertyListSerializeObject(anArray[index], serializers);
-    return string + END_MARKER + ';';
-}
-_CPPropertyList280NorthSerializers["dictionary"] = function(aDictionary, serializers)
-{
-    var keys = aDictionary._keys,
-        index = 0,
-        count = keys.length,
-        string = DICTIONARY_MARKER +';';
+        buckets = this._buckets,
+        newBuckets = newDictionary._buckets;
     for (; index < count; ++index)
     {
         var key = keys[index];
-        string += KEY_MARKER + ';' + key.length + ';' + key;
-        string += _CPPropertyListSerializeObject(((aDictionary)._buckets[key]), serializers);
+        newBuckets[key] = buckets[key];
     }
-    return string + END_MARKER + ';';
+    return newDictionary;
 }
-var OBJJ_PLATFORMS = ["browser", "objj"];
-var OBJJFileNotFoundException = "OBJJFileNotFoundException",
-    OBJJExecutableNotFoundException = "OBJJExecutableNotFoundException";
-var objj_files = { },
-    objj_bundles = { },
-    objj_bundlesForClass = { },
-    objj_searches = { };
-var OBJJ_NO_FILE = {};
-if (typeof OBJJ_INCLUDE_PATHS === "undefined")
-    OBJJ_INCLUDE_PATHS = ["Frameworks", "SomethingElse"];
-var OBJJ_BASE_URI = "";
-if (window.opera) {
-var DOMBaseElement = document.getElementsByTagName("base")[0];
-if (DOMBaseElement)
-    OBJJ_BASE_URI = (DOMBaseElement.getAttribute('href')).substr(0, (DOMBaseElement.getAttribute('href')).lastIndexOf('/') + 1);
-}
-function objj_file()
+CFDictionary.prototype.containsKey = function( aKey)
 {
-    this.path = NULL;
-    this.bundle = NULL;
-    this.included = NO;
-    this.contents = NULL;
-    this.fragments = NULL;
+    return hasOwnProperty.apply(this._buckets, [aKey]);
 }
-function objj_bundle()
+CFDictionary.prototype.containsKey.displayName = "CFDictionary.prototype.containsKey";
+CFDictionary.prototype.containsValue = function( anObject)
 {
-    this.path = NULL;
-    this.info = NULL;
-    this.__address = (OBJECT_COUNT++);
+    var keys = this._keys,
+        buckets = this._buckets,
+        index = 0,
+        count = keys.length;
+    for (; index < count; ++index)
+        if (buckets[keys] === anObject)
+            return YES;
+    return NO;
 }
-function objj_getBundleWithPath(aPath)
+CFDictionary.prototype.containsValue.displayName = "CFDictionary.prototype.containsValue";
+CFDictionary.prototype.count = function()
 {
-    return objj_bundles[aPath];
+    return this._count;
 }
-function objj_setBundleForPath(aPath, aBundle)
+CFDictionary.prototype.count.displayName = "CFDictionary.prototype.count";
+CFDictionary.prototype.countOfKey = function( aKey)
 {
-    objj_bundles[aPath] = aBundle;
+    return this.containsKey(aKey) ? 1 : 0;
 }
-function objj_bundleForClass(aClass)
+CFDictionary.prototype.countOfKey.displayName = "CFDictionary.prototype.countOfKey";
+CFDictionary.prototype.countOfValue = function( anObject)
 {
-    return objj_bundlesForClass[aClass.name];
+    var keys = this._keys,
+        buckets = this._buckets,
+        index = 0,
+        count = keys.length,
+        countOfValue = 0;
+    for (; index < count; ++index)
+        if (buckets[keys] === anObject)
+            return ++countOfValue;
+    return countOfValue;
 }
-function objj_addClassForBundle(aClass, aBundle)
+CFDictionary.prototype.countOfValue.displayName = "CFDictionary.prototype.countOfValue";
+CFDictionary.prototype.keys = function()
 {
-    objj_bundlesForClass[aClass.name] = aBundle;
+    return this._keys.slice();
 }
-function objj_request_file(aFilePath, shouldSearchLocally, aCallback)
+CFDictionary.prototype.keys.displayName = "CFDictionary.prototype.keys";
+CFDictionary.prototype.valueForKey = function( aKey)
 {
-    new objj_search(aFilePath, shouldSearchLocally, aCallback).attemptNextSearchPath();
+    var buckets = this._buckets;
+    if (!hasOwnProperty.apply(buckets, [aKey]))
+        return nil;
+    return buckets[aKey];
 }
-var objj_search = function(aFilePath, shouldSearchLocally, aCallback)
+CFDictionary.prototype.valueForKey.displayName = "CFDictionary.prototype.valueForKey";
+CFDictionary.prototype.toString = function()
 {
-    this.filePath = aFilePath;
-    this.bundle = NULL;
-    this.bundleObservers = [];
-    this.searchPath = NULL;
-    this.searchedPaths = [];
-    this.includePathsIndex = shouldSearchLocally ? -1 : 0;
-    this.searchRequest = NULL;
-    this.didCompleteCallback = aCallback;
-}
-objj_search.prototype.nextSearchPath = function()
-{
-    var path = objj_standardize_path((this.includePathsIndex == -1 ? "" : OBJJ_INCLUDE_PATHS[this.includePathsIndex] + '/') + this.filePath);
-    ++this.includePathsIndex;
-    return path;
-}
-objj_search.prototype.attemptNextSearchPath = function()
-{
-    var searchPath = this.nextSearchPath(),
-        file = objj_files[searchPath];
-    objj_alert("Will attempt to find " + this.filePath + " at " + searchPath);
-    if (file)
+    var string = "{\n",
+        keys = this._keys,
+        index = 0,
+        count = this._count;
+    for (; index < count; ++index)
     {
-        objj_alert("The file request at " + this.filePath + " has already been downloaded at " + searchPath);
-        if (this.didCompleteCallback)
-            this.didCompleteCallback(file);
+        var key = keys[index];
+        string += "\t" + key + " = \"" + String(this.valueForKey(key)).split('\n').join("\n\t") + "\"\n";
+    }
+    return string + "}";
+}
+CFDictionary.prototype.toString.displayName = "CFDictionary.prototype.toString";
+CFMutableDictionary = function( aDictionary)
+{
+    CFDictionary.apply(this, []);
+}
+CFMutableDictionary.prototype = new CFDictionary();
+CFMutableDictionary.prototype.copy = function()
+{
+    return this.mutableCopy();
+}
+CFMutableDictionary.prototype.addValueForKey = function( aKey, aValue)
+{
+    if (this.containsKey(aKey))
         return;
-    }
-    var existingSearch = objj_searches[searchPath];
-    if (existingSearch)
-    {
-        if (this.didCompleteCallback)
-            existingSearch.didCompleteCallback = this.didCompleteCallback;
-        return;
-    }
-    this.searchedPaths.push(this.searchPath = searchPath);
-    var infoPath = objj_standardize_path((searchPath).substr(0, (searchPath).lastIndexOf('/') + 1) + "Info.plist"),
-        bundle = objj_bundles[infoPath];
-    if (bundle)
-    {
-        this.bundle = bundle;
-        this.request(searchPath, this.didReceiveSearchResponse);
-    }
+    ++this._count;
+    this._keys.push(aKey);
+    this._buckets[aKey] = aValue;
+}
+CFMutableDictionary.prototype.addValueForKey.displayName = "CFMutableDictionary.prototype.addValueForKey";
+CFMutableDictionary.prototype.removeValueForKey = function( aKey)
+{
+    var indexOfKey = -1;
+    if (indexOf)
+        indexOfKey = indexOf.call(this._keys, aKey);
     else
     {
-        var existingBundleSearch = objj_searches[infoPath];
-        if (existingBundleSearch)
-        {
-            --this.includePathsIndex;
-            this.searchedPaths.pop();
-             if (this.searchedPaths.length)
-                 this.searchPath = this.searchedPaths[this.searchedPaths.length - 1];
-             else
-                 this.searchPath = NULL;
-            existingBundleSearch.bundleObservers.push(this);
-            return;
-        }
-        else
-        {
-            this.bundleObservers.push(this);
-            this.request(infoPath, this.didReceiveBundleResponse);
-            if (!this.searchReplaced)
-                this.searchRequest = this.request(searchPath, this.didReceiveSearchResponse);
-        }
-    }
-}
-if (window.ActiveXObject) {
-objj_search.responseCallbackLock = NO;
-objj_search.responseCallbackQueue = [];
-objj_search.removeResponseCallbackForFilePath = function(aFilePath)
-{
-    var queue = objj_search.responseCallbackQueue,
-        index = queue.length;
-    while (index--)
-        if (queue[index][3] == aFilePath)
-        {
-            queue.splice(index, 1);
-            return;
-        }
-}
-objj_search.serializeResponseCallback = function(aMethod, aSearch, aResponse, aFilePath)
-{
-    var queue = objj_search.responseCallbackQueue;
-    queue.push([aMethod, aSearch, aResponse, aFilePath]);
-    if (objj_search.responseCallbackLock)
-        return;
-    objj_search.responseCallbackLock = YES;
-    while (queue.length)
-    {
-        var callback = queue[0];
-        queue.splice(0, 1);
-        callback[0].apply(callback[1], [callback[2]]);
-    }
-    objj_search.responseCallbackLock = NO;
-}
-}
-objj_search.prototype.request = function(aFilePath, aMethod)
-{
-    var search = this,
-        isPlist = aFilePath.substr(aFilePath.length - 6, 6) == ".plist",
-        request = objj_request_xmlhttp(),
-        response = objj_response_xmlhttp();
-    response.filePath = aFilePath;
-    request.onreadystatechange = function()
-    {
-        if (request.readyState == 4)
-        {
-            if (response.success = (request.status != 404 && request.responseText && request.responseText.length) ? YES : NO)
+        var keys = this._keys,
+            index = 0,
+            count = keys.length;
+        for (; index < count; ++index)
+            if (keys[index] === aKey)
             {
-                if (window.files_total)
-                {
-                    if (!window.files_loaded)
-                        window.files_loaded = 0;
-                    window.files_loaded += request.responseText.length;
-                    if (window.update_progress)
-                        window.update_progress(window.files_loaded / window.files_total);
-                }
-                if (isPlist)
-                    response.xml = objj_standardize_xml(request);
-                else
-                    response.text = request.responseText;
+                indexOfKey = index;
+                break;
             }
-            if (window.ActiveXObject)
-                objj_search.serializeResponseCallback(aMethod, search, response, aFilePath);
-            else
-                aMethod.apply(search, [response]);
-        }
     }
-    objj_searches[aFilePath] = this;
-    if (request.overrideMimeType && isPlist)
-        request.overrideMimeType('text/xml');
-    if (window.opera && aFilePath.charAt(0) != '/')
-        aFilePath = OBJJ_BASE_URI + aFilePath;
-    try
-    {
-        request.open("GET", aFilePath, YES);
-        request.send("");
-    }
-    catch (anException)
-    {
-        response.success = NO;
-        if (window.ActiveXObject)
-            objj_search.serializeResponseCallback(aMethod, search, response, aFilePath);
-        else
-            aMethod.apply(search, [response]);
-    }
-    return request;
-}
-objj_search.prototype.didReceiveSearchResponse = function(aResponse)
-{
-    if (!this.bundle)
-    {
-        this.cachedSearchResponse = aResponse;
+    if (indexOfKey === -1)
         return;
-    }
-    if (aResponse.success)
-    {
-        file = new objj_file();
-        file.path = aResponse.filePath;
-        file.bundle = this.bundle
-        file.contents = aResponse.text;
-        this.complete(file);
-    }
-    else if (this.includePathsIndex < OBJJ_INCLUDE_PATHS.length)
-    {
-        this.bundle = NULL;
-        this.attemptNextSearchPath();
-    }
-    else
-        objj_exception_throw(new objj_exception(OBJJFileNotFoundException, "*** Could not locate file named \"" + this.filePath + "\" in search paths."));
+    --this._count;
+    this._keys.splice(indexOfKey, 1);
+    delete this._buckets[aKey];
 }
-objj_search.prototype.didReceiveBundleResponse = function(aResponse)
+CFMutableDictionary.prototype.removeValueForKey.displayName = "CFMutableDictionary.prototype.removeValueForKey";
+CFMutableDictionary.prototype.removeAllValues = function()
 {
-    var bundle = new objj_bundle();
-    bundle.path = aResponse.filePath;
-    if (aResponse.success)
-        bundle.info = CPPropertyListCreateFromXMLData(aResponse.xml);
+    this._count = 0;
+    this._keys = [];
+    this._buckets = { };
+}
+CFMutableDictionary.prototype.removeAllValues.displayName = "CFMutableDictionary.prototype.removeAllValues";
+CFMutableDictionary.prototype.replaceValueForKey = function( aKey, aValue)
+{
+    if (!this.containsKey(aKey))
+        return;
+    this._buckets[aKey] = aValue;
+}
+CFMutableDictionary.prototype.replaceValueForKey.displayName = "CFMutableDictionary.prototype.replaceValueForKey";
+CFMutableDictionary.prototype.setValueForKey = function( aKey, aValue)
+{
+    if (aValue === nil || aValue === undefined)
+        this.removeValueForKey(aKey);
+    else if (this.containsKey(aKey))
+        this.replaceValueForKey(aKey, aValue);
     else
-        bundle.info = new objj_dictionary();
-    objj_bundles[aResponse.filePath] = bundle;
-    var executablePath = ((bundle.info)._buckets["CPBundleExecutable"]);
-    if (executablePath)
+        this.addValueForKey(aKey, aValue);
+}
+CFMutableDictionary.prototype.setValueForKey.displayName = "CFMutableDictionary.prototype.setValueForKey";
+CFData = function()
+{
+    this._rawString = NULL;
+    this._propertyList = NULL;
+    this._propertyListFormat = NULL;
+    this._JSONObject = NULL;
+    this._bytes = NULL;
+    this._base64 = NULL;
+}
+CFData.prototype.propertyList = function()
+{
+    if (!this._propertyList)
+        this._propertyList = CFPropertyList.propertyListFromString(this.rawString());
+    return this._propertyList;
+}
+CFData.prototype.JSONObject = function()
+{
+    if (!this._JSONObject)
     {
-        var platform = NULL,
-            platforms = ((bundle.info)._buckets["CPBundlePlatforms"]),
-            index = 0,
-            count = OBJJ_PLATFORMS.length,
-            innerCount = platforms.length;
-        for(; index < count; ++index)
+        try
         {
-            var innerIndex = 0,
-                currentPlatform = OBJJ_PLATFORMS[index];
-            for (; innerIndex < innerCount; ++innerIndex)
-                if(currentPlatform === platforms[innerIndex])
-                {
-                    platform = currentPlatform;
-                    break;
-                }
+            this._JSONObject = JSON.parse(this.rawString());
         }
-        executablePath = platform + ".platform/" + executablePath;
-        this.request((aResponse.filePath).substr(0, (aResponse.filePath).lastIndexOf('/') + 1) + executablePath, this.didReceiveExecutableResponse);
-        var directory = (aResponse.filePath).substr(0, (aResponse.filePath).lastIndexOf('/') + 1),
-            replacedFiles = ((bundle.info)._buckets["CPBundleReplacedFiles"]),
+        catch (anException)
+        {
+        }
+    }
+    return this._JSONObject;
+}
+CFData.prototype.rawString = function()
+{
+    if (this._rawString === NULL)
+    {
+        if (this._propertyList)
+            this._rawString = CFPropertyList.stringFromPropertyList(this._propertyList, this._propertyListFormat);
+        else if (this._JSONObject)
+            this._rawString = JSON.stringify(this._JSONObject);
+        else
+            throw new Error("Can't convert data to string.");
+    }
+    return this._rawString;
+}
+CFData.prototype.bytes = function()
+{
+    return this._bytes;
+}
+CFData.prototype.base64 = function()
+{
+    return this._base64;
+}
+CFMutableData = function()
+{
+    CFData.call(this);
+}
+CFMutableData.prototype = new CFData();
+function clearMutableData( aData)
+{
+    this._rawString = NULL;
+    this._propertyList = NULL;
+    this._propertyListFormat = NULL;
+    this._JSONObject = NULL;
+    this._bytes = NULL;
+    this._base64 = NULL;
+}
+CFMutableData.prototype.setPropertyList = function( aPropertyList, aFormat)
+{
+    clearMutableData(this);
+    this._propertyList = aPropertyList;
+    this._propertyListFormat = aFormat;
+}
+CFMutableData.prototype.setJSONObject = function( anObject)
+{
+    clearMutableData(this);
+    this._JSONObject = anObject
+}
+CFMutableData.prototype.setRawString = function( aString)
+{
+    clearMutableData(this);
+    this._rawString = aString;
+}
+CFMutableData.prototype.setBytes = function( bytes)
+{
+    clearMutableData(this);
+    this._bytes = bytes;
+}
+CFMutableData.prototype.setBase64String = function( aBase64String)
+{
+    clearMutableData(this);
+    this._base64 = aBase64String;
+}
+var base64_map_to = [
+        "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+        "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+        "0","1","2","3","4","5","6","7","8","9","+","/","="],
+    base64_map_from = [];
+for (var i = 0; i < base64_map_to.length; i++)
+    base64_map_from[base64_map_to[i].charCodeAt(0)] = i;
+CFData.decodeBase64ToArray = function(input, strip)
+{
+    if (strip)
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+    var pad = (input[input.length-1] == "=" ? 1 : 0) + (input[input.length-2] == "=" ? 1 : 0),
+        length = input.length,
+        output = [];
+    var i = 0;
+    while (i < length)
+    {
+        var bits = (base64_map_from[input.charCodeAt(i++)] << 18) |
+                    (base64_map_from[input.charCodeAt(i++)] << 12) |
+                    (base64_map_from[input.charCodeAt(i++)] << 6) |
+                    (base64_map_from[input.charCodeAt(i++)]);
+        output.push((bits & 0xFF0000) >> 16);
+        output.push((bits & 0xFF00) >> 8);
+        output.push(bits & 0xFF);
+    }
+    if (pad > 0)
+        return output.slice(0, -1 * pad);
+    return output;
+}
+CFData.encodeBase64Array = function(input)
+{
+    var pad = (3 - (input.length % 3)) % 3,
+        length = input.length + pad,
+        output = [];
+    if (pad > 0) input.push(0);
+    if (pad > 1) input.push(0);
+    var i = 0;
+    while (i < length)
+    {
+        var bits = (input[i++] << 16) |
+                    (input[i++] << 8) |
+                    (input[i++]);
+        output.push(base64_map_to[(bits & 0xFC0000) >> 18]);
+        output.push(base64_map_to[(bits & 0x3F000) >> 12]);
+        output.push(base64_map_to[(bits & 0xFC0) >> 6]);
+        output.push(base64_map_to[bits & 0x3F]);
+    }
+    if (pad > 0)
+    {
+        output[output.length-1] = "=";
+        input.pop();
+    }
+    if (pad > 1)
+    {
+        output[output.length-2] = "=";
+        input.pop();
+    }
+    return output.join("");
+}
+CFData.decodeBase64ToString = function(input, strip)
+{
+    return CFData.bytesToString(CFData.decodeBase64ToArray(input, strip));
+}
+CFData.bytesToString = function(bytes)
+{
+    return String.fromCharCode.apply(NULL, bytes);
+}
+CFData.encodeBase64String = function(input)
+{
+    var temp = [];
+    for (var i = 0; i < input.length; i++)
+        temp.push(input.charCodeAt(i));
+    return CFData.encodeBase64Array(temp);
+}
+var CFURLsForCachedUIDs,
+    CFURLPartsForURLStrings,
+    CFURLCachingEnableCount = 0;
+function enableCFURLCaching()
+{
+    if (++CFURLCachingEnableCount !== 1)
+        return;
+    CFURLsForCachedUIDs = { };
+    CFURLPartsForURLStrings = { };
+}
+function disableCFURLCaching()
+{
+    CFURLCachingEnableCount = MAX(CFURLCachingEnableCount - 1, 0);
+    if (CFURLCachingEnableCount !== 0)
+        return;
+    delete CFURLsForCachedUIDs;
+    delete CFURLPartsForURLStrings;
+}
+var URL_RE = new RegExp(
+    "^" +
+    "(?:" +
+        "([^:/?#]+):" +
+    ")?" +
+    "(?:" +
+        "(//)" +
+        "(" +
+            "(?:" +
+                "(" +
+                    "([^:@]*)" +
+                    ":?" +
+                    "([^:@]*)" +
+                ")?" +
+                "@" +
+            ")?" +
+            "([^:/?#]*)" +
+            "(?::(\\d*))?" +
+        ")" +
+    ")?" +
+    "([^?#]*)" +
+    "(?:\\?([^#]*))?" +
+    "(?:#(.*))?"
+);
+var URI_KEYS =
+[
+    "url",
+    "scheme",
+    "authorityRoot",
+    "authority",
+        "userInfo",
+            "user",
+            "password",
+        "domain",
+        "portNumber",
+    "path",
+    "queryString",
+    "fragment"
+];
+function CFURLGetParts( aURL)
+{
+    if (aURL._parts)
+        return aURL._parts;
+    var URLString = aURL.string(),
+        isMHTMLURL = URLString.match(/^mhtml:/);
+    if (isMHTMLURL)
+        URLString = URLString.substr("mhtml:".length);
+    if (CFURLCachingEnableCount > 0 && hasOwnProperty.call(CFURLPartsForURLStrings, URLString))
+    {
+        aURL._parts = CFURLPartsForURLStrings[URLString];
+        return aURL._parts;
+    }
+    aURL._parts = { };
+    var parts = aURL._parts,
+        results = URL_RE.exec(URLString),
+        index = results.length;
+    while (index--)
+        parts[URI_KEYS[index]] = results[index] || NULL;
+    parts.portNumber = parseInt(parts.portNumber, 10);
+    if (isNaN(parts.portNumber))
+        parts.portNumber = -1;
+    parts.pathComponents = [];
+    if (parts.path)
+    {
+        var split = parts.path.split("/"),
+            pathComponents = parts.pathComponents,
             index = 0,
-            count = replacedFiles.length;
+            count = split.length;
         for (; index < count; ++index)
         {
-            objj_searches[directory + replacedFiles[index]] = this;
-            if (directory + replacedFiles[index] == this.searchPath)
-            {
-                this.searchReplaced = YES;
-                if (!this.cachedSearchResponse && this.searchRequest)
-                    this.searchRequest.abort();
-                if (window.ActiveXObject)
-                    objj_search.removeResponseCallbackForFilePath(this.searchPath);
-            }
+            var component = split[index];
+            if (component)
+                pathComponents.push(component);
+            else if (index === 0)
+                pathComponents.push("/");
+        }
+        parts.pathComponents = pathComponents;
+    }
+    if (isMHTMLURL)
+    {
+        parts.url = "mhtml:" + parts.url;
+        parts.scheme = "mhtml:" + parts.scheme;
+    }
+    if (CFURLCachingEnableCount > 0)
+        CFURLPartsForURLStrings[URLString] = parts;
+    return parts;
+}
+CFURL = function( aURL, aBaseURL)
+{
+    aURL = aURL || "";
+    if (aURL instanceof CFURL)
+    {
+        if (!aBaseURL)
+            return aURL;
+        var existingBaseURL = aURL.baseURL();
+        if (existingBaseURL)
+            aBaseURL = new CFURL(existingBaseURL.absoluteURL(), aBaseURL);
+        aURL = aURL.string();
+    }
+    if (CFURLCachingEnableCount > 0)
+    {
+        var cacheUID = aURL + " " + (aBaseURL && aBaseURL.UID() || "");
+        if (hasOwnProperty.call(CFURLsForCachedUIDs, cacheUID))
+            return CFURLsForCachedUIDs[cacheUID];
+        CFURLsForCachedUIDs[cacheUID] = this;
+    }
+    if (aURL.match(/^data:/))
+    {
+        var parts = { },
+            index = URI_KEYS.length;
+        while (index--)
+            parts[URI_KEYS[index]] = "";
+        parts.url = aURL;
+        parts.scheme = "data";
+        parts.pathComponents = [];
+        this._parts = parts;
+        this._standardizedURL = this;
+        this._absoluteURL = this;
+    }
+    this._UID = objj_generateObjectUID();
+    this._string = aURL;
+    this._baseURL = aBaseURL;
+}
+CFURL.displayName = "CFURL";
+CFURL.prototype.UID = function()
+{
+    return this._UID;
+}
+CFURL.prototype.UID.displayName = "CFURL.prototype.UID";
+var URLMap = { };
+CFURL.prototype.mappedURL = function()
+{
+    return URLMap[this.absoluteString()] || this;
+}
+CFURL.prototype.mappedURL.displayName = "CFURL.prototype.mappedURL";
+CFURL.setMappedURLForURL = function( fromURL, toURL)
+{
+    URLMap[fromURL.absoluteString()] = toURL;
+}
+CFURL.setMappedURLForURL.displayName = "CFURL.setMappedURLForURL";
+CFURL.prototype.schemeAndAuthority = function()
+{
+    var string = "",
+        scheme = this.scheme();
+    if (scheme)
+        string += scheme + ":";
+    var authority = this.authority();
+    if (authority)
+        string += "//" + authority;
+    return string;
+}
+CFURL.prototype.schemeAndAuthority.displayName = "CFURL.prototype.schemeAndAuthority";
+CFURL.prototype.absoluteString = function()
+{
+    if (this._absoluteString === undefined)
+        this._absoluteString = this.absoluteURL().string();
+    return this._absoluteString;
+}
+CFURL.prototype.absoluteString.displayName = "CFURL.prototype.absoluteString";
+CFURL.prototype.toString = function()
+{
+    return this.absoluteString();
+}
+CFURL.prototype.toString.displayName = "CFURL.prototype.toString";
+function resolveURL(aURL)
+{
+    aURL = aURL.standardizedURL();
+    var baseURL = aURL.baseURL();
+    if (!baseURL)
+        return aURL;
+    var parts = ((aURL)._parts || CFURLGetParts(aURL)),
+        resolvedParts,
+        absoluteBaseURL = baseURL.absoluteURL(),
+        baseParts = ((absoluteBaseURL)._parts || CFURLGetParts(absoluteBaseURL));
+    if (parts.scheme || parts.authority)
+        resolvedParts = parts;
+    else
+    {
+        resolvedParts = { };
+        resolvedParts.scheme = baseParts.scheme;
+        resolvedParts.authority = baseParts.authority;
+        resolvedParts.userInfo = baseParts.userInfo;
+        resolvedParts.user = baseParts.user;
+        resolvedParts.password = baseParts.password;
+        resolvedParts.domain = baseParts.domain;
+        resolvedParts.portNumber = baseParts.portNumber;
+        resolvedParts.queryString = parts.queryString;
+        resolvedParts.fragment = parts.fragment;
+        var pathComponents = parts.pathComponents
+        if (pathComponents.length && pathComponents[0] === "/")
+        {
+            resolvedParts.path = parts.path;
+            resolvedParts.pathComponents = pathComponents;
+        }
+        else
+        {
+            var basePathComponents = baseParts.pathComponents,
+                resolvedPathComponents = basePathComponents.concat(pathComponents);
+            if (!baseURL.hasDirectoryPath() && basePathComponents.length)
+                resolvedPathComponents.splice(basePathComponents.length - 1, 1);
+            if (pathComponents.length && pathComponents[0] === "..")
+                standardizePathComponents(resolvedPathComponents, YES);
+            resolvedParts.pathComponents = resolvedPathComponents;
+            resolvedParts.path = pathFromPathComponents(resolvedPathComponents, pathComponents.length <= 0 || aURL.hasDirectoryPath());
         }
     }
-    this.bundle = bundle;
-    var observers = this.bundleObservers,
+    var resolvedString = URLStringFromParts(resolvedParts),
+        resolvedURL = new CFURL(resolvedString);
+    resolvedURL._parts = resolvedParts;
+    resolvedURL._standardizedURL = resolvedURL;
+    resolvedURL._standardizedString = resolvedString;
+    resolvedURL._absoluteURL = resolvedURL;
+    resolvedURL._absoluteString = resolvedString;
+    return resolvedURL;
+}
+function pathFromPathComponents( pathComponents, isDirectoryPath)
+{
+    var path = pathComponents.join("/");
+    if (path.length && path.charAt(0) === "/")
+        path = path.substr(1);
+    if (isDirectoryPath)
+        path += "/";
+    return path;
+}
+function standardizePathComponents( pathComponents, inPlace)
+{
+    var index = 0,
+        resultIndex = 0,
+        count = pathComponents.length,
+        result = inPlace ? pathComponents : [];
+    for (; index < count; ++index)
+    {
+        var component = pathComponents[index];
+        if (component === "" || component === ".")
+             continue;
+        if (component !== ".." || resultIndex === 0 || result[resultIndex - 1] === "..")
+        {
+                result[resultIndex] = component;
+            resultIndex++;
+            continue;
+        }
+        if (resultIndex > 0 && result[resultIndex - 1] !== "/")
+            --resultIndex;
+    }
+    result.length = resultIndex;
+    return result;
+}
+function URLStringFromParts( parts)
+{
+    var string = "",
+        scheme = parts.scheme;
+    if (scheme)
+        string += scheme + ":";
+    var authority = parts.authority;
+    if (authority)
+        string += "//" + authority;
+    string += parts.path;
+    var queryString = parts.queryString;
+    if (queryString)
+        string += "?" + queryString;
+    var fragment = parts.fragment;
+    if (fragment)
+        string += "#" + fragment;
+    return string;
+}
+CFURL.prototype.absoluteURL = function()
+{
+    if (this._absoluteURL === undefined)
+        this._absoluteURL = resolveURL(this);
+    return this._absoluteURL;
+}
+CFURL.prototype.absoluteURL.displayName = "CFURL.prototype.absoluteURL";
+CFURL.prototype.standardizedURL = function()
+{
+    if (this._standardizedURL === undefined)
+    {
+        var parts = ((this)._parts || CFURLGetParts(this)),
+            pathComponents = parts.pathComponents,
+            standardizedPathComponents = standardizePathComponents(pathComponents, NO);
+        var standardizedPath = pathFromPathComponents(standardizedPathComponents, this.hasDirectoryPath());
+        if (parts.path === standardizedPath)
+            this._standardizedURL = this;
+        else
+        {
+            var standardizedParts = CFURLPartsCreateCopy(parts);
+            standardizedParts.pathComponents = standardizedPathComponents;
+            standardizedParts.path = standardizedPath;
+            var standardizedURL = new CFURL(URLStringFromParts(standardizedParts), this.baseURL());
+            standardizedURL._parts = standardizedParts;
+            standardizedURL._standardizedURL = standardizedURL;
+            this._standardizedURL = standardizedURL;
+        }
+    }
+    return this._standardizedURL;
+}
+CFURL.prototype.standardizedURL.displayName = "CFURL.prototype.standardizedURL";
+function CFURLPartsCreateCopy(parts)
+{
+    var copiedParts = { },
+        count = URI_KEYS.length;
+    while (count--)
+    {
+        var partName = URI_KEYS[count];
+        copiedParts[partName] = parts[partName];
+    }
+    return copiedParts;
+}
+CFURL.prototype.string = function()
+{
+    return this._string;
+}
+CFURL.prototype.string.displayName = "CFURL.prototype.string";
+CFURL.prototype.authority = function()
+{
+    var authority = ((this)._parts || CFURLGetParts(this)).authority;
+    if (authority)
+        return authority;
+    var baseURL = this.baseURL();
+    return baseURL && baseURL.authority() || "";
+}
+CFURL.prototype.authority.displayName = "CFURL.prototype.authority";
+CFURL.prototype.hasDirectoryPath = function()
+{
+    var hasDirectoryPath = this._hasDirectoryPath;
+    if (hasDirectoryPath === undefined)
+    {
+        var path = this.path();
+        if (!path)
+            return NO;
+        if (path.charAt(path.length - 1) === "/")
+            return YES;
+        var lastPathComponent = this.lastPathComponent();
+        hasDirectoryPath = lastPathComponent === "." || lastPathComponent === "..";
+        this._hasDirectoryPath = hasDirectoryPath;
+    }
+    return this._hasDirectoryPath;
+}
+CFURL.prototype.hasDirectoryPath.displayName = "CFURL.prototype.hasDirectoryPath";
+CFURL.prototype.hostName = function()
+{
+    return this.authority();
+}
+CFURL.prototype.hostName.displayName = "CFURL.prototype.hostName";
+CFURL.prototype.fragment = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).fragment;
+}
+CFURL.prototype.fragment.displayName = "CFURL.prototype.fragment";
+CFURL.prototype.lastPathComponent = function()
+{
+    if (this._lastPathComponent === undefined)
+    {
+        var pathComponents = this.pathComponents(),
+            pathComponentCount = pathComponents.length;
+        if (!pathComponentCount)
+            this._lastPathComponent = "";
+        else
+            this._lastPathComponent = pathComponents[pathComponentCount - 1];
+    }
+    return this._lastPathComponent;
+}
+CFURL.prototype.lastPathComponent.displayName = "CFURL.prototype.lastPathComponent";
+CFURL.prototype.path = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).path;
+}
+CFURL.prototype.path.displayName = "CFURL.prototype.path";
+CFURL.prototype.pathComponents = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).pathComponents;
+}
+CFURL.prototype.pathComponents.displayName = "CFURL.prototype.pathComponents";
+CFURL.prototype.pathExtension = function()
+{
+    var lastPathComponent = this.lastPathComponent();
+    if (!lastPathComponent)
+        return NULL;
+    lastPathComponent = lastPathComponent.replace(/^\.*/, '');
+    var index = lastPathComponent.lastIndexOf(".");
+    return index <= 0 ? "" : lastPathComponent.substring(index + 1);
+}
+CFURL.prototype.pathExtension.displayName = "CFURL.prototype.pathExtension";
+CFURL.prototype.queryString = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).queryString;
+}
+CFURL.prototype.queryString.displayName = "CFURL.prototype.queryString";
+CFURL.prototype.scheme = function()
+{
+    var scheme = this._scheme;
+    if (scheme === undefined)
+    {
+        scheme = ((this)._parts || CFURLGetParts(this)).scheme;
+        if (!scheme)
+        {
+            var baseURL = this.baseURL();
+            scheme = baseURL && baseURL.scheme();
+        }
+        this._scheme = scheme;
+    }
+    return scheme;
+}
+CFURL.prototype.scheme.displayName = "CFURL.prototype.scheme";
+CFURL.prototype.user = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).user;
+}
+CFURL.prototype.user.displayName = "CFURL.prototype.user";
+CFURL.prototype.password = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).password;
+}
+CFURL.prototype.password.displayName = "CFURL.prototype.password";
+CFURL.prototype.portNumber = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).portNumber;
+}
+CFURL.prototype.portNumber.displayName = "CFURL.prototype.portNumber";
+CFURL.prototype.domain = function()
+{
+    return ((this)._parts || CFURLGetParts(this)).domain;
+}
+CFURL.prototype.domain.displayName = "CFURL.prototype.domain";
+CFURL.prototype.baseURL = function()
+{
+    return this._baseURL;
+}
+CFURL.prototype.baseURL.displayName = "CFURL.prototype.baseURL";
+CFURL.prototype.asDirectoryPathURL = function()
+{
+    if (this.hasDirectoryPath())
+        return this;
+    return new CFURL(this.lastPathComponent() + "/", this);
+}
+CFURL.prototype.asDirectoryPathURL.displayName = "CFURL.prototype.asDirectoryPathURL";
+function CFURLGetResourcePropertiesForKeys( aURL)
+{
+    if (!aURL._resourcePropertiesForKeys)
+        aURL._resourcePropertiesForKeys = new CFMutableDictionary();
+    return aURL._resourcePropertiesForKeys;
+}
+CFURL.prototype.resourcePropertyForKey = function( aKey)
+{
+    return CFURLGetResourcePropertiesForKeys(this).valueForKey(aKey);
+}
+CFURL.prototype.resourcePropertyForKey.displayName = "CFURL.prototype.resourcePropertyForKey";
+CFURL.prototype.setResourcePropertyForKey = function( aKey, aValue)
+{
+    CFURLGetResourcePropertiesForKeys(this).setValueForKey(aKey, aValue);
+}
+CFURL.prototype.setResourcePropertyForKey.displayName = "CFURL.prototype.setResourcePropertyForKey";
+CFURL.prototype.staticResourceData = function()
+{
+    var data = new CFMutableData();
+    data.setRawString(StaticResource.resourceAtURL(this).contents());
+    return data;
+}
+CFURL.prototype.staticResourceData.displayName = "CFURL.prototype.staticResourceData";
+function MarkedStream( aString)
+{
+    this._string = aString;
+    var index = aString.indexOf(";");
+    this._magicNumber = aString.substr(0, index);
+    this._location = aString.indexOf(";", ++index);
+    this._version = aString.substring(index, this._location++);
+}
+MarkedStream.prototype.magicNumber = function()
+{
+    return this._magicNumber;
+}
+MarkedStream.prototype.magicNumber.displayName = "MarkedStream.prototype.magicNumber";
+MarkedStream.prototype.version = function()
+{
+    return this._version;
+}
+MarkedStream.prototype.version.displayName = "MarkedStream.prototype.version";
+MarkedStream.prototype.getMarker = function()
+{
+    var string = this._string,
+        location = this._location;
+    if (location >= string.length)
+        return null;
+    var next = string.indexOf(';', location);
+    if (next < 0)
+        return null;
+    var marker = string.substring(location, next);
+    if (marker === 'e')
+        return null;
+    this._location = next + 1;
+    return marker;
+}
+MarkedStream.prototype.getMarker.displayName = "MarkedStream.prototype.getMarker";
+MarkedStream.prototype.getString = function()
+{
+    var string = this._string,
+        location = this._location;
+    if (location >= string.length)
+        return null;
+    var next = string.indexOf(';', location);
+    if (next < 0)
+        return null;
+    var size = parseInt(string.substring(location, next), 10),
+        text = string.substr(next + 1, size);
+    this._location = next + 1 + size;
+    return text;
+}
+MarkedStream.prototype.getString.displayName = "MarkedStream.prototype.getString";
+var CFBundleUnloaded = 0,
+    CFBundleLoading = 1 << 0,
+    CFBundleLoadingInfoPlist = 1 << 1,
+    CFBundleLoadingExecutable = 1 << 2,
+    CFBundleLoadingSpritedImages = 1 << 3,
+    CFBundleLoaded = 1 << 4;
+var CFBundlesForURLStrings = { },
+    CFBundlesForClasses = { },
+    CFCacheBuster = new Date().getTime(),
+    CFTotalBytesLoaded = 0,
+    CPApplicationSizeInBytes = 0;
+CFBundle = function( aURL)
+{
+    aURL = makeAbsoluteURL(aURL).asDirectoryPathURL();
+    var URLString = aURL.absoluteString(),
+        existingBundle = CFBundlesForURLStrings[URLString];
+    if (existingBundle)
+        return existingBundle;
+    CFBundlesForURLStrings[URLString] = this;
+    this._bundleURL = aURL;
+    this._resourcesDirectoryURL = new CFURL("Resources/", aURL);
+    this._staticResource = NULL;
+    this._isValid = NO;
+    this._loadStatus = CFBundleUnloaded;
+    this._loadRequests = [];
+    this._infoDictionary = new CFDictionary();
+    this._eventDispatcher = new EventDispatcher(this);
+}
+CFBundle.displayName = "CFBundle";
+CFBundle.environments = function()
+{
+    return ["Browser","ObjJ"];
+}
+CFBundle.environments.displayName = "CFBundle.environments";
+CFBundle.bundleContainingURL = function( aURL)
+{
+    aURL = new CFURL(".", makeAbsoluteURL(aURL));
+    var previousURLString,
+        URLString = aURL.absoluteString();
+    while (!previousURLString || previousURLString !== URLString)
+    {
+        var bundle = CFBundlesForURLStrings[URLString];
+        if (bundle && bundle._isValid)
+            return bundle;
+        aURL = new CFURL("..", aURL);
+        previousURLString = URLString;
+        URLString = aURL.absoluteString();
+    }
+    return NULL;
+}
+CFBundle.bundleContainingURL.displayName = "CFBundle.bundleContainingURL";
+CFBundle.mainBundle = function()
+{
+    return new CFBundle(mainBundleURL);
+}
+CFBundle.mainBundle.displayName = "CFBundle.mainBundle";
+function addClassToBundle(aClass, aBundle)
+{
+    if (aBundle)
+        CFBundlesForClasses[aClass.name] = aBundle;
+}
+CFBundle.bundleForClass = function( aClass)
+{
+    return CFBundlesForClasses[aClass.name] || CFBundle.mainBundle();
+}
+CFBundle.bundleForClass.displayName = "CFBundle.bundleForClass";
+CFBundle.prototype.bundleURL = function()
+{
+    return this._bundleURL;
+}
+CFBundle.prototype.bundleURL.displayName = "CFBundle.prototype.bundleURL";
+CFBundle.prototype.resourcesDirectoryURL = function()
+{
+    return this._resourcesDirectoryURL;
+}
+CFBundle.prototype.resourcesDirectoryURL.displayName = "CFBundle.prototype.resourcesDirectoryURL";
+CFBundle.prototype.resourceURL = function( aResourceName, aType, aSubDirectory)
+ {
+    if (aType)
+        aResourceName = aResourceName + "." + aType;
+    if (aSubDirectory)
+        aResourceName = aSubDirectory + "/" + aResourceName;
+    var resourceURL = (new CFURL(aResourceName, this.resourcesDirectoryURL())).mappedURL();
+    return resourceURL.absoluteURL();
+}
+CFBundle.prototype.resourceURL.displayName = "CFBundle.prototype.resourceURL";
+CFBundle.prototype.mostEligibleEnvironmentURL = function()
+{
+    if (this._mostEligibleEnvironmentURL === undefined)
+        this._mostEligibleEnvironmentURL = new CFURL(this.mostEligibleEnvironment() + ".environment/", this.bundleURL());
+    return this._mostEligibleEnvironmentURL;
+}
+CFBundle.prototype.mostEligibleEnvironmentURL.displayName = "CFBundle.prototype.mostEligibleEnvironmentURL";
+CFBundle.prototype.executableURL = function()
+{
+    if (this._executableURL === undefined)
+    {
+        var executableSubPath = this.valueForInfoDictionaryKey("CPBundleExecutable");
+        if (!executableSubPath)
+            this._executableURL = NULL;
+        else
+            this._executableURL = new CFURL(executableSubPath, this.mostEligibleEnvironmentURL());
+    }
+    return this._executableURL;
+}
+CFBundle.prototype.executableURL.displayName = "CFBundle.prototype.executableURL";
+CFBundle.prototype.infoDictionary = function()
+{
+    return this._infoDictionary;
+}
+CFBundle.prototype.infoDictionary.displayName = "CFBundle.prototype.infoDictionary";
+CFBundle.prototype.valueForInfoDictionaryKey = function( aKey)
+{
+    return this._infoDictionary.valueForKey(aKey);
+}
+CFBundle.prototype.valueForInfoDictionaryKey.displayName = "CFBundle.prototype.valueForInfoDictionaryKey";
+CFBundle.prototype.hasSpritedImages = function()
+{
+    var environments = this._infoDictionary.valueForKey("CPBundleEnvironmentsWithImageSprites") || [],
+        index = environments.length,
+        mostEligibleEnvironment = this.mostEligibleEnvironment();
+    while (index--)
+        if (environments[index] === mostEligibleEnvironment)
+            return YES;
+    return NO;
+}
+CFBundle.prototype.hasSpritedImages.displayName = "CFBundle.prototype.hasSpritedImages";
+CFBundle.prototype.environments = function()
+{
+    return this._infoDictionary.valueForKey("CPBundleEnvironments") || ["ObjJ"];
+}
+CFBundle.prototype.environments.displayName = "CFBundle.prototype.environments";
+CFBundle.prototype.mostEligibleEnvironment = function( environments)
+{
+    environments = environments || this.environments();
+    var objj_environments = CFBundle.environments(),
         index = 0,
-        count = observers.length;
+        count = objj_environments.length,
+        innerCount = environments.length;
     for(; index < count; ++index)
     {
-        var observer = observers[index];
-        if (observer != this)
-            observer.attemptNextSearchPath();
-        else if (this.cachedSearchResponse && !this.searchReplaced)
-            this.didReceiveSearchResponse(this.cachedSearchResponse);
+        var innerIndex = 0,
+            environment = objj_environments[index];
+        for (; innerIndex < innerCount; ++innerIndex)
+            if(environment === environments[innerIndex])
+                return environment;
     }
-    this.bundleObservers = [];
+    return NULL;
 }
-objj_search.prototype.didReceiveExecutableResponse = function(aResponse)
+CFBundle.prototype.mostEligibleEnvironment.displayName = "CFBundle.prototype.mostEligibleEnvironment";
+CFBundle.prototype.isLoading = function()
 {
-    if (!aResponse.success)
-        objj_exception_throw(new objj_exception(OBJJExecutableNotFoundException, "*** The specified executable could not be located at \"" + this.filePath + "\"."));
-    var files = objj_decompile(aResponse.text, this.bundle),
-        index = 0,
-        count = files.length,
-        length = this.filePath.length;
-    for (; index < count; ++index)
+    return this._loadStatus & CFBundleLoading;
+}
+CFBundle.prototype.isLoading.displayName = "CFBundle.prototype.isLoading";
+CFBundle.prototype.load = function( shouldExecute)
+{
+    if (this._loadStatus !== CFBundleUnloaded)
+        return;
+    this._loadStatus = CFBundleLoading | CFBundleLoadingInfoPlist;
+    var self = this,
+        bundleURL = this.bundleURL(),
+        parentURL = new CFURL("..", bundleURL);
+    if (parentURL.absoluteString() === bundleURL.absoluteString())
+        parentURL = parentURL.schemeAndAuthority();
+    StaticResource.resolveResourceAtURL(parentURL, YES, function(aStaticResource)
     {
-        var file = files[index],
-            path = file.path;
-        if (this.filePath == path.substr(path.length - length))
-            this.complete(file);
-        else
-            objj_files[path] = file;
-    }
-}
-objj_search.prototype.complete = function(aFile)
-{
-    var index = 0,
-        count = this.searchedPaths.length;
-    for (; index < count; ++index)
-    {
-        objj_files[this.searchedPaths[index]] = aFile;
-    }
-    if (this.didCompleteCallback)
-        this.didCompleteCallback(aFile);
-}
-function objj_standardize_path(aPath)
-{
-    if (aPath.indexOf("/./") != -1 && aPath.indexOf("//") != -1 && aPath.indexOf("/../") != -1)
-        return aPath;
-    var index = 0,
-        components = aPath.split('/');
-    for(;index < components.length; ++index)
-        if(components[index] == "..")
+        var resourceName = bundleURL.absoluteURL().lastPathComponent();
+        self._staticResource = aStaticResource._children[resourceName] ||
+                                new StaticResource(bundleURL, aStaticResource, YES, NO);
+        function onsuccess( anEvent)
         {
-            components.splice(index - 1, 2);
-            index -= 2;
+            self._loadStatus &= ~CFBundleLoadingInfoPlist;
+            var infoDictionary = anEvent.request.responsePropertyList();
+            self._isValid = !!infoDictionary || CFBundle.mainBundle() === self;
+            if (infoDictionary)
+                self._infoDictionary = infoDictionary;
+            if (!self._infoDictionary)
+            {
+                finishBundleLoadingWithError(self, new Error("Could not load bundle at \"" + path + "\""));
+                return;
+            }
+            if (self === CFBundle.mainBundle() && self.valueForInfoDictionaryKey("CPApplicationSize"))
+                CPApplicationSizeInBytes = self.valueForInfoDictionaryKey("CPApplicationSize").valueForKey("executable") || 0;
+            loadExecutableAndResources(self, shouldExecute);
         }
-        else if(index != 0 && !components[index].length || components[index] == '.' || components[index] == "..")
-            components.splice(index--, 1);
-    return components.join('/');
+        function onfailure()
+        {
+            self._isValid = CFBundle.mainBundle() === self;
+            self._loadStatus = CFBundleUnloaded;
+            finishBundleLoadingWithError(self, new Error("Could not load bundle at \"" + self.bundleURL() + "\""));
+        }
+        new FileRequest(new CFURL("Info.plist", self.bundleURL()), onsuccess, onfailure);
+    });
 }
-if (window.ActiveXObject) {
-var objj_standardize_xml = function(aRequest)
+CFBundle.prototype.load.displayName = "CFBundle.prototype.load";
+function finishBundleLoadingWithError( aBundle, anError)
 {
-    var XMLData = new ActiveXObject("Microsoft.XMLDOM");
-    XMLData.loadXML(aRequest.responseText.substr(aRequest.responseText.indexOf(".dtd\">") + 6));
-    return XMLData;
-}
-} else {
-var objj_standardize_xml = function(aRequest)
-{
-    return aRequest.responseXML;
-}
-}
-function objj_response_xmlhttp()
-{
-    return new Object;
-}
-if (window.XMLHttpRequest) {
-var objj_request_xmlhttp = function()
-{
-    return new XMLHttpRequest();
-}
-} else if (window.ActiveXObject) {
-var MSXML_XMLHTTP_OBJECTS = [ "Microsoft.XMLHTTP", "Msxml2.XMLHTTP", "Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP.6.0" ],
-    index = MSXML_XMLHTTP_OBJECTS.length;
-while (index--)
-{
-    try
+    resolveStaticResource(aBundle._staticResource);
+    aBundle._eventDispatcher.dispatchEvent(
     {
-        new ActiveXObject(MSXML_XMLHTTP_OBJECTS[index]);
-        break;
-    }
-    catch (anException)
-    {
-    }
+        type:"error",
+        error:anError,
+        bundle:aBundle
+    });
 }
-var MSXML_XMLHTTP = MSXML_XMLHTTP_OBJECTS[index];
-delete index;
-delete MSXML_XMLHTTP_OBJECTS;
-var objj_request_xmlhttp = function()
+function loadExecutableAndResources( aBundle, shouldExecute)
 {
-    return new ActiveXObject(MSXML_XMLHTTP);
+    if (!aBundle.mostEligibleEnvironment())
+        return failure();
+    loadExecutableForBundle(aBundle, success, failure);
+    loadSpritedImagesForBundle(aBundle, success, failure);
+    if (aBundle._loadStatus === CFBundleLoading)
+        return success();
+    function failure( anError)
+    {
+        var loadRequests = aBundle._loadRequests,
+            count = loadRequests.length;
+        while (count--)
+            loadRequests[count].abort();
+        this._loadRequests = [];
+        aBundle._loadStatus = CFBundleUnloaded;
+        finishBundleLoadingWithError(aBundle, anError || new Error("Could not recognize executable code format in Bundle " + aBundle));
+    }
+    function success()
+    {
+        if ((typeof CPApp === "undefined" || !CPApp || !CPApp._finishedLaunching) &&
+             typeof OBJJ_PROGRESS_CALLBACK === "function" && CPApplicationSizeInBytes)
+        {
+            OBJJ_PROGRESS_CALLBACK(MAX(MIN(1.0, CFTotalBytesLoaded / CPApplicationSizeInBytes), 0.0), CPApplicationSizeInBytes, aBundle.path())
+        }
+        if (aBundle._loadStatus === CFBundleLoading)
+            aBundle._loadStatus = CFBundleLoaded;
+        else
+            return;
+        resolveStaticResource(aBundle._staticResource);
+        function complete()
+        {
+            aBundle._eventDispatcher.dispatchEvent(
+            {
+                type:"load",
+                bundle:aBundle
+            });
+        }
+        if (shouldExecute)
+            executeBundle(aBundle, complete);
+        else
+            complete();
+    }
 }
+function loadExecutableForBundle( aBundle, success, failure)
+{
+    var executableURL = aBundle.executableURL();
+    if (!executableURL)
+        return;
+    aBundle._loadStatus |= CFBundleLoadingExecutable;
+    new FileRequest(executableURL, function( anEvent)
+    {
+        try
+        {
+            CFTotalBytesLoaded += anEvent.request.responseText().length;
+            decompileStaticFile(aBundle, anEvent.request.responseText(), executableURL);
+            aBundle._loadStatus &= ~CFBundleLoadingExecutable;
+            success();
+        }
+        catch(anException)
+        {
+            failure(anException);
+        }
+    }, failure);
 }
-var OBJJUnrecognizedFormatException = "OBJJUnrecognizedFormatException";
+function spritedImagesTestURLStringForBundle( aBundle)
+{
+    return "mhtml:" + new CFURL("MHTMLTest.txt", aBundle.mostEligibleEnvironmentURL());
+}
+function spritedImagesURLForBundle( aBundle)
+{
+    if (CFBundleSupportedSpriteType === CFBundleDataURLSpriteType)
+        return new CFURL("dataURLs.txt", aBundle.mostEligibleEnvironmentURL());
+    if (CFBundleSupportedSpriteType === CFBundleMHTMLSpriteType ||
+        CFBundleSupportedSpriteType === CFBundleMHTMLUncachedSpriteType)
+        return new CFURL("MHTMLPaths.txt", aBundle.mostEligibleEnvironmentURL());
+    return NULL;
+}
+function loadSpritedImagesForBundle( aBundle, success, failure)
+{
+    if (!aBundle.hasSpritedImages())
+        return;
+    aBundle._loadStatus |= CFBundleLoadingSpritedImages;
+    if (!CFBundleHasTestedSpriteSupport())
+        return CFBundleTestSpriteSupport(spritedImagesTestURLStringForBundle(aBundle), function()
+        {
+            loadSpritedImagesForBundle(aBundle, success, failure);
+        });
+    var spritedImagesURL = spritedImagesURLForBundle(aBundle);
+    if (!spritedImagesURL)
+    {
+        aBundle._loadStatus &= ~CFBundleLoadingSpritedImages;
+        return success();
+    }
+    new FileRequest(spritedImagesURL, function( anEvent)
+    {
+        try
+        {
+            CFTotalBytesLoaded += anEvent.request.responseText().length;
+            decompileStaticFile(aBundle, anEvent.request.responseText(), spritedImagesURL);
+            aBundle._loadStatus &= ~CFBundleLoadingSpritedImages;
+            success();
+        }
+        catch(anException)
+        {
+            failure(anException);
+        }
+    }, failure);
+}
+var CFBundleSpriteSupportListeners = [],
+    CFBundleSupportedSpriteType = -1,
+    CFBundleNoSpriteType = 0,
+    CFBundleDataURLSpriteType = 1,
+    CFBundleMHTMLSpriteType = 2,
+    CFBundleMHTMLUncachedSpriteType = 3;
+function CFBundleHasTestedSpriteSupport()
+{
+    return CFBundleSupportedSpriteType !== -1;
+}
+function CFBundleTestSpriteSupport( MHTMLPath, aCallback)
+{
+    if (CFBundleHasTestedSpriteSupport())
+        return;
+    CFBundleSpriteSupportListeners.push(aCallback);
+    if (CFBundleSpriteSupportListeners.length > 1)
+        return;
+    CFBundleSpriteSupportListeners.push(function()
+    {
+        var size = 0,
+            sizeDictionary = CFBundle.mainBundle().valueForInfoDictionaryKey("CPApplicationSize");
+        if (!sizeDictionary)
+            return;
+        switch (CFBundleSupportedSpriteType)
+        {
+            case CFBundleDataURLSpriteType:
+                size = sizeDictionary.valueForKey("data");
+                break;
+            case CFBundleMHTMLSpriteType:
+            case CFBundleMHTMLUncachedSpriteType:
+                size = sizeDictionary.valueForKey("mhtml");
+                break;
+        }
+        CPApplicationSizeInBytes += size;
+    })
+    CFBundleTestSpriteTypes([
+        CFBundleDataURLSpriteType,
+        "data:image/gif;base64,R0lGODlhAQABAIAAAMc9BQAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==",
+        CFBundleMHTMLSpriteType,
+        MHTMLPath+"!test",
+        CFBundleMHTMLUncachedSpriteType,
+        MHTMLPath+"?"+CFCacheBuster+"!test"
+    ]);
+}
+function CFBundleNotifySpriteSupportListeners()
+{
+    var count = CFBundleSpriteSupportListeners.length;
+    while (count--)
+        CFBundleSpriteSupportListeners[count]();
+}
+function CFBundleTestSpriteTypes( spriteTypes)
+{
+    if (spriteTypes.length < 2)
+    {
+        CFBundleSupportedSpriteType = CFBundleNoSpriteType;
+        CFBundleNotifySpriteSupportListeners();
+        return;
+    }
+    var image = new Image();
+    image.onload = function()
+    {
+        if (image.width === 1 && image.height === 1)
+        {
+            CFBundleSupportedSpriteType = spriteTypes[0];
+            CFBundleNotifySpriteSupportListeners();
+        }
+        else
+            image.onerror();
+    }
+    image.onerror = function()
+    {
+        CFBundleTestSpriteTypes(spriteTypes.slice(2));
+    }
+    image.src = spriteTypes[1];
+}
+function executeBundle( aBundle, aCallback)
+{
+    var staticResources = [aBundle._staticResource];
+    function executeStaticResources(index)
+    {
+        for (; index < staticResources.length; ++index)
+        {
+            var staticResource = staticResources[index];
+            if (staticResource.isNotFound())
+                continue;
+            if (staticResource.isFile())
+            {
+                var executable = new FileExecutable(staticResource.URL());
+                if (executable.hasLoadedFileDependencies())
+                    executable.execute();
+                else
+                {
+                    executable.loadFileDependencies(function()
+                    {
+                        executeStaticResources(index);
+                    });
+                    return;
+                }
+            }
+            else
+            {
+                if (staticResource.URL().absoluteString() === aBundle.resourcesDirectoryURL().absoluteString())
+                    continue;
+                var children = staticResource.children();
+                for (var name in children)
+                    if (hasOwnProperty.call(children, name))
+                        staticResources.push(children[name]);
+            }
+        }
+        aCallback();
+    }
+    executeStaticResources(0);
+}
 var STATIC_MAGIC_NUMBER = "@STATIC",
     MARKER_PATH = "p",
+    MARKER_URI = "u",
     MARKER_CODE = "c",
-    MARKER_BUNDLE = "b",
     MARKER_TEXT = "t",
     MARKER_IMPORT_STD = 'I',
     MARKER_IMPORT_LOCAL = 'i';
-var STATIC_EXTENSION = "sj";
-function objj_decompile(aString, bundle)
+function decompileStaticFile( aBundle, aString, aPath)
 {
-    var stream = new objj_markedStream(aString);
-    if (stream.magicNumber() != STATIC_MAGIC_NUMBER)
-        objj_exception_throw(new objj_exception(OBJJUnrecognizedFormatException, "*** Could not recognize executable code format."));
-    if (stream.version() != 1.0)
-        objj_exception_throw(new objj_exception(OBJJUnrecognizedFormatException, "*** Could not recognize executable code format."));
-    var file = NULL,
-        files = [],
-        marker;
+    var stream = new MarkedStream(aString);
+    if (stream.magicNumber() !== STATIC_MAGIC_NUMBER)
+        throw new Error("Could not read static file: " + aPath);
+    if (stream.version() !== "1.0")
+        throw new Error("Could not read static file: " + aPath);
+    var marker,
+        bundleURL = aBundle.bundleURL(),
+        file = NULL;
     while (marker = stream.getMarker())
     {
         var text = stream.getString();
-        switch (marker)
+        if (marker === MARKER_PATH)
         {
-            case MARKER_PATH: if (file && file.contents && file.path === file.bundle.path)
-                                            file.bundle.info = CPPropertyListCreateWithData({string:file.contents});
-                                        file = new objj_file();
-                                        file.path = (bundle.path).substr(0, (bundle.path).lastIndexOf('/') + 1) + text;
-                                        file.bundle = bundle;
-                                        file.fragments = [];
-                                        files.push(file);
-                                        objj_files[file.path] = file;
-                                        break;
-            case MARKER_BUNDLE: var bundlePath = (bundle.path).substr(0, (bundle.path).lastIndexOf('/') + 1) + '/' + text;
-                                        file.bundle = objj_getBundleWithPath(bundlePath);
-                                        if (!file.bundle)
-                                        {
-                                            file.bundle = new objj_bundle();
-                                            file.bundle.path = bundlePath;
-                                            objj_setBundleForPath(file.bundle, bundlePath);
-                                        }
-                                        break;
-            case MARKER_TEXT: file.contents = text;
-                                        break;
-            case MARKER_CODE: file.fragments.push(fragment_create_code(text, bundle, file));
-                                        break;
-            case MARKER_IMPORT_STD: file.fragments.push(fragment_create_file(text, bundle, NO, file));
-                                        break;
-            case MARKER_IMPORT_LOCAL: file.fragments.push(fragment_create_file(text, bundle, YES, file));
-                                        break;
+            var fileURL = new CFURL(text, bundleURL),
+                parent = StaticResource.resourceAtURL(new CFURL(".", fileURL), YES);
+            file = new StaticResource(fileURL, parent, NO, YES);
         }
+        else if (marker === MARKER_URI)
+        {
+            var URL = new CFURL(text, bundleURL),
+                mappedURLString = stream.getString();
+            if (mappedURLString.indexOf("mhtml:") === 0)
+            {
+                mappedURLString = "mhtml:" + new CFURL(mappedURLString.substr("mhtml:".length), bundleURL);
+                if (CFBundleSupportedSpriteType === CFBundleMHTMLUncachedSpriteType)
+                {
+                    var exclamationIndex = URLString.indexOf("!"),
+                        firstPart = URLString.substring(0, exclamationIndex),
+                        lastPart = URLString.substring(exclamationIndex);
+                    mappedURLString = firstPart + "?" + CFCacheBuster + lastPart;
+                }
+            }
+            CFURL.setMappedURLForURL(URL, new CFURL(mappedURLString));
+            var parent = StaticResource.resourceAtURL(new CFURL(".", URL), YES);
+            new StaticResource(URL, parent, NO, YES);
+        }
+        else if (marker === MARKER_TEXT)
+            file.write(text);
     }
-    if (file && file.contents && file.path === file.bundle.path)
-        file.bundle.info = CPPropertyListCreateWithData({string:file.contents});
-    return files;
 }
-var OBJJ_EXCEPTION_OUTPUT_STREAM = NULL;
-function objj_exception(aName, aReason, aUserInfo)
+CFBundle.prototype.addEventListener = function( anEventName, anEventListener)
 {
-    this.name = aName;
-    this.reason = aReason;
-    this.userInfo = aUserInfo;
-    this.__address = (OBJECT_COUNT++);
+    this._eventDispatcher.addEventListener(anEventName, anEventListener);
 }
-objj_exception.prototype.toString = function()
+CFBundle.prototype.addEventListener.displayName = "CFBundle.prototype.addEventListener";
+CFBundle.prototype.removeEventListener = function( anEventName, anEventListener)
 {
-    return this.reason;
+    this._eventDispatcher.removeEventListener(anEventName, anEventListener);
 }
-function objj_exception_throw(anException)
+CFBundle.prototype.removeEventListener.displayName = "CFBundle.prototype.removeEventListener";
+CFBundle.prototype.onerror = function( anEvent)
 {
-    throw anException;
+    throw anEvent.error;
 }
-function objj_exception_report(anException, aSourceFile)
+CFBundle.prototype.onerror.displayName = "CFBundle.prototype.onerror";
+CFBundle.prototype.bundlePath = function()
 {
-    objj_fprintf(OBJJ_EXCEPTION_OUTPUT_STREAM, aSourceFile.path + "\n" + anException);
-    throw anException;
+    return this._bundleURL.absoluteURL().path();
 }
-function objj_exception_setOutputStream(aStream)
+CFBundle.prototype.path = function()
 {
-    OBJJ_EXCEPTION_OUTPUT_STREAM = aStream;
+    CPLog.warn("CFBundle.prototype.path is deprecated, use CFBundle.prototype.bundlePath instead.");
+    return this.bundlePath.apply(this, arguments);
 }
-objj_exception_setOutputStream(function(aString) { });
-var OBJJ_PREPROCESSOR_DEBUG_SYMBOLS = 1 << 0,
-    OBJJ_PREPROCESSOR_TYPE_SIGNATURES = 1 << 1;
-function objj_preprocess( aString, aBundle, aSourceFile, flags)
+CFBundle.prototype.pathForResource = function(aResource)
 {
-    try
+    return this.resourceURL(aResource).absoluteString();
+}
+var rootResources = { };
+function StaticResource( aURL, aParent, isDirectory, isResolved)
+{
+    this._parent = aParent;
+    this._eventDispatcher = new EventDispatcher(this);
+    var name = aURL.absoluteURL().lastPathComponent() || aURL.schemeAndAuthority();
+    this._name = name;
+    this._URL = aURL;
+    this._isResolved = !!isResolved;
+    if (isDirectory)
+        this._URL = this._URL.asDirectoryPathURL();
+    if (!aParent)
+        rootResources[name] = this;
+    this._isDirectory = !!isDirectory;
+    this._isNotFound = NO;
+    if (aParent)
+        aParent._children[name] = this;
+    if (isDirectory)
+        this._children = { };
+    else
+        this._contents = "";
+}
+StaticResource.rootResources = function()
+{
+    return rootResources;
+}
+exports.StaticResource = StaticResource;
+function resolveStaticResource( aResource)
+{
+    aResource._isResolved = YES;
+    aResource._eventDispatcher.dispatchEvent(
     {
-        return new objj_preprocessor(aString.replace(/^#[^\n]+\n/, "\n"), aSourceFile, aBundle, flags).fragments();
-    }
-    catch (anException)
-    {
-        objj_exception_report(anException, aSourceFile);
-    }
-    return [];
+        type:"resolve",
+        staticResource:aResource
+    });
 }
-var OBJJParseException = "OBJJParseException",
-    OBJJClassNotFoundException = "OBJJClassNotFoundException";
+StaticResource.prototype.resolve = function()
+{
+    if (this.isDirectory())
+    {
+        var bundle = new CFBundle(this.URL());
+        bundle.onerror = function() { };
+        bundle.load(NO);
+    }
+    else
+    {
+        var self = this;
+        function onsuccess( anEvent)
+        {
+            self._contents = anEvent.request.responseText();
+            resolveStaticResource(self);
+        }
+        function onfailure()
+        {
+            self._isNotFound = YES;
+            resolveStaticResource(self);
+        }
+        new FileRequest(this.URL(), onsuccess, onfailure);
+    }
+}
+StaticResource.prototype.name = function()
+{
+    return this._name;
+}
+StaticResource.prototype.URL = function()
+{
+    return this._URL;
+}
+StaticResource.prototype.contents = function()
+{
+    return this._contents;
+}
+StaticResource.prototype.children = function()
+{
+    return this._children;
+}
+StaticResource.prototype.parent = function()
+{
+    return this._parent;
+}
+StaticResource.prototype.isResolved = function()
+{
+    return this._isResolved;
+}
+StaticResource.prototype.write = function( aString)
+{
+    this._contents += aString;
+}
+function rootResourceForAbsoluteURL( anAbsoluteURL)
+{
+    var schemeAndAuthority = anAbsoluteURL.schemeAndAuthority(),
+        resource = rootResources[schemeAndAuthority];
+    if (!resource)
+        resource = new StaticResource(new CFURL(schemeAndAuthority), NULL, YES, YES);
+    return resource;
+}
+StaticResource.resourceAtURL = function( aURL, resolveAsDirectoriesIfNecessary)
+{
+    aURL = makeAbsoluteURL(aURL).absoluteURL();
+    var resource = rootResourceForAbsoluteURL(aURL),
+        components = aURL.pathComponents(),
+        index = 0,
+        count = components.length;
+    for (; index < count; ++index)
+    {
+        var name = components[index];
+        if (hasOwnProperty.call(resource._children, name))
+            resource = resource._children[name];
+        else if (resolveAsDirectoriesIfNecessary)
+            resource = new StaticResource(new CFURL(name, resource.URL()), resource, YES, YES);
+        else
+            throw new Error("Static Resource at " + aURL + " is not resolved (\"" + name + "\")");
+    }
+    return resource;
+}
+StaticResource.prototype.resourceAtURL = function( aURL, resolveAsDirectoriesIfNecessary)
+{
+    return StaticResource.resourceAtURL(new CFURL(aURL, this.URL()), resolveAsDirectoriesIfNecessary);
+}
+StaticResource.resolveResourceAtURL = function( aURL, isDirectory, aCallback)
+{
+    aURL = makeAbsoluteURL(aURL).absoluteURL();
+    resolveResourceComponents(rootResourceForAbsoluteURL(aURL), isDirectory, aURL.pathComponents(), 0, aCallback);
+}
+StaticResource.prototype.resolveResourceAtURL = function( aURL, isDirectory, aCallback)
+{
+    StaticResource.resolveResourceAtURL(new CFURL(aURL, this.URL()).absoluteURL(), isDirectory, aCallback);
+}
+function resolveResourceComponents( aResource, isDirectory, components, index, aCallback)
+{
+    var count = components.length;
+    for (; index < count; ++index)
+    {
+        var name = components[index],
+            child = hasOwnProperty.call(aResource._children, name) && aResource._children[name];
+        if (!child)
+        {
+            child = new StaticResource(new CFURL(name, aResource.URL()), aResource, index + 1 < count || isDirectory , NO);
+            child.resolve();
+        }
+        if (!child.isResolved())
+            return child.addEventListener("resolve", function()
+            {
+                resolveResourceComponents(aResource, isDirectory, components, index, aCallback);
+            });
+        if (child.isNotFound())
+            return aCallback(null, new Error("File not found: " + components.join("/")));
+        if ((index + 1 < count) && child.isFile())
+            return aCallback(null, new Error("File is not a directory: " + components.join("/")));
+        aResource = child;
+    }
+    aCallback(aResource);
+}
+function resolveResourceAtURLSearchingIncludeURLs( aURL, anIndex, aCallback)
+{
+    var includeURLs = StaticResource.includeURLs(),
+        searchURL = new CFURL(aURL, includeURLs[anIndex]).absoluteURL();
+    StaticResource.resolveResourceAtURL(searchURL, NO, function( aStaticResource)
+    {
+        if (!aStaticResource)
+        {
+            if (anIndex + 1 < includeURLs.length)
+                resolveResourceAtURLSearchingIncludeURLs(aURL, anIndex + 1, aCallback);
+            else
+                aCallback(NULL);
+            return;
+        }
+        aCallback(aStaticResource);
+    });
+}
+StaticResource.resolveResourceAtURLSearchingIncludeURLs = function( aURL, aCallback)
+{
+    resolveResourceAtURLSearchingIncludeURLs(aURL, 0, aCallback);
+}
+StaticResource.prototype.addEventListener = function( anEventName, anEventListener)
+{
+    this._eventDispatcher.addEventListener(anEventName, anEventListener);
+}
+StaticResource.prototype.removeEventListener = function( anEventName, anEventListener)
+{
+    this._eventDispatcher.removeEventListener(anEventName, anEventListener);
+}
+StaticResource.prototype.isNotFound = function()
+{
+    return this._isNotFound;
+}
+StaticResource.prototype.isFile = function()
+{
+    return !this._isDirectory;
+}
+StaticResource.prototype.isDirectory = function()
+{
+    return this._isDirectory;
+}
+StaticResource.prototype.toString = function( includeNotFounds)
+{
+    if (this.isNotFound())
+        return "<file not found: " + this.name() + ">";
+    var string = this.name();
+    if (this.isDirectory())
+    {
+        var children = this._children;
+        for (var name in children)
+            if (children.hasOwnProperty(name))
+            {
+                var child = children[name];
+                if (includeNotFounds || !child.isNotFound())
+                    string += "\n\t" + children[name].toString(includeNotFounds).split('\n').join("\n\t");
+            }
+    }
+    return string;
+}
+var includeURLs = NULL;
+StaticResource.includeURLs = function()
+{
+    if (includeURLs)
+        return includeURLs;
+    var includeURLs = [];
+    if (!global.OBJJ_INCLUDE_PATHS && !global.OBJJ_INCLUDE_URLS)
+        includeURLs = ["Frameworks", "Frameworks/Debug"];
+    else
+        includeURLs = (global.OBJJ_INCLUDE_PATHS || []).concat(global.OBJJ_INCLUDE_URLS || []);
+    var count = includeURLs.length;
+    while (count--)
+        includeURLs[count] = new CFURL(includeURLs[count]).asDirectoryPathURL();
+    return includeURLs;
+}
 var TOKEN_ACCESSORS = "accessors",
     TOKEN_CLASS = "class",
     TOKEN_END = "end",
     TOKEN_FUNCTION = "function",
     TOKEN_IMPLEMENTATION = "implementation",
     TOKEN_IMPORT = "import",
+    TOKEN_EACH = "each",
+    TOKEN_OUTLET = "outlet",
+    TOKEN_ACTION = "action",
     TOKEN_NEW = "new",
     TOKEN_SELECTOR = "selector",
     TOKEN_SUPER = "super",
+    TOKEN_VAR = "var",
+    TOKEN_IN = "in",
     TOKEN_EQUAL = '=',
     TOKEN_PLUS = '+',
     TOKEN_MINUS = '-',
@@ -1781,24 +2862,22 @@ var TOKEN_ACCESSORS = "accessors",
     TOKEN_WHITESPACE = /^(?:(?:\s+$)|(?:\/(?:\/|\*)))/,
     TOKEN_NUMBER = /^[+-]?\d+(([.]\d+)*([eE][+-]?\d+))?$/,
     TOKEN_IDENTIFIER = /^[a-zA-Z_$](\w|$)*$/;
-var SUPER_CLASSES = new objj_dictionary();
-var OBJJ_CURRENT_BUNDLE = NULL;
-var objj_lexer = function(aString)
+function Lexer( aString)
 {
     this._index = -1;
     this._tokens = (aString + '\n').match(/\/\/.*(\r|\n)?|\/\*(?:.|\n|\r)*?\*\/|\w+\b|[+-]?\d+(([.]\d+)*([eE][+-]?\d+))?|"[^"\\]*(\\[\s\S][^"\\]*)*"|'[^'\\]*(\\[\s\S][^'\\]*)*'|\s+|./g);
     this._context = [];
     return this;
 }
-objj_lexer.prototype.push = function()
+Lexer.prototype.push = function()
 {
     this._context.push(this._index);
 }
-objj_lexer.prototype.pop = function()
+Lexer.prototype.pop = function()
 {
     this._index = this._context.pop();
 }
-objj_lexer.prototype.peak = function(shouldSkipWhitespace)
+Lexer.prototype.peak = function(shouldSkipWhitespace)
 {
     if (shouldSkipWhitespace)
     {
@@ -1809,21 +2888,21 @@ objj_lexer.prototype.peak = function(shouldSkipWhitespace)
     }
     return this._tokens[this._index + 1];
 }
-objj_lexer.prototype.next = function()
+Lexer.prototype.next = function()
 {
     return this._tokens[++this._index];
 }
-objj_lexer.prototype.previous = function()
+Lexer.prototype.previous = function()
 {
     return this._tokens[--this._index];
 }
-objj_lexer.prototype.last = function()
+Lexer.prototype.last = function()
 {
     if (this._index < 0)
         return NULL;
     return this._tokens[this._index - 1];
 }
-objj_lexer.prototype.skip_whitespace= function(shouldMoveBackwards)
+Lexer.prototype.skip_whitespace= function(shouldMoveBackwards)
 {
     var token;
     if (shouldMoveBackwards)
@@ -1832,43 +2911,51 @@ objj_lexer.prototype.skip_whitespace= function(shouldMoveBackwards)
         while((token = this.next()) && TOKEN_WHITESPACE.test(token)) ;
     return token;
 }
-var objj_stringBuffer = function()
+exports.Lexer = Lexer;
+function StringBuffer()
 {
     this.atoms = [];
 }
-objj_stringBuffer.prototype.toString = function()
+StringBuffer.prototype.toString = function()
 {
     return this.atoms.join("");
 }
-objj_stringBuffer.prototype.clear = function()
+exports.preprocess = function( aString, aURL, flags)
 {
-    this.atoms = [];
+    return new Preprocessor(aString, aURL, flags).executable();
 }
-objj_stringBuffer.prototype.isEmpty = function()
+exports.eval = function( aString)
 {
-    return (this.atoms.length === 0);
+    return eval(exports.preprocess(aString).code());
 }
-var objj_preprocessor = function(aString, aSourceFile, aBundle, flags)
+var Preprocessor = function( aString, aURL, flags)
 {
+    this._URL = new CFURL(aURL);
+    aString = aString.replace(/^#[^\n]+\n/, "\n");
     this._currentSelector = "";
     this._currentClass = "";
     this._currentSuperClass = "";
     this._currentSuperMetaClass = "";
-    this._file = aSourceFile;
-    this._fragments = [];
-    this._preprocessed = new objj_stringBuffer();
-    this._tokens = new objj_lexer(aString);
+    this._buffer = new StringBuffer();
+    this._preprocessed = NULL;
+    this._dependencies = [];
+    this._tokens = new Lexer(aString);
     this._flags = flags;
-    this._bundle = aBundle;
     this._classMethod = false;
-    this.preprocess(this._tokens, this._preprocessed);
-    this.fragment();
+    this._executable = NULL;
+    this.preprocess(this._tokens, this._buffer);
 }
-objj_preprocessor.prototype.fragments = function()
+exports.Preprocessor = Preprocessor;
+Preprocessor.Flags = { };
+Preprocessor.Flags.IncludeDebugSymbols = 1 << 0;
+Preprocessor.Flags.IncludeTypeSignatures = 1 << 1;
+Preprocessor.prototype.executable = function()
 {
-    return this._fragments;
+    if (!this._executable)
+        this._executable = new Executable(this._buffer.toString(), this._dependencies, this._URL);
+    return this._executable;
 }
-objj_preprocessor.prototype.accessors = function(tokens)
+Preprocessor.prototype.accessors = function(tokens)
 {
     var token = tokens.skip_whitespace(),
         attributes = {};
@@ -1882,16 +2969,16 @@ objj_preprocessor.prototype.accessors = function(tokens)
         var name = token,
             value = true;
         if (!/^\w+$/.test(name))
-            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** @property attribute name not valid.")));
+            throw new SyntaxError(this.error_message("*** @property attribute name not valid."));
         if ((token = tokens.skip_whitespace()) == TOKEN_EQUAL)
         {
             value = tokens.skip_whitespace();
             if (!/^\w+$/.test(value))
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** @property attribute value not valid.")));
+                throw new SyntaxError(this.error_message("*** @property attribute value not valid."));
             if (name == "setter")
             {
                 if ((token = tokens.next()) != TOKEN_COLON)
-                    objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** @property setter attribute requires argument with \":\" at end of selector name.")));
+                    throw new SyntaxError(this.error_message("*** @property setter attribute requires argument with \":\" at end of selector name."));
                 value += ":";
             }
             token = tokens.skip_whitespace();
@@ -1900,11 +2987,11 @@ objj_preprocessor.prototype.accessors = function(tokens)
         if (token == TOKEN_CLOSE_PARENTHESIS)
             break;
         if (token != TOKEN_COMMA)
-            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected ',' or ')' in @property attribute list.")));
+            throw new SyntaxError(this.error_message("*** Expected ',' or ')' in @property attribute list."));
     }
     return attributes;
 }
-objj_preprocessor.prototype.brackets = function( tokens, aStringBuffer)
+Preprocessor.prototype.brackets = function( tokens, aStringBuffer)
 {
     var tuples = [];
     while (this.preprocess(tokens, NULL, NULL, NULL, tuples[tuples.length] = [])) ;
@@ -1916,7 +3003,7 @@ objj_preprocessor.prototype.brackets = function( tokens, aStringBuffer)
     }
     else
     {
-        var selector = new objj_stringBuffer();
+        var selector = new StringBuffer();
         if (tuples[0][0].atoms[0] == TOKEN_SUPER)
         {
             aStringBuffer.atoms[aStringBuffer.atoms.length] = "objj_msgSendSuper(";
@@ -1930,7 +3017,7 @@ objj_preprocessor.prototype.brackets = function( tokens, aStringBuffer)
         selector.atoms[selector.atoms.length] = tuples[0][1];
         var index = 1,
             count = tuples.length,
-            marg_list = new objj_stringBuffer();
+            marg_list = new StringBuffer();
         for(; index < count; ++index)
         {
             var pair = tuples[index];
@@ -1944,71 +3031,51 @@ objj_preprocessor.prototype.brackets = function( tokens, aStringBuffer)
         aStringBuffer.atoms[aStringBuffer.atoms.length] = ')';
     }
 }
-objj_preprocessor.prototype.directive = function(tokens, aStringBuffer, allowedDirectivesFlags)
+Preprocessor.prototype.directive = function(tokens, aStringBuffer, allowedDirectivesFlags)
 {
-    var buffer = aStringBuffer ? aStringBuffer : new objj_stringBuffer(),
+    var buffer = aStringBuffer ? aStringBuffer : new StringBuffer(),
         token = tokens.next();
     if (token.charAt(0) == TOKEN_DOUBLE_QUOTE)
         buffer.atoms[buffer.atoms.length] = token;
-    else if (token == TOKEN_CLASS)
+    else if (token === TOKEN_CLASS)
     {
         tokens.skip_whitespace();
         return;
     }
-    else if (token == TOKEN_IMPLEMENTATION)
+    else if (token === TOKEN_IMPLEMENTATION)
         this.implementation(tokens, buffer);
-    else if (token == TOKEN_IMPORT)
+    else if (token === TOKEN_IMPORT)
         this._import(tokens);
-    else if (token == TOKEN_SELECTOR)
+    else if (token === TOKEN_SELECTOR)
         this.selector(tokens, buffer);
-    else if (token == TOKEN_ACCESSORS)
-        return this.accessors(tokens);
     if (!aStringBuffer)
         return buffer;
 }
-objj_preprocessor.prototype.fragment = function()
-{
-    var preprocessed = this._preprocessed.toString();
-    if ((/[^\s]/).test(preprocessed))
-        this._fragments.push(fragment_create_code(preprocessed, this._bundle, this._file));
-    this._preprocessed.clear();
-}
-objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
+Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
 {
     var buffer = aStringBuffer,
         token = "",
         category = NO,
         class_name = tokens.skip_whitespace(),
         superclass_name = "Nil",
-        instance_methods = new objj_stringBuffer(),
-        class_methods = new objj_stringBuffer();
+        instance_methods = new StringBuffer(),
+        class_methods = new StringBuffer();
     if (!(/^\w/).test(class_name))
-        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected class name, found \"" + class_name + "\".")));
-    this._currentSuperClass = NULL;
-    this._currentSuperMetaClass = NULL;
+        throw new Error(this.error_message("*** Expected class name, found \"" + class_name + "\"."));
+    this._currentSuperClass = "objj_getClass(\"" + class_name + "\").super_class";
+    this._currentSuperMetaClass = "objj_getMetaClass(\"" + class_name + "\").super_class";
     this._currentClass = class_name;
     this._currentSelector = "";
     if((token = tokens.skip_whitespace()) == TOKEN_OPEN_PARENTHESIS)
     {
         token = tokens.skip_whitespace();
         if (token == TOKEN_CLOSE_PARENTHESIS)
-            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Can't Have Empty Category Name for class \"" + class_name + "\".")));
+            throw new SyntaxError(this.error_message("*** Can't Have Empty Category Name for class \"" + class_name + "\"."));
         if (tokens.skip_whitespace() != TOKEN_CLOSE_PARENTHESIS)
-            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Improper Category Definition for class \"" + class_name + "\".")));
+            throw new SyntaxError(this.error_message("*** Improper Category Definition for class \"" + class_name + "\"."));
         buffer.atoms[buffer.atoms.length] = "{\nvar the_class = objj_getClass(\"" + class_name + "\")\n";
-        buffer.atoms[buffer.atoms.length] = "if(!the_class) objj_exception_throw(new objj_exception(OBJJClassNotFoundException, \"*** Could not find definition for class \\\"" + class_name + "\\\"\"));\n";
+        buffer.atoms[buffer.atoms.length] = "if(!the_class) throw new SyntaxError(\"*** Could not find definition for class \\\"" + class_name + "\\\"\");\n";
         buffer.atoms[buffer.atoms.length] = "var meta_class = the_class.isa;";
-        var superclass_name = ((SUPER_CLASSES)._buckets[class_name]);
-        if (!superclass_name)
-        {
-            this._currentSuperClass = "objj_getClass(\"" + class_name + "\").super_class";
-            this._currentSuperMetaClass = "objj_getMetaClass(\"" + class_name + "\").super_class";
-        }
-        else
-        {
-            this._currentSuperClass = "objj_getClass(\"" + superclass_name + "\")";
-            this._currentSuperMetaClass = "objj_getMeraClass(\"" + superclass_name + "\")";
-        }
     }
     else
     {
@@ -2016,11 +3083,8 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
         {
             token = tokens.skip_whitespace();
             if (!TOKEN_IDENTIFIER.test(token))
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected class name, found \"" + token + "\".")));
+                throw new SyntaxError(this.error_message("*** Expected class name, found \"" + token + "\"."));
             superclass_name = token;
-            this._currentSuperClass = "objj_getClass(\"" + superclass_name + "\")";
-            this._currentSuperMetaClass = "objj_getMetaClass(\"" + superclass_name + "\")";
-            { if ((SUPER_CLASSES)._buckets[class_name] == NULL) { (SUPER_CLASSES)._keys.push(class_name); ++(SUPER_CLASSES).count; } if (((SUPER_CLASSES)._buckets[class_name] = superclass_name) == NULL) --(SUPER_CLASSES).count;};
             token = tokens.skip_whitespace();
         }
         buffer.atoms[buffer.atoms.length] = "{var the_class = objj_allocateClassPair(" + superclass_name + ", \"" + class_name + "\"),\nmeta_class = the_class.isa;";
@@ -2032,8 +3096,14 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                 accessors = {};
             while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_BRACE)
             {
-                if (token == TOKEN_PREPROCESSOR)
-                    attributes = this.directive(tokens);
+                if (token === TOKEN_PREPROCESSOR)
+                {
+                    token = tokens.next();
+                    if (token === TOKEN_ACCESSORS)
+                        attributes = this.accessors(tokens);
+                    else if (token !== TOKEN_OUTLET)
+                        throw new SyntaxError(this.error_message("*** Unexpected '@' token in ivar declaration ('@"+token+"')."));
+                }
                 else if (token == TOKEN_SEMICOLON)
                 {
                     if (ivar_count++ == 0)
@@ -2053,11 +3123,11 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                     declaration.push(token);
             }
             if (declaration.length)
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected ';' in ivar declaration, found '}'.")));
+                throw new SyntaxError(this.error_message("*** Expected ';' in ivar declaration, found '}'."));
             if (ivar_count)
                 buffer.atoms[buffer.atoms.length] = "]);\n";
             if (!token)
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected '}'")));
+                throw new SyntaxError(this.error_message("*** Expected '}'"));
             for (ivar_name in accessors)
             {
                 var accessor = accessors[ivar_name],
@@ -2066,7 +3136,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                     getterCode = "(id)" + getterName + "\n{\nreturn " + ivar_name + ";\n}";
                 if (instance_methods.atoms.length !== 0)
                     instance_methods.atoms[instance_methods.atoms.length] = ",\n";
-                instance_methods.atoms[instance_methods.atoms.length] = this.method(new objj_lexer(getterCode));
+                instance_methods.atoms[instance_methods.atoms.length] = this.method(new Lexer(getterCode));
                 if (accessor["readonly"])
                     continue;
                 var setterName = accessor["setter"];
@@ -2082,13 +3152,12 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                     setterCode += ivar_name + " = newValue;\n}";
                 if (instance_methods.atoms.length !== 0)
                     instance_methods.atoms[instance_methods.atoms.length] = ",\n";
-                instance_methods.atoms[instance_methods.atoms.length] = this.method(new objj_lexer(setterCode));
+                instance_methods.atoms[instance_methods.atoms.length] = this.method(new Lexer(setterCode));
             }
         }
         else
             tokens.previous();
         buffer.atoms[buffer.atoms.length] = "objj_registerClassPair(the_class);\n";
-        buffer.atoms[buffer.atoms.length] = "objj_addClassForBundle(the_class, objj_getBundleWithPath(OBJJ_CURRENT_BUNDLE.path));\n";
     }
     while ((token = tokens.skip_whitespace()))
     {
@@ -2111,7 +3180,7 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
             if ((token = tokens.next()) == TOKEN_END)
                 break;
             else
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected \"@end\", found \"@" + token + "\".")));
+                throw new SyntaxError(this.error_message("*** Expected \"@end\", found \"@" + token + "\"."));
         }
     }
     if (instance_methods.atoms.length !== 0)
@@ -2129,28 +3198,30 @@ objj_preprocessor.prototype.implementation = function(tokens, aStringBuffer)
     buffer.atoms[buffer.atoms.length] = '}';
     this._currentClass = "";
 }
-objj_preprocessor.prototype._import = function(tokens)
+Preprocessor.prototype._import = function(tokens)
 {
-    this.fragment();
-    var path = "",
+    var URLString = "",
         token = tokens.skip_whitespace(),
-        isLocal = (token != TOKEN_LESS_THAN);
-    if (token == TOKEN_LESS_THAN)
+        isQuoted = (token !== TOKEN_LESS_THAN);
+    if (token === TOKEN_LESS_THAN)
     {
-        while((token = tokens.next()) && token != TOKEN_GREATER_THAN)
-            path += token;
+        while((token = tokens.next()) && token !== TOKEN_GREATER_THAN)
+            URLString += token;
         if(!token)
-            objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Unterminated import statement.")));
+            throw new SyntaxError(this.error_message("*** Unterminated import statement."));
     }
-    else if (token.charAt(0) == TOKEN_DOUBLE_QUOTE)
-        path = token.substr(1, token.length - 2);
+    else if (token.charAt(0) === TOKEN_DOUBLE_QUOTE)
+        URLString = token.substr(1, token.length - 2);
     else
-        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expecting '<' or '\"', found \"" + token + "\".")));
-    this._fragments.push(fragment_create_file(path, NULL, isLocal, this._file));
+        throw new SyntaxError(this.error_message("*** Expecting '<' or '\"', found \"" + token + "\"."));
+    this._buffer.atoms[this._buffer.atoms.length] = "objj_executeFile(\"";
+    this._buffer.atoms[this._buffer.atoms.length] = URLString;
+    this._buffer.atoms[this._buffer.atoms.length] = isQuoted ? "\", YES);" : "\", NO);";
+    this._dependencies.push(new FileDependency(new CFURL(URLString), isQuoted));
 }
-objj_preprocessor.prototype.method = function(tokens)
+Preprocessor.prototype.method = function( tokens)
 {
-    var buffer = new objj_stringBuffer(),
+    var buffer = new StringBuffer(),
         token,
         selector = "",
         parameters = [],
@@ -2181,7 +3252,7 @@ objj_preprocessor.prototype.method = function(tokens)
         else if (token == TOKEN_COMMA)
         {
             if ((token = tokens.skip_whitespace()) != TOKEN_PERIOD || tokens.next() != TOKEN_PERIOD || tokens.next() != TOKEN_PERIOD)
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Argument list expected after ','.")));
+                throw new SyntaxError(this.error_message("*** Argument list expected after ','."));
         }
         else
             selector += token;
@@ -2192,7 +3263,7 @@ objj_preprocessor.prototype.method = function(tokens)
     buffer.atoms[buffer.atoms.length] = selector;
     buffer.atoms[buffer.atoms.length] = "\"), function";
     this._currentSelector = selector;
-    if (this._flags & OBJJ_PREPROCESSOR_DEBUG_SYMBOLS)
+    if (this._flags & Preprocessor.Flags.IncludeDebugSymbols)
         buffer.atoms[buffer.atoms.length] = " $" + this._currentClass + "__" + selector.replace(/:/g, "_");
     buffer.atoms[buffer.atoms.length] = "(self, _cmd";
     for(; index < count; ++index)
@@ -2203,15 +3274,15 @@ objj_preprocessor.prototype.method = function(tokens)
     buffer.atoms[buffer.atoms.length] = ")\n{ with(self)\n{";
     buffer.atoms[buffer.atoms.length] = this.preprocess(tokens, NULL, TOKEN_CLOSE_BRACE, TOKEN_OPEN_BRACE);
     buffer.atoms[buffer.atoms.length] = "}\n}";
-    if (this._flags & OBJJ_PREPROCESSOR_DEBUG_SYMBOLS)
+    if (this._flags & Preprocessor.Flags.IncludeDebugSymbols)
         buffer.atoms[buffer.atoms.length] = ","+JSON.stringify(types);
     buffer.atoms[buffer.atoms.length] = ")";
     this._currentSelector = "";
     return buffer;
 }
-objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, terminator, instigator, tuple)
+Preprocessor.prototype.preprocess = function(tokens, aStringBuffer, terminator, instigator, tuple)
 {
-    var buffer = aStringBuffer ? aStringBuffer : new objj_stringBuffer(),
+    var buffer = aStringBuffer ? aStringBuffer : new StringBuffer(),
         count = 0,
         token = "";
     if (tuple)
@@ -2220,7 +3291,7 @@ objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, termina
         var bracket = false,
             closures = [0, 0, 0];
     }
-    while ((token = tokens.next()) && ((token != terminator) || count))
+    while ((token = tokens.next()) && ((token !== terminator) || count))
     {
         if (tuple)
         {
@@ -2288,23 +3359,20 @@ objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, termina
         }
         if (instigator)
         {
-            if (token == instigator)
+            if (token === instigator)
                 ++count;
-            else if (token == terminator)
+            else if (token === terminator)
                 --count;
         }
-        if(token == TOKEN_IMPORT)
-        {
-            objj_fprintf(warning_stream, this._file.path + ": import keyword is deprecated, use @import instead.");
-            this._import(tokens);
-        }
-        else if (token === TOKEN_FUNCTION)
+        if (token === TOKEN_FUNCTION)
         {
             var accumulator = "";
-            while((token = tokens.next()) && token != TOKEN_OPEN_PARENTHESIS && !(/^\w/).test(token))
+            while((token = tokens.next()) && token !== TOKEN_OPEN_PARENTHESIS && !(/^\w/).test(token))
                 accumulator += token;
             if (token === TOKEN_OPEN_PARENTHESIS)
             {
+                if (instigator === TOKEN_OPEN_PARENTHESIS)
+                    ++count;
                 buffer.atoms[buffer.atoms.length] = "function" + accumulator + '(';
                 if (tuple)
                     ++closures[1];
@@ -2322,19 +3390,19 @@ objj_preprocessor.prototype.preprocess = function(tokens, aStringBuffer, termina
             buffer.atoms[buffer.atoms.length] = token;
     }
     if (tuple)
-        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected ']' - Unterminated message send or array.")));
+        throw new SyntaxError(this.error_message("*** Expected ']' - Unterminated message send or array."));
     if (!aStringBuffer)
         return buffer;
 }
-objj_preprocessor.prototype.selector = function(tokens, aStringBuffer)
+Preprocessor.prototype.selector = function(tokens, aStringBuffer)
 {
-    var buffer = aStringBuffer ? aStringBuffer : new objj_stringBuffer();
+    var buffer = aStringBuffer ? aStringBuffer : new StringBuffer();
     buffer.atoms[buffer.atoms.length] = "sel_getUid(\"";
     if (tokens.skip_whitespace() != TOKEN_OPEN_PARENTHESIS)
-        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Expected '('")));
+        throw new SyntaxError(this.error_message("*** Expected '('"));
     var selector = tokens.skip_whitespace();
     if (selector == TOKEN_CLOSE_PARENTHESIS)
-        objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Unexpected ')', can't have empty @selector()")));
+        throw new SyntaxError(this.error_message("*** Unexpected ')', can't have empty @selector()"));
     aStringBuffer.atoms[aStringBuffer.atoms.length] = selector;
     var token,
         starting = true;
@@ -2346,9 +3414,9 @@ objj_preprocessor.prototype.selector = function(tokens, aStringBuffer)
                 if (tokens.skip_whitespace() == TOKEN_CLOSE_PARENTHESIS)
                     break;
                 else
-                    objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Unexpected whitespace in @selector().")));
+                    throw new SyntaxError(this.error_message("*** Unexpected whitespace in @selector()."));
             else
-                objj_exception_throw(new objj_exception(OBJJParseException, this.error_message("*** Illegal character '" + token + "' in @selector().")));
+                throw new SyntaxError(this.error_message("*** Illegal character '" + token + "' in @selector()."));
         }
         buffer.atoms[buffer.atoms.length] = token;
         starting = (token == TOKEN_COLON);
@@ -2357,194 +3425,765 @@ objj_preprocessor.prototype.selector = function(tokens, aStringBuffer)
     if (!aStringBuffer)
         return buffer;
 }
-objj_preprocessor.prototype.error_message = function(errorMessage)
+Preprocessor.prototype.error_message = function(errorMessage)
 {
-    return errorMessage + " <Context File: "+ this._file.path +
+    return errorMessage + " <Context File: "+ this._URL +
                                 (this._currentClass ? " Class: "+this._currentClass : "") +
                                 (this._currentSelector ? " Method: "+this._currentSelector : "") +">";
 }
-var objj_included_files = { };
-var FRAGMENT_CODE = 1,
-    FRAGMENT_FILE = 1 << 2,
-    FRAGMENT_LOCAL = 1 << 3;
-function objj_fragment()
+function FileDependency( aURL, isLocal)
 {
-    this.info = NULL;
-    this.type = 0;
-    this.context = NULL;
-    this.bundle = NULL;
-    this.file = NULL;
+    this._URL = aURL;
+    this._isLocal = isLocal;
 }
-function objj_context()
+exports.FileDependency = FileDependency;
+FileDependency.prototype.URL = function()
 {
-    this.fragments = [];
-    this.scheduled = NO;
-    this.blocked = NO;
+    return this._URL;
 }
-objj_fragment.prototype.toMarkedString = function()
+FileDependency.prototype.isLocal = function()
 {
-    return (this.type & FRAGMENT_FILE) ? ((this.type & FRAGMENT_LOCAL) ? MARKER_IMPORT_LOCAL : MARKER_IMPORT_STD) + ';' + this.info.length + ';' + this.info :
-                            MARKER_CODE + ';' + this.info.length + ';' + this.info;
+    return this._isLocal;
 }
-function fragment_create_code(aCode, aBundle, aFile)
+FileDependency.prototype.toMarkedString = function()
 {
-    var fragment = new objj_fragment();
-    fragment.type = (FRAGMENT_CODE);
-    fragment.info = (aCode);
-    fragment.bundle = aBundle;
-    fragment.file = aFile;
-    return fragment;
+    var URLString = this.URL().absoluteString();
+    return (this.isLocal() ? MARKER_IMPORT_LOCAL : MARKER_IMPORT_STD) + ";" +
+            URLString.length + ";" + URLString;
 }
-function fragment_create_file(aPath, aBundle, isLocal, aFile)
+FileDependency.prototype.toString = function()
 {
-    var fragment = new objj_fragment();
-    fragment.type = (FRAGMENT_FILE | (FRAGMENT_LOCAL * isLocal));
-    fragment.info = aPath;
-    fragment.bundle = aBundle;
-    fragment.file = aFile;
-    return fragment;
+    return (this.isLocal() ? "LOCAL: " : "STD: ") + this.URL();
 }
-objj_context.prototype.evaluate = function()
+var ExecutableUnloadedFileDependencies = 0,
+    ExecutableLoadingFileDependencies = 1,
+    ExecutableLoadedFileDependencies = 2,
+    AnonymousExecutableCount = 0;
+function Executable( aCode, fileDependencies, aURL, aFunction)
 {
-    this.scheduled = NO;
-    if (this.blocked)
-        return this.schedule();
-    var sleep = NO,
-        start = new Date(),
-        fragments = this.fragments;
-    while (!sleep && fragments.length)
+    if (arguments.length === 0)
+        return this;
+    this._code = aCode;
+    this._function = aFunction || NULL;
+    this._URL = makeAbsoluteURL(aURL || new CFURL("(Anonymous" + (AnonymousExecutableCount++) + ")"));
+    this._fileDependencies = fileDependencies;
+    if (fileDependencies.length)
     {
-        var fragment = fragments.pop();
-        if ((fragment.type & FRAGMENT_FILE))
-            sleep = fragment_evaluate_file(fragment);
-        else
-            sleep = fragment_evaluate_code(fragment);
-        sleep = sleep || ((new Date() - start) > 3000);
+        this._fileDependencyStatus = ExecutableUnloadedFileDependencies;
+        this._fileDependencyCallbacks = [];
     }
-    if (sleep)
-        this.schedule();
-    else if (this.didCompleteCallback)
-        this.didCompleteCallback(this);
-}
-objj_context.prototype.schedule = function()
-{
-    if (this.scheduled)
+    else
+        this._fileDependencyStatus = ExecutableLoadedFileDependencies;
+    if (this._function)
         return;
-    this.scheduled = YES;
-    var context = this;
-    window.setNativeTimeout(function () { context.evaluate(); }, 0);
+    this.setCode(aCode);
 }
-objj_context.prototype.pushFragment = function(aFragment)
+exports.Executable = Executable;
+Executable.prototype.path = function()
 {
-    aFragment.context = this;
-    this.fragments.push(aFragment);
+    return this.URL().path();
 }
-function fragment_evaluate_code(aFragment)
+Executable.prototype.URL = function()
 {
-    var compiled;
-    OBJJ_CURRENT_BUNDLE = aFragment.bundle;
-    try
-    {
-            var functionText = aFragment.info+"/**/\n//@ sourceURL="+aFragment.file.path;
-            compiled = new Function(functionText);
-        compiled.displayName = aFragment.file.path;
-    }
-    catch(anException)
-    {
-        objj_exception_report(anException, aFragment.file);
-    }
-    try
-    {
-        compiled();
-    }
-    catch(anException)
-    {
-        objj_exception_report(anException, aFragment.file);
-    }
-    return NO;
+    return this._URL;
 }
-function fragment_evaluate_file(aFragment)
+Executable.prototype.URL.displayName = "Executable.prototype.URL";
+Executable.prototype.functionParameters = function()
 {
-    var context = aFragment.context,
-        requiresSleep = YES;
-    context.blocked = YES;
-    objj_request_file(aFragment.info, (aFragment.type & FRAGMENT_LOCAL), function(aFile)
-    {
-        requiresSleep = NO;
-        context.blocked = NO;
-        if (aFile == OBJJ_NO_FILE)
-            objj_alert("uh oh!");
-        if (objj_included_files[aFile.path])
-            return;
-        objj_included_files[aFile.path] = YES;
-        if (!aFile.fragments)
-            aFile.fragments = objj_preprocess(aFile.contents, aFile.bundle, aFile, OBJJ_PREPROCESSOR_DEBUG_SYMBOLS);
-        var fragments = aFile.fragments,
-            count = fragments.length,
-            directory = aFile.path.substr(0, aFile.path.lastIndexOf('/') + 1);
-        while (count--)
-        {
-            var fragment = fragments[count];
-            if ((fragment.type & FRAGMENT_FILE))
-            {
-                if ((fragment.type & FRAGMENT_LOCAL))
-                    fragment.info = directory + fragment.info;
-                objj_request_file(fragment.info, (fragment.type & FRAGMENT_LOCAL), NULL);
-            }
-            context.pushFragment(fragment);
-        }
-    });
-    return requiresSleep;
+    var functionParameters = ["global", "objj_executeFile", "objj_importFile"];
+    return functionParameters;
 }
-function objj_import( pathOrPaths, isLocal, didCompleteCallback)
+Executable.prototype.functionParameters.displayName = "Executable.prototype.functionParameters";
+Executable.prototype.functionArguments = function()
 {
-    var context = new objj_context(),
-        paths = pathOrPaths;
-    if (typeof paths === "string")
-        paths = [paths];
-    var index = 0,
-        count = paths.length;
+    var functionArguments = [global, this.fileExecuter(), this.fileImporter()];
+    return functionArguments;
+}
+Executable.prototype.functionArguments.displayName = "Executable.prototype.functionArguments";
+Executable.prototype.execute = function()
+{
+    var oldContextBundle = CONTEXT_BUNDLE;
+    CONTEXT_BUNDLE = CFBundle.bundleContainingURL(this.URL());
+    var result = this._function.apply(global, this.functionArguments());
+    CONTEXT_BUNDLE = oldContextBundle;
+    return result;
+}
+Executable.prototype.execute.displayName = "Executable.prototype.execute";
+Executable.prototype.code = function()
+{
+    return this._code;
+}
+Executable.prototype.code.displayName = "Executable.prototype.code";
+Executable.prototype.setCode = function(code)
+{
+    this._code = code;
+    var parameters = this.functionParameters().join(",");
+        var absoluteString = this.URL().absoluteString();
+        code += "/**/\n//@ sourceURL=" + absoluteString;
+        this._function = new Function(parameters, code);
+    this._function.displayName = absoluteString;
+}
+Executable.prototype.setCode.displayName = "Executable.prototype.setCode";
+Executable.prototype.fileDependencies = function()
+{
+    return this._fileDependencies;
+}
+Executable.prototype.fileDependencies.displayName = "Executable.prototype.fileDependencies";
+Executable.prototype.hasLoadedFileDependencies = function()
+{
+    return this._fileDependencyStatus === ExecutableLoadedFileDependencies;
+}
+Executable.prototype.hasLoadedFileDependencies.displayName = "Executable.prototype.hasLoadedFileDependencies";
+var fileDependencyLoadCount = 0,
+    fileDependencyExecutables = [],
+    fileDependencyMarkers = { };
+Executable.prototype.loadFileDependencies = function(aCallback)
+{
+    var status = this._fileDependencyStatus;
+    if (status === ExecutableLoadedFileDependencies)
+        return aCallback();
+    this._fileDependencyCallbacks.push(aCallback)
+    if (status === ExecutableUnloadedFileDependencies)
+    {
+        if (fileDependencyLoadCount)
+            throw "Can't load";
+        loadFileDependenciesForExecutable(this);
+    }
+}
+Executable.prototype.loadFileDependencies.displayName = "Executable.prototype.loadFileDependencies";
+function loadFileDependenciesForExecutable( anExecutable)
+{
+    fileDependencyExecutables.push(anExecutable);
+    anExecutable._fileDependencyStatus = ExecutableLoadingFileDependencies;
+    var fileDependencies = anExecutable.fileDependencies(),
+        index = 0,
+        count = fileDependencies.length,
+        referenceURL = anExecutable.referenceURL(),
+        referenceURLString = referenceURL.absoluteString(),
+        fileExecutableSearcher = anExecutable.fileExecutableSearcher();
+    fileDependencyLoadCount += count;
     for (; index < count; ++index)
-        context.pushFragment(fragment_create_file(paths[index], new objj_bundle(""), isLocal, NULL));
-    context.didCompleteCallback = didCompleteCallback;
-    context.evaluate();
+    {
+        var fileDependency = fileDependencies[index],
+            isQuoted = fileDependency.isLocal(),
+            URL = fileDependency.URL(),
+            marker = (isQuoted && (referenceURLString + " ") || "") + URL;
+        if (fileDependencyMarkers[marker])
+        {
+            if (--fileDependencyLoadCount === 0)
+                fileExecutableDependencyLoadFinished();
+            continue;
+        }
+        fileDependencyMarkers[marker] = YES;
+        fileExecutableSearcher(URL, isQuoted, fileExecutableSearchFinished);
+    }
 }
-if (window.OBJJ_MAIN_FILE)
-    objj_import(OBJJ_MAIN_FILE, YES, function() { main(); });
+function fileExecutableSearchFinished( aFileExecutable)
+{
+    --fileDependencyLoadCount;
+    if (aFileExecutable._fileDependencyStatus === ExecutableUnloadedFileDependencies)
+        loadFileDependenciesForExecutable(aFileExecutable);
+    else if (fileDependencyLoadCount === 0)
+        fileExecutableDependencyLoadFinished();
+}
+function fileExecutableDependencyLoadFinished()
+{
+    var executables = fileDependencyExecutables,
+        index = 0,
+        count = executables.length;
+    fileDependencyExecutables = [];
+    for (; index < count; ++index)
+        executables[index]._fileDependencyStatus = ExecutableLoadedFileDependencies;
+    for (index = 0; index < count; ++index)
+    {
+        var executable = executables[index],
+            callbacks = executable._fileDependencyCallbacks,
+            callbackIndex = 0,
+            callbackCount = callbacks.length;
+        for (; callbackIndex < callbackCount; ++callbackIndex)
+            callbacks[callbackIndex]();
+        executable._fileDependencyCallbacks = [];
+    }
+}
+Executable.prototype.referenceURL = function()
+{
+    if (this._referenceURL === undefined)
+        this._referenceURL = new CFURL(".", this.URL());
+    return this._referenceURL;
+}
+Executable.prototype.referenceURL.displayName = "Executable.prototype.referenceURL";
+Executable.prototype.fileImporter = function()
+{
+    return Executable.fileImporterForURL(this.referenceURL());
+}
+Executable.prototype.fileImporter.displayName = "Executable.prototype.fileImporter";
+Executable.prototype.fileExecuter = function()
+{
+    return Executable.fileExecuterForURL(this.referenceURL());
+}
+Executable.prototype.fileExecuter.displayName = "Executable.prototype.fileExecuter";
+Executable.prototype.fileExecutableSearcher = function()
+{
+    return Executable.fileExecutableSearcherForURL(this.referenceURL());
+}
+Executable.prototype.fileExecutableSearcher.displayName = "Executable.prototype.fileExecutableSearcher";
+var cachedFileExecuters = { };
+Executable.fileExecuterForURL = function( aURL)
+{
+    var referenceURL = makeAbsoluteURL(aURL),
+        referenceURLString = referenceURL.absoluteString(),
+        cachedFileExecuter = cachedFileExecuters[referenceURLString];
+    if (!cachedFileExecuter)
+    {
+        cachedFileExecuter = function( aURL, isQuoted, shouldForce)
+        {
+            Executable.fileExecutableSearcherForURL(referenceURL)(aURL, isQuoted,
+            function( aFileExecutable)
+            {
+                if (!aFileExecutable.hasLoadedFileDependencies())
+                    throw "No executable loaded for file at URL " + aURL;
+                aFileExecutable.execute(shouldForce);
+            });
+        }
+        cachedFileExecuters[referenceURLString] = cachedFileExecuter;
+    }
+    return cachedFileExecuter;
+}
+Executable.fileExecuterForURL.displayName = "Executable.fileExecuterForURL";
+var cachedFileImporters = { };
+Executable.fileImporterForURL = function( aURL)
+{
+    var referenceURL = makeAbsoluteURL(aURL),
+        referenceURLString = referenceURL.absoluteString(),
+        cachedFileImporter = cachedFileImporters[referenceURLString];
+    if (!cachedFileImporter)
+    {
+        cachedFileImporter = function( aURL, isQuoted, aCallback)
+        {
+            enableCFURLCaching();
+            Executable.fileExecutableSearcherForURL(referenceURL)(aURL, isQuoted,
+            function( aFileExecutable)
+            {
+                aFileExecutable.loadFileDependencies(function()
+                {
+                    aFileExecutable.execute();
+                    disableCFURLCaching();
+                    if (aCallback)
+                        aCallback();
+                });
+            });
+        }
+        cachedFileImporters[referenceURLString] = cachedFileImporter;
+    }
+    return cachedFileImporter;
+}
+Executable.fileImporterForURL.displayName = "Executable.fileImporterForURL";
+var cachedFileExecutableSearchers = { },
+    cachedFileExecutableSearchResults = { };
+Executable.fileExecutableSearcherForURL = function( referenceURL)
+{
+    var referenceURLString = referenceURL.absoluteString(),
+        cachedFileExecutableSearcher = cachedFileExecutableSearchers[referenceURLString],
+        cachedSearchResults = { };
+    if (!cachedFileExecutableSearcher)
+    {
+        cachedFileExecutableSearcher = function( aURL, isQuoted, success)
+        {
+            var cacheUID = (isQuoted && referenceURL || "") + aURL,
+                cachedResult = cachedFileExecutableSearchResults[cacheUID];
+            if (cachedResult)
+                return completed(cachedResult);
+            var isAbsoluteURL = (aURL instanceof CFURL) && aURL.scheme();
+            if (isQuoted || isAbsoluteURL)
+            {
+                if (!isAbsoluteURL)
+                    aURL = new CFURL(aURL, referenceURL);
+                StaticResource.resolveResourceAtURL(aURL, NO, completed);
+            }
+            else
+                StaticResource.resolveResourceAtURLSearchingIncludeURLs(aURL, completed);
+            function completed( aStaticResource)
+            {
+                if (!aStaticResource)
+                    throw new Error("Could not load file at " + aURL);
+                cachedFileExecutableSearchResults[cacheUID] = aStaticResource;
+                success(new FileExecutable(aStaticResource.URL()));
+            }
+        };
+        cachedFileExecutableSearchers[referenceURLString] = cachedFileExecutableSearcher;
+    }
+    return cachedFileExecutableSearcher;
+}
+Executable.fileExecutableSearcherForURL.displayName = "Executable.fileExecutableSearcherForURL";
+var FileExecutablesForURLStrings = { };
+function FileExecutable( aURL, anExecutable)
+{
+    aURL = makeAbsoluteURL(aURL);
+    var URLString = aURL.absoluteString(),
+        existingFileExecutable = FileExecutablesForURLStrings[URLString];
+    if (existingFileExecutable)
+        return existingFileExecutable;
+    FileExecutablesForURLStrings[URLString] = this;
+    var fileContents = StaticResource.resourceAtURL(aURL).contents(),
+        executable = NULL,
+        extension = aURL.pathExtension();
+    if (anExecutable)
+        executable = anExecutable;
+    else if (fileContents.match(/^@STATIC;/))
+        executable = decompile(fileContents, aURL);
+    else if (extension === "j" || !extension)
+        executable = exports.preprocess(fileContents, aURL, Preprocessor.Flags.IncludeDebugSymbols);
+    else
+        executable = new Executable(fileContents, [], aURL);
+    Executable.apply(this, [executable.code(), executable.fileDependencies(), aURL, executable._function]);
+    this._hasExecuted = NO;
+}
+exports.FileExecutable = FileExecutable;
+FileExecutable.prototype = new Executable();
+FileExecutable.prototype.execute = function( shouldForce)
+{
+    if (this._hasExecuted && !shouldForce)
+        return;
+    this._hasExecuted = YES;
+    Executable.prototype.execute.call(this);
+}
+FileExecutable.prototype.execute.displayName = "FileExecutable.prototype.execute";
+FileExecutable.prototype.hasExecuted = function()
+{
+    return this._hasExecuted;
+}
+FileExecutable.prototype.hasExecuted.displayName = "FileExecutable.prototype.hasExecuted";
+function decompile( aString, aURL)
+{
+    var stream = new MarkedStream(aString);
+    var marker = NULL,
+        code = "",
+        dependencies = [];
+    while (marker = stream.getMarker())
+    {
+        var text = stream.getString();
+        if (marker === MARKER_TEXT)
+            code += text;
+        else if (marker === MARKER_IMPORT_STD)
+            dependencies.push(new FileDependency(new CFURL(text), NO));
+        else if (marker === MARKER_IMPORT_LOCAL)
+            dependencies.push(new FileDependency(new CFURL(text), YES));
+    }
+    return new Executable(code, dependencies, aURL);
+}
+var CLS_CLASS = 0x1,
+    CLS_META = 0x2,
+    CLS_INITIALIZED = 0x4,
+    CLS_INITIALIZING = 0x8;
+objj_ivar = function( aName, aType)
+{
+    this.name = aName;
+    this.type = aType;
+}
+objj_ivar.displayName = "objj_ivar";
+objj_method = function( aName, anImplementation, types)
+{
+    this.name = aName;
+    this.method_imp = anImplementation;
+    this.types = types;
+}
+objj_method.displayName = "objj_method";
+objj_class = function()
+{
+    this.isa = NULL;
+    this.super_class = NULL;
+    this.sub_classes = [];
+    this.name = NULL;
+    this.info = 0;
+    this.ivars = [];
+    this.method_list = [];
+    this.method_hash = {};
+    this.method_store = function() { };
+    this.method_dtable = this.method_store.prototype;
+    this.allocator = function() { };
+    this._UID = -1;
+}
+objj_class.displayName = "objj_class";
+objj_object = function()
+{
+    this.isa = NULL;
+    this._UID = -1;
+}
+objj_object.displayName = "objj_object";
+class_getName = function( aClass)
+{
+    if (aClass == Nil)
+        return "";
+    return aClass.name;
+}
+class_getName.displayName = "class_getName";
+class_isMetaClass = function( aClass)
+{
+    if (!aClass)
+        return NO;
+    return ((aClass.info & (CLS_META)));
+}
+class_isMetaClass.displayName = "class_isMetaClass";
+class_getSuperclass = function( aClass)
+{
+    if (aClass == Nil)
+        return Nil;
+    return aClass.super_class;
+}
+class_getSuperclass.displayName = "class_getSuperclass"
+class_setSuperclass = function( aClass, aSuperClass)
+{
+    aClass.super_class = aSuperClass;
+    aClass.isa.super_class = aSuperClass.isa;
+}
+class_setSuperclass.displayName = "class_setSuperclass";
+class_addIvar = function( aClass, aName, aType)
+{
+    var thePrototype = aClass.allocator.prototype;
+    if (typeof thePrototype[aName] != "undefined")
+        return NO;
+    aClass.ivars.push(new objj_ivar(aName, aType));
+    thePrototype[aName] = NULL;
+    return YES;
+}
+class_addIvar.displayName = "class_addIvar";
+class_addIvars = function( aClass, ivars)
+{
+    var index = 0,
+        count = ivars.length,
+        thePrototype = aClass.allocator.prototype;
+    for (; index < count; ++index)
+    {
+        var ivar = ivars[index],
+            name = ivar.name;
+        if (typeof thePrototype[name] === "undefined")
+        {
+            aClass.ivars.push(ivar);
+            thePrototype[name] = NULL;
+        }
+    }
+}
+class_addIvars.displayName = "class_addIvars";
+class_copyIvarList = function( aClass)
+{
+    return aClass.ivars.slice(0);
+}
+class_copyIvarList.displayName = "class_copyIvarList";
+class_addMethod = function( aClass, aName, anImplementation, types)
+{
+    if (aClass.method_hash[aName])
+        return NO;
+    var method = new objj_method(aName, anImplementation, types);
+    aClass.method_list.push(method);
+    aClass.method_dtable[aName] = method;
+    method.method_imp.displayName = (((aClass.info & (CLS_META))) ? '+' : '-') + " [" + class_getName(aClass) + ' ' + method_getName(method) + ']';
+    if (!((aClass.info & (CLS_META))) && (((aClass.info & (CLS_META))) ? aClass : aClass.isa).isa === (((aClass.info & (CLS_META))) ? aClass : aClass.isa))
+        class_addMethod((((aClass.info & (CLS_META))) ? aClass : aClass.isa), aName, anImplementation, types);
+    return YES;
+}
+class_addMethod.displayName = "class_addMethod";
+class_addMethods = function( aClass, methods)
+{
+    var index = 0,
+        count = methods.length,
+        method_list = aClass.method_list,
+        method_dtable = aClass.method_dtable;
+    for (; index < count; ++index)
+    {
+        var method = methods[index];
+        if (aClass.method_hash[method.name])
+            continue;
+        method_list.push(method);
+        method_dtable[method.name] = method;
+        method.method_imp.displayName = (((aClass.info & (CLS_META))) ? '+' : '-') + " [" + class_getName(aClass) + ' ' + method_getName(method) + ']';
+    }
+    if (!((aClass.info & (CLS_META))) && (((aClass.info & (CLS_META))) ? aClass : aClass.isa).isa === (((aClass.info & (CLS_META))) ? aClass : aClass.isa))
+        class_addMethods((((aClass.info & (CLS_META))) ? aClass : aClass.isa), methods);
+}
+class_addMethods.displayName = "class_addMethods";
+class_getInstanceMethod = function( aClass, aSelector)
+{
+    if (!aClass || !aSelector)
+        return NULL;
+    var method = aClass.method_dtable[aSelector];
+    return method ? method : NULL;
+}
+class_getInstanceMethod.displayName = "class_getInstanceMethod";
+class_getClassMethod = function( aClass, aSelector)
+{
+    if (!aClass || !aSelector)
+        return NULL;
+    var method = (((aClass.info & (CLS_META))) ? aClass : aClass.isa).method_dtable[aSelector];
+    return method ? method : NULL;
+}
+class_getClassMethod.displayName = "class_getClassMethod";
+class_copyMethodList = function( aClass)
+{
+    return aClass.method_list.slice(0);
+}
+class_copyMethodList.displayName = "class_copyMethodList";
+class_replaceMethod = function( aClass, aSelector, aMethodImplementation)
+{
+    if (!aClass || !aSelector)
+        return NULL;
+    var method = aClass.method_dtable[aSelector],
+        method_imp = NULL;
+    if (method)
+        method_imp = method.method_imp;
+    method.method_imp = aMethodImplementation;
+    return method_imp;
+}
+class_replaceMethod.displayName = "class_replaceMethod";
+var _class_initialize = function( aClass)
+{
+    var meta = (((aClass.info & (CLS_META))) ? aClass : aClass.isa);
+    if ((aClass.info & (CLS_META)))
+        aClass = objj_getClass(aClass.name);
+    if (aClass.super_class && !((((aClass.super_class.info & (CLS_META))) ? aClass.super_class : aClass.super_class.isa).info & (CLS_INITIALIZED)))
+        _class_initialize(aClass.super_class);
+    if (!(meta.info & (CLS_INITIALIZED)) && !(meta.info & (CLS_INITIALIZING)))
+    {
+        meta.info = (meta.info | (CLS_INITIALIZING)) & ~(0);
+        objj_msgSend(aClass, "initialize");
+        meta.info = (meta.info | (CLS_INITIALIZED)) & ~(CLS_INITIALIZING);
+    }
+}
+var _objj_forward = new objj_method("forward", function(self, _cmd)
+{
+    return objj_msgSend(self, "forward::", _cmd, arguments);
+});
+class_getMethodImplementation = function( aClass, aSelector)
+{
+    if (!((((aClass.info & (CLS_META))) ? aClass : aClass.isa).info & (CLS_INITIALIZED))) _class_initialize(aClass); var method = aClass.method_dtable[aSelector]; if (!method) method = _objj_forward; var implementation = method.method_imp;;
+    return implementation;
+}
+class_getMethodImplementation.displayName = "class_getMethodImplementation";
+var REGISTERED_CLASSES = { };
+objj_allocateClassPair = function( superclass, aName)
+{
+    var classObject = new objj_class(),
+        metaClassObject = new objj_class(),
+        rootClassObject = classObject;
+    if (superclass)
+    {
+        rootClassObject = superclass;
+        while (rootClassObject.superclass)
+            rootClassObject = rootClassObject.superclass;
+        classObject.allocator.prototype = new superclass.allocator;
+        classObject.method_store.prototype = new superclass.method_store;
+        classObject.method_dtable = classObject.method_store.prototype;
+        metaClassObject.method_store.prototype = new superclass.isa.method_store;
+        metaClassObject.method_dtable = metaClassObject.method_store.prototype;
+        classObject.super_class = superclass;
+        metaClassObject.super_class = superclass.isa;
+    }
+    else
+        classObject.allocator.prototype = new objj_object();
+    classObject.isa = metaClassObject;
+    classObject.name = aName;
+    classObject.info = CLS_CLASS;
+    classObject._UID = objj_generateObjectUID();
+    metaClassObject.isa = rootClassObject.isa;
+    metaClassObject.name = aName;
+    metaClassObject.info = CLS_META;
+    metaClassObject._UID = objj_generateObjectUID();
+    return classObject;
+}
+objj_allocateClassPair.displayName = "objj_allocateClassPair";
+var CONTEXT_BUNDLE = nil;
+objj_registerClassPair = function( aClass)
+{
+    global[aClass.name] = aClass;
+    REGISTERED_CLASSES[aClass.name] = aClass;
+    addClassToBundle(aClass, CONTEXT_BUNDLE);
+}
+objj_registerClassPair.displayName = "objj_registerClassPair";
+class_createInstance = function( aClass)
+{
+    if (!aClass)
+        objj_exception_throw(new objj_exception(OBJJNilClassException, "*** Attempting to create object with Nil class."));
+    var object = new aClass.allocator();
+    object.isa = aClass;
+    object._UID = objj_generateObjectUID();
+    return object;
+}
+class_createInstance.displayName = "class_createInstance";
+var prototype_bug = function() { }
+prototype_bug.prototype.member = false;
+with (new prototype_bug())
+    member = true;
+if (new prototype_bug().member)
+{
+var fast_class_createInstance = class_createInstance;
+class_createInstance = function( aClass)
+{
+    var object = fast_class_createInstance(aClass);
+    if (object)
+    {
+        var theClass = object.isa,
+            actualClass = theClass;
+        while (theClass)
+        {
+            var ivars = theClass.ivars;
+                count = ivars.length;
+            while (count--)
+                object[ivars[count].name] = NULL;
+            theClass = theClass.super_class;
+        }
+        object.isa = actualClass;
+    }
+    return object;
+}
+}
+object_getClassName = function( anObject)
+{
+    if (!anObject)
+        return "";
+    var theClass = anObject.isa;
+    return theClass ? class_getName(theClass) : "";
+}
+object_getClassName.displayName = "object_getClassName";
+objj_lookUpClass = function( aName)
+{
+    var theClass = REGISTERED_CLASSES[aName];
+    return theClass ? theClass : Nil;
+}
+objj_lookUpClass.displayName = "objj_lookUpClass";
+objj_getClass = function( aName)
+{
+    var theClass = REGISTERED_CLASSES[aName];
+    if (!theClass)
+    {
+    }
+    return theClass ? theClass : Nil;
+}
+objj_getClass.displayName = "objj_getClass";
+objj_getMetaClass = function( aName)
+{
+    var theClass = objj_getClass(aName);
+    return (((theClass.info & (CLS_META))) ? theClass : theClass.isa);
+}
+objj_getMetaClass.displayName = "objj_getMetaClass";
+ivar_getName = function(anIvar)
+{
+    return anIvar.name;
+}
+ivar_getName.displayName = "ivar_getName";
+ivar_getTypeEncoding = function(anIvar)
+{
+    return anIvar.type;
+}
+ivar_getTypeEncoding.displayName = "ivar_getTypeEncoding";
+objj_msgSend = function( aReceiver, aSelector)
+{
+    if (aReceiver == nil)
+        return nil;
+    var isa = aReceiver.isa;
+    if (!((((isa.info & (CLS_META))) ? isa : isa.isa).info & (CLS_INITIALIZED))) _class_initialize(isa); var method = isa.method_dtable[aSelector]; if (!method) method = _objj_forward; var implementation = method.method_imp;;
+    switch(arguments.length)
+    {
+        case 2: return implementation(aReceiver, aSelector);
+        case 3: return implementation(aReceiver, aSelector, arguments[2]);
+        case 4: return implementation(aReceiver, aSelector, arguments[2], arguments[3]);
+    }
+    return implementation.apply(aReceiver, arguments);
+}
+objj_msgSend.displayName = "objj_msgSend";
+objj_msgSendSuper = function( aSuper, aSelector)
+{
+    var super_class = aSuper.super_class;
+    arguments[0] = aSuper.receiver;
+    if (!((((super_class.info & (CLS_META))) ? super_class : super_class.isa).info & (CLS_INITIALIZED))) _class_initialize(super_class); var method = super_class.method_dtable[aSelector]; if (!method) method = _objj_forward; var implementation = method.method_imp;;
+    return implementation.apply(aSuper.receiver, arguments);
+}
+objj_msgSendSuper.displayName = "objj_msgSendSuper";
+method_getName = function( aMethod)
+{
+    return aMethod.name;
+}
+method_getName.displayName = "method_getName";
+method_getImplementation = function( aMethod)
+{
+    return aMethod.method_imp;
+}
+method_getImplementation.displayName = "method_getImplementation";
+method_setImplementation = function( aMethod, anImplementation)
+{
+    var oldImplementation = aMethod.method_imp;
+    aMethod.method_imp = anImplementation;
+    return oldImplementation;
+}
+method_setImplementation.displayName = "method_setImplementation";
+method_exchangeImplementations = function( lhs, rhs)
+{
+    var lhs_imp = method_getImplementation(lhs),
+        rhs_imp = method_getImplementation(rhs);
+    method_setImplementation(lhs, rhs_imp);
+    method_setImplementation(rhs, lhs_imp);
+}
+method_exchangeImplementations.displayName = "method_exchangeImplementations";
+sel_getName = function(aSelector)
+{
+    return aSelector ? aSelector : "<null selector>";
+}
+sel_getName.displayName = "sel_getName";
+sel_getUid = function( aName)
+{
+    return aName;
+}
+sel_getUid.displayName = "sel_getUid";
+sel_isEqual = function( lhs, rhs)
+{
+    return lhs === rhs;
+}
+sel_isEqual.displayName = "sel_isEqual";
+sel_registerName = function( aName)
+{
+    return aName;
+}
+sel_registerName.displayName = "sel_registerName";
 function objj_debug_object_format(aReceiver)
 {
-    return (aReceiver && aReceiver.isa) ? sprintf("<%s %#08x>", (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aReceiver.__address) : String(aReceiver);
+    return (aReceiver && aReceiver.isa) ? exports.sprintf("<%s %#08x>", (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aReceiver._UID) : String(aReceiver);
 }
 function objj_debug_message_format(aReceiver, aSelector)
 {
-    return sprintf("[%s %s]", objj_debug_object_format(aReceiver), aSelector);
+    return exports.sprintf("[%s %s]", objj_debug_object_format(aReceiver), aSelector);
 }
 var objj_msgSend_original = objj_msgSend,
     objj_msgSendSuper_original = objj_msgSendSuper;
-function objj_msgSend_reset()
+objj_msgSend_reset = function()
 {
     objj_msgSend = objj_msgSend_original;
     objj_msgSendSuper = objj_msgSendSuper_original;
 }
-function objj_msgSend_decorate()
+objj_msgSend_decorate = function()
 {
-    for (var i = 0; i < arguments.length; i++)
+    var index = 0,
+        count = arguments.length;
+    for (; index < count; ++index)
     {
-        objj_msgSend = arguments[i](objj_msgSend);
-        objj_msgSendSuper = arguments[i](objj_msgSendSuper);
+        objj_msgSend = arguments[index](objj_msgSend);
+        objj_msgSendSuper = arguments[index](objj_msgSendSuper);
     }
 }
-function objj_msgSend_set_decorators()
+objj_msgSend_set_decorators = function()
 {
     objj_msgSend_reset();
-    objj_msgSend_decorate.apply(null, arguments);
+    objj_msgSend_decorate.apply(NULL, arguments);
 }
 var objj_backtrace = [];
-function objj_backtrace_print(stream) {
-    for (var i = 0; i < objj_backtrace.length; i++)
-        objj_fprintf(stream, objj_debug_message_format(objj_backtrace[i].receiver, objj_backtrace[i].selector));
+objj_backtrace_print = function( aStream)
+{
+    var index = 0,
+        count = objj_backtrace.length;
+    for (; index < count; ++index)
+    {
+        var frame = objj_backtrace[index];
+        aStream(objj_debug_message_format(frame.receiver, frame.selector));
+    }
 }
-function objj_backtrace_decorator(msgSend)
+objj_backtrace_decorator = function(msgSend)
 {
     return function(aReceiverOrSuper, aSelector)
     {
@@ -2552,12 +4191,12 @@ function objj_backtrace_decorator(msgSend)
         objj_backtrace.push({ receiver: aReceiver, selector : aSelector });
         try
         {
-            return msgSend.apply(null, arguments);
+            return msgSend.apply(NULL, arguments);
         }
         catch (anException)
         {
-            objj_fprintf(warning_stream, "Exception " + anException + " in " + objj_debug_message_format(aReceiver, aSelector));
-            objj_backtrace_print(warning_stream);
+            CPLog.warn("Exception " + anException + " in " + objj_debug_message_format(aReceiver, aSelector));
+            objj_backtrace_print(CPLog.warn);
         }
         finally
         {
@@ -2566,14 +4205,14 @@ function objj_backtrace_decorator(msgSend)
     }
 }
 var objj_typechecks_reported = {},
-    objj_typecheck_prints_backtrace = false;
-function objj_typecheck_decorator(msgSend)
+    objj_typecheck_prints_backtrace = NO;
+objj_typecheck_decorator = function(msgSend)
 {
     return function(aReceiverOrSuper, aSelector)
     {
         var aReceiver = aReceiverOrSuper && (aReceiverOrSuper.receiver || aReceiverOrSuper);
         if (!aReceiver)
-            return msgSend.apply(null, arguments);
+            return msgSend.apply(NULL, arguments);
         var types = aReceiver.isa.method_dtable[aSelector].types;
         for (var i = 2; i < arguments.length; i++)
         {
@@ -2585,14 +4224,14 @@ function objj_typecheck_decorator(msgSend)
             {
                 var key = [(((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aSelector, i, e].join(";");
                 if (!objj_typechecks_reported[key]) {
-                    objj_typechecks_reported[key] = true;
-                    objj_fprintf(warning_stream, "Type check failed on argument " + (i-2) + " of " + objj_debug_message_format(aReceiver, aSelector) + ": " + e);
+                    objj_typechecks_reported[key] = YES;
+                    CPLog.warn("Type check failed on argument " + (i-2) + " of " + objj_debug_message_format(aReceiver, aSelector) + ": " + e);
                     if (objj_typecheck_prints_backtrace)
-                        objj_backtrace_print(warning_stream);
+                        objj_backtrace_print(CPLog.warn);
                 }
             }
         }
-        var result = msgSend.apply(null, arguments);
+        var result = msgSend.apply(NULL, arguments);
         try
         {
             objj_debug_typecheck(types[0], result);
@@ -2601,16 +4240,16 @@ function objj_typecheck_decorator(msgSend)
         {
             var key = [(((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aSelector, "ret", e].join(";");
             if (!objj_typechecks_reported[key]) {
-                objj_typechecks_reported[key] = true;
-                objj_fprintf(warning_stream, "Type check failed on return val of " + objj_debug_message_format(aReceiver, aSelector) + ": " + e);
+                objj_typechecks_reported[key] = YES;
+                CPLog.warn("Type check failed on return val of " + objj_debug_message_format(aReceiver, aSelector) + ": " + e);
                 if (objj_typecheck_prints_backtrace)
-                    objj_backtrace_print(warning_stream);
+                    objj_backtrace_print(CPLog.warn);
             }
         }
         return result;
     }
 }
-function objj_debug_typecheck(expectedType, object)
+objj_debug_typecheck = function(expectedType, object)
 {
     var objjClass;
     if (!expectedType)
@@ -2633,12 +4272,12 @@ function objj_debug_typecheck(expectedType, object)
         {
             return;
         }
-        else if (object && object.isa)
+        else if (object !== undefined && object.isa)
         {
             var theClass = object.isa;
             for (; theClass; theClass = theClass.super_class)
-            if (theClass === objjClass)
-                return;
+                if (theClass === objjClass)
+                    return;
         }
     }
     else
@@ -2646,7 +4285,7 @@ function objj_debug_typecheck(expectedType, object)
         return;
     }
     var actualType;
-    if (object === null)
+    if (object === NULL)
         actualType = "null";
     else if (object === undefined)
         actualType = "void";
@@ -2656,3 +4295,93 @@ function objj_debug_typecheck(expectedType, object)
         actualType = typeof object;
     throw ("expected=" + expectedType + ", actual=" + actualType);
 }
+enableCFURLCaching();
+var pageURL = new CFURL(window.location.href),
+    DOMBaseElements = document.getElementsByTagName("base"),
+    DOMBaseElementsCount = DOMBaseElements.length;
+if (DOMBaseElementsCount > 0)
+{
+    var DOMBaseElement = DOMBaseElements[DOMBaseElementsCount - 1],
+        DOMBaseElementHref = DOMBaseElement && DOMBaseElement.getAttribute("href");
+    if (DOMBaseElementHref)
+        pageURL = new CFURL(DOMBaseElementHref, pageURL);
+}
+var mainFileURL = new CFURL(window.OBJJ_MAIN_FILE || "main.j"),
+    mainBundleURL = new CFURL(".", new CFURL(mainFileURL, pageURL)).absoluteURL(),
+    assumedResolvedURL = new CFURL("..", mainBundleURL).absoluteURL();
+if (mainBundleURL === assumedResolvedURL)
+    assumedResolvedURL = new CFURL(assumedResolvedURL.schemeAndAuthority());
+StaticResource.resourceAtURL(assumedResolvedURL, YES);
+exports.pageURL = pageURL;
+exports.bootstrap = function()
+{
+    resolveMainBundleURL();
+}
+function resolveMainBundleURL()
+{
+    StaticResource.resolveResourceAtURL(mainBundleURL, YES, function( aResource)
+    {
+        var includeURLs = StaticResource.includeURLs(),
+            index = 0,
+            count = includeURLs.length;
+        for (; index < count; ++index)
+            aResource.resourceAtURL(includeURLs[index], YES);
+        Executable.fileImporterForURL(mainBundleURL)(mainFileURL.lastPathComponent(), YES, function()
+        {
+            disableCFURLCaching();
+            afterDocumentLoad(function()
+            {
+                var hashString = window.location.hash.substring(1),
+                    args = [];
+                if (hashString.length)
+                {
+                    args = hashString.split("/");
+                    for (var i = 0, count = args.length; i < count; i++)
+                        args[i] = decodeURIComponent(args[i]);
+                }
+                var namedArgsArray = window.location.search.substring(1).split("&"),
+                    namedArgs = new CFMutableDictionary();
+                for (var i = 0, count = namedArgsArray.length; i < count; i++)
+                {
+                    var thisArg = namedArgsArray[i].split("=");
+                    if (!thisArg[0])
+                        continue;
+                    if (thisArg[1] == null)
+                        thisArg[1] = true;
+                    namedArgs.setValueForKey(decodeURIComponent(thisArg[0]), decodeURIComponent(thisArg[1]));
+                }
+                main(args, namedArgs);
+            });
+        });
+    });
+}
+var documentLoaded = NO;
+function afterDocumentLoad( aFunction)
+{
+    if (documentLoaded)
+        return aFunction();
+    if (window.addEventListener)
+        window.addEventListener("load", aFunction, NO);
+    else if (window.attachEvent)
+        window.attachEvent("onload", aFunction);
+}
+afterDocumentLoad(function()
+{
+    documentLoaded = YES;
+});
+if (typeof OBJJ_AUTO_BOOTSTRAP === "undefined" || OBJJ_AUTO_BOOTSTRAP)
+    exports.bootstrap();
+function makeAbsoluteURL( aURL)
+{
+    if (aURL instanceof CFURL && aURL.scheme())
+        return aURL;
+    return new CFURL(aURL, mainBundleURL);
+}
+objj_importFile = Executable.fileImporterForURL(mainBundleURL);
+objj_executeFile = Executable.fileExecuterForURL(mainBundleURL);
+objj_import = function()
+{
+    CPLog.warn("objj_import is deprecated, use objj_importFile instead");
+    objj_importFile.apply(this, arguments);
+}
+})(window, ObjectiveJ);

@@ -25,83 +25,84 @@
 
 @implementation XYZAddSongView : DCFormView
 {
-   DCTextField urlField;
-   DCTextField titleField;
-   DCTextField artistField;
-   DCTextField genreField;
-   DCTextField timeField;
-   DCTextField pathAlbumArtField;
-   id HTMLElement @accessors;
-   CPTextField link;
-   CPPopUpButton menu;
-   CPButton uploadButton;  
-   CPArray items;
-   SongURLUploader songURLUploader;
+    DCTextField urlField;
+    DCTextField titleField;
+    DCTextField artistField;
+    DCTextField genreField;
+    DCTextField timeField;
+    DCTextField pathAlbumArtField;
+    id HTMLElement @accessors;
+    CPTextField link;
+    CPPopUpButton menu;
+    CPButton uploadButton;  
+    CPArray items;
+    SongURLUploader songURLUploader;
+    int shownForm; // 0 = upload 1 = local
 }
-	
-	- (id) initWithFrame:(CGRect)aRect{
-		self = [super initWithFrame:aRect];
-		if(self){
-		  songURLUploader = [[SongURLUploader alloc] init];	
-		  menu=[[CPPopUpButton alloc] initWithFrame:CGRectMake(135,85,150,25)];
-		  [menu setPullsDown:YES];
-		  [menu setTitle:@"Submit a song"];
-		  [menu addItemWithTitle:@"LOCAL"];
-		  [menu addItemWithTitle:@"URL"];
-		  [menu setTarget:self];
-		  [menu setAction:@selector(menuDidChangeItem)];      
-		  [self	addSubview:menu]; 	     
-		  
-		  [headerLabel setStringValue:@"Please read the terms of use before submiting a song"];
-		  [self setSubmitButtonTitle:@"Save song"];
-		  [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(clearAndClose:) name:"SubmitSuccessful" object:songURLUploader];
-		}
-		return self;
-	}
+
+    - (id) initWithFrame:(CGRect)aRect{
+        self = [super initWithFrame:aRect];
+        if(self){
+            songURLUploader = [[SongURLUploader alloc] init];	
+            menu=[[CPPopUpButton alloc] initWithFrame:CGRectMake(135,85,150,25)];
+            [menu setPullsDown:YES];
+            [menu setTitle:@"Submit a song"];
+            [menu addItemWithTitle:@"LOCAL"];
+            [menu addItemWithTitle:@"URL"];
+            [menu setTarget:self];
+            [menu setAction:@selector(menuDidChangeItem)];      
+            [self addSubview:menu];
+
+            [headerLabel setStringValue:@"Please read the terms of use before submiting a song"];
+            [self setSubmitButtonTitle:@"Save song"];
+            [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(clearAndClose:) name:"SubmitSuccessful" object:songURLUploader];
+        }
+        return self;
+    }
 
 /*se manda llamar a este metodo cuando se cambia un 
 //item del popUpButton
 */
 -(void)menuDidChangeItem{
   items = [self subviews];
-  CPLog.info("Antes de cargar el menu: %s",[items count]);
+  CPLog.trace("Antes de cargar el menu: %s", [items count]);
    if([items count]==6 || [items count]==17){
       [self cleanForm];
    }
 
    if([[menu selectedItem] title] == "LOCAL"){
       //agregamos el boton de upload
-		if([items count]==5){
-			uploadButton = [[UploadButton alloc] initWithFrame:CGRectMake(135,250,110,25)];// title:@"Upload"];
-			[uploadButton setTitle:@"Upload"];
-			[uploadButton setDelegate:self];
-			[uploadButton setTarget:self];
-			[self addSubview:uploadButton];
+        if([items count]==5){
+            shownForm=0;
+            uploadButton = [[UploadButton alloc] initWithFrame:CGRectMake(135,250,110,25)];// title:@"Upload"];
+            [uploadButton setTitle:@"Upload"];
+            [uploadButton setDelegate:self];
+            [uploadButton setTarget:self];  
+            [self addSubview:uploadButton];
       }
    }
 
    if([[menu selectedItem] title] == "URL"){
-      //contruimos el formulario
-      if([items count]==5 || [items count]==6){
-			titleField = [self addFieldRowWithTitle:@"Title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
-			artistField = [self addFieldRowWithTitle:@"Artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
-			genreField = [self addFieldRowWithTitle:@"Genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
-			timeField = [self addFieldRowWithTitle:@"Time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
-			pathAlbumArtField = [self addFieldRowWithTitle:@"URL album art:" name:@"pathAlbumArt" controlType:DCFormControlTypeTextField required:NO];
-			urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
-      }
+        CPLog.trace("En URL");
+         shownForm=1;
+        //contruimos el formulario
+        titleField = [self addFieldRowWithTitle:@"Title:" name:@"title" controlType:DCFormControlTypeTextField required:NO];
+        artistField = [self addFieldRowWithTitle:@"Artist:" name:@"artist" controlType:DCFormControlTypeTextField required:NO];
+        genreField = [self addFieldRowWithTitle:@"Genre:" name:@"genre" controlType:DCFormControlTypeTextField required:NO];
+        timeField = [self addFieldRowWithTitle:@"Time:" name:@"time" controlType:DCFormControlTypeTextField required:NO];
+        pathAlbumArtField = [self addFieldRowWithTitle:@"URL album art:" name:@"pathAlbumArt" controlType:DCFormControlTypeTextField required:NO];
+        urlField = [self addFieldRowWithTitle:@"URL song:" name:@"URL" controlType:DCFormControlTypeTextField required:NO];
    }
-   CPLog.info("despues de cargar el menu: %s", [items count]);
+   CPLog.trace("despues de cargar el menu: %s", [items count]);
 }
 
 //limpia el formulario
 -(void)cleanForm{
-  do{
-    for(var i=5;i<[items count];i++){
-      console.log("subviews ",[items objectAtIndex:i]);
+    CPLog.trace("Clearing form :"+shownForm + "with "+[items count]+"items");
+    for(var i=0;i<[items count];i++){
+      CPLog.trace("subviews ",[items objectAtIndex:i]);
       [[items objectAtIndex:i] removeFromSuperview];
     }  
-  }while([items count]>5);  
 }
 
 //guarda la cancion de cualquiera de las dos formas

@@ -21,7 +21,6 @@
 @import "CPLightbox.j"
 @import "DCLinkTextField.j"
 @import "XYZUser.j"
-@import "md5.js"
 @import "LoginForm.j"
 @import "SigninForm.j"
 

@@ -23,15 +23,15 @@ This file is part of XYZRadio.
 
 @implementation XYZPlayListWindowForDJ : CPWindow
 {
-XYZTableForDJ theTable;
-CPArray theList;
+	XYZTableForDJ theTable;
+	CPArray theList;
 }
 
 - (id)initWithContentRect:(CGRect)aRectangle{
 	self = [super initWithContentRect:aRectangle styleMask:CPHUDBackgroundWindowMask|CPClosableWindowMask];
     if (self){
-	CPLog.info("Inicializando un XYZPlayListWindowForDJ");
-	 theList = [[CPArray alloc] init];
+		theList = [[CPArray alloc] init];
+		[self registerForDraggedTypes:[SongsDragType]];
     }
     return self;
 }

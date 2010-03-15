@@ -98,4 +98,8 @@ Sets the rater of the song, this makes it easy to update the value of the rating
 }
 
 }
+
+- (CPString)description { 
+	return songTitle;
+}
 @end

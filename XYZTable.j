@@ -52,7 +52,7 @@ SongsDragType = @"SongsDragType";
     [scrollView setDocumentView: collectionView]; 
     [[scrollView contentView] setBackgroundColor: NULL];
     [scrollView setHasHorizontalScroller:NO]
-    [scrollView setAutoresizesSubviews:YES];
+    [scrollView setAutoresizesSubviews:NO];
     //los items q representan los renglones
     var listItem = [[CPCollectionViewItem alloc] init];
     [listItem setView: celdas];  
@@ -92,9 +92,10 @@ SongsDragType = @"SongsDragType";
 {
 	CPLog.trace("here in performdrag....");
     // If this is us, don't add it.
-    if ([aSender draggingSource] == collectionView)
-        return;
-        
+    if ([aSender draggingSource] == collectionView){
+		CPLog.trace("Same draggingSource on XYZTable");	
+		return;
+	}
     var pasteboard = [aSender draggingPasteboard];
 
     if ([[pasteboard types] containsObject:SongsDragType])
@@ -201,6 +202,7 @@ Gets the total of songs in the list
 
 - (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indexes forType:(CPString)aType
 {
+	CPLog.trace("here in dataForItemsAtIndexes....");
     var index = CPNotFound,
         content = [aCollectionView content],
         songs = [];

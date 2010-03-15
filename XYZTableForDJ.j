@@ -18,9 +18,10 @@ This file is part of XYZRadio.
     You should have received a copy of the GNU Lesser General Public License
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
-@import <Foundation/CPObject.j>
+
 @import "XYZSong.j"
 @import "StarRatingView.j"
+
 SongsDragType = @"SongsDragType";
 
 @implementation XYZTableForDJ : CPView
@@ -36,8 +37,6 @@ SongsDragType = @"SongsDragType";
 }
 
 -(void) initWithColumnModel:(CPDictionary)aColumnModel model:(CPArray)aModel frame:(CGRect)bounds{
-
-	CPLog.info("Inicializando una XYZTableForDJ");
     self = [super initWithFrame:bounds];
     [self setModel:aModel];
 		
@@ -82,38 +81,9 @@ SongsDragType = @"SongsDragType";
     [self setColumnModel:aColumnModel];
     
     [self registerForDraggedTypes:[SongsDragType]];
-    
+	//[self registerForDraggedTypes:[CPArray arrayWithObjects:SongsDragType]]; 
+  
     return self;
-}
--(void)collectionView:(CPCollectionView)collectionView didDoubleClickOnItemAtIndex:(int)index{
-	var info = [CPDictionary dictionaryWithObject:index forKey:"index"];
-	[[CPNotificationCenter defaultCenter] postNotificationName:"songDoubleClicked" object:self userInfo:info]; 
-}
-
-- (void)performDragOperation:(id <CPDraggingInfo>)aSender
-{
-	CPLog.trace("here in performdrag....");
-    // If this is us, don't add it.
-    if ([aSender draggingSource] == collectionView)
-        return;
-        
-    var pasteboard = [aSender draggingPasteboard];
-
-    if ([[pasteboard types] containsObject:SongsDragType])
-    {
-        songs = [CPKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:SongsDragType]];
-        
-        var index = 0,
-            count = songs.length;
-        
-        for (; index < count; ++index){
-            if(![[collectionView content] containsObject:songs[index]])
-				[self addItem:songs[index]];
-			else
-				CPLog.trace("Repetido!");
-		}
-			
-    }
 }
 
 -(void)setColumnModel:(CPDictionary)aColumnModel{
@@ -196,8 +166,9 @@ Gets the total of songs in the list
 		[collectionView setSelectionIndexes:[CPIndexSet indexSetWithIndex:index]];
 }
 
+////////////////////////////////////Drag and drop///////////////////////////////////
 -(CPArray)collectionView:(CPCollectionView)collectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices{
-	CPLog.trace("here in dragtypes....%s",indices);
+	CPLog.trace("here in dragtypes XYZTableForDJ....%s",indices);
     return [SongsDragType];
 }
 
@@ -212,6 +183,39 @@ Gets the total of songs in the list
     
     return [CPKeyedArchiver archivedDataWithRootObject:songs];
 }
+- (void)performDragOperation:(id <CPDraggingInfo>)aSender
+{
+	CPLog.trace("Got to performdrag in the XYZTableForDJ....");
+    // If this is us, don't add it.
+    if ([aSender draggingSource] == collectionView){
+		CPLog.error("Same draggingSource");
+		return;
+	}
+        
+    var pasteboard = [aSender draggingPasteboard];
+
+    if ([[pasteboard types] containsObject:SongsDragType])
+    {
+        songs = [CPKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:SongsDragType]];
+        
+        var index = 0,
+            count = songs.length;
+        
+        for (; index < count; ++index){
+            if(![[collectionView content] containsObject:songs[index]]){
+				CPLog.trace("Adding "+songs[index]);
+				[self addItem:songs[index]];
+				//TODO aqui mandar a guardar la cancion en la lista correspondiente
+			}
+			else
+				CPLog.trace("Repetido!");
+		}
+			
+    }else{
+		CPLog.trace("XYZTableForDJ does not accept drags for types: "+[pasteboard types]);
+	}
+}
+////////////////////////////////////End of Drag and drop stuff///////////////////////////////////
 
 @end
 

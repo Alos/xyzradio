@@ -35,10 +35,9 @@
 		SongListDS songListDS;
 	}
 	
-	/*Una bonita contructora*/
 	- (id)initWithSource:(CPArray)list contentRect:(CGRect)aRect{
 		self = [super initWithContentRect:aRect];
-		if (self)//pa ver si no somos null :P
+		if (self)
 		{
 			[self setTitle:@"DJ List"];
 			
@@ -126,9 +125,7 @@
 			[djListContentView addSubview: border2];
 			
 			
-			//the DJList
-			//le ponemos titulo al HUD lo centramos
-			
+			//the DJList			
 			//para los titulos
 			var cmArray =[[CPArray alloc] init]; 
 			var titleColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(2, 7, 150, 31) title:"Name" color:nil];
@@ -141,8 +138,6 @@
 			
 			[djListContentView addSubview: theTable];    
 
-
-			
 
 			//register with the NewPlaylistWindow
 			[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPlaylist:) name:"NewPlaylistAdded" object:nil];
@@ -213,15 +208,15 @@
 	[songListDS getUserPlaylists];
 }
 	
-	//DELEGATE METHODS
-	-(void)collectionViewDidChangeSelection:(CPCollectionView)collectionView{
-		var index = [collectionView selectionIndexes];
-		CPLog.info([index firstIndex]);
-		
-		var selectedPlaylist = [playlistsArray objectAtIndex: index];
-		
-		[theTable setModel: [selectedPlaylist musicList]];
-	}
+//DELEGATE METHODS
+-(void)collectionViewDidChangeSelection:(CPCollectionView)collectionView{
+	var index = [collectionView selectionIndexes];
+	CPLog.trace("Selected index of collectionView: "+ [index firstIndex]);
+	CPLog.trace("The playlistsArray contains:"+ playlistsArray);	
+	var selectedPlaylist = [playlistsArray objectAtIndex: index];
+	CPLog.info("The selected list:"+[selectedPlaylist]);
+	[theTable setModel: [selectedPlaylist musicList]];		
+}
 	
 	@end
 

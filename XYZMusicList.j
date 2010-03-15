@@ -24,4 +24,8 @@ This file is part of XYZRadio.
     CPArray musicList @accessors;
    
 }
+
+- (CPString)description { 
+	return " Name of the list: "+ nameOfList + " Songs in list: "+ musicList;
+}
 @end
