@@ -25,7 +25,22 @@ This file is part of XYZRadio.
    
 }
 
+-(id)init{
+    self = [super init];
+    if(self){
+        CPLog.trace("init the array");
+        musicList = [[CPArray alloc] init];
+    }
+    return self;
+}
+
+
+- (void) addSong:(XYZSong)aSong{
+    CPLog.trace("Agregando la cancion: "+aSong+" a la lista "+nameOfList); 
+    [musicList  addObject:aSong];
+}
+
 - (CPString)description { 
-	return " Name of the list: "+ nameOfList + " Songs in list: "+ musicList;
+    return " Name of the list: "+ nameOfList + " Songs in list: "+ musicList;
 }
 @end

@@ -81,7 +81,6 @@ SongsDragType = @"SongsDragType";
     [self setColumnModel:aColumnModel];
     
     [self registerForDraggedTypes:[SongsDragType]];
-	//[self registerForDraggedTypes:[CPArray arrayWithObjects:SongsDragType]]; 
   
     return self;
 }
@@ -112,9 +111,13 @@ Adds an item to the table
 @param the item to add to the table
 */
 -(void)addItem:(CPObject)anItem{
-    CPLog.trace("Adding: "+anItem);
+    CPLog.trace("Adding in XYZTableForDJ: "+anItem);
+    //we add call the notification no add it to the current selected list
+    //var info = [CPDictionary dictionaryWithObject:anItem forKey:"songAdded"];   
+    //[[CPNotificationCenter defaultCenter] postNotificationName:"NewSongAddedToPlaylist" object:self userInfo:info];
+    CPLog.info("The model: "+ model);
     [model addObject:anItem];
-    [collectionView reloadContent];
+    [collectionView reloadContent]; 
 }
 /**
 @param anIndex the value where the item you want t remove is
@@ -238,40 +241,35 @@ var playingViewSizeForDJ;
 
 
 - (void)setModel:(CPDictionary)aModel{
-	CPLog.trace("Setting the model: %s", aModel);
-	if(aModel){
-		var playingColumn = [aModel objectForKey:" "];
-		if(playingColumn){
-			var playingColumnWidth = [playingColumn frame].origin.x;
-			playingViewSizeForDJ = playingColumnWidth+2;
-		}
-		
-		var titleColumn = [aModel objectForKey:"title"];
-		if(titleColumn){
-			var titleColumnWidth = [titleColumn frame].origin.x;
-			titleViewSizeForDJ = titleColumnWidth+2;
-		}
-		
-		var artistColumn = [aModel objectForKey:"artist"];
-		if(artistColumn){
-			var artistColumnWidth = [artistColumn frame].origin.x;
-			authorViewSizeForDJ = artistColumnWidth+2;
-		}
-		
-		var timeColumn = [aModel objectForKey:"time"];
-		if(timeColumn){
-			var timeColumnWidth = [timeColumn frame].origin.x;
-			timeViewSizeForDJ = timeColumnWidth + 2;
-		}
-		
-		var ratingColumn = [aModel objectForKey:"rating"];
-		if(ratingColumn){
-			var ratingColumnWidth = [ratingColumn frame].origin.x;
-			ratingViewSizeForDJ = ratingColumnWidth+2;
-		}
-		
-	    CPLog.info("titleViewSizeForDJ:"+titleViewSizeForDJ);
-	}
+    CPLog.trace("Setting the model: %s", aModel);
+    if(aModel){
+        var playingColumn = [aModel objectForKey:" "];
+        if(playingColumn){
+            var playingColumnWidth = [playingColumn frame].origin.x;
+            playingViewSizeForDJ = playingColumnWidth+2;
+        }
+
+        var titleColumn = [aModel objectForKey:"title"];
+        if(titleColumn){
+            var titleColumnWidth = [titleColumn frame].origin.x;
+            titleViewSizeForDJ = titleColumnWidth+2;
+        }
+    
+        var artistColumn = [aModel objectForKey:"artist"];
+        if(artistColumn){
+            var artistColumnWidth = [artistColumn frame].origin.x;
+            authorViewSizeForDJ = artistColumnWidth+2;
+        }
+        
+       
+        var ratingColumn = [aModel objectForKey:"rating"];
+        if(ratingColumn){
+            var ratingColumnWidth = [ratingColumn frame].origin.x;
+            ratingViewSizeForDJ = ratingColumnWidth+2;
+        }
+
+        CPLog.info("titleViewSizeForDJ:"+titleViewSizeForDJ);
+    }
 }
 
 - (void)setRepresentedObject:(JSObject)anObject
@@ -302,30 +300,17 @@ var playingViewSizeForDJ;
     [authorView sizeToFit];
     [authorView setFrameOrigin: CGPointMake(authorViewSizeForDJ,0.0)];   
     
-    if(!timeView)
-    {
-        timeView = [[CPTextField alloc] initWithFrame:CGRectInset([self bounds], 4, 4)];
-        [timeView setFont: [CPFont systemFontOfSize: 12.0]];
-        [timeView setTextColor: [CPColor colorWithHexString:"33FF00"]];
-        [self addSubview: timeView];
+  
+
+    if(!raterView){
+        var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
+        [raterView setFrameOrigin:CGPointMake(ratingViewSizeForDJ, 0.0)];
+        CPLog.trace("Setting rater for %s width %s", [anObject songTitle], raterView);
+        [anObject setStarRater: raterView];		  
+        [self addSubview: raterView];
     }
-	
-    [timeView setStringValue: [anObject time]];
-    [timeView sizeToFit];
-    [timeView setFrameOrigin: CGPointMake(timeViewSizeForDJ,0.0)]; 
-	
-	if(!raterView){
-		  var raterView = [[StarRatingView alloc] initWithFrame:CGRectMake(0, 0, 300, 25)];
-		  [raterView setFrameOrigin:CGPointMake(ratingViewSizeForDJ, 0.0)];
-		  CPLog.trace("Setting rater for %s width %s", [anObject songTitle], raterView);
-		  [anObject setStarRater: raterView];		  
-		  [self addSubview: raterView];
-	}
-	var control = [raterView rater];
-	[control setIntValue: [anObject rating]];
-	
-	
-	
+    var control = [raterView rater];
+    [control setIntValue: [anObject rating]];
 }
 
 - (void)setSelected:(BOOL)flag

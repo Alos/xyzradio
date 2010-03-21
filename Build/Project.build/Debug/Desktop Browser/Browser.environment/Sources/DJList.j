@@ -1,11 +1,11 @@
-@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;12;SongListDS.jt;13582;objj_executeFile("AppKit/CPPanel.j", NO);
+@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;12;SongListDS.jt;14348;objj_executeFile("AppKit/CPPanel.j", NO);
 objj_executeFile("XYZPlayListWindowForDJ.j", YES);
 objj_executeFile("XYZMusicList.j", YES);
 objj_executeFile("XYZTableForDJ.j", YES);
 objj_executeFile("NewPlaylistWindow.j", YES);
 objj_executeFile("SongListDS.j", YES);
 {var the_class = objj_allocateClassPair(XYZPlayListWindowForDJ, "DJList"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("playlistCollectionView"), new objj_ivar("playlistsArray"), new objj_ivar("newPlaylistWindow"), new objj_ivar("djListContentView"), new objj_ivar("bounds"), new objj_ivar("songListDS")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("playlistCollectionView"), new objj_ivar("playlistsArray"), new objj_ivar("newPlaylistWindow"), new objj_ivar("djListContentView"), new objj_ivar("bounds"), new objj_ivar("songListDS"), new objj_ivar("selectedPlaylist")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentRect:"), function $DJList__initWithSource_contentRect_(self, _cmd, list, aRect)
 { with(self)
@@ -73,14 +73,25 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
             var artistColumnModel =objj_msgSend(objj_msgSend(XYZColumnModel, "alloc"), "initWithFrame:title:color:", CGRectMake(155, 7, 150, 31), "Artist",  nil);
             var ratingColumnModel =objj_msgSend(objj_msgSend(XYZColumnModel, "alloc"), "initWithFrame:title:color:", CGRectMake(305, 7, 48, 31), "Rating",  nil);
             var fullModel = objj_msgSend(CPDictionary, "dictionaryWithObjects:forKeys:", [titleColumnModel, artistColumnModel, ratingColumnModel], ["title", "artist", "rating"]);
-            theTable = objj_msgSend(objj_msgSend(XYZTableForDJ, "alloc"), "initWithColumnModel:model:frame:", fullModel, list,  CGRectMake(playlistCollectionViewWidthSize, 25 , 450, CGRectGetHeight(bounds)-26));
+            theTable = objj_msgSend(objj_msgSend(XYZTableForDJ, "alloc"), "initWithColumnModel:model:frame:", fullModel, theList,  CGRectMake(playlistCollectionViewWidthSize, 25, 450, CGRectGetHeight(bounds)-26));
             objj_msgSend(djListContentView, "addSubview:",  theTable);
             objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("addNewPlaylist:"), "NewPlaylistAdded", nil);
             objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("playListsRecived:"), "PlayListsRecived", nil);
+            objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("addSongToPlaylist:"), "NewSongAddedToPlaylist", nil);
         }
         return self;
     }
-},["id","CPArray","CGRect"]), new objj_method(sel_getUid("newPlaylist"), function $DJList__newPlaylist(self, _cmd)
+},["id","CPArray","CGRect"]), new objj_method(sel_getUid("addSongToPlaylist:"), function $DJList__addSongToPlaylist_(self, _cmd, aNotification)
+{ with(self)
+{
+        CPLog.trace("addSongToPlaylist has been summoned");
+        var info = objj_msgSend(aNotification, "userInfo");
+        var aux = objj_msgSend(info, "objectForKey:", "songAdded");
+        CPLog.trace("The song that wants to be added is: "+aux);
+        objj_msgSend(selectedPlaylist, "addSong:",  aux);
+        CPLog.trace("It has been done");
+    }
+},["void","CPNotification"]), new objj_method(sel_getUid("newPlaylist"), function $DJList__newPlaylist(self, _cmd)
 { with(self)
 {
         var mainContentView = objj_msgSend(objj_msgSend(CPApp, "delegate"), "contentView");
@@ -140,9 +151,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
 {
         var index = objj_msgSend(collectionView, "selectionIndexes");
         CPLog.trace("Selected index of collectionView: "+ objj_msgSend(index, "firstIndex"));
-        CPLog.trace("The playlistsArray contains:"+ playlistsArray);
-        var selectedPlaylist = objj_msgSend(playlistsArray, "objectAtIndex:",  index);
-        CPLog.info("The selected list:"+[selectedPlaylist]);
+        CPLog.trace("The playlistsArray contains: "+ playlistsArray);
+        selectedPlaylist = objj_msgSend(playlistsArray, "objectAtIndex:", objj_msgSend(index, "firstIndex"));
+        CPLog.trace("The selected list: "+ selectedPlaylist);
         objj_msgSend(theTable, "setModel:",  objj_msgSend(selectedPlaylist, "musicList"));
     }
 },["void","CPCollectionView"])]);

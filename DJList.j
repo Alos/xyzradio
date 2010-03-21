@@ -27,12 +27,13 @@
 
 @implementation DJList : XYZPlayListWindowForDJ
     {
-        CPCollectionView playlistCollectionView;
-        CPArray playlistsArray;
-        NewPlaylistWindow newPlaylistWindow;
-        CPView djListContentView;
-        CGRect bounds;
-        SongListDS songListDS;
+        CPCollectionView playlistCollectionView; //contains all the playlists
+        CPArray playlistsArray; //the array that feeds the playlistCollectionView
+        NewPlaylistWindow newPlaylistWindow; //the window to create new playlists
+        CPView djListContentView;// this window's content view
+        CGRect bounds; //this window's bounds
+        SongListDS songListDS; //the datastore to save the playlists 
+        XYZMusicList selectedPlaylist; //the currently selected playlist
     }
     
     - (id)initWithSource:(CPArray)list contentRect:(CGRect)aRect{
@@ -133,18 +134,33 @@
             var ratingColumnModel =[[XYZColumnModel alloc] initWithFrame:CGRectMake(305, 7, 48, 31) title:"Rating" color: nil];
 
             var fullModel = [CPDictionary dictionaryWithObjects:[titleColumnModel, artistColumnModel, ratingColumnModel] forKeys:["title", "artist", "rating"]];
-            //a table
-            theTable = [[XYZTableForDJ alloc] initWithColumnModel:fullModel model:list frame: CGRectMake(playlistCollectionViewWidthSize, 25	, 450, CGRectGetHeight(bounds)-26)];
+            //we create a table with an empty model
+            theTable = [[XYZTableForDJ alloc] initWithColumnModel:fullModel model:theList frame: CGRectMake(playlistCollectionViewWidthSize, 25, 450, CGRectGetHeight(bounds)-26)];
 
             [djListContentView addSubview: theTable];    
 
             //register with the NewPlaylistWindow
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPlaylist:) name:"NewPlaylistAdded" object:nil];
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(playListsRecived:) name:"PlayListsRecived" object:nil];
+            [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addSongToPlaylist:) name:"NewSongAddedToPlaylist" object:nil];
 
         }    
         return self;
     }
+
+    /**
+        Ads the song to the sekected playlist and then its saved to the server
+    */
+    -(void) addSongToPlaylist:(CPNotification)aNotification{
+        CPLog.trace("addSongToPlaylist has been summoned");
+        var info = [aNotification userInfo];
+        var aux = [info objectForKey:"songAdded"];
+        CPLog.trace("The song that wants to be added is: "+aux);
+        [selectedPlaylist addSong: aux];
+        CPLog.trace("It has been done");
+        //TODO save it to the server
+    }
+
     
     /**
      Opens a window to name the playlist
@@ -162,7 +178,7 @@
     }
     
     /**
-     Removes the relected playlist
+     Removes the selected playlist
      */
     -(void) removePlaylist{
         for(var i= 0; i<  [playlistsArray count]; i++){
@@ -178,20 +194,26 @@
     }
     
     /**
-        Adds the playlist form the popup window
+        Adds the playlist form the popup window and then it saved it to the server
     */
     -(void)addNewPlaylist:(CPNotification)aNotification{
         var info = [aNotification userInfo];
         var aux = [info objectForKey:"playlistName"];
         CPLog.info("Adding new playlist!" + aux);
+        //we create a new playlist with the info we got
         var newPlaylist =[[XYZMusicList alloc] init];
         [newPlaylist setNameOfList:aux];
+        
+        //we then add the new playlist to our playListArray and refresh it
         [playlistsArray addObject: newPlaylist];
         [playlistCollectionView reloadContent]; 
+
+        //we send it to the server
         [songListDS addNewPlaylist: aux];
     }
+
     /**
-        Takes the playlists and adds them to the collectionview
+        Takes the playlists from the server and adds them to the collectionview
     */
     -(void) playListsRecived:(CPNotification)aNotification{
         var info = [aNotification userInfo];
@@ -201,19 +223,28 @@
         [playlistCollectionView setContent:playlistsArray];
         [playlistCollectionView reloadContent];
     }
-
+    
+    /**
+        It gets the music playlists from the server
+    */
     -(void) getUserPlaylists{
         CPLog.info("Getting playlists...");
         [songListDS getUserPlaylists];
     }
 
     //DELEGATE METHODS
+
+    /**
+        When a playlist is selected its put in the currentlly selected playlist
+        when a drag and drop event happens, the song should be added to this object
+        that holds the reference to the music list
+    */
     -(void)collectionViewDidChangeSelection:(CPCollectionView)collectionView{
         var index = [collectionView selectionIndexes];
         CPLog.trace("Selected index of collectionView: "+ [index firstIndex]);
-        CPLog.trace("The playlistsArray contains:"+ playlistsArray);	
-        var selectedPlaylist = [playlistsArray objectAtIndex: index];
-        CPLog.info("The selected list:"+[selectedPlaylist]);
+        CPLog.trace("The playlistsArray contains: "+ playlistsArray);
+        selectedPlaylist = [playlistsArray objectAtIndex:[index firstIndex]];
+        CPLog.trace("The selected list: "+ selectedPlaylist);
         [theTable setModel: [selectedPlaylist musicList]];
     }
 @end

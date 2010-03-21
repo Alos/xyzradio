@@ -548,7 +548,7 @@ if (typeof window !== "undefined")
     window.setNativeTimeout = window.setTimeout;
     window.clearNativeTimeout = window.clearTimeout;
     window.setNativeInterval = window.setInterval;
-    window.clearNativeInterval = window.clearInterval;
+    window.clearNativeInterval = window.clearNativeInterval;
 }
 NO = false;
 YES = true;
@@ -766,14 +766,9 @@ CFHTTPRequest.prototype.overrideMimeType = function( aMimeType)
     if ("overrideMimeType" in this._nativeRequest)
         return this._nativeRequest.overrideMimeType(aMimeType);
 }
-CFHTTPRequest.prototype.open = function( method, url, async, user, password)
+CFHTTPRequest.prototype.open = function( )
 {
-    var cachedRequest = CFHTTPRequest._lookupCachedRequest(url);
-    if (cachedRequest) {
-        cachedRequest.onreadystatechange = this._nativeRequest.onreadystatechange;
-        this._nativeRequest = cachedRequest;
-    }
-    return this._nativeRequest.open(method, url, async, user, password);
+    return this._nativeRequest.open(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
 }
 CFHTTPRequest.prototype.send = function( aBody)
 {
@@ -832,46 +827,6 @@ function FileRequest( aURL, onsuccess, onfailure)
     request.send("");
 }
 FileRequest.async = YES;
-var URLCache = { };
-CFHTTPRequest._cacheRequest = function( aURL, status, headers, body)
-{
-    aURL = typeof aURL === "string" ? aURL : aURL.absoluteString();
-    URLCache[aURL] = new MockXMLHttpRequest(status, headers, body);
-}
-CFHTTPRequest._lookupCachedRequest = function( aURL)
-{
-    aURL = typeof aURL === "string" ? aURL : aURL.absoluteString();
-    return URLCache[aURL];
-}
-function MockXMLHttpRequest(status, headers, body)
-{
-    this.readyState = CFHTTPRequest.UninitializedState;
-    this.status = status || 200;
-    this.statusText = "";
-    this.responseText = body || "";
-    this._responseHeaders = headers || {};
-};
-MockXMLHttpRequest.prototype.open = function(method, url, async, user, password)
-{
-    this.readyState = CFHTTPRequest.LoadingState;
-    this.async = async;
-};
-MockXMLHttpRequest.prototype.send = function(body)
-{
-    var self = this;
-    self.responseText = self.responseText.toString();
-    function complete() {
-        for (self.readyState = CFHTTPRequest.LoadedState; self.readyState <= CFHTTPRequest.CompleteState; self.readyState++)
-            self.onreadystatechange();
-    }
-    (self.async ? Asynchronous(complete) : complete)();
-};
-MockXMLHttpRequest.prototype.onreadystatechange = function() {};
-MockXMLHttpRequest.prototype.abort = function() {};
-MockXMLHttpRequest.prototype.setRequestHeader = function(header, value) {};
-MockXMLHttpRequest.prototype.getAllResponseHeaders = function() { return this._responseHeaders; };
-MockXMLHttpRequest.prototype.getResponseHeader = function(header) { return this._responseHeaders[header]; };
-MockXMLHttpRequest.prototype.overrideMimeType = function(mimetype) {};
 var OBJECT_COUNT = 0;
 objj_generateObjectUID = function()
 {
@@ -3761,7 +3716,7 @@ Executable.fileExecutableSearcherForURL = function( referenceURL)
 }
 Executable.fileExecutableSearcherForURL.displayName = "Executable.fileExecutableSearcherForURL";
 var FileExecutablesForURLStrings = { };
-function FileExecutable( aURL)
+function FileExecutable( aURL, anExecutable)
 {
     aURL = makeAbsoluteURL(aURL);
     var URLString = aURL.absoluteString(),
@@ -3772,7 +3727,9 @@ function FileExecutable( aURL)
     var fileContents = StaticResource.resourceAtURL(aURL).contents(),
         executable = NULL,
         extension = aURL.pathExtension();
-    if (fileContents.match(/^@STATIC;/))
+    if (anExecutable)
+        executable = anExecutable;
+    else if (fileContents.match(/^@STATIC;/))
         executable = decompile(fileContents, aURL);
     else if (extension === "j" || !extension)
         executable = exports.preprocess(fileContents, aURL, Preprocessor.Flags.IncludeDebugSymbols);
@@ -3812,21 +3769,7 @@ function decompile( aString, aURL)
         else if (marker === MARKER_IMPORT_LOCAL)
             dependencies.push(new FileDependency(new CFURL(text), YES));
     }
-    var fn = FileExecutable._lookupCachedFunction(aURL)
-    if (fn)
-        return new Executable(code, dependencies, aURL, fn);
     return new Executable(code, dependencies, aURL);
-}
-var FunctionCache = { };
-FileExecutable._cacheFunction = function( aURL, fn)
-{
-    aURL = typeof aURL === "string" ? aURL : aURL.absoluteString();
-    FunctionCache[aURL] = fn;
-}
-FileExecutable._lookupCachedFunction = function( aURL)
-{
-    aURL = typeof aURL === "string" ? aURL : aURL.absoluteString();
-    return FunctionCache[aURL];
 }
 var CLS_CLASS = 0x1,
     CLS_META = 0x2,
