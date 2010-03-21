@@ -5,7 +5,7 @@
 	<key>CPApplicationDelegateClass</key>
 	<string>AppController</string>
 	<key>CPBundleName</key>
-	<string>XYZRadio</string>
+	<string>XYZRadioProject</string>
 	<key>CPPrincipalClass</key>
 	<string>CPApplication</string>
 </dict>

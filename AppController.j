@@ -20,7 +20,6 @@ This file is part of XYZRadio.
 @import "PreferencesWindow.j"
 @import "XYZSong.j"
 @import "UsersWindow.j"
-@import "XYZAddSongView.j"
 @import "DCFormController.j"
 @import "UserCell.j"
 @import "LoginWindow.j"
@@ -209,8 +208,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
 
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
-  //var addSongFormController = [[DCFormController alloc] initWithFormView:[[XYZAddSongView alloc] initWithFrame:CGRectMake(0,0,400,450)]];
-  //[addSongFormController startForm];
+ 
  if(!addSongWindow)
         addSongWindow = [[AddSongWindow alloc] initWithContentRect:CGRectMake(500, 50, 500, 400) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask];
         [addSongWindow setFrameOrigin:(CPPointMake(500, 50))];

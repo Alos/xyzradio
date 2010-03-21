@@ -112,6 +112,7 @@ Adds an item to the table
 @param the item to add to the table
 */
 -(void)addItem:(CPObject)anItem{
+    CPLog.trace("Adding: "+anItem);
     [model addObject:anItem];
     [collectionView reloadContent];
 }
@@ -203,16 +204,16 @@ Gets the total of songs in the list
         
         for (; index < count; ++index){
             if(![[collectionView content] containsObject:songs[index]]){
-				CPLog.trace("Adding "+songs[index]);
-				[self addItem:songs[index]];
-				//TODO aqui mandar a guardar la cancion en la lista correspondiente
-			}
-			else
-				CPLog.trace("Repetido!");
-		}
-			
+                CPLog.trace("Adding "+songs[index]);
+                [self addItem:songs[index]];
+                //TODO aqui mandar a guardar la cancion en la lista correspondiente
+            }
+            else
+            CPLog.trace("Repetido!");
+        }
+
     }else{
-		CPLog.trace("XYZTableForDJ does not accept drags for types: "+[pasteboard types]);
+        CPLog.trace("XYZTableForDJ does not accept drags for types: "+[pasteboard types]);
 	}
 }
 ////////////////////////////////////End of Drag and drop stuff///////////////////////////////////
