@@ -64,6 +64,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     CPTimer userLoggingTimer;
     EventListenerManager eventListenerManager; //handles the events that might happen on the server side
     AddSongWindow addSongWindow; //allows the user to upload new songs
+    CPArray globalSongList @accessors; //the list with all the songs in the user lib
 }
 
 
@@ -98,7 +99,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     [sound play];
     console.log("playing...");*/
 
-    musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+        musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
     [musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
 
     djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];

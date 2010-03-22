@@ -1,6 +1,6 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;1719;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.jt;2047;objj_executeFile("Foundation/CPObject.j", NO);
 {var the_class = objj_allocateClassPair(CPObject, "XYZMusicList"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("nameOfList"), new objj_ivar("musicList")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("nameOfList"), new objj_ivar("musicList"), new objj_ivar("fullyLoaded")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("nameOfList"), function $XYZMusicList__nameOfList(self, _cmd)
 { with(self)
@@ -25,13 +25,25 @@ new objj_method(sel_getUid("setMusicList:"), function $XYZMusicList__setMusicLis
 {
 musicList = newValue;
 }
+},["void","id"]),
+new objj_method(sel_getUid("isFullyLoaded"), function $XYZMusicList__isFullyLoaded(self, _cmd)
+{ with(self)
+{
+return fullyLoaded;
+}
+},["id"]),
+new objj_method(sel_getUid("setFullyLoaded:"), function $XYZMusicList__setFullyLoaded_(self, _cmd, newValue)
+{ with(self)
+{
+fullyLoaded = newValue;
+}
 },["void","id"]), new objj_method(sel_getUid("init"), function $XYZMusicList__init(self, _cmd)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZMusicList").super_class }, "init");
     if(self){
-        CPLog.trace("init the array");
         musicList = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+        fullyLoaded = NO;
     }
     return self;
 }

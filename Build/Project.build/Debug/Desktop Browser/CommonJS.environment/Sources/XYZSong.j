@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;6480;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.jt;6570;objj_executeFile("Foundation/CPObject.j", NO);
 {var the_class = objj_allocateClassPair(CPObject, "XYZSong"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("songTitle"), new objj_ivar("artist"), new objj_ivar("time"), new objj_ivar("genre"), new objj_ivar("rating"), new objj_ivar("pathToAlbumArt"), new objj_ivar("songID"), new objj_ivar("local"), new objj_ivar("pathToSong")]);
 objj_registerClassPair(the_class);
@@ -118,8 +118,8 @@ pathToSong = newValue;
         songID = anID;
         isLocal = false;
         time = aTime;
-  pathToSong = aPath;
-  rating = aRating;
+        pathToSong = aPath;
+        rating = aRating;
     }
     return self;
 }
@@ -138,12 +138,12 @@ if(objj_msgSend(objj_msgSend(anObject, "class"), "instancesRespondToSelector:", 
     objj_msgSend(aCoder, "encodeObject:forKey:", songTitle, "SongTitle");
     objj_msgSend(aCoder, "encodeObject:forKey:", artist, "Artist");
     objj_msgSend(aCoder, "encodeObject:forKey:", time, "Time");
- objj_msgSend(aCoder, "encodeObject:forKey:", genre, "Genre");
- objj_msgSend(aCoder, "encodeObject:forKey:", rating, "Rating");
- objj_msgSend(aCoder, "encodeObject:forKey:", pathToAlbumArt, "PathToAlbumArt");
- objj_msgSend(aCoder, "encodeObject:forKey:", songID, "SongID");
+    objj_msgSend(aCoder, "encodeObject:forKey:", genre, "Genre");
+    objj_msgSend(aCoder, "encodeObject:forKey:", rating, "Rating");
+    objj_msgSend(aCoder, "encodeObject:forKey:", pathToAlbumArt, "PathToAlbumArt");
+    objj_msgSend(aCoder, "encodeObject:forKey:", songID, "SongID");
     objj_msgSend(aCoder, "encodeObject:forKey:", local, "Local");
- objj_msgSend(aCoder, "encodeObject:forKey:", pathToSong, "PathToSong");
+    objj_msgSend(aCoder, "encodeObject:forKey:", pathToSong, "PathToSong");
 }
 },["void","CPCoder"]), new objj_method(sel_getUid("initWithCoder:"), function $XYZSong__initWithCoder_(self, _cmd, aCoder)
 { with(self)
@@ -154,33 +154,33 @@ if(objj_msgSend(objj_msgSend(anObject, "class"), "instancesRespondToSelector:", 
         songTitle = objj_msgSend(aCoder, "decodeObjectForKey:", "SongTitle");
         artist = objj_msgSend(aCoder, "decodeObjectForKey:", "Artist");
         time = objj_msgSend(aCoder, "decodeObjectForKey:", "Time");
-  genre = objj_msgSend(aCoder, "decodeObjectForKey:", "Genre");
-  rating = objj_msgSend(aCoder, "decodeObjectForKey:", "Rating");
-  pathToAlbumArt = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToAlbumArt");
-  songID = objj_msgSend(aCoder, "decodeObjectForKey:", "SongID");
+        genre = objj_msgSend(aCoder, "decodeObjectForKey:", "Genre");
+        rating = objj_msgSend(aCoder, "decodeObjectForKey:", "Rating");
+        pathToAlbumArt = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToAlbumArt");
+        songID = objj_msgSend(aCoder, "decodeObjectForKey:", "SongID");
         local = objj_msgSend(aCoder, "decodeObjectForKey:", "Local");
-  pathToSong = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToSong");
+        pathToSong = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToSong");
     }
     return self;
 }
 },["id","CPCoder"]), new objj_method(sel_getUid("starRatingForSongChanged:"), function $XYZSong__starRatingForSongChanged_(self, _cmd, aNotification)
 { with(self)
 {
- CPLog.trace("notified!!");
- var info = objj_msgSend(aNotification, "userInfo");
- var aux = objj_msgSend(info, "objectForKey:", "rating");
- objj_msgSend(self, "setRating:",  aux);
- CPLog.trace(objj_msgSend(self, "rating"));
+    CPLog.trace("notified!!");
+    var info = objj_msgSend(aNotification, "userInfo");
+    var aux = objj_msgSend(info, "objectForKey:", "rating");
+    objj_msgSend(self, "setRating:",  aux);
+    CPLog.trace(objj_msgSend(self, "rating"));
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("setStarRater:"), function $XYZSong__setStarRater_(self, _cmd, aRater)
 { with(self)
 {
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("starRatingForSongChanged:"), "StarRatingForSongChanged", aRater);
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("starRatingForSongChanged:"), "StarRatingForSongChanged", aRater);
 }
 },["void","StarRatingView"]), new objj_method(sel_getUid("description"), function $XYZSong__description(self, _cmd)
 { with(self)
 {
- return songTitle;
+    return songTitle +"-"+ songID;
 }
 },["CPString"])]);
 }

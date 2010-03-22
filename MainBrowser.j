@@ -63,8 +63,12 @@ This file is part of XYZRadio.
     [theTable addItem:anObject];
 }
 -(void)addList:(CPArray)aModel
-{   CPLog.trace("addlist here!");
+{   
+    CPLog.trace("addlist here!");
     [theTable setModel: aModel];
+    //podemos el arreglo de todas las canciones en la lista principal de canciones
+    var app = [CPApp delegate];
+    [app setGlobalSongList: aModel];
 }
 -(void)removeSelectedItems{
    CPLog.trace("removeSlectedItems in SFBrowser got a msg");
@@ -72,14 +76,14 @@ This file is part of XYZRadio.
 }
 
 - (void)getAllSongs{
-    app = [CPApp delegate];
+    var app = [CPApp delegate];
     var url = [app serverIP]+"/GetAllSongs";
     theRequest = [CPURLRequest requestWithURL: url];
     serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
 }
 
 - (void)getAllSongs:(CPNotification)aNotification{
-    app = [CPApp delegate];
+    var app = [CPApp delegate];
     var url = [app serverIP]+"/GetAllSongs";
     theRequest = [CPURLRequest requestWithURL: url];
     serverConnection = [CPURLConnection connectionWithRequest:theRequest delegate:self];
@@ -103,7 +107,8 @@ This file is part of XYZRadio.
             [newSong setTime:info.time];
             [newSong setGenre:info.genre];
             [newSong setRating:info.rating];
-            [newSong setSongID:info.songID];
+            CPLog.warn("El valor de songID es: "+ info.songID );
+            [newSong setSongID:info.songID.id];
             [newSong setLocal:info.isLocal];
             [newSong setPathToSong:info.pathToSong];
             [newSong setPathToAlbumArt:info.pathToAlbumArt];

@@ -1,4 +1,4 @@
-@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;12;SongListDS.jt;14348;objj_executeFile("AppKit/CPPanel.j", NO);
+@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;12;SongListDS.jt;14833;objj_executeFile("AppKit/CPPanel.j", NO);
 objj_executeFile("XYZPlayListWindowForDJ.j", YES);
 objj_executeFile("XYZMusicList.j", YES);
 objj_executeFile("XYZTableForDJ.j", YES);
@@ -84,12 +84,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
 },["id","CPArray","CGRect"]), new objj_method(sel_getUid("addSongToPlaylist:"), function $DJList__addSongToPlaylist_(self, _cmd, aNotification)
 { with(self)
 {
-        CPLog.trace("addSongToPlaylist has been summoned");
+        CPLog.trace("On addSongToPlaylist in the DJPlaylist.j");
         var info = objj_msgSend(aNotification, "userInfo");
         var aux = objj_msgSend(info, "objectForKey:", "songAdded");
-        CPLog.trace("The song that wants to be added is: "+aux);
-        objj_msgSend(selectedPlaylist, "addSong:",  aux);
-        CPLog.trace("It has been done");
+        CPLog.trace("The song that wants to be added is: "+aux+" with the id " + objj_msgSend(aux, "songID"));
+        objj_msgSend(songListDS, "addSongToPlaylist:song:", escape(objj_msgSend(selectedPlaylist, "nameOfList")), aux);
     }
 },["void","CPNotification"]), new objj_method(sel_getUid("newPlaylist"), function $DJList__newPlaylist(self, _cmd)
 { with(self)
@@ -154,6 +153,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
         CPLog.trace("The playlistsArray contains: "+ playlistsArray);
         selectedPlaylist = objj_msgSend(playlistsArray, "objectAtIndex:", objj_msgSend(index, "firstIndex"));
         CPLog.trace("The selected list: "+ selectedPlaylist);
+        if(!objj_msgSend(selectedPlaylist, "isFullyLoaded")){
+            CPLog.trace("Selectedplaylist was empty getting songs");
+            var fullSongArray = objj_msgSend(songListDS, "getSongsForPlaylist:",  objj_msgSend(selectedPlaylist, "musicList"));
+            objj_msgSend(selectedPlaylist, "setMusicList:", fullSongArray);
+            objj_msgSend(selectedPlaylist, "setFullyLoaded:", YES);
+        }
         objj_msgSend(theTable, "setModel:",  objj_msgSend(selectedPlaylist, "musicList"));
     }
 },["void","CPCollectionView"])]);

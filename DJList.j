@@ -143,6 +143,7 @@
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPlaylist:) name:"NewPlaylistAdded" object:nil];
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(playListsRecived:) name:"PlayListsRecived" object:nil];
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addSongToPlaylist:) name:"NewSongAddedToPlaylist" object:nil];
+           
 
         }    
         return self;
@@ -152,13 +153,12 @@
         Ads the song to the sekected playlist and then its saved to the server
     */
     -(void) addSongToPlaylist:(CPNotification)aNotification{
-        CPLog.trace("addSongToPlaylist has been summoned");
+        CPLog.trace("On addSongToPlaylist in the DJPlaylist.j");
         var info = [aNotification userInfo];
         var aux = [info objectForKey:"songAdded"];
-        CPLog.trace("The song that wants to be added is: "+aux);
-        [selectedPlaylist addSong: aux];
-        CPLog.trace("It has been done");
-        //TODO save it to the server
+        CPLog.trace("The song that wants to be added is: "+aux+" with the id " + [aux songID]);
+        // save it to the server
+        [songListDS addSongToPlaylist:escape([selectedPlaylist nameOfList]) song:aux];
     }
 
     
@@ -237,7 +237,9 @@
     /**
         When a playlist is selected its put in the currentlly selected playlist
         when a drag and drop event happens, the song should be added to this object
-        that holds the reference to the music list
+        that holds the reference to the music list.
+
+        We also go get the list at this time
     */
     -(void)collectionViewDidChangeSelection:(CPCollectionView)collectionView{
         var index = [collectionView selectionIndexes];
@@ -245,6 +247,16 @@
         CPLog.trace("The playlistsArray contains: "+ playlistsArray);
         selectedPlaylist = [playlistsArray objectAtIndex:[index firstIndex]];
         CPLog.trace("The selected list: "+ selectedPlaylist);
+        //We go get the name of the songs in a very AJAXY way :P
+        if(![selectedPlaylist isFullyLoaded]){
+            //So the list is empty we need to go get the songs
+            CPLog.trace("Selectedplaylist was empty getting songs");
+            var fullSongArray = [songListDS getSongsForPlaylist: [selectedPlaylist musicList]];
+            [selectedPlaylist setMusicList:fullSongArray];
+            //after this the XYZMusicList is fullyLoaded so we change the item
+            [selectedPlaylist setFullyLoaded:YES];
+        }
+       
         [theTable setModel: [selectedPlaylist musicList]];
     }
 @end

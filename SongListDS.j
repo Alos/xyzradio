@@ -24,65 +24,121 @@ This file is part of Louhi.
 
 @implementation SongListDS : CPObject
 {
-	CPArray answerArray;  
-	CPURLConnection xyzConnection;
+    CPArray answerArray;  
+    CPURLConnection xyzConnection;
 }
 
 -(id)init{
-	self = [super init];
-	if(self){
-		
-	}
-	return self;
+    self = [super init];
+    if(self){
+
+    }
+    return self;
 }
 
-
+/**
+    Creates a new playlist for this user
+*/
 -(void)addNewPlaylist:(CPString)nameOfPlaylist{
-	var app = [CPApp delegate];
-	var aURL = [app serverIP] + "/AddNewPlaylist?userID=" + [[app userLoggedin] email] + "&playlistName=" + nameOfPlaylist;
-	CPLog.info("Adding a new playlist at: %s", aURL);
-	var request = [CPURLRequest requestWithURL:aURL];
-	xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    var app = [CPApp delegate];
+    var aURL = [app serverIP] + "/AddNewPlaylist?userID=" + [[app userLoggedin] email] + "&playlistName=" + nameOfPlaylist;
+    CPLog.info("Adding a new playlist at: %s", aURL);
+    var request = [CPURLRequest requestWithURL:aURL];
+    xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
+/**
+    Adds a song to the given playlist
+*/
+-(void)addSongToPlaylist:(CPString)nameOfPlaylist song:(XYZSong)aSong{
+    var app = [CPApp delegate];
+    var aURL = [app serverIP] + "/AddSongToPlaylist?userID=" + [[app userLoggedin] email] + "&playlistName=" + nameOfPlaylist + "&songID=" + [aSong songID];
+    CPLog.info("Adding "+aSong+" to playlist "+nameOfPlaylist+" at: %s", aURL);
+    var request = [CPURLRequest requestWithURL:aURL];
+    xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+}
+
+/**
+    Deletes the user selected playlist
+*/
 -(void)removePlaylist:(CPString)nameOfPlaylist{
-	var app = [CPApp delegate];
-	var aURL = [app serverIP] + "/RemovePlaylist?userID=" + [[app userLoggedin] email] + "&playlistName=" + nameOfPlaylist;
-	CPLog.info("Adding a new playlist at: %s", aURL);
-	var request = [CPURLRequest requestWithURL:aURL];
-	xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    var app = [CPApp delegate];
+    var aURL = [app serverIP] + "/RemovePlaylist?userID=" + [[app userLoggedin] email] + "&playlistName=" + nameOfPlaylist;
+    CPLog.info("Adding a new playlist at: %s", aURL);
+    var request = [CPURLRequest requestWithURL:aURL];
+    xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
+/**
+    Gets the users playlists
+*/
 -(void)getUserPlaylists{
-	answerArray = [[CPArray alloc] init];
-	var app = [CPApp delegate];
-	var aURL = [app serverIP] + "/GetUserPlaylist?userID=" + [[app userLoggedin] email];
-	CPLog.info("Getting users at: %s", aURL);
-	var request = [CPURLRequest requestWithURL:aURL];
-	xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
+    answerArray = [[CPArray alloc] init];
+    var app = [CPApp delegate];
+    var aURL = [app serverIP] + "/GetUserPlaylist?userID=" + [[app userLoggedin] email];
+    CPLog.info("Getting user playlists at: %s", aURL);
+    var request = [CPURLRequest requestWithURL:aURL];
+    xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
+
+/**
+    Gets the songs from the array of SongIDS
+*/
+-(CPArray)getSongsForPlaylist:(CPArray)songIDArray{
+    //pedimos recuperar las siguientes canciones
+    var resp = [[CPArray alloc] init];
+    var app = [CPApp delegate];
+    var listaCompleta = [app globalSongList];
+    for(var x=0; x< [songIDArray count]; x++){
+        var songOnlyID = [songIDArray objectAtIndex:x];
+        CPLog.trace("Converting the ID: "+songOnlyID);
+        for(var i=0; i< [listaCompleta count]; i++){
+            var fullSong = [listaCompleta objectAtIndex:i];
+            CPLog.trace("comparing to..."+fullSong);
+            if([fullSong songID] == [songOnlyID songID]){
+                CPLog.trace("Found song!");
+                var newSong = fullSong;
+                [resp addObject: newSong];
+                break;
+            }
+        }
+    }
+    CPLog.trace("Finished getting songs:"+ resp);
+    return resp;
+}
+
 
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 {
     if(!data)
-		return;
-	var result =  JSON.parse(data);
-	CPLog.info("Playlists: %s", result);
-	for(var i=0; i< result.length; i++){
-		var object = result[i];
-		var musicList = [[XYZMusicList alloc] init];
-		[musicList setNameOfList: object.nameOfList];
-		
-		[answerArray addObject: musicList];
-	}
-	
-	var info = [CPDictionary dictionaryWithObject:answerArray forKey:"playlist"];   
-	[[CPNotificationCenter defaultCenter] postNotificationName:"PlayListsRecived" object:self userInfo:info]; 
+        return;
+    var result =  JSON.parse(data);
+    CPLog.info("Playlists: %s", result);
+    CPLog.info("Playlists: %s", result.length);
+    for(var i=0; i< result.length; i++){
+        var object = result[i];
+        CPLog.trace("i="+i);
+        var musicList = [[XYZMusicList alloc] init];
+        [musicList setNameOfList: object.nameOfList];
+        CPLog.trace(">>>>>>>>>>>>>>"+object.nameOfList);
+        //for each id in the array
+        var arrayOfIDs = object.musicList;
+        for(var j=0; j<[arrayOfIDs count]; j++){
+            var emptySong = [[XYZSong alloc] init];
+            [emptySong setSongID:[arrayOfIDs objectAtIndex: j]];
+            [musicList  addSong:emptySong];
+        }        
+       
+        [answerArray addObject: musicList];
+    }
+
+    var info = [CPDictionary dictionaryWithObject:answerArray forKey:"playlist"];   
+    [[CPNotificationCenter defaultCenter] postNotificationName:"PlayListsRecived" object:self userInfo:info]; 
 
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection{
-	//nothing
+    //nothing
 }
 
 - (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error

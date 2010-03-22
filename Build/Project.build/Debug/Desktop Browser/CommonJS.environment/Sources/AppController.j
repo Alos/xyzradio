@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;8;DJList.ji;13;MainBrowser.ji;15;PlayerControl.ji;19;PreferencesWindow.ji;9;XYZSong.ji;13;UsersWindow.ji;18;DCFormController.ji;10;UserCell.ji;13;LoginWindow.ji;19;UserProfileWindow.ji;9;XYZUser.ji;22;EventListenerManager.ji;23;MainUserProfileWindow.ji;15;AddSongWindow.jt;21627;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;8;DJList.ji;13;MainBrowser.ji;15;PlayerControl.ji;19;PreferencesWindow.ji;9;XYZSong.ji;13;UsersWindow.ji;18;DCFormController.ji;10;UserCell.ji;13;LoginWindow.ji;19;UserProfileWindow.ji;9;XYZUser.ji;22;EventListenerManager.ji;23;MainUserProfileWindow.ji;15;AddSongWindow.jt;21991;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("DJList.j", YES);
 objj_executeFile("MainBrowser.j", YES);
 objj_executeFile("PlayerControl.j", YES);
@@ -22,9 +22,20 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     ProfileItemIdentifier = "ProfileItemIdentifier",
     LogoutIdentifier = "LogoutIdentifier";
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("loginWindow"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("loginWindow"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
 objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
+class_addMethods(the_class, [new objj_method(sel_getUid("globalSongList"), function $AppController__globalSongList(self, _cmd)
+{ with(self)
+{
+return globalSongList;
+}
+},["id"]),
+new objj_method(sel_getUid("setGlobalSongList:"), function $AppController__setGlobalSongList_(self, _cmd, newValue)
+{ with(self)
+{
+globalSongList = newValue;
+}
+},["void","id"]), new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
 {
     CPLogRegister(CPLogConsole);
@@ -40,7 +51,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(toolbar, "setDelegate:", self);
     serverIP = "http://localhost:8888";
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("closeLoginWindow:"), "LoginSuccessful", nil);
-    musicBrowser = objj_msgSend(objj_msgSend(MainBrowser, "alloc"), "initWithSource:rectangle:", librarySongs, CGRectMake(0, 0, 600, 500));
+        musicBrowser = objj_msgSend(objj_msgSend(MainBrowser, "alloc"), "initWithSource:rectangle:", librarySongs, CGRectMake(0, 0, 600, 500));
     objj_msgSend(musicBrowser, "setFrameOrigin:", (CPPointMake(60, 100)));
     djList = objj_msgSend(objj_msgSend(DJList, "alloc"), "initWithSource:contentRect:", librarySongs,  CGRectMake(700, 100, 600, 500));
     objj_msgSend(djList, "setFrameOrigin:", (CPPointMake(700, 100)));

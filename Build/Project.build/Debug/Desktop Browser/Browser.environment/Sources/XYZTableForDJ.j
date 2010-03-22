@@ -1,4 +1,4 @@
-@STATIC;1.0;i;9;XYZSong.ji;16;StarRatingView.jt;13643;objj_executeFile("XYZSong.j", YES);
+@STATIC;1.0;i;9;XYZSong.ji;16;StarRatingView.jt;13889;objj_executeFile("XYZSong.j", YES);
 objj_executeFile("StarRatingView.j", YES);
 SongsDragType = "SongsDragType";
 {var the_class = objj_allocateClassPair(CPView, "XYZTableForDJ"),
@@ -64,6 +64,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 { with(self)
 {
     CPLog.trace("Adding in XYZTableForDJ: "+anItem);
+    var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", anItem, "songAdded");
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "NewSongAddedToPlaylist", self, info);
     CPLog.info("The model: "+ model);
     objj_msgSend(model, "addObject:", anItem);
     objj_msgSend(collectionView, "reloadContent");

@@ -1,4 +1,4 @@
-@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5420;objj_executeFile("XYZPlayListWindow.j", YES);
+@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5601;objj_executeFile("XYZPlayListWindow.j", YES);
 objj_executeFile("XYZColumnModel.j", YES);
 objj_executeFile("XYZTable.j", YES);
 {var the_class = objj_allocateClassPair(XYZPlayListWindow, "MainBrowser"),
@@ -33,8 +33,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
 }
 },["void","CPObject"]), new objj_method(sel_getUid("addList:"), function $MainBrowser__addList_(self, _cmd, aModel)
 { with(self)
-{ CPLog.trace("addlist here!");
+{
+    CPLog.trace("addlist here!");
     objj_msgSend(theTable, "setModel:",  aModel);
+    var app = objj_msgSend(CPApp, "delegate");
+    objj_msgSend(app, "setGlobalSongList:",  aModel);
 }
 },["void","CPArray"]), new objj_method(sel_getUid("removeSelectedItems"), function $MainBrowser__removeSelectedItems(self, _cmd)
 { with(self)
@@ -45,7 +48,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
 },["void"]), new objj_method(sel_getUid("getAllSongs"), function $MainBrowser__getAllSongs(self, _cmd)
 { with(self)
 {
-    app = objj_msgSend(CPApp, "delegate");
+    var app = objj_msgSend(CPApp, "delegate");
     var url = objj_msgSend(app, "serverIP")+"/GetAllSongs";
     theRequest = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
     serverConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", theRequest, self);
@@ -53,7 +56,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
 },["void"]), new objj_method(sel_getUid("getAllSongs:"), function $MainBrowser__getAllSongs_(self, _cmd, aNotification)
 { with(self)
 {
-    app = objj_msgSend(CPApp, "delegate");
+    var app = objj_msgSend(CPApp, "delegate");
     var url = objj_msgSend(app, "serverIP")+"/GetAllSongs";
     theRequest = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
     serverConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", theRequest, self);
@@ -73,7 +76,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
             objj_msgSend(newSong, "setTime:", info.time);
             objj_msgSend(newSong, "setGenre:", info.genre);
             objj_msgSend(newSong, "setRating:", info.rating);
-            objj_msgSend(newSong, "setSongID:", info.songID);
+            CPLog.warn("El valor de songID es: "+ info.songID );
+            objj_msgSend(newSong, "setSongID:", info.songID.id);
             objj_msgSend(newSong, "setLocal:", info.isLocal);
             objj_msgSend(newSong, "setPathToSong:", info.pathToSong);
             objj_msgSend(newSong, "setPathToAlbumArt:", info.pathToAlbumArt);

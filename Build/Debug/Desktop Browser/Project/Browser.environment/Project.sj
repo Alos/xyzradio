@@ -410,7 +410,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
 },["void","CPNotification"])]);
 }
 
-p;15;AppController.jt;21946;@STATIC;1.0;I;21;Foundation/CPObject.ji;8;DJList.ji;13;MainBrowser.ji;15;PlayerControl.ji;19;PreferencesWindow.ji;9;XYZSong.ji;13;UsersWindow.ji;18;DCFormController.ji;10;UserCell.ji;13;LoginWindow.ji;19;UserProfileWindow.ji;9;XYZUser.ji;22;EventListenerManager.ji;23;MainUserProfileWindow.ji;15;AddSongWindow.jt;21627;objj_executeFile("Foundation/CPObject.j", NO);
+p;15;AppController.jt;22310;@STATIC;1.0;I;21;Foundation/CPObject.ji;8;DJList.ji;13;MainBrowser.ji;15;PlayerControl.ji;19;PreferencesWindow.ji;9;XYZSong.ji;13;UsersWindow.ji;18;DCFormController.ji;10;UserCell.ji;13;LoginWindow.ji;19;UserProfileWindow.ji;9;XYZUser.ji;22;EventListenerManager.ji;23;MainUserProfileWindow.ji;15;AddSongWindow.jt;21991;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("DJList.j", YES);
 objj_executeFile("MainBrowser.j", YES);
 objj_executeFile("PlayerControl.j", YES);
@@ -434,9 +434,20 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     ProfileItemIdentifier = "ProfileItemIdentifier",
     LogoutIdentifier = "LogoutIdentifier";
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("loginWindow"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("loginWindow"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
 objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
+class_addMethods(the_class, [new objj_method(sel_getUid("globalSongList"), function $AppController__globalSongList(self, _cmd)
+{ with(self)
+{
+return globalSongList;
+}
+},["id"]),
+new objj_method(sel_getUid("setGlobalSongList:"), function $AppController__setGlobalSongList_(self, _cmd, newValue)
+{ with(self)
+{
+globalSongList = newValue;
+}
+},["void","id"]), new objj_method(sel_getUid("applicationDidFinishLaunching:"), function $AppController__applicationDidFinishLaunching_(self, _cmd, aNotification)
 { with(self)
 {
     CPLogRegister(CPLogConsole);
@@ -452,7 +463,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("applicationDidFinishLau
     objj_msgSend(toolbar, "setDelegate:", self);
     serverIP = "http://localhost:8888";
     objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("closeLoginWindow:"), "LoginSuccessful", nil);
-    musicBrowser = objj_msgSend(objj_msgSend(MainBrowser, "alloc"), "initWithSource:rectangle:", librarySongs, CGRectMake(0, 0, 600, 500));
+        musicBrowser = objj_msgSend(objj_msgSend(MainBrowser, "alloc"), "initWithSource:rectangle:", librarySongs, CGRectMake(0, 0, 600, 500));
     objj_msgSend(musicBrowser, "setFrameOrigin:", (CPPointMake(60, 100)));
     djList = objj_msgSend(objj_msgSend(DJList, "alloc"), "initWithSource:contentRect:", librarySongs,  CGRectMake(700, 100, 600, 500));
     objj_msgSend(djList, "setFrameOrigin:", (CPPointMake(700, 100)));
@@ -1607,7 +1618,7 @@ name = newValue;
 },["void"])]);
 }
 
-p;8;DJList.jt;14498;@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;12;SongListDS.jt;14348;objj_executeFile("AppKit/CPPanel.j", NO);
+p;8;DJList.jt;14983;@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;12;SongListDS.jt;14833;objj_executeFile("AppKit/CPPanel.j", NO);
 objj_executeFile("XYZPlayListWindowForDJ.j", YES);
 objj_executeFile("XYZMusicList.j", YES);
 objj_executeFile("XYZTableForDJ.j", YES);
@@ -1693,12 +1704,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
 },["id","CPArray","CGRect"]), new objj_method(sel_getUid("addSongToPlaylist:"), function $DJList__addSongToPlaylist_(self, _cmd, aNotification)
 { with(self)
 {
-        CPLog.trace("addSongToPlaylist has been summoned");
+        CPLog.trace("On addSongToPlaylist in the DJPlaylist.j");
         var info = objj_msgSend(aNotification, "userInfo");
         var aux = objj_msgSend(info, "objectForKey:", "songAdded");
-        CPLog.trace("The song that wants to be added is: "+aux);
-        objj_msgSend(selectedPlaylist, "addSong:",  aux);
-        CPLog.trace("It has been done");
+        CPLog.trace("The song that wants to be added is: "+aux+" with the id " + objj_msgSend(aux, "songID"));
+        objj_msgSend(songListDS, "addSongToPlaylist:song:", escape(objj_msgSend(selectedPlaylist, "nameOfList")), aux);
     }
 },["void","CPNotification"]), new objj_method(sel_getUid("newPlaylist"), function $DJList__newPlaylist(self, _cmd)
 { with(self)
@@ -1763,6 +1773,12 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
         CPLog.trace("The playlistsArray contains: "+ playlistsArray);
         selectedPlaylist = objj_msgSend(playlistsArray, "objectAtIndex:", objj_msgSend(index, "firstIndex"));
         CPLog.trace("The selected list: "+ selectedPlaylist);
+        if(!objj_msgSend(selectedPlaylist, "isFullyLoaded")){
+            CPLog.trace("Selectedplaylist was empty getting songs");
+            var fullSongArray = objj_msgSend(songListDS, "getSongsForPlaylist:",  objj_msgSend(selectedPlaylist, "musicList"));
+            objj_msgSend(selectedPlaylist, "setMusicList:", fullSongArray);
+            objj_msgSend(selectedPlaylist, "setFullyLoaded:", YES);
+        }
         objj_msgSend(theTable, "setModel:",  objj_msgSend(selectedPlaylist, "musicList"));
     }
 },["void","CPCollectionView"])]);
@@ -2462,7 +2478,7 @@ main= function(args, namedArgs)
     CPApplicationMain(args, namedArgs);
 }
 
-p;13;MainBrowser.jt;5499;@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5420;objj_executeFile("XYZPlayListWindow.j", YES);
+p;13;MainBrowser.jt;5680;@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5601;objj_executeFile("XYZPlayListWindow.j", YES);
 objj_executeFile("XYZColumnModel.j", YES);
 objj_executeFile("XYZTable.j", YES);
 {var the_class = objj_allocateClassPair(XYZPlayListWindow, "MainBrowser"),
@@ -2497,8 +2513,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
 }
 },["void","CPObject"]), new objj_method(sel_getUid("addList:"), function $MainBrowser__addList_(self, _cmd, aModel)
 { with(self)
-{ CPLog.trace("addlist here!");
+{
+    CPLog.trace("addlist here!");
     objj_msgSend(theTable, "setModel:",  aModel);
+    var app = objj_msgSend(CPApp, "delegate");
+    objj_msgSend(app, "setGlobalSongList:",  aModel);
 }
 },["void","CPArray"]), new objj_method(sel_getUid("removeSelectedItems"), function $MainBrowser__removeSelectedItems(self, _cmd)
 { with(self)
@@ -2509,7 +2528,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
 },["void"]), new objj_method(sel_getUid("getAllSongs"), function $MainBrowser__getAllSongs(self, _cmd)
 { with(self)
 {
-    app = objj_msgSend(CPApp, "delegate");
+    var app = objj_msgSend(CPApp, "delegate");
     var url = objj_msgSend(app, "serverIP")+"/GetAllSongs";
     theRequest = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
     serverConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", theRequest, self);
@@ -2517,7 +2536,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
 },["void"]), new objj_method(sel_getUid("getAllSongs:"), function $MainBrowser__getAllSongs_(self, _cmd, aNotification)
 { with(self)
 {
-    app = objj_msgSend(CPApp, "delegate");
+    var app = objj_msgSend(CPApp, "delegate");
     var url = objj_msgSend(app, "serverIP")+"/GetAllSongs";
     theRequest = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
     serverConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", theRequest, self);
@@ -2537,7 +2556,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
             objj_msgSend(newSong, "setTime:", info.time);
             objj_msgSend(newSong, "setGenre:", info.genre);
             objj_msgSend(newSong, "setRating:", info.rating);
-            objj_msgSend(newSong, "setSongID:", info.songID);
+            CPLog.warn("El valor de songID es: "+ info.songID );
+            objj_msgSend(newSong, "setSongID:", info.songID.id);
             objj_msgSend(newSong, "setLocal:", info.isLocal);
             objj_msgSend(newSong, "setPathToSong:", info.pathToSong);
             objj_msgSend(newSong, "setPathToAlbumArt:", info.pathToAlbumArt);
@@ -3396,7 +3416,69 @@ var setupSoundManager = function(obj)
  document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-p;12;SongListDS.jt;3761;@STATIC;1.0;i;14;XYZMusicList.ji;9;XYZSong.jt;3710;objj_executeFile("XYZMusicList.j", YES);
+p;8;SongDS.jt;3088;@STATIC;1.0;i;14;XYZMusicList.ji;9;XYZSong.jt;3037;objj_executeFile("XYZMusicList.j", YES);
+objj_executeFile("XYZSong.j", YES);
+{var the_class = objj_allocateClassPair(CPObject, "SongDS"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("answerArray"), new objj_ivar("xyzConnection")]);
+objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongDS__init(self, _cmd)
+{ with(self)
+{
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("SongDS").super_class }, "init");
+    if(self){
+    }
+    return self;
+}
+},["id"]), new objj_method(sel_getUid("addNewPlaylist:"), function $SongDS__addNewPlaylist_(self, _cmd, nameOfPlaylist)
+{ with(self)
+{
+    var app = objj_msgSend(CPApp, "delegate");
+    var aURL = objj_msgSend(app, "serverIP") + "/AddNewPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email") + "&playlistName=" + nameOfPlaylist;
+    CPLog.info("Adding a new playlist at: %s", aURL);
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
+    xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+}
+},["void","CPString"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongDS__connection_didReceiveData_(self, _cmd, connection, data)
+{ with(self)
+{
+    var info = JSON.parse(data);
+    if(!response.error){
+        CPLog.info("Filling songs...");
+        var newSong = objj_msgSend(objj_msgSend(XYZSong, "alloc"), "init");
+        objj_msgSend(newSong, "setSongTitle:", info.songTitle);
+        objj_msgSend(newSong, "setArtist:", info.artist);
+        objj_msgSend(newSong, "setTime:", info.time);
+        objj_msgSend(newSong, "setGenre:", info.genre);
+        objj_msgSend(newSong, "setRating:", info.rating);
+        CPLog.warn("El valor de songID es: "+ info.songID );
+        objj_msgSend(newSong, "setSongID:", info.songID.id);
+        objj_msgSend(newSong, "setLocal:", info.isLocal);
+        objj_msgSend(newSong, "setPathToSong:", info.pathToSong);
+        objj_msgSend(newSong, "setPathToAlbumArt:", info.pathToAlbumArt);
+        var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", newSong, "theSong");
+        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "SongReceived", self, info);
+    }else{
+        CPLog.info("No songs found in data!");
+    }
+}
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $SongDS__connectionDidFinishLoading_(self, _cmd, connection)
+{ with(self)
+{
+}
+},["void","CPURLConnection"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $SongDS__connection_didFailWithError_(self, _cmd, connection, error)
+{ with(self)
+{
+}
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("clearConnection:"), function $SongDS__clearConnection_(self, _cmd, connection)
+{ with(self)
+{
+    if (connection == xyzConnection)
+        xyzConnection = nil;
+}
+},["void","CPURLConnection"])]);
+}
+
+p;12;SongListDS.jt;6153;@STATIC;1.0;i;14;XYZMusicList.ji;9;XYZSong.jt;6102;objj_executeFile("XYZMusicList.j", YES);
 objj_executeFile("XYZSong.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "SongListDS"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("answerArray"), new objj_ivar("xyzConnection")]);
@@ -3404,54 +3486,95 @@ objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongListDS__init(self, _cmd)
 { with(self)
 {
- self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("SongListDS").super_class }, "init");
- if(self){
- }
- return self;
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("SongListDS").super_class }, "init");
+    if(self){
+    }
+    return self;
 }
 },["id"]), new objj_method(sel_getUid("addNewPlaylist:"), function $SongListDS__addNewPlaylist_(self, _cmd, nameOfPlaylist)
 { with(self)
 {
- var app = objj_msgSend(CPApp, "delegate");
- var aURL = objj_msgSend(app, "serverIP") + "/AddNewPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email") + "&playlistName=" + nameOfPlaylist;
- CPLog.info("Adding a new playlist at: %s", aURL);
- var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
- xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+    var app = objj_msgSend(CPApp, "delegate");
+    var aURL = objj_msgSend(app, "serverIP") + "/AddNewPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email") + "&playlistName=" + nameOfPlaylist;
+    CPLog.info("Adding a new playlist at: %s", aURL);
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
+    xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["void","CPString"]), new objj_method(sel_getUid("removePlaylist:"), function $SongListDS__removePlaylist_(self, _cmd, nameOfPlaylist)
+},["void","CPString"]), new objj_method(sel_getUid("addSongToPlaylist:song:"), function $SongListDS__addSongToPlaylist_song_(self, _cmd, nameOfPlaylist, aSong)
 { with(self)
 {
- var app = objj_msgSend(CPApp, "delegate");
- var aURL = objj_msgSend(app, "serverIP") + "/RemovePlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email") + "&playlistName=" + nameOfPlaylist;
- CPLog.info("Adding a new playlist at: %s", aURL);
- var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
- xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+    var app = objj_msgSend(CPApp, "delegate");
+    var aURL = objj_msgSend(app, "serverIP") + "/AddSongToPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email") + "&playlistName=" + nameOfPlaylist + "&songID=" + objj_msgSend(aSong, "songID");
+    CPLog.info("Adding "+aSong+" to playlist "+nameOfPlaylist+" at: %s", aURL);
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
+    xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+}
+},["void","CPString","XYZSong"]), new objj_method(sel_getUid("removePlaylist:"), function $SongListDS__removePlaylist_(self, _cmd, nameOfPlaylist)
+{ with(self)
+{
+    var app = objj_msgSend(CPApp, "delegate");
+    var aURL = objj_msgSend(app, "serverIP") + "/RemovePlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email") + "&playlistName=" + nameOfPlaylist;
+    CPLog.info("Adding a new playlist at: %s", aURL);
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
+    xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
 },["void","CPString"]), new objj_method(sel_getUid("getUserPlaylists"), function $SongListDS__getUserPlaylists(self, _cmd)
 { with(self)
 {
- answerArray = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
- var app = objj_msgSend(CPApp, "delegate");
- var aURL = objj_msgSend(app, "serverIP") + "/GetUserPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email");
- CPLog.info("Getting users at: %s", aURL);
- var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
- xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+    answerArray = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+    var app = objj_msgSend(CPApp, "delegate");
+    var aURL = objj_msgSend(app, "serverIP") + "/GetUserPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email");
+    CPLog.info("Getting user playlists at: %s", aURL);
+    var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
+    xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["void"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
+},["void"]), new objj_method(sel_getUid("getSongsForPlaylist:"), function $SongListDS__getSongsForPlaylist_(self, _cmd, songIDArray)
+{ with(self)
+{
+    var resp = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+    var app = objj_msgSend(CPApp, "delegate");
+    var listaCompleta = objj_msgSend(app, "globalSongList");
+    for(var x=0; x< objj_msgSend(songIDArray, "count"); x++){
+        var songOnlyID = objj_msgSend(songIDArray, "objectAtIndex:", x);
+        CPLog.trace("Converting the ID: "+songOnlyID);
+        for(var i=0; i< objj_msgSend(listaCompleta, "count"); i++){
+            var fullSong = objj_msgSend(listaCompleta, "objectAtIndex:", i);
+            CPLog.trace("comparing to..."+fullSong);
+            if(objj_msgSend(fullSong, "songID") == objj_msgSend(songOnlyID, "songID")){
+                CPLog.trace("Found song!");
+                var newSong = fullSong;
+                objj_msgSend(resp, "addObject:",  newSong);
+                break;
+            }
+        }
+    }
+    CPLog.trace("Finished getting songs:"+ resp);
+    return resp;
+}
+},["CPArray","CPArray"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
 { with(self)
 {
     if(!data)
-  return;
- var result = JSON.parse(data);
- CPLog.info("Playlists: %s", result);
- for(var i=0; i< result.length; i++){
-  var object = result[i];
-  var musicList = objj_msgSend(objj_msgSend(XYZMusicList, "alloc"), "init");
-  objj_msgSend(musicList, "setNameOfList:",  object.nameOfList);
-  objj_msgSend(answerArray, "addObject:",  musicList);
- }
- var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", answerArray, "playlist");
- objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "PlayListsRecived", self, info);
+        return;
+    var result = JSON.parse(data);
+    CPLog.info("Playlists: %s", result);
+    CPLog.info("Playlists: %s", result.length);
+    for(var i=0; i< result.length; i++){
+        var object = result[i];
+        CPLog.trace("i="+i);
+        var musicList = objj_msgSend(objj_msgSend(XYZMusicList, "alloc"), "init");
+        objj_msgSend(musicList, "setNameOfList:",  object.nameOfList);
+        CPLog.trace(">>>>>>>>>>>>>>"+object.nameOfList);
+        var arrayOfIDs = object.musicList;
+        for(var j=0; j<objj_msgSend(arrayOfIDs, "count"); j++){
+            var emptySong = objj_msgSend(objj_msgSend(XYZSong, "alloc"), "init");
+            objj_msgSend(emptySong, "setSongID:", objj_msgSend(arrayOfIDs, "objectAtIndex:",  j));
+            objj_msgSend(musicList, "addSong:", emptySong);
+        }
+        objj_msgSend(answerArray, "addObject:",  musicList);
+    }
+    var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", answerArray, "playlist");
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "PlayListsRecived", self, info);
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $SongListDS__connectionDidFinishLoading_(self, _cmd, connection)
 { with(self)
@@ -4216,9 +4339,9 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:title:col
 },["id","CPRect","CPString","CPColor"])]);
 }
 
-p;14;XYZMusicList.jt;1764;@STATIC;1.0;I;21;Foundation/CPObject.jt;1719;objj_executeFile("Foundation/CPObject.j", NO);
+p;14;XYZMusicList.jt;2092;@STATIC;1.0;I;21;Foundation/CPObject.jt;2047;objj_executeFile("Foundation/CPObject.j", NO);
 {var the_class = objj_allocateClassPair(CPObject, "XYZMusicList"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("nameOfList"), new objj_ivar("musicList")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("nameOfList"), new objj_ivar("musicList"), new objj_ivar("fullyLoaded")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("nameOfList"), function $XYZMusicList__nameOfList(self, _cmd)
 { with(self)
@@ -4243,13 +4366,25 @@ new objj_method(sel_getUid("setMusicList:"), function $XYZMusicList__setMusicLis
 {
 musicList = newValue;
 }
+},["void","id"]),
+new objj_method(sel_getUid("isFullyLoaded"), function $XYZMusicList__isFullyLoaded(self, _cmd)
+{ with(self)
+{
+return fullyLoaded;
+}
+},["id"]),
+new objj_method(sel_getUid("setFullyLoaded:"), function $XYZMusicList__setFullyLoaded_(self, _cmd, newValue)
+{ with(self)
+{
+fullyLoaded = newValue;
+}
 },["void","id"]), new objj_method(sel_getUid("init"), function $XYZMusicList__init(self, _cmd)
 { with(self)
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZMusicList").super_class }, "init");
     if(self){
-        CPLog.trace("init the array");
         musicList = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+        fullyLoaded = NO;
     }
     return self;
 }
@@ -4373,7 +4508,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
 },["int"])]);
 }
 
-p;9;XYZSong.jt;6525;@STATIC;1.0;I;21;Foundation/CPObject.jt;6480;objj_executeFile("Foundation/CPObject.j", NO);
+p;9;XYZSong.jt;6615;@STATIC;1.0;I;21;Foundation/CPObject.jt;6570;objj_executeFile("Foundation/CPObject.j", NO);
 {var the_class = objj_allocateClassPair(CPObject, "XYZSong"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("songTitle"), new objj_ivar("artist"), new objj_ivar("time"), new objj_ivar("genre"), new objj_ivar("rating"), new objj_ivar("pathToAlbumArt"), new objj_ivar("songID"), new objj_ivar("local"), new objj_ivar("pathToSong")]);
 objj_registerClassPair(the_class);
@@ -4493,8 +4628,8 @@ pathToSong = newValue;
         songID = anID;
         isLocal = false;
         time = aTime;
-  pathToSong = aPath;
-  rating = aRating;
+        pathToSong = aPath;
+        rating = aRating;
     }
     return self;
 }
@@ -4513,12 +4648,12 @@ if(objj_msgSend(objj_msgSend(anObject, "class"), "instancesRespondToSelector:", 
     objj_msgSend(aCoder, "encodeObject:forKey:", songTitle, "SongTitle");
     objj_msgSend(aCoder, "encodeObject:forKey:", artist, "Artist");
     objj_msgSend(aCoder, "encodeObject:forKey:", time, "Time");
- objj_msgSend(aCoder, "encodeObject:forKey:", genre, "Genre");
- objj_msgSend(aCoder, "encodeObject:forKey:", rating, "Rating");
- objj_msgSend(aCoder, "encodeObject:forKey:", pathToAlbumArt, "PathToAlbumArt");
- objj_msgSend(aCoder, "encodeObject:forKey:", songID, "SongID");
+    objj_msgSend(aCoder, "encodeObject:forKey:", genre, "Genre");
+    objj_msgSend(aCoder, "encodeObject:forKey:", rating, "Rating");
+    objj_msgSend(aCoder, "encodeObject:forKey:", pathToAlbumArt, "PathToAlbumArt");
+    objj_msgSend(aCoder, "encodeObject:forKey:", songID, "SongID");
     objj_msgSend(aCoder, "encodeObject:forKey:", local, "Local");
- objj_msgSend(aCoder, "encodeObject:forKey:", pathToSong, "PathToSong");
+    objj_msgSend(aCoder, "encodeObject:forKey:", pathToSong, "PathToSong");
 }
 },["void","CPCoder"]), new objj_method(sel_getUid("initWithCoder:"), function $XYZSong__initWithCoder_(self, _cmd, aCoder)
 { with(self)
@@ -4529,33 +4664,33 @@ if(objj_msgSend(objj_msgSend(anObject, "class"), "instancesRespondToSelector:", 
         songTitle = objj_msgSend(aCoder, "decodeObjectForKey:", "SongTitle");
         artist = objj_msgSend(aCoder, "decodeObjectForKey:", "Artist");
         time = objj_msgSend(aCoder, "decodeObjectForKey:", "Time");
-  genre = objj_msgSend(aCoder, "decodeObjectForKey:", "Genre");
-  rating = objj_msgSend(aCoder, "decodeObjectForKey:", "Rating");
-  pathToAlbumArt = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToAlbumArt");
-  songID = objj_msgSend(aCoder, "decodeObjectForKey:", "SongID");
+        genre = objj_msgSend(aCoder, "decodeObjectForKey:", "Genre");
+        rating = objj_msgSend(aCoder, "decodeObjectForKey:", "Rating");
+        pathToAlbumArt = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToAlbumArt");
+        songID = objj_msgSend(aCoder, "decodeObjectForKey:", "SongID");
         local = objj_msgSend(aCoder, "decodeObjectForKey:", "Local");
-  pathToSong = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToSong");
+        pathToSong = objj_msgSend(aCoder, "decodeObjectForKey:", "PathToSong");
     }
     return self;
 }
 },["id","CPCoder"]), new objj_method(sel_getUid("starRatingForSongChanged:"), function $XYZSong__starRatingForSongChanged_(self, _cmd, aNotification)
 { with(self)
 {
- CPLog.trace("notified!!");
- var info = objj_msgSend(aNotification, "userInfo");
- var aux = objj_msgSend(info, "objectForKey:", "rating");
- objj_msgSend(self, "setRating:",  aux);
- CPLog.trace(objj_msgSend(self, "rating"));
+    CPLog.trace("notified!!");
+    var info = objj_msgSend(aNotification, "userInfo");
+    var aux = objj_msgSend(info, "objectForKey:", "rating");
+    objj_msgSend(self, "setRating:",  aux);
+    CPLog.trace(objj_msgSend(self, "rating"));
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("setStarRater:"), function $XYZSong__setStarRater_(self, _cmd, aRater)
 { with(self)
 {
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("starRatingForSongChanged:"), "StarRatingForSongChanged", aRater);
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("starRatingForSongChanged:"), "StarRatingForSongChanged", aRater);
 }
 },["void","StarRatingView"]), new objj_method(sel_getUid("description"), function $XYZSong__description(self, _cmd)
 { with(self)
 {
- return songTitle;
+    return songTitle +"-"+ songID;
 }
 },["CPString"])]);
 }
@@ -4832,7 +4967,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setModel:"), function $
 },["void","BOOL"])]);
 }
 
-p;15;XYZTableForDJ.jt;13697;@STATIC;1.0;i;9;XYZSong.ji;16;StarRatingView.jt;13643;objj_executeFile("XYZSong.j", YES);
+p;15;XYZTableForDJ.jt;13943;@STATIC;1.0;i;9;XYZSong.ji;16;StarRatingView.jt;13889;objj_executeFile("XYZSong.j", YES);
 objj_executeFile("StarRatingView.j", YES);
 SongsDragType = "SongsDragType";
 {var the_class = objj_allocateClassPair(CPView, "XYZTableForDJ"),
@@ -4898,6 +5033,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 { with(self)
 {
     CPLog.trace("Adding in XYZTableForDJ: "+anItem);
+    var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", anItem, "songAdded");
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "NewSongAddedToPlaylist", self, info);
     CPLog.info("The model: "+ model);
     objj_msgSend(model, "addObject:", anItem);
     objj_msgSend(collectionView, "reloadContent");

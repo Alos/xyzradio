@@ -113,8 +113,8 @@ Adds an item to the table
 -(void)addItem:(CPObject)anItem{
     CPLog.trace("Adding in XYZTableForDJ: "+anItem);
     //we add call the notification no add it to the current selected list
-    //var info = [CPDictionary dictionaryWithObject:anItem forKey:"songAdded"];   
-    //[[CPNotificationCenter defaultCenter] postNotificationName:"NewSongAddedToPlaylist" object:self userInfo:info];
+    var info = [CPDictionary dictionaryWithObject:anItem forKey:"songAdded"];   
+    [[CPNotificationCenter defaultCenter] postNotificationName:"NewSongAddedToPlaylist" object:self userInfo:info];
     CPLog.info("The model: "+ model);
     [model addObject:anItem];
     [collectionView reloadContent]; 

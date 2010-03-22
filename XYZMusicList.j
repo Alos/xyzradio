@@ -22,14 +22,14 @@ This file is part of XYZRadio.
 {
     CPString nameOfList @accessors;
     CPArray musicList @accessors;
-   
+    BOOL fullyLoaded @accessors (getter=isFullyLoaded, setter=setFullyLoaded:);
 }
 
 -(id)init{
     self = [super init];
     if(self){
-        CPLog.trace("init the array");
         musicList = [[CPArray alloc] init];
+        fullyLoaded = NO;
     }
     return self;
 }

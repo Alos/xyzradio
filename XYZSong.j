@@ -24,11 +24,11 @@ This file is part of XYZRadio.
     CPString artist @accessors;
     CPString time @accessors;
     CPString genre @accessors;
-	CPString rating @accessors;
-	CPString pathToAlbumArt @accessors;
-    CPString songID @accessors;
-	BOOL local @accessors (getter=isLocal, setter=setLocal:);
-	CPString pathToSong @accessors;
+    CPString rating @accessors;
+    CPString pathToAlbumArt @accessors;
+    int songID @accessors;
+    BOOL local @accessors (getter=isLocal, setter=setLocal:);
+    CPString pathToSong @accessors;
 }
 
 -(id)initWithSongTitle:(CPString)aSongTitle setArtist:(CPString)anArtist setID:(int)anID time:(CPString)aTime pathToSong:(CPString)aPath rating:(CPString)aRating{
@@ -38,8 +38,8 @@ This file is part of XYZRadio.
         songID = anID;
         isLocal = false;
         time = aTime;
-		pathToSong = aPath;
-		rating = aRating;
+        pathToSong = aPath;
+        rating = aRating;
     }
     return self;
 }
@@ -56,12 +56,12 @@ if([[anObject class] instancesRespondToSelector: @selector(songID)])
     [aCoder encodeObject:songTitle forKey:@"SongTitle"];
     [aCoder encodeObject:artist forKey:@"Artist"];
     [aCoder encodeObject:time forKey:@"Time"];
-	[aCoder encodeObject:genre forKey:@"Genre"];
-	[aCoder encodeObject:rating forKey:@"Rating"];
-	[aCoder encodeObject:pathToAlbumArt forKey:@"PathToAlbumArt"];
-	[aCoder encodeObject:songID forKey:@"SongID"];
+    [aCoder encodeObject:genre forKey:@"Genre"];
+    [aCoder encodeObject:rating forKey:@"Rating"];
+    [aCoder encodeObject:pathToAlbumArt forKey:@"PathToAlbumArt"];
+    [aCoder encodeObject:songID forKey:@"SongID"];
     [aCoder encodeObject:local forKey:@"Local"];
-	[aCoder encodeObject:pathToSong forKey:@"PathToSong"];
+    [aCoder encodeObject:pathToSong forKey:@"PathToSong"];
 }
 
 - (id)initWithCoder:(CPCoder)aCoder{
@@ -71,35 +71,32 @@ if([[anObject class] instancesRespondToSelector: @selector(songID)])
         songTitle = [aCoder decodeObjectForKey:@"SongTitle"];
         artist = [aCoder decodeObjectForKey:@"Artist"];
         time = [aCoder decodeObjectForKey:@"Time"];
-		genre = [aCoder decodeObjectForKey:@"Genre"];
-		rating = [aCoder decodeObjectForKey:@"Rating"];
-		pathToAlbumArt = [aCoder decodeObjectForKey:@"PathToAlbumArt"];
-		songID = [aCoder decodeObjectForKey:@"SongID"];
+        genre = [aCoder decodeObjectForKey:@"Genre"];
+        rating = [aCoder decodeObjectForKey:@"Rating"];
+        pathToAlbumArt = [aCoder decodeObjectForKey:@"PathToAlbumArt"];
+        songID = [aCoder decodeObjectForKey:@"SongID"];
         local = [aCoder decodeObjectForKey:@"Local"];
-		pathToSong = [aCoder decodeObjectForKey:@"PathToSong"];
-
+        pathToSong = [aCoder decodeObjectForKey:@"PathToSong"];
     }
     return self;
 }
 
 -(void)starRatingForSongChanged:(CPNotification)aNotification{
-	CPLog.trace("notified!!");
-	var info = [aNotification userInfo];
-	var aux = [info objectForKey:"rating"];
-	[self setRating: aux];
-	CPLog.trace([self rating]);
+    CPLog.trace("notified!!");
+    var info = [aNotification userInfo];
+    var aux = [info objectForKey:"rating"];
+    [self setRating: aux];
+    CPLog.trace([self rating]);
 }
 
 /**
 Sets the rater of the song, this makes it easy to update the value of the rating in this song.
-**/	
+**/
 -(void)setStarRater:(StarRatingView)aRater{
-		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(starRatingForSongChanged:) name:"StarRatingForSongChanged" object:aRater];
-}
-
+    [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(starRatingForSongChanged:) name:"StarRatingForSongChanged" object:aRater];
 }
 
 - (CPString)description { 
-	return songTitle;
+    return songTitle +"-"+ songID;
 }
 @end
