@@ -542,13 +542,14 @@ function _CPLogInitPopup(logWindow)
         }
     }, false);
 }
+CPLogDefault = (typeof window === "object" && window.console) ? CPLogConsole : CPLogPopup;
 var undefined;
 if (typeof window !== "undefined")
 {
     window.setNativeTimeout = window.setTimeout;
     window.clearNativeTimeout = window.clearTimeout;
     window.setNativeInterval = window.setInterval;
-    window.clearNativeInterval = window.clearNativeInterval;
+    window.clearNativeInterval = window.clearInterval;
 }
 NO = false;
 YES = true;
@@ -685,19 +686,26 @@ if (!NativeRequest)
     NativeRequest = window.XMLHttpRequest;
 CFHTTPRequest = function()
 {
+    this._isOpen = false;
+    this._requestHeaders = {};
+    this._mimeType = null;
     this._eventDispatcher = new EventDispatcher(this);
     this._nativeRequest = new NativeRequest();
     var self = this;
-    this._nativeRequest.onreadystatechange = function()
+    this._stateChangeHandler = function()
     {
         determineAndDispatchHTTPRequestEvents(self);
     }
+    this._nativeRequest.onreadystatechange = this._stateChangeHandler;
+    if (CFHTTPRequest.AuthenticationDelegate !== nil)
+        this._eventDispatcher.addEventListener("HTTP403", function(){CFHTTPRequest.AuthenticationDelegate(self)});
 }
 CFHTTPRequest.UninitializedState = 0;
 CFHTTPRequest.LoadingState = 1;
 CFHTTPRequest.LoadedState = 2;
 CFHTTPRequest.InteractiveState = 3;
 CFHTTPRequest.CompleteState = 4;
+CFHTTPRequest.AuthenticationDelegate = nil;
 CFHTTPRequest.prototype.status = function()
 {
     try
@@ -751,7 +759,7 @@ CFHTTPRequest.prototype.responseText = function()
 }
 CFHTTPRequest.prototype.setRequestHeader = function( aHeader, aValue)
 {
-    return this._nativeRequest.setRequestHeader(aHeader, aValue);
+    this._requestHeaders[aHeader] = aValue;
 }
 CFHTTPRequest.prototype.getResponseHeader = function( aHeader)
 {
@@ -763,15 +771,34 @@ CFHTTPRequest.prototype.getAllResponseHeaders = function()
 }
 CFHTTPRequest.prototype.overrideMimeType = function( aMimeType)
 {
-    if ("overrideMimeType" in this._nativeRequest)
-        return this._nativeRequest.overrideMimeType(aMimeType);
+    this._mimeType = aMimeType;
 }
-CFHTTPRequest.prototype.open = function( )
+CFHTTPRequest.prototype.open = function( aMethod, aURL, isAsynchronous, aUser, aPassword)
 {
-    return this._nativeRequest.open(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    this._isOpen = true;
+    this._URL = aURL;
+    this._async = isAsynchronous;
+    this._method = aMethod;
+    this._user = aUser;
+    this._password = aPassword;
+    return this._nativeRequest.open(aMethod, aURL, isAsynchronous, aUser, aPassword);
 }
 CFHTTPRequest.prototype.send = function( aBody)
 {
+    for (var i in this._requestHeaders)
+    {
+        if (this._requestHeaders.hasOwnProperty(i))
+            this._nativeRequest.setRequestHeader(i, this._requestHeaders[i]);
+    }
+    if (!this._isOpen)
+    {
+        delete this._nativeRequest.onreadystatechange;
+        this._nativeRequest.open(this._method, this._URL, this._async, this._user, this._password);
+        this._nativeRequest.onreadystatechange = this._stateChangeHandler;
+    }
+    if (this._mimeType && "overrideMimeType" in this._nativeRequest)
+        this._nativeRequest.overrideMimeType(this._mimeType);
+    this._isOpen = false;
     try
     {
         return this._nativeRequest.send(aBody);
@@ -783,6 +810,7 @@ CFHTTPRequest.prototype.send = function( aBody)
 }
 CFHTTPRequest.prototype.abort = function()
 {
+    this._isOpen = false;
     return this._nativeRequest.abort();
 }
 CFHTTPRequest.prototype.addEventListener = function( anEventName, anEventListener)
@@ -798,22 +826,24 @@ function determineAndDispatchHTTPRequestEvents( aRequest)
     var eventDispatcher = aRequest._eventDispatcher;
     eventDispatcher.dispatchEvent({ type:"readystatechange", request:aRequest});
     var nativeRequest = aRequest._nativeRequest,
-        readyState = ["uninitialized", "loading", "loaded", "interactive", "complete"][aRequest.readyState()];
-    eventDispatcher.dispatchEvent({ type:readyState, request:aRequest});
-    if (readyState === "complete")
+        readyStates = ["uninitialized", "loading", "loaded", "interactive", "complete"];
+    if (readyStates[aRequest.readyState()] === "complete")
     {
         var status = "HTTP" + aRequest.status();
         eventDispatcher.dispatchEvent({ type:status, request:aRequest });
         var result = aRequest.success() ? "success" : "failure";
         eventDispatcher.dispatchEvent({ type:result, request:aRequest });
+        eventDispatcher.dispatchEvent({ type:readyStates[aRequest.readyState()], request:aRequest});
     }
+    else
+        eventDispatcher.dispatchEvent({ type:readyStates[aRequest.readyState()], request:aRequest});
 }
 function FileRequest( aURL, onsuccess, onfailure)
 {
     var request = new CFHTTPRequest();
     if (aURL.pathExtension() === "plist")
         request.overrideMimeType("text/xml");
-    if (FileRequest.async)
+    if (exports.asyncLoader)
     {
         request.onsuccess = Asynchronous(onsuccess);
         request.onfailure = Asynchronous(onfailure);
@@ -823,10 +853,12 @@ function FileRequest( aURL, onsuccess, onfailure)
         request.onsuccess = onsuccess;
         request.onfailure = onfailure;
     }
-    request.open("GET", aURL.absoluteString(), FileRequest.async);
+    request.open("GET", aURL.absoluteString(), exports.asyncLoader);
     request.send("");
 }
-FileRequest.async = YES;
+exports.asyncLoader = YES;
+exports.Asynchronous = Asynchronous;
+exports.determineAndDispatchHTTPRequestEvents = determineAndDispatchHTTPRequestEvents;
 var OBJECT_COUNT = 0;
 objj_generateObjectUID = function()
 {
@@ -1787,7 +1819,7 @@ function resolveURL(aURL)
                 resolvedPathComponents = basePathComponents.concat(pathComponents);
             if (!baseURL.hasDirectoryPath() && basePathComponents.length)
                 resolvedPathComponents.splice(basePathComponents.length - 1, 1);
-            if (pathComponents.length && pathComponents[0] === "..")
+            if (pathComponents.length && (pathComponents[0] === ".." || pathComponents[0] === "."))
                 standardizePathComponents(resolvedPathComponents, YES);
             resolvedParts.pathComponents = resolvedPathComponents;
             resolvedParts.path = pathFromPathComponents(resolvedPathComponents, pathComponents.length <= 0 || aURL.hasDirectoryPath());
@@ -1816,21 +1848,29 @@ function standardizePathComponents( pathComponents, inPlace)
     var index = 0,
         resultIndex = 0,
         count = pathComponents.length,
-        result = inPlace ? pathComponents : [];
+        result = inPlace ? pathComponents : [],
+        startsWithPeriod = NO;
     for (; index < count; ++index)
     {
         var component = pathComponents[index];
-        if (component === "" || component === ".")
+        if (component === "")
              continue;
+        if (component === ".")
+        {
+            startsWithPeriod = resultIndex === 0;
+            continue;
+        }
         if (component !== ".." || resultIndex === 0 || result[resultIndex - 1] === "..")
         {
-                result[resultIndex] = component;
+            result[resultIndex] = component;
             resultIndex++;
             continue;
         }
         if (resultIndex > 0 && result[resultIndex - 1] !== "/")
             --resultIndex;
     }
+    if (startsWithPeriod && resultIndex === 0)
+        result[resultIndex++] = ".";
     result.length = resultIndex;
     return result;
 }
@@ -1922,7 +1962,7 @@ CFURL.prototype.hasDirectoryPath = function()
         hasDirectoryPath = lastPathComponent === "." || lastPathComponent === "..";
         this._hasDirectoryPath = hasDirectoryPath;
     }
-    return this._hasDirectoryPath;
+    return hasDirectoryPath;
 }
 CFURL.prototype.hasDirectoryPath.displayName = "CFURL.prototype.hasDirectoryPath";
 CFURL.prototype.hostName = function()
@@ -2019,7 +2059,10 @@ CFURL.prototype.asDirectoryPathURL = function()
 {
     if (this.hasDirectoryPath())
         return this;
-    return new CFURL(this.lastPathComponent() + "/", this);
+    var lastPathComponent = this.lastPathComponent();
+    if (lastPathComponent !== "/")
+        lastPathComponent = "./" + lastPathComponent;
+    return new CFURL(lastPathComponent + "/", this);
 }
 CFURL.prototype.asDirectoryPathURL.displayName = "CFURL.prototype.asDirectoryPathURL";
 function CFURLGetResourcePropertiesForKeys( aURL)
@@ -2401,12 +2444,12 @@ function loadSpritedImagesForBundle( aBundle, success, failure)
             CFTotalBytesLoaded += anEvent.request.responseText().length;
             decompileStaticFile(aBundle, anEvent.request.responseText(), spritedImagesURL);
             aBundle._loadStatus &= ~CFBundleLoadingSpritedImages;
-            success();
         }
         catch(anException)
         {
             failure(anException);
         }
+        success();
     }, failure);
 }
 var CFBundleSpriteSupportListeners = [],
@@ -2708,7 +2751,11 @@ StaticResource.resourceAtURL = function( aURL, resolveAsDirectoriesIfNecessary)
         if (hasOwnProperty.call(resource._children, name))
             resource = resource._children[name];
         else if (resolveAsDirectoriesIfNecessary)
+        {
+            if (name !== "/")
+                name = "./" + name;
             resource = new StaticResource(new CFURL(name, resource.URL()), resource, YES, YES);
+        }
         else
             throw new Error("Static Resource at " + aURL + " is not resolved (\"" + name + "\")");
     }
@@ -2840,6 +2887,8 @@ var TOKEN_ACCESSORS = "accessors",
     TOKEN_SUPER = "super",
     TOKEN_VAR = "var",
     TOKEN_IN = "in",
+    TOKEN_PRAGMA = "pragma",
+    TOKEN_MARK = "mark",
     TOKEN_EQUAL = '=',
     TOKEN_PLUS = '+',
     TOKEN_MINUS = '-',
@@ -2855,6 +2904,7 @@ var TOKEN_ACCESSORS = "accessors",
     TOKEN_OPEN_BRACKET = '[',
     TOKEN_DOUBLE_QUOTE = '"',
     TOKEN_PREPROCESSOR = '@',
+    TOKEN_HASH = '#',
     TOKEN_CLOSE_BRACKET = ']',
     TOKEN_QUESTION_MARK = '?',
     TOKEN_OPEN_PARENTHESIS = '(',
@@ -2943,7 +2993,32 @@ var Preprocessor = function( aString, aURL, flags)
     this._flags = flags;
     this._classMethod = false;
     this._executable = NULL;
+    this._classLookupTable = {};
+    this._classVars = {};
+    var classObject = new objj_class();
+    for (var i in classObject)
+        this._classVars[i] = 1;
     this.preprocess(this._tokens, this._buffer);
+}
+Preprocessor.prototype.setClassInfo = function(className, superClassName, ivars)
+{
+    this._classLookupTable[className] = {superClassName:superClassName, ivars:ivars};
+}
+Preprocessor.prototype.getClassInfo = function(className)
+{
+    return this._classLookupTable[className];
+}
+Preprocessor.prototype.allIvarNamesForClassName = function(className)
+{
+    var names = {},
+        classInfo = this.getClassInfo(className);
+    while (classInfo)
+    {
+        for (var i in classInfo.ivars)
+            names[i] = 1;
+        classInfo = this.getClassInfo(classInfo.superClassName);
+    }
+    return names;
 }
 exports.Preprocessor = Preprocessor;
 Preprocessor.Flags = { };
@@ -3051,6 +3126,21 @@ Preprocessor.prototype.directive = function(tokens, aStringBuffer, allowedDirect
     if (!aStringBuffer)
         return buffer;
 }
+Preprocessor.prototype.hash = function(tokens, aStringBuffer)
+{
+    var buffer = aStringBuffer ? aStringBuffer : new StringBuffer(),
+        token = tokens.next();
+    if (token === TOKEN_PRAGMA)
+    {
+        token = tokens.skip_whitespace();
+        if (token === TOKEN_MARK)
+        {
+            while ((token = tokens.next()).indexOf("\n") < 0);
+        }
+    }
+    else
+        throw new SyntaxError(this.error_message("*** Expected \"pragma\" to follow # but instead saw \"" + token + "\"."));
+}
 Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
 {
     var buffer = aStringBuffer,
@@ -3090,7 +3180,8 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
         buffer.atoms[buffer.atoms.length] = "{var the_class = objj_allocateClassPair(" + superclass_name + ", \"" + class_name + "\"),\nmeta_class = the_class.isa;";
         if (token == TOKEN_OPEN_BRACE)
         {
-            var ivar_count = 0,
+            var ivar_names = {},
+                ivar_count = 0,
                 declaration = [],
                 attributes,
                 accessors = {};
@@ -3106,12 +3197,13 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                 }
                 else if (token == TOKEN_SEMICOLON)
                 {
-                    if (ivar_count++ == 0)
+                    if (ivar_count++ === 0)
                         buffer.atoms[buffer.atoms.length] = "class_addIvars(the_class, [";
                     else
                         buffer.atoms[buffer.atoms.length] = ", ";
                     var name = declaration[declaration.length - 1];
                     buffer.atoms[buffer.atoms.length] = "new objj_ivar(\"" + name + "\")";
+                    ivar_names[name] = 1;
                     declaration = [];
                     if (attributes)
                     {
@@ -3128,6 +3220,8 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                 buffer.atoms[buffer.atoms.length] = "]);\n";
             if (!token)
                 throw new SyntaxError(this.error_message("*** Expected '}'"));
+            this.setClassInfo(class_name, superclass_name === "Nil" ? null : superclass_name, ivar_names);
+            var ivar_names = this.allIvarNamesForClassName(class_name);
             for (ivar_name in accessors)
             {
                 var accessor = accessors[ivar_name],
@@ -3136,7 +3230,7 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                     getterCode = "(id)" + getterName + "\n{\nreturn " + ivar_name + ";\n}";
                 if (instance_methods.atoms.length !== 0)
                     instance_methods.atoms[instance_methods.atoms.length] = ",\n";
-                instance_methods.atoms[instance_methods.atoms.length] = this.method(new Lexer(getterCode));
+                instance_methods.atoms[instance_methods.atoms.length] = this.method(new Lexer(getterCode), ivar_names);
                 if (accessor["readonly"])
                     continue;
                 var setterName = accessor["setter"];
@@ -3152,13 +3246,15 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
                     setterCode += ivar_name + " = newValue;\n}";
                 if (instance_methods.atoms.length !== 0)
                     instance_methods.atoms[instance_methods.atoms.length] = ",\n";
-                instance_methods.atoms[instance_methods.atoms.length] = this.method(new Lexer(setterCode));
+                instance_methods.atoms[instance_methods.atoms.length] = this.method(new Lexer(setterCode), ivar_names);
             }
         }
         else
             tokens.previous();
         buffer.atoms[buffer.atoms.length] = "objj_registerClassPair(the_class);\n";
     }
+    if (!ivar_names)
+        var ivar_names = this.allIvarNamesForClassName(class_name);
     while ((token = tokens.skip_whitespace()))
     {
         if (token == TOKEN_PLUS)
@@ -3166,14 +3262,18 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
             this._classMethod = true;
             if (class_methods.atoms.length !== 0)
                 class_methods.atoms[class_methods.atoms.length] = ", ";
-            class_methods.atoms[class_methods.atoms.length] = this.method(tokens);
+            class_methods.atoms[class_methods.atoms.length] = this.method(tokens, this._classVars);
         }
         else if (token == TOKEN_MINUS)
         {
             this._classMethod = false;
             if (instance_methods.atoms.length !== 0)
                 instance_methods.atoms[instance_methods.atoms.length] = ", ";
-            instance_methods.atoms[instance_methods.atoms.length] = this.method(tokens);
+            instance_methods.atoms[instance_methods.atoms.length] = this.method(tokens, ivar_names);
+        }
+        else if (token == TOKEN_HASH)
+        {
+            this.hash(tokens, buffer);
         }
         else if (token == TOKEN_PREPROCESSOR)
         {
@@ -3219,14 +3319,15 @@ Preprocessor.prototype._import = function(tokens)
     this._buffer.atoms[this._buffer.atoms.length] = isQuoted ? "\", YES);" : "\", NO);";
     this._dependencies.push(new FileDependency(new CFURL(URLString), isQuoted));
 }
-Preprocessor.prototype.method = function( tokens)
+Preprocessor.prototype.method = function( tokens, ivar_names)
 {
     var buffer = new StringBuffer(),
         token,
         selector = "",
         parameters = [],
         types = [null];
-    while((token = tokens.skip_whitespace()) && token != TOKEN_OPEN_BRACE)
+    ivar_names = ivar_names || {};
+    while((token = tokens.skip_whitespace()) && token !== TOKEN_OPEN_BRACE && token !== TOKEN_SEMICOLON)
     {
         if (token == TOKEN_COLON)
         {
@@ -3241,6 +3342,8 @@ Preprocessor.prototype.method = function( tokens)
             }
             types[parameters.length+1] = type || null;
             parameters[parameters.length] = token;
+            if (token in ivar_names)
+                throw new SyntaxError(this.error_message("*** Method ( "+selector+" ) uses a parameter name that is already in use ( "+token+" )"));
         }
         else if (token == TOKEN_OPEN_PARENTHESIS)
         {
@@ -3256,6 +3359,15 @@ Preprocessor.prototype.method = function( tokens)
         }
         else
             selector += token;
+    }
+    if (token === TOKEN_SEMICOLON)
+    {
+        token = tokens.skip_whitespace();
+        if (token !== TOKEN_OPEN_BRACE)
+        {
+            throw new SyntaxError(this.error_message("Invalid semi-colon in method declaration. "+
+            "Semi-colons are allowed only to terminate the method signature, before the open brace."));
+        }
     }
     var index = 0,
         count = parameters.length;
@@ -3384,6 +3496,8 @@ Preprocessor.prototype.preprocess = function(tokens, aStringBuffer, terminator, 
         }
         else if (token == TOKEN_PREPROCESSOR)
             this.directive(tokens, buffer);
+        else if (token == TOKEN_HASH)
+            this.hash(tokens, buffer);
         else if (token == TOKEN_OPEN_BRACKET)
             this.brackets(tokens, buffer);
         else
@@ -3540,9 +3654,12 @@ var fileDependencyLoadCount = 0,
 Executable.prototype.loadFileDependencies = function(aCallback)
 {
     var status = this._fileDependencyStatus;
-    if (status === ExecutableLoadedFileDependencies)
-        return aCallback();
-    this._fileDependencyCallbacks.push(aCallback)
+    if (aCallback)
+    {
+        if (status === ExecutableLoadedFileDependencies)
+            return aCallback();
+        this._fileDependencyCallbacks.push(aCallback);
+    }
     if (status === ExecutableUnloadedFileDependencies)
     {
         if (fileDependencyLoadCount)
@@ -3716,7 +3833,7 @@ Executable.fileExecutableSearcherForURL = function( referenceURL)
 }
 Executable.fileExecutableSearcherForURL.displayName = "Executable.fileExecutableSearcherForURL";
 var FileExecutablesForURLStrings = { };
-function FileExecutable( aURL, anExecutable)
+function FileExecutable( aURL)
 {
     aURL = makeAbsoluteURL(aURL);
     var URLString = aURL.absoluteString(),
@@ -3727,9 +3844,7 @@ function FileExecutable( aURL, anExecutable)
     var fileContents = StaticResource.resourceAtURL(aURL).contents(),
         executable = NULL,
         extension = aURL.pathExtension();
-    if (anExecutable)
-        executable = anExecutable;
-    else if (fileContents.match(/^@STATIC;/))
+    if (fileContents.match(/^@STATIC;/))
         executable = decompile(fileContents, aURL);
     else if (extension === "j" || !extension)
         executable = exports.preprocess(fileContents, aURL, Preprocessor.Flags.IncludeDebugSymbols);
@@ -3769,7 +3884,21 @@ function decompile( aString, aURL)
         else if (marker === MARKER_IMPORT_LOCAL)
             dependencies.push(new FileDependency(new CFURL(text), YES));
     }
+    var fn = FileExecutable._lookupCachedFunction(aURL)
+    if (fn)
+        return new Executable(code, dependencies, aURL, fn);
     return new Executable(code, dependencies, aURL);
+}
+var FunctionCache = { };
+FileExecutable._cacheFunction = function( aURL, fn)
+{
+    aURL = typeof aURL === "string" ? aURL : aURL.absoluteString();
+    FunctionCache[aURL] = fn;
+}
+FileExecutable._lookupCachedFunction = function( aURL)
+{
+    aURL = typeof aURL === "string" ? aURL : aURL.absoluteString();
+    return FunctionCache[aURL];
 }
 var CLS_CLASS = 0x1,
     CLS_META = 0x2,
@@ -4142,6 +4271,25 @@ sel_registerName = function( aName)
     return aName;
 }
 sel_registerName.displayName = "sel_registerName";
+objj_eval = function( aString)
+{
+    var url = exports.pageURL;
+    var asyncLoaderSaved = exports.asyncLoader;
+    exports.asyncLoader = NO;
+    var executable = exports.preprocess(aString, url, 0);
+    if (!executable.hasLoadedFileDependencies())
+        executable.loadFileDependencies();
+    global._objj_eval_scope = {};
+    global._objj_eval_scope.objj_executeFile = Executable.fileExecuterForURL(url);
+    global._objj_eval_scope.objj_importFile = Executable.fileImporterForURL(url);
+    var code = "with(_objj_eval_scope){" + executable._code + "\n//*/\n}";
+    var result;
+        result = eval(code);
+    exports.asyncLoader = asyncLoaderSaved;
+    return result;
+}
+exports.objj_eval = objj_eval;
+CPLogRegister(CPLogDefault);
 function objj_debug_object_format(aReceiver)
 {
     return (aReceiver && aReceiver.isa) ? exports.sprintf("<%s %#08x>", (((aReceiver.info & (CLS_META))) ? aReceiver : aReceiver.isa).name, aReceiver._UID) : String(aReceiver);

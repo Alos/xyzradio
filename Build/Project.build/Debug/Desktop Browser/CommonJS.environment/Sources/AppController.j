@@ -1,18 +1,18 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;8;DJList.ji;13;MainBrowser.ji;15;PlayerControl.ji;19;PreferencesWindow.ji;9;XYZSong.ji;13;UsersWindow.ji;18;DCFormController.ji;10;UserCell.ji;13;LoginWindow.ji;19;UserProfileWindow.ji;9;XYZUser.ji;22;EventListenerManager.ji;23;MainUserProfileWindow.ji;15;AddSongWindow.jt;21991;objj_executeFile("Foundation/CPObject.j", NO);
-objj_executeFile("DJList.j", YES);
-objj_executeFile("MainBrowser.j", YES);
-objj_executeFile("PlayerControl.j", YES);
-objj_executeFile("PreferencesWindow.j", YES);
-objj_executeFile("XYZSong.j", YES);
-objj_executeFile("UsersWindow.j", YES);
-objj_executeFile("DCFormController.j", YES);
-objj_executeFile("UserCell.j", YES);
-objj_executeFile("LoginWindow.j", YES);
-objj_executeFile("UserProfileWindow.j", YES);
-objj_executeFile("XYZUser.j", YES);
-objj_executeFile("EventListenerManager.j", YES);
-objj_executeFile("MainUserProfileWindow.j", YES);
-objj_executeFile("AddSongWindow.j", YES);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;17;gui/LoginWindow.ji;23;gui/UserProfileWindow.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;22075;objj_executeFile("Foundation/CPObject.j", NO);
+objj_executeFile("gui/DJList.j", YES);
+objj_executeFile("gui/MainBrowser.j", YES);
+objj_executeFile("controllers/PlayerControl.j", YES);
+objj_executeFile("gui/PreferencesWindow.j", YES);
+objj_executeFile("model/XYZSong.j", YES);
+objj_executeFile("gui/UsersWindow.j", YES);
+objj_executeFile("controllers/DCFormController.j", YES);
+objj_executeFile("gui/UserCell.j", YES);
+objj_executeFile("gui/LoginWindow.j", YES);
+objj_executeFile("gui/UserProfileWindow.j", YES);
+objj_executeFile("model/XYZUser.j", YES);
+objj_executeFile("controllers/EventListenerManager.j", YES);
+objj_executeFile("gui/MainUserProfileWindow.j", YES);
+objj_executeFile("gui/AddSongWindow.j", YES);
 var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
     AddSongToolbarItemIdentifier = "AddSongToolbarItemIdentifier",

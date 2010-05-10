@@ -1,4 +1,4 @@
-@STATIC;1.0;i;14;XYZMusicList.ji;9;XYZSong.jt;6102;objj_executeFile("XYZMusicList.j", YES);
+@STATIC;1.0;i;14;XYZMusicList.ji;9;XYZSong.jt;5766;objj_executeFile("XYZMusicList.j", YES);
 objj_executeFile("XYZSong.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "SongListDS"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("answerArray"), new objj_ivar("xyzConnection")]);
@@ -56,19 +56,15 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongL
     var listaCompleta = objj_msgSend(app, "globalSongList");
     for(var x=0; x< objj_msgSend(songIDArray, "count"); x++){
         var songOnlyID = objj_msgSend(songIDArray, "objectAtIndex:", x);
-        CPLog.trace("Converting the ID: "+songOnlyID);
         for(var i=0; i< objj_msgSend(listaCompleta, "count"); i++){
             var fullSong = objj_msgSend(listaCompleta, "objectAtIndex:", i);
-            CPLog.trace("comparing to..."+fullSong);
             if(objj_msgSend(fullSong, "songID") == objj_msgSend(songOnlyID, "songID")){
-                CPLog.trace("Found song!");
                 var newSong = fullSong;
                 objj_msgSend(resp, "addObject:",  newSong);
                 break;
             }
         }
     }
-    CPLog.trace("Finished getting songs:"+ resp);
     return resp;
 }
 },["CPArray","CPArray"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
@@ -78,13 +74,10 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongL
         return;
     var result = JSON.parse(data);
     CPLog.info("Playlists: %s", result);
-    CPLog.info("Playlists: %s", result.length);
     for(var i=0; i< result.length; i++){
         var object = result[i];
-        CPLog.trace("i="+i);
         var musicList = objj_msgSend(objj_msgSend(XYZMusicList, "alloc"), "init");
         objj_msgSend(musicList, "setNameOfList:",  object.nameOfList);
-        CPLog.trace(">>>>>>>>>>>>>>"+object.nameOfList);
         var arrayOfIDs = object.musicList;
         for(var j=0; j<objj_msgSend(arrayOfIDs, "count"); j++){
             var emptySong = objj_msgSend(objj_msgSend(XYZSong, "alloc"), "init");

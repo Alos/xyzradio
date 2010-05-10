@@ -14,20 +14,20 @@ This file is part of XYZRadio.
     along with XYZRadio.  If not, see <http://www.gnu.org/licenses/>.
 */
 @import <Foundation/CPObject.j>
-@import "DJList.j"
-@import "MainBrowser.j"
-@import "PlayerControl.j"
-@import "PreferencesWindow.j"
-@import "XYZSong.j"
-@import "UsersWindow.j"
-@import "DCFormController.j"
-@import "UserCell.j"
-@import "LoginWindow.j"
-@import "UserProfileWindow.j"
-@import "XYZUser.j"
-@import "EventListenerManager.j"
-@import "MainUserProfileWindow.j"
-@import "AddSongWindow.j"
+@import "gui/DJList.j"
+@import "gui/MainBrowser.j"
+@import "controllers/PlayerControl.j"
+@import "gui/PreferencesWindow.j"
+@import "model/XYZSong.j"
+@import "gui/UsersWindow.j"
+@import "controllers/DCFormController.j"
+@import "gui/UserCell.j"
+@import "gui/LoginWindow.j"
+@import "gui/UserProfileWindow.j"
+@import "model/XYZUser.j"
+@import "controllers/EventListenerManager.j"
+@import "gui/MainUserProfileWindow.j"
+@import "gui/AddSongWindow.j"
 
 var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     BotonMiListaIdentifier = "BotonMiListaIdentifier",
