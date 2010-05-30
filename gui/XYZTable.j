@@ -38,12 +38,12 @@ SongsDragType = @"SongsDragType";
 -(void) initWithColumnModel:(CPDictionary)aColumnModel model:(CPArray)aModel frame:(CGRect)bounds{
     self = [super initWithFrame:bounds];
     [self setModel:aModel];
-		
+
     //the cells
-	celdas = [[XYZCell alloc] initWithFrame:CGRectMakeZero()];
-	[celdas setModel: aColumnModel];
-	
-	//para nuestro grid
+    celdas = [[XYZCell alloc] initWithFrame:CGRectMakeZero()];
+    [celdas setModel: aColumnModel];
+
+    //para nuestro grid
     collectionView = [[CPCollectionView alloc] initWithFrame: CGRectMake(0, 0,  CGRectGetWidth(bounds), CGRectGetHeight(bounds))];
     pos=0;
     //los scrolls por si son muchos
@@ -67,7 +67,7 @@ SongsDragType = @"SongsDragType";
     
     [collectionView setDelegate: self];
         
-	//la de arriba    
+    //la de arriba    
     var borderTop = [[CPView alloc] initWithFrame:CGRectMake(0, 5, CGRectGetWidth(bounds)-2, 1)];    
         [borderTop setBackgroundColor: [CPColor colorWithHexString:"33FF00"]];
         [self addSubview: borderTop];
@@ -84,13 +84,13 @@ SongsDragType = @"SongsDragType";
     return self;
 }
 -(void)collectionView:(CPCollectionView)aCollectionView didDoubleClickOnItemAtIndex:(int)index{
-	var info = [CPDictionary dictionaryWithObject:index forKey:"index"];
-	[[CPNotificationCenter defaultCenter] postNotificationName:"songDoubleClicked" object:self userInfo:info]; 
+    var info = [CPDictionary dictionaryWithObject:index forKey:"index"];
+    [[CPNotificationCenter defaultCenter] postNotificationName:"songDoubleClicked" object:self userInfo:info]; 
 }
 
 - (void)performDragOperation:(id <CPDraggingInfo>)aSender
 {
-	CPLog.trace("here in performdrag....");
+    CPLog.trace("here in performdrag....");
     // If this is us, don't add it.
     if ([aSender draggingSource] == collectionView){
 		CPLog.trace("Same draggingSource on XYZTable");	
@@ -209,7 +209,7 @@ Gets the total of songs in the list
 
     while ((index = [indexes indexGreaterThanIndex:index]) != CPNotFound)
         songs.push(content[index]);
-    
+    CPLog.trace("The songs before archive:" + songs);
     return [CPKeyedArchiver archivedDataWithRootObject:songs];
 }
 

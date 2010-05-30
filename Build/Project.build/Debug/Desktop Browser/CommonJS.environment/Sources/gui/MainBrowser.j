@@ -1,4 +1,4 @@
-@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5601;objj_executeFile("XYZPlayListWindow.j", YES);
+@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5630;objj_executeFile("XYZPlayListWindow.j", YES);
 objj_executeFile("XYZColumnModel.j", YES);
 objj_executeFile("XYZTable.j", YES);
 {var the_class = objj_allocateClassPair(XYZPlayListWindow, "MainBrowser"),
@@ -76,11 +76,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
             objj_msgSend(newSong, "setTime:", info.time);
             objj_msgSend(newSong, "setGenre:", info.genre);
             objj_msgSend(newSong, "setRating:", info.rating);
-            CPLog.warn("El valor de songID es: "+ info.songID );
-            objj_msgSend(newSong, "setSongID:", info.songID.id);
+            objj_msgSend(newSong, "setSongID:", info.songID);
             objj_msgSend(newSong, "setLocal:", info.isLocal);
             objj_msgSend(newSong, "setPathToSong:", info.pathToSong);
             objj_msgSend(newSong, "setPathToAlbumArt:", info.pathToAlbumArt);
+            CPLog.trace("El valor de songID del objeto es: "+ objj_msgSend(newSong, "songID") );
             objj_msgSend(songsArray, "addObject:",  newSong);
         }
         objj_msgSend(self, "addList:", songsArray);

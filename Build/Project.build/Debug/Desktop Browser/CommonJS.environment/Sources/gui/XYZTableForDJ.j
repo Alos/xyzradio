@@ -1,4 +1,4 @@
-@STATIC;1.0;i;18;../model/XYZSong.ji;16;StarRatingView.jt;13899;objj_executeFile("../model/XYZSong.j", YES);
+@STATIC;1.0;i;18;../model/XYZSong.ji;16;StarRatingView.jt;13920;objj_executeFile("../model/XYZSong.j", YES);
 objj_executeFile("StarRatingView.j", YES);
 SongsDragType = "SongsDragType";
 {var the_class = objj_allocateClassPair(CPView, "XYZTableForDJ"),
@@ -134,11 +134,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 },["CPData","CPCollectionView","CPIndexSet","CPString"]), new objj_method(sel_getUid("performDragOperation:"), function $XYZTableForDJ__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
- CPLog.trace("Got to performdrag in the XYZTableForDJ....");
+    CPLog.trace("Got to performdrag in the XYZTableForDJ....");
     if (objj_msgSend(aSender, "draggingSource") == collectionView){
-  CPLog.error("Same draggingSource");
-  return;
- }
+        CPLog.error("Same draggingSource");
+        return;
+    }
     var pasteboard = objj_msgSend(aSender, "draggingPasteboard");
     if (objj_msgSend(objj_msgSend(pasteboard, "types"), "containsObject:", SongsDragType))
     {
@@ -155,7 +155,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
         }
     }else{
         CPLog.trace("XYZTableForDJ does not accept drags for types: "+objj_msgSend(pasteboard, "types"));
- }
+    }
 }
 },["void","id<CPDraggingInfo>"])]);
 }

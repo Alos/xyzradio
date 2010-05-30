@@ -1,4 +1,4 @@
-@STATIC;1.0;i;21;../gui/XYZMusicList.ji;18;../model/XYZSong.jt;5782;objj_executeFile("../gui/XYZMusicList.j", YES);
+@STATIC;1.0;i;23;../model/XYZMusicList.ji;18;../model/XYZSong.jt;5668;objj_executeFile("../model/XYZMusicList.j", YES);
 objj_executeFile("../model/XYZSong.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "SongListDS"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("answerArray"), new objj_ivar("xyzConnection")]);
@@ -48,40 +48,29 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongL
     var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
     xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["void"]), new objj_method(sel_getUid("getSongsForPlaylist:"), function $SongListDS__getSongsForPlaylist_(self, _cmd, songIDArray)
-{ with(self)
-{
-    var resp = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
-    var app = objj_msgSend(CPApp, "delegate");
-    var listaCompleta = objj_msgSend(app, "globalSongList");
-    for(var x=0; x< objj_msgSend(songIDArray, "count"); x++){
-        var songOnlyID = objj_msgSend(songIDArray, "objectAtIndex:", x);
-        for(var i=0; i< objj_msgSend(listaCompleta, "count"); i++){
-            var fullSong = objj_msgSend(listaCompleta, "objectAtIndex:", i);
-            if(objj_msgSend(fullSong, "songID") == objj_msgSend(songOnlyID, "songID")){
-                var newSong = fullSong;
-                objj_msgSend(resp, "addObject:",  newSong);
-                break;
-            }
-        }
-    }
-    return resp;
-}
-},["CPArray","CPArray"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
+},["void"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
 { with(self)
 {
     if(!data)
         return;
     var result = JSON.parse(data);
+    CPLog.trace("The data:"+data);
     CPLog.info("Playlists: %s", result);
     for(var i=0; i< result.length; i++){
         var object = result[i];
+        CPLog.trace("The object>"+object);
         var musicList = objj_msgSend(objj_msgSend(XYZMusicList, "alloc"), "init");
         objj_msgSend(musicList, "setNameOfList:",  object.nameOfList);
-        var arrayOfIDs = object.musicList;
-        for(var j=0; j<objj_msgSend(arrayOfIDs, "count"); j++){
+        var arrayOfSongs = object.musicList;
+        for(var j=0; j<objj_msgSend(arrayOfSongs, "count"); j++){
             var emptySong = objj_msgSend(objj_msgSend(XYZSong, "alloc"), "init");
-            objj_msgSend(emptySong, "setSongID:", objj_msgSend(arrayOfIDs, "objectAtIndex:",  j));
+            objj_msgSend(emptySong, "setSongID:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).songID);
+            objj_msgSend(emptySong, "setSongTitle:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).songTitle);
+            objj_msgSend(emptySong, "setArtist:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).artist);
+            objj_msgSend(emptySong, "setTime:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).time);
+            objj_msgSend(emptySong, "setGenre:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).genre);
+            objj_msgSend(emptySong, "setPathToAlbumArt:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).pathToAlbumArt);
+            objj_msgSend(emptySong, "setPathToSong:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).pathToSong)
             objj_msgSend(musicList, "addSong:", emptySong);
         }
         objj_msgSend(answerArray, "addObject:",  musicList);

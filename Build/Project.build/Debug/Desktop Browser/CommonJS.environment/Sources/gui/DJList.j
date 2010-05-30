@@ -1,6 +1,6 @@
-@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;25;../dataStore/SongListDS.jt;14846;objj_executeFile("AppKit/CPPanel.j", NO);
+@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;23;../model/XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;25;../dataStore/SongListDS.jt;14442;objj_executeFile("AppKit/CPPanel.j", NO);
 objj_executeFile("XYZPlayListWindowForDJ.j", YES);
-objj_executeFile("XYZMusicList.j", YES);
+objj_executeFile("../model/XYZMusicList.j", YES);
 objj_executeFile("XYZTableForDJ.j", YES);
 objj_executeFile("NewPlaylistWindow.j", YES);
 objj_executeFile("../dataStore/SongListDS.j", YES);
@@ -153,12 +153,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
         CPLog.trace("The playlistsArray contains: "+ playlistsArray);
         selectedPlaylist = objj_msgSend(playlistsArray, "objectAtIndex:", objj_msgSend(index, "firstIndex"));
         CPLog.trace("The selected list: "+ selectedPlaylist);
-        if(!objj_msgSend(selectedPlaylist, "isFullyLoaded")){
-            CPLog.trace("Selectedplaylist was empty getting songs");
-            var fullSongArray = objj_msgSend(songListDS, "getSongsForPlaylist:",  objj_msgSend(selectedPlaylist, "musicList"));
-            objj_msgSend(selectedPlaylist, "setMusicList:", fullSongArray);
-            objj_msgSend(selectedPlaylist, "setFullyLoaded:", YES);
-        }
         objj_msgSend(theTable, "setModel:",  objj_msgSend(selectedPlaylist, "musicList"));
     }
 },["void","CPCollectionView"])]);

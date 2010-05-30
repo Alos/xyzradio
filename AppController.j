@@ -22,7 +22,6 @@ This file is part of XYZRadio.
 @import "gui/UsersWindow.j"
 @import "controllers/DCFormController.j"
 @import "gui/UserCell.j"
-@import "gui/LoginWindow.j"
 @import "gui/UserProfileWindow.j"
 @import "model/XYZUser.j"
 @import "controllers/EventListenerManager.j"
@@ -58,7 +57,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     CGRect bounds;
     CPURLConnection xyzradioConnectionForLogin; //takes care of the loggin stuff
     CPString serverIP;
-    LoginWindow loginWindow; //the log window that is presented to the user at the start
+    //LoginWindow loginWindow; //the log window that is presented to the user at the start
     UserProfileWindow userProfileWindow;
     XYZUser userLoggedin;//the full user
     CPTimer userLoggingTimer;
@@ -88,18 +87,26 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
    
     serverIP = "http://localhost:8888"; 
     //serverIP = "http://xyzradioengine.appspot.com";	
-    [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
+    //[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
-
-   
- 
+    //getting arguements for google login
+   	var sharedApplication = [CPApplication sharedApplication];
+    var namedArguments  = [sharedApplication namedArguments];
+    var userAccount = [namedArguments objectForKey:"userEmail"];
+    CPLog.trace("The email: "+userAccount);
+    if(userAccount){
+        CPLog.trace("Logged olduser!");
+        [self loginUser:userAccount];
+    }else{
+        CPLog.trace("No account found deny access!");
+    }
     /*console.log("Opening sound!"); 
     var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
     [sound setDelegate:self];
     [sound play];
     console.log("playing...");*/
 
-        musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
+    musicBrowser = [[MainBrowser alloc] initWithSource:librarySongs rectangle:CGRectMake(0, 0, 600, 500)];
     [musicBrowser setFrameOrigin:(CPPointMake(60, 100))];
 
     djList = [[DJList alloc] initWithSource:librarySongs contentRect: CGRectMake(700, 100, 600, 500)];
@@ -108,19 +115,16 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     //brings the window to the front
     [theWindow orderFront:self];
 
-
-    playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];	
-    
-    [self openLoginWindow];
+    playerControl=[[PlayerControl alloc] initWithMainPlayingList:musicBrowser djList:djList];
 
 }
 
 -(CPView) contentView{
-	return contentView;
+    return contentView;
 }
 
 -(void)setServerIP:(CPString)aURL{
-	serverIP = aURL;
+    serverIP = aURL;
 }
 
 -(XYZUser)userLoggedin{
@@ -449,6 +453,63 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
 		[self openLoginWindow];
 }
 
+-(void)loginUser:(CPString)aUser{
+		var url = serverIP+"/LoginUser?email="+aUser;
+		CPLog.info("Connecting to" + url);
+		var request = [CPURLRequest requestWithURL: url];
+		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
+}
+
+
+	- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
+	{
+		CPLog.trace("La data en loging window: %s", data);
+		try{
+			var response = JSON.parse(data);
+			
+			if(response.error){
+				CPLog.error(response.error);
+			}
+			
+			if(response){
+				var userRecived = [[XYZUser alloc] init];
+				
+				[userRecived setEmail: response.email];
+				[userRecived setUsernick: response.usernick];
+				if(response.pathToAvatar)
+					[userRecived setPathToAvatar: response.pathToAvatar];
+				else
+					[userRecived setPathToAvatar:""];
+				[userRecived setLogged: response.logged];
+				if(response.dj)
+					[userRecived setDj:YES];
+				else
+					[userRecived setDj:NO];
+				[userRecived setSex: response.sex];
+				[userRecived setDjList1: response.djList1];
+				[userRecived setDjList2: response.djList2];
+				[userRecived setDjList3: response.djList3];
+				[userRecived setOwnedSongs: response.ownedSongs];
+				[userRecived setUserRating: response.userRating];
+				
+				var somePrefrences = [[XYZUserPrefrences alloc] init];
+				
+				[userRecived setPrefrences: somePrefrences];
+				
+                userLoggedin = userRecived;
+	            [djList getUserPlaylists]; 
+			}
+			
+		}catch(e){
+			var mensajeGuardar = [[CPAlert alloc] init];
+			[mensajeGuardar setTitle:"Server not available"];
+			[mensajeGuardar setWindowStyle:CPHUDBackgroundWindowMask];
+			[mensajeGuardar setMessageText:"Sorry, the server is not available. Please try again later."];
+			[mensajeGuardar addButtonWithTitle:"Ok"];
+			[mensajeGuardar runModal];
+		}
+		
+    }
 
 -(void)openLoginWindow{
 		loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(0, 0, 1000, 800) styleMask: CPHUDBackgroundWindowMask | CPBorderlessWindowMask];

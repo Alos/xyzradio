@@ -277,7 +277,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_haveQuickTime"), funct
 },["void","var"])]);
 }
 
-p;15;AppController.jt;22481;@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;17;gui/LoginWindow.ji;23;gui/UserProfileWindow.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;22075;objj_executeFile("Foundation/CPObject.j", NO);
+p;15;AppController.jt;25104;@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;23;gui/UserProfileWindow.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;24720;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("gui/DJList.j", YES);
 objj_executeFile("gui/MainBrowser.j", YES);
 objj_executeFile("controllers/PlayerControl.j", YES);
@@ -286,7 +286,6 @@ objj_executeFile("model/XYZSong.j", YES);
 objj_executeFile("gui/UsersWindow.j", YES);
 objj_executeFile("controllers/DCFormController.j", YES);
 objj_executeFile("gui/UserCell.j", YES);
-objj_executeFile("gui/LoginWindow.j", YES);
 objj_executeFile("gui/UserProfileWindow.j", YES);
 objj_executeFile("model/XYZUser.j", YES);
 objj_executeFile("controllers/EventListenerManager.j", YES);
@@ -301,7 +300,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     ProfileItemIdentifier = "ProfileItemIdentifier",
     LogoutIdentifier = "LogoutIdentifier";
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("loginWindow"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("globalSongList"), function $AppController__globalSongList(self, _cmd)
 { with(self)
@@ -329,24 +328,32 @@ globalSongList = newValue;
     objj_msgSend(theWindow, "setToolbar:",  toolbar);
     objj_msgSend(toolbar, "setDelegate:", self);
     serverIP = "http://localhost:8888";
-    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("closeLoginWindow:"), "LoginSuccessful", nil);
-        musicBrowser = objj_msgSend(objj_msgSend(MainBrowser, "alloc"), "initWithSource:rectangle:", librarySongs, CGRectMake(0, 0, 600, 500));
+    var sharedApplication = objj_msgSend(CPApplication, "sharedApplication");
+    var namedArguments = objj_msgSend(sharedApplication, "namedArguments");
+    var userAccount = objj_msgSend(namedArguments, "objectForKey:", "userEmail");
+    CPLog.trace("The email: "+userAccount);
+    if(userAccount){
+        CPLog.trace("Logged olduser!");
+        objj_msgSend(self, "loginUser:", userAccount);
+    }else{
+        CPLog.trace("No account found deny access!");
+    }
+    musicBrowser = objj_msgSend(objj_msgSend(MainBrowser, "alloc"), "initWithSource:rectangle:", librarySongs, CGRectMake(0, 0, 600, 500));
     objj_msgSend(musicBrowser, "setFrameOrigin:", (CPPointMake(60, 100)));
     djList = objj_msgSend(objj_msgSend(DJList, "alloc"), "initWithSource:contentRect:", librarySongs,  CGRectMake(700, 100, 600, 500));
     objj_msgSend(djList, "setFrameOrigin:", (CPPointMake(700, 100)));
     objj_msgSend(theWindow, "orderFront:", self);
     playerControl=objj_msgSend(objj_msgSend(PlayerControl, "alloc"), "initWithMainPlayingList:djList:", musicBrowser, djList);
-    objj_msgSend(self, "openLoginWindow");
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("contentView"), function $AppController__contentView(self, _cmd)
 { with(self)
 {
- return contentView;
+    return contentView;
 }
 },["CPView"]), new objj_method(sel_getUid("setServerIP:"), function $AppController__setServerIP_(self, _cmd, aURL)
 { with(self)
 {
- serverIP = aURL;
+    serverIP = aURL;
 }
 },["void","CPString"]), new objj_method(sel_getUid("userLoggedin"), function $AppController__userLoggedin(self, _cmd)
 { with(self)
@@ -640,7 +647,57 @@ globalSongList = newValue;
   var connection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
   objj_msgSend(self, "openLoginWindow");
 }
-},["void"]), new objj_method(sel_getUid("openLoginWindow"), function $AppController__openLoginWindow(self, _cmd)
+},["void"]), new objj_method(sel_getUid("loginUser:"), function $AppController__loginUser_(self, _cmd, aUser)
+{ with(self)
+{
+  var url = serverIP+"/LoginUser?email="+aUser;
+  CPLog.info("Connecting to" + url);
+  var request = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
+  var xyzradioConnectionForLogin = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
+}
+},["void","CPString"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $AppController__connection_didReceiveData_(self, _cmd, connection, data)
+{ with(self)
+{
+  CPLog.trace("La data en loging window: %s", data);
+  try{
+   var response = JSON.parse(data);
+   if(response.error){
+    CPLog.error(response.error);
+   }
+   if(response){
+    var userRecived = objj_msgSend(objj_msgSend(XYZUser, "alloc"), "init");
+    objj_msgSend(userRecived, "setEmail:",  response.email);
+    objj_msgSend(userRecived, "setUsernick:",  response.usernick);
+    if(response.pathToAvatar)
+     objj_msgSend(userRecived, "setPathToAvatar:",  response.pathToAvatar);
+    else
+     objj_msgSend(userRecived, "setPathToAvatar:", "");
+    objj_msgSend(userRecived, "setLogged:",  response.logged);
+    if(response.dj)
+     objj_msgSend(userRecived, "setDj:", YES);
+    else
+     objj_msgSend(userRecived, "setDj:", NO);
+    objj_msgSend(userRecived, "setSex:",  response.sex);
+    objj_msgSend(userRecived, "setDjList1:",  response.djList1);
+    objj_msgSend(userRecived, "setDjList2:",  response.djList2);
+    objj_msgSend(userRecived, "setDjList3:",  response.djList3);
+    objj_msgSend(userRecived, "setOwnedSongs:",  response.ownedSongs);
+    objj_msgSend(userRecived, "setUserRating:",  response.userRating);
+    var somePrefrences = objj_msgSend(objj_msgSend(XYZUserPrefrences, "alloc"), "init");
+    objj_msgSend(userRecived, "setPrefrences:",  somePrefrences);
+                userLoggedin = userRecived;
+             objj_msgSend(djList, "getUserPlaylists");
+   }
+  }catch(e){
+   var mensajeGuardar = objj_msgSend(objj_msgSend(CPAlert, "alloc"), "init");
+   objj_msgSend(mensajeGuardar, "setTitle:", "Server not available");
+   objj_msgSend(mensajeGuardar, "setWindowStyle:", CPHUDBackgroundWindowMask);
+   objj_msgSend(mensajeGuardar, "setMessageText:", "Sorry, the server is not available. Please try again later.");
+   objj_msgSend(mensajeGuardar, "addButtonWithTitle:", "Ok");
+   objj_msgSend(mensajeGuardar, "runModal");
+  }
+    }
+},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("openLoginWindow"), function $AppController__openLoginWindow(self, _cmd)
 { with(self)
 {
   loginWindow = objj_msgSend(objj_msgSend(LoginWindow, "alloc"), "initWithContentRect:styleMask:", CGRectMake(0, 0, 1000, 800),  CPHUDBackgroundWindowMask | CPBorderlessWindowMask);
@@ -1231,43 +1288,6 @@ _CPGUID= function()
     return g;
 }
 
-p;44;controllers/LoginSucessfullXYZEventManager.jt;1928;@STATIC;1.0;t;1909;{var the_class = objj_allocateClassPair(CPObject, "LoginSucessfullXYZEventManager"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("serverConnection"), new objj_ivar("theRequest"), new objj_ivar("app")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("connection:didReceiveData:"), function $LoginSucessfullXYZEventManager__connection_didReceiveData_(self, _cmd, connection, data)
-{ with(self)
-{
- CPLog(data);
- var response = JSON.parse(data);
- if(response.user){
-  CPLog("Logged OK. Returned a user!");
-  var user = objj_msgSend(objj_msgSend(XYZUser, "alloc"), "init");
-  var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", song.position, "time");
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "pos", self, info);
- }else{
-  CPLog("Logged OK. No user returned");
- }
-}
-},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $LoginSucessfullXYZEventManager__connectionDidFinishLoading_(self, _cmd, connection)
-{ with(self)
-{
-}
-},["void","CPURLConnection"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $LoginSucessfullXYZEventManager__connection_didFailWithError_(self, _cmd, connection, error)
-{ with(self)
-{
-}
-},["void","CPURLConnection","CPString"])]);
-class_addMethods(meta_class, [new objj_method(sel_getUid("sendLoginToGoogleSucessfullXYZEvent:"), function $LoginSucessfullXYZEventManager__sendLoginToGoogleSucessfullXYZEvent_(self, _cmd, email)
-{ with(self)
-{
- app = objj_msgSend(CPApp, "delegate");
- var url = objj_msgSend(app, "serverIP")+"/LoginVerify?useremail="+email;
- theRequest = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
- serverConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", theRequest, self);
-}
-},["void","CPString"])]);
-}
-
 p;27;controllers/PlayerControl.jt;7124;@STATIC;1.0;i;21;../gui/PlayerWindow.ji;18;../model/XYZSong.ji;20;../gui/MainBrowser.ji;15;../gui/DJList.ji;16;SMSoundManager.jt;6990;objj_executeFile("../gui/PlayerWindow.j", YES);
 objj_executeFile("../model/XYZSong.j", YES);
 objj_executeFile("../gui/MainBrowser.j", YES);
@@ -1748,7 +1768,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongD
 },["void","CPURLConnection"])]);
 }
 
-p;22;dataStore/SongListDS.jt;5850;@STATIC;1.0;i;21;../gui/XYZMusicList.ji;18;../model/XYZSong.jt;5782;objj_executeFile("../gui/XYZMusicList.j", YES);
+p;22;dataStore/SongListDS.jt;5738;@STATIC;1.0;i;23;../model/XYZMusicList.ji;18;../model/XYZSong.jt;5668;objj_executeFile("../model/XYZMusicList.j", YES);
 objj_executeFile("../model/XYZSong.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "SongListDS"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("answerArray"), new objj_ivar("xyzConnection")]);
@@ -1798,40 +1818,29 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongL
     var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
     xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
 }
-},["void"]), new objj_method(sel_getUid("getSongsForPlaylist:"), function $SongListDS__getSongsForPlaylist_(self, _cmd, songIDArray)
-{ with(self)
-{
-    var resp = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
-    var app = objj_msgSend(CPApp, "delegate");
-    var listaCompleta = objj_msgSend(app, "globalSongList");
-    for(var x=0; x< objj_msgSend(songIDArray, "count"); x++){
-        var songOnlyID = objj_msgSend(songIDArray, "objectAtIndex:", x);
-        for(var i=0; i< objj_msgSend(listaCompleta, "count"); i++){
-            var fullSong = objj_msgSend(listaCompleta, "objectAtIndex:", i);
-            if(objj_msgSend(fullSong, "songID") == objj_msgSend(songOnlyID, "songID")){
-                var newSong = fullSong;
-                objj_msgSend(resp, "addObject:",  newSong);
-                break;
-            }
-        }
-    }
-    return resp;
-}
-},["CPArray","CPArray"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
+},["void"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $SongListDS__connection_didReceiveData_(self, _cmd, connection, data)
 { with(self)
 {
     if(!data)
         return;
     var result = JSON.parse(data);
+    CPLog.trace("The data:"+data);
     CPLog.info("Playlists: %s", result);
     for(var i=0; i< result.length; i++){
         var object = result[i];
+        CPLog.trace("The object>"+object);
         var musicList = objj_msgSend(objj_msgSend(XYZMusicList, "alloc"), "init");
         objj_msgSend(musicList, "setNameOfList:",  object.nameOfList);
-        var arrayOfIDs = object.musicList;
-        for(var j=0; j<objj_msgSend(arrayOfIDs, "count"); j++){
+        var arrayOfSongs = object.musicList;
+        for(var j=0; j<objj_msgSend(arrayOfSongs, "count"); j++){
             var emptySong = objj_msgSend(objj_msgSend(XYZSong, "alloc"), "init");
-            objj_msgSend(emptySong, "setSongID:", objj_msgSend(arrayOfIDs, "objectAtIndex:",  j));
+            objj_msgSend(emptySong, "setSongID:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).songID);
+            objj_msgSend(emptySong, "setSongTitle:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).songTitle);
+            objj_msgSend(emptySong, "setArtist:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).artist);
+            objj_msgSend(emptySong, "setTime:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).time);
+            objj_msgSend(emptySong, "setGenre:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).genre);
+            objj_msgSend(emptySong, "setPathToAlbumArt:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).pathToAlbumArt);
+            objj_msgSend(emptySong, "setPathToSong:", objj_msgSend(arrayOfSongs, "objectAtIndex:",  j).pathToSong)
             objj_msgSend(musicList, "addSong:", emptySong);
         }
         objj_msgSend(answerArray, "addObject:",  musicList);
@@ -2634,9 +2643,9 @@ name = newValue;
 },["void"])]);
 }
 
-p;12;gui/DJList.jt;15009;@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;14;XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;25;../dataStore/SongListDS.jt;14846;objj_executeFile("AppKit/CPPanel.j", NO);
+p;12;gui/DJList.jt;14614;@STATIC;1.0;I;16;AppKit/CPPanel.ji;24;XYZPlayListWindowForDJ.ji;23;../model/XYZMusicList.ji;15;XYZTableForDJ.ji;19;NewPlaylistWindow.ji;25;../dataStore/SongListDS.jt;14442;objj_executeFile("AppKit/CPPanel.j", NO);
 objj_executeFile("XYZPlayListWindowForDJ.j", YES);
-objj_executeFile("XYZMusicList.j", YES);
+objj_executeFile("../model/XYZMusicList.j", YES);
 objj_executeFile("XYZTableForDJ.j", YES);
 objj_executeFile("NewPlaylistWindow.j", YES);
 objj_executeFile("../dataStore/SongListDS.j", YES);
@@ -2789,12 +2798,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:contentR
         CPLog.trace("The playlistsArray contains: "+ playlistsArray);
         selectedPlaylist = objj_msgSend(playlistsArray, "objectAtIndex:", objj_msgSend(index, "firstIndex"));
         CPLog.trace("The selected list: "+ selectedPlaylist);
-        if(!objj_msgSend(selectedPlaylist, "isFullyLoaded")){
-            CPLog.trace("Selectedplaylist was empty getting songs");
-            var fullSongArray = objj_msgSend(songListDS, "getSongsForPlaylist:",  objj_msgSend(selectedPlaylist, "musicList"));
-            objj_msgSend(selectedPlaylist, "setMusicList:", fullSongArray);
-            objj_msgSend(selectedPlaylist, "setFullyLoaded:", YES);
-        }
         objj_msgSend(theTable, "setModel:",  objj_msgSend(selectedPlaylist, "musicList"));
     }
 },["void","CPCollectionView"])]);
@@ -2838,307 +2841,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setRepresentedObject:")
 },["void","BOOL"])]);
 }
 
-p;15;gui/LoginForm.jt;5021;@STATIC;1.0;t;5002;
-
-
-{var the_class = objj_allocateClassPair(CPView, "LoginForm"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("loginButton"), new objj_ivar("userid"), new objj_ivar("password"), new objj_ivar("newUserLabel"), new objj_ivar("instructionsLabel"), new objj_ivar("usuarioLabel"), new objj_ivar("passLabel")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $LoginForm__initWithFrame_(self, _cmd, aRectangle)
-{ with(self)
-{
-  self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("LoginForm").super_class }, "initWithFrame:",  aRectangle);
-  if(self){
-
-
-   instructionsLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(0, 0, 100, 30));
-   objj_msgSend(instructionsLabel, "setStringValue:", "Login to XYZRadio");
-   objj_msgSend(instructionsLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(instructionsLabel, "setFont:", objj_msgSend(CPFont, "systemFontOfSize:", 18.0));
-   objj_msgSend(instructionsLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", instructionsLabel);
-
-
-
-   usuarioLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(10, 54, 100, 30));
-   objj_msgSend(usuarioLabel, "setStringValue:", "Account:");
-   objj_msgSend(usuarioLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(usuarioLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", usuarioLabel);
-
-   userid = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(70, 48, 170, 30));
-   objj_msgSend(userid, "setEditable:", YES);
-   objj_msgSend(userid, "setBezeled:", YES);
-   objj_msgSend(userid, "setPlaceholderString:", "bob@gmail.com");
-   objj_msgSend(userid, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-   objj_msgSend(self, "addSubview:", userid);
-
-
-   passLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(0, 96, 100, 30));
-   objj_msgSend(passLabel, "setStringValue:", "Password:");
-   objj_msgSend(passLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(passLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", passLabel);
-
-   password = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(70, 90, 170, 30));
-   objj_msgSend(password, "setEditable:", YES);
-   objj_msgSend(password, "setBezeled:", YES);
-   objj_msgSend(password, "setSecure:",  YES);
-   objj_msgSend(password, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-   objj_msgSend(self, "addSubview:", password);
-
-   loginButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(190, 140, 50, 18));
-   objj_msgSend(loginButton, "setTitle:", "Login");
-   objj_msgSend(loginButton, "setTheme:", objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD"));
-   objj_msgSend(loginButton, "setTarget:", self);
-   objj_msgSend(loginButton, "setAction:", sel_getUid("loginActionPerformed"));
-   objj_msgSend(self, "addSubview:", loginButton);
-
-
-
-
-   newUserLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(0, 220, 100, 30));
-   objj_msgSend(newUserLabel, "setStringValue:", "New user?");
-   objj_msgSend(newUserLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(newUserLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", newUserLabel);
-
-   newUserButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:",  CGRectMake(65, 220, 170, 30));
-   objj_msgSend(newUserButton, "setTitle:", "Create an account");
-   objj_msgSend(newUserButton, "setTheme:", objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD"));
-   objj_msgSend(newUserButton, "setTarget:", self);
-   objj_msgSend(newUserButton, "sizeToFit");
-   objj_msgSend(newUserButton, "setAction:", sel_getUid("newUserActionPerformed"));
-   objj_msgSend(self, "addSubview:", newUserButton);
-
-  }
-  return self;
- }
-},["id","CGRect"]), new objj_method(sel_getUid("newUserActionPerformed"), function $LoginForm__newUserActionPerformed(self, _cmd)
-{ with(self)
-{
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "newUserActionPerformed", self);
- }
-},["void"]), new objj_method(sel_getUid("loginActionPerformed"), function $LoginForm__loginActionPerformed(self, _cmd)
-{ with(self)
-{
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "loginActionPerformed", self);
- }
-},["void"]), new objj_method(sel_getUid("getUserEmail"), function $LoginForm__getUserEmail(self, _cmd)
-{ with(self)
-{
-  return objj_msgSend(userid, "objectValue");
- }
-},["CPString"]), new objj_method(sel_getUid("getUserPass"), function $LoginForm__getUserPass(self, _cmd)
-{ with(self)
-{
-  return objj_msgSend(password, "objectValue");
- }
-},["CPString"])]);
-}
-
-p;17;gui/LoginWindow.jt;11932;@STATIC;1.0;i;12;CPLightbox.ji;17;DCLinkTextField.ji;18;../model/XYZUser.ji;11;LoginForm.ji;12;SigninForm.jt;11817;objj_executeFile("CPLightbox.j", YES);
-objj_executeFile("DCLinkTextField.j", YES);
-objj_executeFile("../model/XYZUser.j", YES);
-objj_executeFile("LoginForm.j", YES);
-objj_executeFile("SigninForm.j", YES);
-{var the_class = objj_allocateClassPair(CPWindow, "LoginWindow"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("loginForm"), new objj_ivar("signinForm"), new objj_ivar("useridReq"), new objj_ivar("userPassReq"), new objj_ivar("app"), new objj_ivar("contentView"), new objj_ivar("animFadeInLog"), new objj_ivar("animFadeOutLog"), new objj_ivar("animFadeInSign"), new objj_ivar("animFadeOutSign")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:styleMask:"), function $LoginWindow__initWithContentRect_styleMask_(self, _cmd, aRectangle, aStyle)
-{ with(self)
-{
-  self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("LoginWindow").super_class }, "initWithContentRect:styleMask:",  aRectangle,  aStyle);
-  if (self)
-  {
-   contentView = objj_msgSend(self, "contentView");
-   app = objj_msgSend(CPApp, "delegate");
-   var bgImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", "Resources/fondo-login.jpg", CPSizeMake(1000, 800));
-   var bgImageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(0, 0, 1000, 800));
-   objj_msgSend(bgImageView, "setImage:",  bgImage);
-   objj_msgSend(contentView, "addSubview:",  bgImageView);
-   loginForm = objj_msgSend(objj_msgSend(LoginForm, "alloc"), "initWithFrame:", CGRectMake(600, 200, 500, 600));
-   objj_msgSend(contentView, "addSubview:",  loginForm);
-   var poweredByGoogleImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", "Resources/appengine-silver-120x30.gif", CPSizeMake(127, 30));
-   var poweredByGoogleImageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(840, 750, 127, 30));
-   objj_msgSend(poweredByGoogleImageView, "setImage:",  poweredByGoogleImage);
-   objj_msgSend(contentView, "addSubview:",  poweredByGoogleImageView);
-   var helpLink = objj_msgSend(objj_msgSend(DCLinkTextField, "alloc"), "initWithFrame:", CGRectMake(20, 750, 100, 30));
-   objj_msgSend(helpLink, "setAutoresizingMask:", CPViewWidthSizable | CPViewHeightSizable);
-   objj_msgSend(helpLink, "HTMLElement").style.color = "#FFFFFF";
-   objj_msgSend(helpLink, "HTMLElement").style.fontSize = "12px";
-   objj_msgSend(helpLink, "HTMLElement").style.fontFamily = "Helvetica, Sans-Serif";
-   objj_msgSend(helpLink, "HTMLElement").style.fontColor = "#FFFFFF";
-   objj_msgSend(helpLink, "HTMLElement").style.lineHeight = "1.5em";
-   objj_msgSend(helpLink, "setHTML:",  "<a href=\"xyzradioHelpp.html\" style=\"color:#ffffff;\">Help</a>");
-   objj_msgSend(contentView, "addSubview:",  helpLink);
-   objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("fadeoutLoginSection:"), "newUserActionPerformed", nil);
-   objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("loginActionPerformed:"), "loginActionPerformed", nil);
-   objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("createAccountActionPerformed:"), "createAccountActionPerformed", nil);
-   objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("fadeoutSigninSection:"), "cancelButtonActionPerformed", nil);
-  }
-  return self;
- }
-},["id","CGRect","unsignedint"]), new objj_method(sel_getUid("loginActionPerformed:"), function $LoginWindow__loginActionPerformed_(self, _cmd, aNotification)
-{ with(self)
-{
-  var useridReq = objj_msgSend(loginForm, "getUserEmail");
-  var userPassReq = objj_msgSend(loginForm, "getUserPass");
-  userPassReq = b64_md5(userPassReq);
-  objj_msgSend(self, "loguser:password:",  useridReq,  userPassReq);
- }
-},["void","CPNotification"]), new objj_method(sel_getUid("createAccountActionPerformed:"), function $LoginWindow__createAccountActionPerformed_(self, _cmd, aNotification)
-{ with(self)
-{
-  var useridReq = objj_msgSend(signinForm, "getUserAccount");
-  var userPassReq = objj_msgSend(signinForm, "getUserPass");
-  var userNameReq = objj_msgSend(signinForm, "getUserName");
-  var userSexReq = objj_msgSend(signinForm, "getUserSex");
-  userPassReq = b64_md5(userPassReq);
-  objj_msgSend(self, "createUserAccount:password:name:sex:", useridReq, userPassReq, userNameReq, userSexReq);
- }
-},["void","CPNotification"]), new objj_method(sel_getUid("animationDidEnd:"), function $LoginWindow__animationDidEnd_(self, _cmd, animation)
-{ with(self)
-{
-  if(animation == animFadeOutLog){
-   CPLog.info("Removing loginform");
-   objj_msgSend(loginForm, "removeFromSuperview");
-   loginForm = nil;
-   CPLog.info("Adding the sign in form");
-   objj_msgSend(self, "fadeinSigninSection");
-  }
-  if(animation == animFadeOutSign){
-   CPLog.info("Removing signinform");
-   objj_msgSend(signinForm, "removeFromSuperview");
-   signinForm = nil;
-   CPLog.info("Adding the login form");
-   objj_msgSend(self, "fadeinLoginSection");
-  }
- }
-},["void","CPAnimation"]), new objj_method(sel_getUid("fadeinLoginSection"), function $LoginWindow__fadeinLoginSection(self, _cmd)
-{ with(self)
-{
-  CPLog.info("Adding loginform");
-  loginForm = objj_msgSend(objj_msgSend(LoginForm, "alloc"), "initWithFrame:", CGRectMake(600, 200, 500, 600));
-  objj_msgSend(loginForm, "setAlphaValue:", 0);
-  objj_msgSend(contentView, "addSubview:",  loginForm);
-  animFadeInLog = objj_msgSend(objj_msgSend(CPPropertyAnimation, "alloc"), "initWithView:property:", loginForm, "alphaValue");
-  objj_msgSend(animFadeInLog, "setStart:", 0);
-  objj_msgSend(animFadeInLog, "setEnd:", 1);
-  objj_msgSend(animFadeInLog, "setDuration:", 1.0);
-  objj_msgSend(animFadeInLog, "startAnimation");
-  objj_msgSend(animFadeInLog, "setDelegate:",  self);
- }
-},["void"]), new objj_method(sel_getUid("fadeoutLoginSection:"), function $LoginWindow__fadeoutLoginSection_(self, _cmd, aNotification)
-{ with(self)
-{
-  animFadeOutLog = objj_msgSend(objj_msgSend(CPPropertyAnimation, "alloc"), "initWithView:property:", loginForm, "alphaValue");
-  objj_msgSend(animFadeOutLog, "setStart:", 1);
-  objj_msgSend(animFadeOutLog, "setEnd:", 0);
-  objj_msgSend(animFadeOutLog, "setDuration:", 1.0);
-  objj_msgSend(animFadeOutLog, "startAnimation");
-  objj_msgSend(animFadeOutLog, "setDelegate:",  self);
- }
-},["void","CPNotification"]), new objj_method(sel_getUid("fadeinSigninSection"), function $LoginWindow__fadeinSigninSection(self, _cmd)
-{ with(self)
-{
-  CPLog.info("Adding sign in form");
-  signinForm = objj_msgSend(objj_msgSend(SigninForm, "alloc"), "initWithFrame:", CGRectMake(600, 200, 500, 600));
-  objj_msgSend(signinForm, "setAlphaValue:", 0);
-  objj_msgSend(contentView, "addSubview:",  signinForm);
-  animFadeInSign = objj_msgSend(objj_msgSend(CPPropertyAnimation, "alloc"), "initWithView:property:", signinForm, "alphaValue");
-  objj_msgSend(animFadeInSign, "setStart:", 0);
-  objj_msgSend(animFadeInSign, "setEnd:", 1);
-  objj_msgSend(animFadeInSign, "setDuration:", 1.0);
-  objj_msgSend(animFadeInSign, "startAnimation");
-  objj_msgSend(animFadeInSign, "setDelegate:",  self);
- }
-},["void"]), new objj_method(sel_getUid("fadeoutSigninSection:"), function $LoginWindow__fadeoutSigninSection_(self, _cmd, aNotification)
-{ with(self)
-{
-  animFadeOutSign = objj_msgSend(objj_msgSend(CPPropertyAnimation, "alloc"), "initWithView:property:", signinForm, "alphaValue");
-  objj_msgSend(animFadeOutSign, "setStart:", 1);
-  objj_msgSend(animFadeOutSign, "setEnd:", 0);
-  objj_msgSend(animFadeOutSign, "setDuration:", 1.0);
-  objj_msgSend(animFadeOutSign, "startAnimation");
-  objj_msgSend(animFadeOutSign, "setDelegate:",  self);
- }
-},["void","CPNotification"]), new objj_method(sel_getUid("loguser:password:"), function $LoginWindow__loguser_password_(self, _cmd, aUser, aPassword)
-{ with(self)
-{
-  var url = objj_msgSend(app, "serverIP")+"/LoginUser?email="+aUser+"&passwd="+aPassword;
-  CPLog.info("Connecting to" + url);
-  var request = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
-  var xyzradioConnectionForLogin = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
- }
-},["void","CPString","CPString"]), new objj_method(sel_getUid("createUserAccount:password:name:sex:"), function $LoginWindow__createUserAccount_password_name_sex_(self, _cmd, anAccount, aPassword, aName, aSex)
-{ with(self)
-{
-  var url = objj_msgSend(app, "serverIP")+"/NewUser?account="+anAccount+"&password="+aPassword+"&name="+aName+"&sex="+aSex;
-  CPLog.info("Connecting to " + url);
-  var request = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
-  var xyzradioConnectionForLogin = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
- }
-},["void","CPString","CPString","CPString","CPString"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $LoginWindow__connection_didReceiveData_(self, _cmd, connection, data)
-{ with(self)
-{
-  CPLog.trace("La data en loging window: %s", data);
-  try{
-   var response = JSON.parse(data);
-   if(response.error){
-    CPLog.error(response.error);
-   }
-   if(response){
-    var userRecived = objj_msgSend(objj_msgSend(XYZUser, "alloc"), "init");
-    objj_msgSend(userRecived, "setEmail:",  response.email);
-    objj_msgSend(userRecived, "setUsernick:",  response.usernick);
-    if(response.pathToAvatar)
-     objj_msgSend(userRecived, "setPathToAvatar:",  response.pathToAvatar);
-    else
-     objj_msgSend(userRecived, "setPathToAvatar:", "");
-    objj_msgSend(userRecived, "setLogged:",  response.logged);
-    if(response.dj)
-     objj_msgSend(userRecived, "setDj:", YES);
-    else
-     objj_msgSend(userRecived, "setDj:", NO);
-    objj_msgSend(userRecived, "setSex:",  response.sex);
-    objj_msgSend(userRecived, "setDjList1:",  response.djList1);
-    objj_msgSend(userRecived, "setDjList2:",  response.djList2);
-    objj_msgSend(userRecived, "setDjList3:",  response.djList3);
-    objj_msgSend(userRecived, "setOwnedSongs:",  response.ownedSongs);
-    objj_msgSend(userRecived, "setUserRating:",  response.userRating);
-    var somePrefrences = objj_msgSend(objj_msgSend(XYZUserPrefrences, "alloc"), "init");
-    objj_msgSend(userRecived, "setPrefrences:",  somePrefrences);
-    var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", userRecived, "user");
-    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "LoginSuccessful", self, info);
-   }
-  }catch(e){
-   var mensajeGuardar = objj_msgSend(objj_msgSend(CPAlert, "alloc"), "init");
-   objj_msgSend(mensajeGuardar, "setTitle:", "Server not available");
-   objj_msgSend(mensajeGuardar, "setWindowStyle:", CPHUDBackgroundWindowMask);
-   objj_msgSend(mensajeGuardar, "setMessageText:", "Sorry, the server is not available. Please try again later.");
-   objj_msgSend(mensajeGuardar, "addButtonWithTitle:", "Ok");
-   objj_msgSend(mensajeGuardar, "runModal");
-  }
- }
-},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $LoginWindow__connectionDidFinishLoading_(self, _cmd, connection)
-{ with(self)
-{
- }
-},["void","CPURLConnection"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $LoginWindow__connection_didFailWithError_(self, _cmd, connection, error)
-{ with(self)
-{
- }
-},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("clearConnection:"), function $LoginWindow__clearConnection_(self, _cmd, connection)
-{ with(self)
-{
-        if ( connection == xyzradioConnectionForLogin)
-            louhiConnection = nil;
- }
-},["void","CPURLConnection"])]);
-}
-
-p;17;gui/MainBrowser.jt;5680;@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5601;objj_executeFile("XYZPlayListWindow.j", YES);
+p;17;gui/MainBrowser.jt;5709;@STATIC;1.0;i;19;XYZPlayListWindow.ji;16;XYZColumnModel.ji;10;XYZTable.jt;5630;objj_executeFile("XYZPlayListWindow.j", YES);
 objj_executeFile("XYZColumnModel.j", YES);
 objj_executeFile("XYZTable.j", YES);
 {var the_class = objj_allocateClassPair(XYZPlayListWindow, "MainBrowser"),
@@ -3216,11 +2919,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithSource:rectangl
             objj_msgSend(newSong, "setTime:", info.time);
             objj_msgSend(newSong, "setGenre:", info.genre);
             objj_msgSend(newSong, "setRating:", info.rating);
-            CPLog.warn("El valor de songID es: "+ info.songID );
-            objj_msgSend(newSong, "setSongID:", info.songID.id);
+            objj_msgSend(newSong, "setSongID:", info.songID);
             objj_msgSend(newSong, "setLocal:", info.isLocal);
             objj_msgSend(newSong, "setPathToSong:", info.pathToSong);
             objj_msgSend(newSong, "setPathToAlbumArt:", info.pathToAlbumArt);
+            CPLog.trace("El valor de songID del objeto es: "+ objj_msgSend(newSong, "songID") );
             objj_msgSend(songsArray, "addObject:",  newSong);
         }
         objj_msgSend(self, "addList:", songsArray);
@@ -3641,165 +3344,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:sty
     objj_msgSend(contentViewOfWindow, "setBackgroundColor:", objj_msgSend(CPColor, "colorWithPatternImage:", bgImage));
 }
 },["void"])]);
-}
-
-p;16;gui/SigninForm.jt;8620;@STATIC;1.0;t;8601;
-
-
-
-{var the_class = objj_allocateClassPair(CPView, "SigninForm"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("instructionsLabel"), new objj_ivar("accountLabel"), new objj_ivar("passLabel"), new objj_ivar("userNameLabel"), new objj_ivar("account"), new objj_ivar("password"), new objj_ivar("userName"), new objj_ivar("maleButton"), new objj_ivar("femaleButton"), new objj_ivar("acceptButton"), new objj_ivar("cancelButton")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:"), function $SigninForm__initWithFrame_(self, _cmd, aRectangle)
-{ with(self)
-{
-  self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("SigninForm").super_class }, "initWithFrame:",  aRectangle);
-  if(self){
-
-
-   instructionsLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(0, 0, 100, 30));
-   objj_msgSend(instructionsLabel, "setStringValue:", "Create an Account!");
-   objj_msgSend(instructionsLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(instructionsLabel, "setFont:", objj_msgSend(CPFont, "systemFontOfSize:", 18.0));
-   objj_msgSend(instructionsLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", instructionsLabel);
-
-
-
-   accountLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(15, 54, 100, 30));
-   objj_msgSend(accountLabel, "setStringValue:", "Account:");
-   objj_msgSend(accountLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(accountLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", accountLabel);
-
-   account = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(70, 48, 170, 30));
-   objj_msgSend(account, "setEditable:", YES);
-   objj_msgSend(account, "setBezeled:", YES);
-   objj_msgSend(account, "setPlaceholderString:", "bob@gmail.com");
-   objj_msgSend(account, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-   objj_msgSend(self, "addSubview:", account);
-
-
-   passLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(5, 96, 100, 30));
-   objj_msgSend(passLabel, "setStringValue:", "Password:");
-   objj_msgSend(passLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(passLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", passLabel);
-
-   password = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(70, 90, 170, 30));
-   objj_msgSend(password, "setEditable:", YES);
-   objj_msgSend(password, "setBezeled:", YES);
-   objj_msgSend(password, "setSecure:",  YES);
-   objj_msgSend(password, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-   objj_msgSend(self, "addSubview:", password);
-
-
-   userNameLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(0, 138, 100, 30));
-   objj_msgSend(userNameLabel, "setStringValue:", "User name:");
-   objj_msgSend(userNameLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(userNameLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", userNameLabel);
-
-   userName = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(70, 132, 170, 30));
-   objj_msgSend(userName, "setEditable:", YES);
-   objj_msgSend(userName, "setBezeled:", YES);
-   objj_msgSend(userName, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-   objj_msgSend(self, "addSubview:", userName);
-
-
-   var sexLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(40, 179, 100, 30));
-   objj_msgSend(sexLabel, "setStringValue:", "Sex:");
-   objj_msgSend(sexLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(sexLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", sexLabel);
-
-   maleButton = objj_msgSend(objj_msgSend(CPRadio, "alloc"), "initWithFrame:", CGRectMake(70, 180, 30, 30));
-   objj_msgSend(maleButton, "setObjectValue:", CPOnState);
-   objj_msgSend(self, "addSubview:", maleButton);
-
-   var maleLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(87, 179, 100, 30));
-   objj_msgSend(maleLabel, "setStringValue:", "Male");
-   objj_msgSend(maleLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(maleLabel, "setBackgroundColor:", NULL);
-   objj_msgSend(maleLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", maleLabel);
-
-   femaleButton = objj_msgSend(objj_msgSend(CPRadio, "alloc"), "initWithFrame:radioGroup:", CGRectMake(150, 180, 30, 30), objj_msgSend(maleButton, "radioGroup"));
-   objj_msgSend(self, "addSubview:", femaleButton);
-
-   var femaleLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(167, 179, 100, 30));
-   objj_msgSend(femaleLabel, "setStringValue:", "Female");
-   objj_msgSend(femaleLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-   objj_msgSend(femaleLabel, "setBackgroundColor:", NULL);
-   objj_msgSend(femaleLabel, "sizeToFit");
-   objj_msgSend(self, "addSubview:", femaleLabel);
-
-
-   var termsLabel = objj_msgSend(objj_msgSend(DCLinkTextField, "alloc"), "initWithFrame:", CGRectMake(0, 220, 500, 30));
-   objj_msgSend(termsLabel, "setAutoresizingMask:", CPViewWidthSizable | CPViewHeightSizable);
-   objj_msgSend(termsLabel, "HTMLElement").style.color = "#FFFFFF";
-   objj_msgSend(termsLabel, "HTMLElement").style.fontSize = "12px";
-   objj_msgSend(termsLabel, "HTMLElement").style.fontFamily = "Helvetica, Sans-Serif";
-   objj_msgSend(termsLabel, "HTMLElement").style.fontColor = "#FFFFFF";
-   objj_msgSend(termsLabel, "HTMLElement").style.lineHeight = "1.5em";
-   objj_msgSend(termsLabel, "setHTML:",  "By clicking on 'I accept' below you are agreeing to the <a href=\"Terms of Service.html\" style=\"color:#ffffff;\">Terms of Service</a>");
-   objj_msgSend(self, "addSubview:",  termsLabel);
-
-
-   acceptButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(120, 262, 50, 18));
-   objj_msgSend(acceptButton, "setTitle:", "I accept. Create my account.");
-   objj_msgSend(acceptButton, "setTheme:", objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD"));
-   objj_msgSend(acceptButton, "sizeToFit");
-   objj_msgSend(acceptButton, "setTarget:", self);
-   objj_msgSend(acceptButton, "setAction:", sel_getUid("createAccountActionPerformed"));
-   objj_msgSend(self, "addSubview:", acceptButton);
-
-   cancelButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:",  CGRectMake(65, 262, 170, 30));
-   objj_msgSend(cancelButton, "setTitle:", "Cancel");
-   objj_msgSend(cancelButton, "setTheme:", objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD"));
-   objj_msgSend(cancelButton, "sizeToFit");
-   objj_msgSend(cancelButton, "setTarget:", self);
-   objj_msgSend(cancelButton, "setAction:", sel_getUid("cancelButtonActionPerformed"));
-   objj_msgSend(self, "addSubview:", cancelButton);
-
-  }
-  return self;
- }
-},["id","CGRect"]), new objj_method(sel_getUid("createAccountActionPerformed"), function $SigninForm__createAccountActionPerformed(self, _cmd)
-{ with(self)
-{
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "createAccountActionPerformed", self);
- }
-},["void"]), new objj_method(sel_getUid("cancelButtonActionPerformed"), function $SigninForm__cancelButtonActionPerformed(self, _cmd)
-{ with(self)
-{
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:", "cancelButtonActionPerformed", self);
- }
-},["void"]), new objj_method(sel_getUid("getUserAccount"), function $SigninForm__getUserAccount(self, _cmd)
-{ with(self)
-{
-  return objj_msgSend(account, "objectValue");
- }
-},["CPString"]), new objj_method(sel_getUid("getUserPass"), function $SigninForm__getUserPass(self, _cmd)
-{ with(self)
-{
-  return objj_msgSend(password, "objectValue");
- }
-},["CPString"]), new objj_method(sel_getUid("getUserName"), function $SigninForm__getUserName(self, _cmd)
-{ with(self)
-{
-  return objj_msgSend(userName, "objectValue");
- }
-},["CPString"]), new objj_method(sel_getUid("getUserSex"), function $SigninForm__getUserSex(self, _cmd)
-{ with(self)
-{
-  CPLog.info(objj_msgSend(objj_msgSend(maleButton, "radioGroup"), "selectedRadio"));
-  if(objj_msgSend(objj_msgSend(maleButton, "radioGroup"), "selectedRadio") == maleButton)
-   return "MALE";
-  else
-   return "FEMALE";
- }
-},["CPString"])]);
 }
 
 p;20;gui/StarRatingView.jt;2723;@STATIC;1.0;I;15;AppKit/CPView.ji;34;../controllers/StarRatingControl.jt;2645;
@@ -4332,69 +3876,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithFrame:title:col
 },["id","CPRect","CPString","CPColor"])]);
 }
 
-p;18;gui/XYZMusicList.jt;2092;@STATIC;1.0;I;21;Foundation/CPObject.jt;2047;objj_executeFile("Foundation/CPObject.j", NO);
-{var the_class = objj_allocateClassPair(CPObject, "XYZMusicList"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("nameOfList"), new objj_ivar("musicList"), new objj_ivar("fullyLoaded")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("nameOfList"), function $XYZMusicList__nameOfList(self, _cmd)
-{ with(self)
-{
-return nameOfList;
-}
-},["id"]),
-new objj_method(sel_getUid("setNameOfList:"), function $XYZMusicList__setNameOfList_(self, _cmd, newValue)
-{ with(self)
-{
-nameOfList = newValue;
-}
-},["void","id"]),
-new objj_method(sel_getUid("musicList"), function $XYZMusicList__musicList(self, _cmd)
-{ with(self)
-{
-return musicList;
-}
-},["id"]),
-new objj_method(sel_getUid("setMusicList:"), function $XYZMusicList__setMusicList_(self, _cmd, newValue)
-{ with(self)
-{
-musicList = newValue;
-}
-},["void","id"]),
-new objj_method(sel_getUid("isFullyLoaded"), function $XYZMusicList__isFullyLoaded(self, _cmd)
-{ with(self)
-{
-return fullyLoaded;
-}
-},["id"]),
-new objj_method(sel_getUid("setFullyLoaded:"), function $XYZMusicList__setFullyLoaded_(self, _cmd, newValue)
-{ with(self)
-{
-fullyLoaded = newValue;
-}
-},["void","id"]), new objj_method(sel_getUid("init"), function $XYZMusicList__init(self, _cmd)
-{ with(self)
-{
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZMusicList").super_class }, "init");
-    if(self){
-        musicList = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
-        fullyLoaded = NO;
-    }
-    return self;
-}
-},["id"]), new objj_method(sel_getUid("addSong:"), function $XYZMusicList__addSong_(self, _cmd, aSong)
-{ with(self)
-{
-    CPLog.trace("Agregando la cancion: "+aSong+" a la lista "+nameOfList);
-    objj_msgSend(musicList, "addObject:", aSong);
-}
-},["void","XYZSong"]), new objj_method(sel_getUid("description"), function $XYZMusicList__description(self, _cmd)
-{ with(self)
-{
-    return " Name of the list: "+ nameOfList + " Songs in list: "+ musicList;
-}
-},["CPString"])]);
-}
-
 p;23;gui/XYZPlayListWindow.jt;2543;@STATIC;1.0;i;18;../model/XYZSong.jt;2501;objj_executeFile("../model/XYZSong.j", YES);
 {var the_class = objj_allocateClassPair(CPWindow, "XYZPlayListWindow"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("theTable"), new objj_ivar("theList")]);
@@ -4501,7 +3982,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:"),
 },["int"])]);
 }
 
-p;14;gui/XYZTable.jt;14437;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;../model/XYZSong.ji;16;StarRatingView.jt;14347;objj_executeFile("Foundation/CPObject.j", NO);
+p;14;gui/XYZTable.jt;14506;@STATIC;1.0;I;21;Foundation/CPObject.ji;18;../model/XYZSong.ji;16;StarRatingView.jt;14416;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("../model/XYZSong.j", YES);
 objj_executeFile("StarRatingView.j", YES);
 SongsDragType = "SongsDragType";
@@ -4513,8 +3994,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZTable").super_class }, "initWithFrame:", bounds);
     objj_msgSend(self, "setModel:", aModel);
- celdas = objj_msgSend(objj_msgSend(XYZCell, "alloc"), "initWithFrame:", CGRectMakeZero());
- objj_msgSend(celdas, "setModel:",  aColumnModel);
+    celdas = objj_msgSend(objj_msgSend(XYZCell, "alloc"), "initWithFrame:", CGRectMakeZero());
+    objj_msgSend(celdas, "setModel:",  aColumnModel);
     collectionView = objj_msgSend(objj_msgSend(CPCollectionView, "alloc"), "initWithFrame:",  CGRectMake(0, 0, CGRectGetWidth(bounds), CGRectGetHeight(bounds)));
     pos=0;
     var scrollView = objj_msgSend(objj_msgSend(CPScrollView, "alloc"), "initWithFrame:",  CGRectMake(0, 30, CGRectGetWidth(bounds), CGRectGetHeight(bounds)));
@@ -4545,13 +4026,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 },["void","CPDictionary","CPArray","CGRect"]), new objj_method(sel_getUid("collectionView:didDoubleClickOnItemAtIndex:"), function $XYZTable__collectionView_didDoubleClickOnItemAtIndex_(self, _cmd, aCollectionView, index)
 { with(self)
 {
- var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", index, "index");
- objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "songDoubleClicked", self, info);
+    var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", index, "index");
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "songDoubleClicked", self, info);
 }
 },["void","CPCollectionView","int"]), new objj_method(sel_getUid("performDragOperation:"), function $XYZTable__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
- CPLog.trace("here in performdrag....");
+    CPLog.trace("here in performdrag....");
     if (objj_msgSend(aSender, "draggingSource") == collectionView){
   CPLog.trace("Same draggingSource on XYZTable");
   return;
@@ -4658,6 +4139,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
         songs = [];
     while ((index = objj_msgSend(indexes, "indexGreaterThanIndex:", index)) != CPNotFound)
         songs.push(content[index]);
+    CPLog.trace("The songs before archive:" + songs);
     return objj_msgSend(CPKeyedArchiver, "archivedDataWithRootObject:", songs);
 }
 },["CPData","CPCollectionView","CPIndexSet","CPString"])]);
@@ -4773,7 +4255,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setModel:"), function $
 },["void","BOOL"])]);
 }
 
-p;19;gui/XYZTableForDJ.jt;13963;@STATIC;1.0;i;18;../model/XYZSong.ji;16;StarRatingView.jt;13899;objj_executeFile("../model/XYZSong.j", YES);
+p;19;gui/XYZTableForDJ.jt;13984;@STATIC;1.0;i;18;../model/XYZSong.ji;16;StarRatingView.jt;13920;objj_executeFile("../model/XYZSong.j", YES);
 objj_executeFile("StarRatingView.j", YES);
 SongsDragType = "SongsDragType";
 {var the_class = objj_allocateClassPair(CPView, "XYZTableForDJ"),
@@ -4909,11 +4391,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 },["CPData","CPCollectionView","CPIndexSet","CPString"]), new objj_method(sel_getUid("performDragOperation:"), function $XYZTableForDJ__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
- CPLog.trace("Got to performdrag in the XYZTableForDJ....");
+    CPLog.trace("Got to performdrag in the XYZTableForDJ....");
     if (objj_msgSend(aSender, "draggingSource") == collectionView){
-  CPLog.error("Same draggingSource");
-  return;
- }
+        CPLog.error("Same draggingSource");
+        return;
+    }
     var pasteboard = objj_msgSend(aSender, "draggingPasteboard");
     if (objj_msgSend(objj_msgSend(pasteboard, "types"), "containsObject:", SongsDragType))
     {
@@ -4930,7 +4412,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
         }
     }else{
         CPLog.trace("XYZTableForDJ does not accept drags for types: "+objj_msgSend(pasteboard, "types"));
- }
+    }
 }
 },["void","id<CPDraggingInfo>"])]);
 }
@@ -5028,6 +4510,69 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setModel:"), function $
     }
 }
 },["void","BOOL"])]);
+}
+
+p;20;model/XYZMusicList.jt;2092;@STATIC;1.0;I;21;Foundation/CPObject.jt;2047;objj_executeFile("Foundation/CPObject.j", NO);
+{var the_class = objj_allocateClassPair(CPObject, "XYZMusicList"),
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("nameOfList"), new objj_ivar("musicList"), new objj_ivar("fullyLoaded")]);
+objj_registerClassPair(the_class);
+class_addMethods(the_class, [new objj_method(sel_getUid("nameOfList"), function $XYZMusicList__nameOfList(self, _cmd)
+{ with(self)
+{
+return nameOfList;
+}
+},["id"]),
+new objj_method(sel_getUid("setNameOfList:"), function $XYZMusicList__setNameOfList_(self, _cmd, newValue)
+{ with(self)
+{
+nameOfList = newValue;
+}
+},["void","id"]),
+new objj_method(sel_getUid("musicList"), function $XYZMusicList__musicList(self, _cmd)
+{ with(self)
+{
+return musicList;
+}
+},["id"]),
+new objj_method(sel_getUid("setMusicList:"), function $XYZMusicList__setMusicList_(self, _cmd, newValue)
+{ with(self)
+{
+musicList = newValue;
+}
+},["void","id"]),
+new objj_method(sel_getUid("isFullyLoaded"), function $XYZMusicList__isFullyLoaded(self, _cmd)
+{ with(self)
+{
+return fullyLoaded;
+}
+},["id"]),
+new objj_method(sel_getUid("setFullyLoaded:"), function $XYZMusicList__setFullyLoaded_(self, _cmd, newValue)
+{ with(self)
+{
+fullyLoaded = newValue;
+}
+},["void","id"]), new objj_method(sel_getUid("init"), function $XYZMusicList__init(self, _cmd)
+{ with(self)
+{
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZMusicList").super_class }, "init");
+    if(self){
+        musicList = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+        fullyLoaded = NO;
+    }
+    return self;
+}
+},["id"]), new objj_method(sel_getUid("addSong:"), function $XYZMusicList__addSong_(self, _cmd, aSong)
+{ with(self)
+{
+    CPLog.trace("Agregando la cancion: "+aSong+" a la lista "+nameOfList);
+    objj_msgSend(musicList, "addObject:", aSong);
+}
+},["void","XYZSong"]), new objj_method(sel_getUid("description"), function $XYZMusicList__description(self, _cmd)
+{ with(self)
+{
+    return " Name of the list: "+ nameOfList + " Songs in list: "+ musicList;
+}
+},["CPString"])]);
 }
 
 p;15;model/XYZSong.jt;6615;@STATIC;1.0;I;21;Foundation/CPObject.jt;6570;objj_executeFile("Foundation/CPObject.j", NO);

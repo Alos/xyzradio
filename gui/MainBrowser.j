@@ -107,11 +107,11 @@ This file is part of XYZRadio.
             [newSong setTime:info.time];
             [newSong setGenre:info.genre];
             [newSong setRating:info.rating];
-            CPLog.warn("El valor de songID es: "+ info.songID );
-            [newSong setSongID:info.songID.id];
+            [newSong setSongID:info.songID];
             [newSong setLocal:info.isLocal];
             [newSong setPathToSong:info.pathToSong];
             [newSong setPathToAlbumArt:info.pathToAlbumArt];
+            CPLog.trace("El valor de songID del objeto es: "+ [newSong songID] );
             [songsArray addObject: newSong];
         }
         [self addList:songsArray];

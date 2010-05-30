@@ -19,7 +19,7 @@ This file is part of Louhi.
     along with Louhi.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "../gui/XYZMusicList.j"
+@import "../model/XYZMusicList.j"
 @import "../model/XYZSong.j"
 
 @implementation SongListDS : CPObject
@@ -81,44 +81,29 @@ This file is part of Louhi.
     xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
-/**
-    Gets the songs from the array of SongIDS
-*/
--(CPArray)getSongsForPlaylist:(CPArray)songIDArray{
-    //pedimos recuperar las siguientes canciones
-    var resp = [[CPArray alloc] init];
-    var app = [CPApp delegate];
-    var listaCompleta = [app globalSongList];
-    for(var x=0; x< [songIDArray count]; x++){
-        var songOnlyID = [songIDArray objectAtIndex:x];
-        for(var i=0; i< [listaCompleta count]; i++){
-            var fullSong = [listaCompleta objectAtIndex:i];
-            if([fullSong songID] == [songOnlyID songID]){
-                var newSong = fullSong;
-                [resp addObject: newSong];
-                break;
-            }
-        }
-    }
-    return resp;
-}
-
-
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
 {
     if(!data)
         return;
     var result =  JSON.parse(data);
+    CPLog.trace("The data:"+data);
     CPLog.info("Playlists: %s", result);
     for(var i=0; i< result.length; i++){
         var object = result[i];
+        CPLog.trace("The object>"+object);
         var musicList = [[XYZMusicList alloc] init];
         [musicList setNameOfList: object.nameOfList];
         //for each id in the array
-        var arrayOfIDs = object.musicList;
-        for(var j=0; j<[arrayOfIDs count]; j++){
+        var arrayOfSongs = object.musicList;
+        for(var j=0; j<[arrayOfSongs count]; j++){
             var emptySong = [[XYZSong alloc] init];
-            [emptySong setSongID:[arrayOfIDs objectAtIndex: j]];
+            [emptySong setSongID:[arrayOfSongs objectAtIndex: j].songID];
+            [emptySong setSongTitle:[arrayOfSongs objectAtIndex: j].songTitle];
+            [emptySong setArtist:[arrayOfSongs objectAtIndex: j].artist];
+            [emptySong setTime:[arrayOfSongs objectAtIndex: j].time];
+            [emptySong setGenre:[arrayOfSongs objectAtIndex: j].genre];
+            [emptySong setPathToAlbumArt:[arrayOfSongs objectAtIndex: j].pathToAlbumArt];
+            [emptySong setPathToSong:[arrayOfSongs objectAtIndex: j].pathToSong]
             [musicList  addSong:emptySong];
         }        
        

@@ -20,7 +20,7 @@
  */
 @import <AppKit/CPPanel.j>
 @import "XYZPlayListWindowForDJ.j"
-@import "XYZMusicList.j"
+@import "../model/XYZMusicList.j"
 @import "XYZTableForDJ.j"
 @import "NewPlaylistWindow.j"
 @import "../dataStore/SongListDS.j"
@@ -150,7 +150,7 @@
     }
 
     /**
-        Ads the song to the sekected playlist and then its saved to the server
+        Ads the song to the selected playlist and then its saved to the server
     */
     -(void) addSongToPlaylist:(CPNotification)aNotification{
         CPLog.trace("On addSongToPlaylist in the DJPlaylist.j");
@@ -247,16 +247,6 @@
         CPLog.trace("The playlistsArray contains: "+ playlistsArray);
         selectedPlaylist = [playlistsArray objectAtIndex:[index firstIndex]];
         CPLog.trace("The selected list: "+ selectedPlaylist);
-        //We go get the name of the songs in a very AJAXY way :P
-        if(![selectedPlaylist isFullyLoaded]){
-            //So the list is empty we need to go get the songs
-            CPLog.trace("Selectedplaylist was empty getting songs");
-            var fullSongArray = [songListDS getSongsForPlaylist: [selectedPlaylist musicList]];
-            [selectedPlaylist setMusicList:fullSongArray];
-            //after this the XYZMusicList is fullyLoaded so we change the item
-            [selectedPlaylist setFullyLoaded:YES];
-        }
-       
         [theTable setModel: [selectedPlaylist musicList]];
     }
 @end

@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;18;../model/XYZSong.ji;16;StarRatingView.jt;14347;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;18;../model/XYZSong.ji;16;StarRatingView.jt;14416;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("../model/XYZSong.j", YES);
 objj_executeFile("StarRatingView.j", YES);
 SongsDragType = "SongsDragType";
@@ -10,8 +10,8 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 {
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZTable").super_class }, "initWithFrame:", bounds);
     objj_msgSend(self, "setModel:", aModel);
- celdas = objj_msgSend(objj_msgSend(XYZCell, "alloc"), "initWithFrame:", CGRectMakeZero());
- objj_msgSend(celdas, "setModel:",  aColumnModel);
+    celdas = objj_msgSend(objj_msgSend(XYZCell, "alloc"), "initWithFrame:", CGRectMakeZero());
+    objj_msgSend(celdas, "setModel:",  aColumnModel);
     collectionView = objj_msgSend(objj_msgSend(CPCollectionView, "alloc"), "initWithFrame:",  CGRectMake(0, 0, CGRectGetWidth(bounds), CGRectGetHeight(bounds)));
     pos=0;
     var scrollView = objj_msgSend(objj_msgSend(CPScrollView, "alloc"), "initWithFrame:",  CGRectMake(0, 30, CGRectGetWidth(bounds), CGRectGetHeight(bounds)));
@@ -42,13 +42,13 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
 },["void","CPDictionary","CPArray","CGRect"]), new objj_method(sel_getUid("collectionView:didDoubleClickOnItemAtIndex:"), function $XYZTable__collectionView_didDoubleClickOnItemAtIndex_(self, _cmd, aCollectionView, index)
 { with(self)
 {
- var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", index, "index");
- objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "songDoubleClicked", self, info);
+    var info = objj_msgSend(CPDictionary, "dictionaryWithObject:forKey:", index, "index");
+    objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "postNotificationName:object:userInfo:", "songDoubleClicked", self, info);
 }
 },["void","CPCollectionView","int"]), new objj_method(sel_getUid("performDragOperation:"), function $XYZTable__performDragOperation_(self, _cmd, aSender)
 { with(self)
 {
- CPLog.trace("here in performdrag....");
+    CPLog.trace("here in performdrag....");
     if (objj_msgSend(aSender, "draggingSource") == collectionView){
   CPLog.trace("Same draggingSource on XYZTable");
   return;
@@ -155,6 +155,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("initWithColumnModel:mod
         songs = [];
     while ((index = objj_msgSend(indexes, "indexGreaterThanIndex:", index)) != CPNotFound)
         songs.push(content[index]);
+    CPLog.trace("The songs before archive:" + songs);
     return objj_msgSend(CPKeyedArchiver, "archivedDataWithRootObject:", songs);
 }
 },["CPData","CPCollectionView","CPIndexSet","CPString"])]);

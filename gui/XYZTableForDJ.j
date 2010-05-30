@@ -189,12 +189,12 @@ Gets the total of songs in the list
 }
 - (void)performDragOperation:(id <CPDraggingInfo>)aSender
 {
-	CPLog.trace("Got to performdrag in the XYZTableForDJ....");
+    CPLog.trace("Got to performdrag in the XYZTableForDJ....");
     // If this is us, don't add it.
     if ([aSender draggingSource] == collectionView){
-		CPLog.error("Same draggingSource");
-		return;
-	}
+        CPLog.error("Same draggingSource");
+        return;
+    }
         
     var pasteboard = [aSender draggingPasteboard];
 
@@ -217,7 +217,7 @@ Gets the total of songs in the list
 
     }else{
         CPLog.trace("XYZTableForDJ does not accept drags for types: "+[pasteboard types]);
-	}
+    }
 }
 ////////////////////////////////////End of Drag and drop stuff///////////////////////////////////
 
