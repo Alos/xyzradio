@@ -399,7 +399,7 @@ var _CPFormatLogMessage = function(aString, aLevel, aTitle)
     aLevel = ( aLevel == null ? '' : ' [' + aLevel + ']' );
     if (typeof exports.sprintf == "function")
         return exports.sprintf("%4d-%02d-%02d %02d:%02d:%02d.%03d %s%s: %s",
-            now.getFullYear(), now.getMonth(), now.getDate(),
+            now.getFullYear(), now.getMonth() + 1, now.getDate(),
             now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds(),
             aTitle, aLevel, aString);
     else
@@ -785,16 +785,16 @@ CFHTTPRequest.prototype.open = function( aMethod, aURL, isAsynchronous, aUser, a
 }
 CFHTTPRequest.prototype.send = function( aBody)
 {
-    for (var i in this._requestHeaders)
-    {
-        if (this._requestHeaders.hasOwnProperty(i))
-            this._nativeRequest.setRequestHeader(i, this._requestHeaders[i]);
-    }
     if (!this._isOpen)
     {
         delete this._nativeRequest.onreadystatechange;
         this._nativeRequest.open(this._method, this._URL, this._async, this._user, this._password);
         this._nativeRequest.onreadystatechange = this._stateChangeHandler;
+    }
+    for (var i in this._requestHeaders)
+    {
+        if (this._requestHeaders.hasOwnProperty(i))
+            this._nativeRequest.setRequestHeader(i, this._requestHeaders[i]);
     }
     if (this._mimeType && "overrideMimeType" in this._nativeRequest)
         this._nativeRequest.overrideMimeType(this._mimeType);
@@ -1221,7 +1221,10 @@ CFPropertyList.propertyListFromXML = function( aStringOrXMLNode)
                                         break;
             case PLIST_NUMBER_INTEGER: object = parseInt(((String((XMLNode.firstChild).nodeValue))), 10);
                                         break;
-            case PLIST_STRING: object = decodeHTMLComponent((XMLNode.firstChild) ? ((String((XMLNode.firstChild).nodeValue))) : "");
+            case PLIST_STRING: if ((XMLNode.getAttribute("type") === "base64"))
+                                            object = (XMLNode.firstChild) ? CFData.decodeBase64ToString(((String((XMLNode.firstChild).nodeValue)))) : "";
+                                        else
+                                            object = decodeHTMLComponent((XMLNode.firstChild) ? ((String((XMLNode.firstChild).nodeValue))) : "");
                                         break;
             case PLIST_BOOLEAN_TRUE: object = YES;
                                         break;
@@ -1316,7 +1319,7 @@ CFDictionary.prototype.containsValue = function( anObject)
         index = 0,
         count = keys.length;
     for (; index < count; ++index)
-        if (buckets[keys] === anObject)
+        if (buckets[keys[index]] === anObject)
             return YES;
     return NO;
 }
@@ -1339,8 +1342,8 @@ CFDictionary.prototype.countOfValue = function( anObject)
         count = keys.length,
         countOfValue = 0;
     for (; index < count; ++index)
-        if (buckets[keys] === anObject)
-            return ++countOfValue;
+        if (buckets[keys[index]] === anObject)
+            ++countOfValue;
     return countOfValue;
 }
 CFDictionary.prototype.countOfValue.displayName = "CFDictionary.prototype.countOfValue";
@@ -1590,6 +1593,10 @@ CFData.decodeBase64ToString = function(input, strip)
 {
     return CFData.bytesToString(CFData.decodeBase64ToArray(input, strip));
 }
+CFData.decodeBase64ToUtf16String = function(input, strip)
+{
+    return CFData.bytesToUtf16String(CFData.decodeBase64ToArray(input, strip));
+}
 CFData.bytesToString = function(bytes)
 {
     return String.fromCharCode.apply(NULL, bytes);
@@ -1599,6 +1606,24 @@ CFData.encodeBase64String = function(input)
     var temp = [];
     for (var i = 0; i < input.length; i++)
         temp.push(input.charCodeAt(i));
+    return CFData.encodeBase64Array(temp);
+}
+CFData.bytesToUtf16String = function(bytes)
+{
+    var temp = [];
+    for (var i = 0; i < bytes.length; i+=2)
+        temp.push(bytes[i+1] << 8 | bytes[i]);
+    return String.fromCharCode.apply(NULL, temp);
+}
+CFData.encodeBase64Utf16String = function(input)
+{
+    var temp = [];
+    for (var i = 0; i < input.length; i++)
+    {
+        var c = input.charCodeAt(i);
+        temp.push(input.charCodeAt(i) & 0xFF);
+        temp.push((input.charCodeAt(i) & 0xFF00) >> 8);
+    }
     return CFData.encodeBase64Array(temp);
 }
 var CFURLsForCachedUIDs,
@@ -2291,6 +2316,10 @@ CFBundle.prototype.isLoading = function()
 {
     return this._loadStatus & CFBundleLoading;
 }
+CFBundle.prototype.isLoaded = function()
+{
+    return this._loadStatus & CFBundleLoaded;
+}
 CFBundle.prototype.isLoading.displayName = "CFBundle.prototype.isLoading";
 CFBundle.prototype.load = function( shouldExecute)
 {
@@ -2600,9 +2629,9 @@ function decompileStaticFile( aBundle, aString, aPath)
                 mappedURLString = "mhtml:" + new CFURL(mappedURLString.substr("mhtml:".length), bundleURL);
                 if (CFBundleSupportedSpriteType === CFBundleMHTMLUncachedSpriteType)
                 {
-                    var exclamationIndex = URLString.indexOf("!"),
-                        firstPart = URLString.substring(0, exclamationIndex),
-                        lastPart = URLString.substring(exclamationIndex);
+                    var exclamationIndex = mappedURLString.indexOf("!"),
+                        firstPart = mappedURLString.substring(0, exclamationIndex),
+                        lastPart = mappedURLString.substring(exclamationIndex);
                     mappedURLString = firstPart + "?" + CFCacheBuster + lastPart;
                 }
             }
@@ -3044,16 +3073,16 @@ Preprocessor.prototype.accessors = function(tokens)
         var name = token,
             value = true;
         if (!/^\w+$/.test(name))
-            throw new SyntaxError(this.error_message("*** @property attribute name not valid."));
+            throw new SyntaxError(this.error_message("*** @accessors attribute name not valid."));
         if ((token = tokens.skip_whitespace()) == TOKEN_EQUAL)
         {
             value = tokens.skip_whitespace();
             if (!/^\w+$/.test(value))
-                throw new SyntaxError(this.error_message("*** @property attribute value not valid."));
+                throw new SyntaxError(this.error_message("*** @accessors attribute value not valid."));
             if (name == "setter")
             {
                 if ((token = tokens.next()) != TOKEN_COLON)
-                    throw new SyntaxError(this.error_message("*** @property setter attribute requires argument with \":\" at end of selector name."));
+                    throw new SyntaxError(this.error_message("*** @accessors setter attribute requires argument with \":\" at end of selector name."));
                 value += ":";
             }
             token = tokens.skip_whitespace();
@@ -3062,7 +3091,7 @@ Preprocessor.prototype.accessors = function(tokens)
         if (token == TOKEN_CLOSE_PARENTHESIS)
             break;
         if (token != TOKEN_COMMA)
-            throw new SyntaxError(this.error_message("*** Expected ',' or ')' in @property attribute list."));
+            throw new SyntaxError(this.error_message("*** Expected ',' or ')' in @accessors attribute list."));
     }
     return attributes;
 }
@@ -3917,7 +3946,7 @@ objj_method = function( aName, anImplementation, types)
     this.types = types;
 }
 objj_method.displayName = "objj_method";
-objj_class = function()
+objj_class = function(displayName)
 {
     this.isa = NULL;
     this.super_class = NULL;
@@ -3929,7 +3958,7 @@ objj_class = function()
     this.method_hash = {};
     this.method_store = function() { };
     this.method_dtable = this.method_store.prototype;
-    this.allocator = function() { };
+    eval("this.allocator = function " + (displayName || "OBJJ_OBJECT").replace(/\W/g, "_") + "() { }");
     this._UID = -1;
 }
 objj_class.displayName = "objj_class";
@@ -4090,8 +4119,8 @@ class_getMethodImplementation.displayName = "class_getMethodImplementation";
 var REGISTERED_CLASSES = { };
 objj_allocateClassPair = function( superclass, aName)
 {
-    var classObject = new objj_class(),
-        metaClassObject = new objj_class(),
+    var classObject = new objj_class(aName),
+        metaClassObject = new objj_class(aName),
         rootClassObject = classObject;
     if (superclass)
     {
@@ -4130,7 +4159,7 @@ objj_registerClassPair.displayName = "objj_registerClassPair";
 class_createInstance = function( aClass)
 {
     if (!aClass)
-        objj_exception_throw(new objj_exception(OBJJNilClassException, "*** Attempting to create object with Nil class."));
+        throw new Error("*** Attempting to create object with Nil class.");
     var object = new aClass.allocator();
     object.isa = aClass;
     object._UID = objj_generateObjectUID();
@@ -4345,10 +4374,26 @@ objj_backtrace_decorator = function(msgSend)
         {
             CPLog.warn("Exception " + anException + " in " + objj_debug_message_format(aReceiver, aSelector));
             objj_backtrace_print(CPLog.warn);
+            throw anException;
         }
         finally
         {
             objj_backtrace.pop();
+        }
+    }
+}
+objj_supress_exceptions_decorator = function(msgSend)
+{
+    return function(aReceiverOrSuper, aSelector)
+    {
+        var aReceiver = aReceiverOrSuper && (aReceiverOrSuper.receiver || aReceiverOrSuper);
+        try
+        {
+            return msgSend.apply(NULL, arguments);
+        }
+        catch (anException)
+        {
+            CPLog.warn("Exception " + anException + " in " + objj_debug_message_format(aReceiver, aSelector));
         }
     }
 }

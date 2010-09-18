@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;23;gui/UserProfileWindow.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;24720;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;23895;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("gui/DJList.j", YES);
 objj_executeFile("gui/MainBrowser.j", YES);
 objj_executeFile("controllers/PlayerControl.j", YES);
@@ -7,7 +7,6 @@ objj_executeFile("model/XYZSong.j", YES);
 objj_executeFile("gui/UsersWindow.j", YES);
 objj_executeFile("controllers/DCFormController.j", YES);
 objj_executeFile("gui/UserCell.j", YES);
-objj_executeFile("gui/UserProfileWindow.j", YES);
 objj_executeFile("model/XYZUser.j", YES);
 objj_executeFile("controllers/EventListenerManager.j", YES);
 objj_executeFile("gui/MainUserProfileWindow.j", YES);
@@ -21,7 +20,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     ProfileItemIdentifier = "ProfileItemIdentifier",
     LogoutIdentifier = "LogoutIdentifier";
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("globalSongList"), function $AppController__globalSongList(self, _cmd)
 { with(self)
@@ -150,19 +149,6 @@ globalSongList = newValue;
     }
     else
     objj_msgSend(preferencesWindow, "orderFront:", self);
-}
-},["void"]), new objj_method(sel_getUid("openUserProfileWindow"), function $AppController__openUserProfileWindow(self, _cmd)
-{ with(self)
-{
-    if(!userProfileWindow)
-        userProfileWindow = objj_msgSend(objj_msgSend(UserProfileWindow, "alloc"), "initWithContentRect:styleMask:contentViewOfWindow:", CGRectMake(500, 50, 400, 500),  CPHUDBackgroundWindowMask|CPClosableWindowMask, contentView);
-  objj_msgSend(userProfileWindow, "setFrameOrigin:", (CPPointMake(500, 50)));
-    if(objj_msgSend(userProfileWindow, "isVisible")){
-        objj_msgSend(userProfileWindow, "setFrameOrigin:", (CPPointMake(500, 50)));
-        objj_msgSend(userProfileWindow, "close");
-    }
-    else
-    objj_msgSend(userProfileWindow, "orderFront:", self);
 }
 },["void"]), new objj_method(sel_getUid("openAddSongForm"), function $AppController__openAddSongForm(self, _cmd)
 { with(self)

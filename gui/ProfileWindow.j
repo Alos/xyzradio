@@ -32,7 +32,7 @@ This file is part of XYZRadio.
     CPView contentViewOfWindow;	
 }
 
-//constructora
+
 - (id)initWithContentRect:aRectangle styleMask:aStyleMask {
     self = [super initWithContentRect:aRectangle styleMask: aStyleMask];
     if (self)
@@ -43,31 +43,31 @@ This file is part of XYZRadio.
         var bounds = [contentView bounds];  
         var center= CGRectGetWidth(bounds)/2.0;
         
-	//Avatar
-	var defaultAvatarImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/usuario-hombre.png" size:CPSizeMake(87,88)];
-	[defaultAvatarImage setDelegate:self];
-	avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(20,20,87,88)];
-	[avatarImageView setImage: defaultAvatarImage];
-	[contentView addSubview:avatarImageView];
+        //Avatar
+        var defaultAvatarImage = [[CPImage alloc] initWithContentsOfFile:"Resources/usuarios/usuario-hombre.png" size:CPSizeMake(87,88)];
+        [defaultAvatarImage setDelegate:self];
+        avatarImageView = [[CPImageView alloc] initWithFrame:CGRectMake(20,20,87,88)];
+        [avatarImageView setImage: defaultAvatarImage];
+        [contentView addSubview:avatarImageView];
 
-	//info del usuario
+        //info del usuario
         var infoLabel = [[CPTextField alloc] initWithFrame: CGRectMake(120, 30, 100, 50)];
         [infoLabel setStringValue:"User: oswa\nAge: 24"];
         [infoLabel setTextColor: [CPColor colorWithHexString:"33FF00"]];  
-	[contentView addSubview: infoLabel];
+        [contentView addSubview: infoLabel];
         
-	//boton para agregar amigo
+        //boton para agregar amigo
         addButton = [[CPButton alloc] initWithFrame:CGRectMake(170, 360, 40, 20)];
-	[addButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+        [addButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
         [addButton setBezelStyle:CPHUDBezelStyle];
         [addButton setTitle:@"Add"];	        
         [addButton setTarget:self];
         [addButton setAction:@selector(savePreferences)];                 
         [contentView addSubview: addButton];
 
-	//boton para enviar mail
+        //boton para enviar mail
         sendMailButton = [[CPButton alloc] initWithFrame:CGRectMake(220, 360, 70, 20)];
-	[sendMailButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
+        [sendMailButton setTheme:[CPTheme themeNamed:@"Aristo-HUD"]];
         [sendMailButton setBezelStyle:CPHUDBezelStyle];
         [sendMailButton setTitle:@"Send mail"];	        
         [sendMailButton setTarget:self];

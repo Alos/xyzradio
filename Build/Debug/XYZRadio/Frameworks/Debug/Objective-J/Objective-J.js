@@ -1316,7 +1316,7 @@ CFDictionary.prototype.containsValue = function( anObject)
         index = 0,
         count = keys.length;
     for (; index < count; ++index)
-        if (buckets[keys] === anObject)
+        if (buckets[keys[index]] === anObject)
             return YES;
     return NO;
 }
@@ -1339,8 +1339,8 @@ CFDictionary.prototype.countOfValue = function( anObject)
         count = keys.length,
         countOfValue = 0;
     for (; index < count; ++index)
-        if (buckets[keys] === anObject)
-            return ++countOfValue;
+        if (buckets[keys[index]] === anObject)
+            ++countOfValue;
     return countOfValue;
 }
 CFDictionary.prototype.countOfValue.displayName = "CFDictionary.prototype.countOfValue";
@@ -2600,9 +2600,9 @@ function decompileStaticFile( aBundle, aString, aPath)
                 mappedURLString = "mhtml:" + new CFURL(mappedURLString.substr("mhtml:".length), bundleURL);
                 if (CFBundleSupportedSpriteType === CFBundleMHTMLUncachedSpriteType)
                 {
-                    var exclamationIndex = URLString.indexOf("!"),
-                        firstPart = URLString.substring(0, exclamationIndex),
-                        lastPart = URLString.substring(exclamationIndex);
+                    var exclamationIndex = mappedURLString.indexOf("!"),
+                        firstPart = mappedURLString.substring(0, exclamationIndex),
+                        lastPart = mappedURLString.substring(exclamationIndex);
                     mappedURLString = firstPart + "?" + CFCacheBuster + lastPart;
                 }
             }
@@ -3044,16 +3044,16 @@ Preprocessor.prototype.accessors = function(tokens)
         var name = token,
             value = true;
         if (!/^\w+$/.test(name))
-            throw new SyntaxError(this.error_message("*** @property attribute name not valid."));
+            throw new SyntaxError(this.error_message("*** @accessors attribute name not valid."));
         if ((token = tokens.skip_whitespace()) == TOKEN_EQUAL)
         {
             value = tokens.skip_whitespace();
             if (!/^\w+$/.test(value))
-                throw new SyntaxError(this.error_message("*** @property attribute value not valid."));
+                throw new SyntaxError(this.error_message("*** @accessors attribute value not valid."));
             if (name == "setter")
             {
                 if ((token = tokens.next()) != TOKEN_COLON)
-                    throw new SyntaxError(this.error_message("*** @property setter attribute requires argument with \":\" at end of selector name."));
+                    throw new SyntaxError(this.error_message("*** @accessors setter attribute requires argument with \":\" at end of selector name."));
                 value += ":";
             }
             token = tokens.skip_whitespace();
@@ -3062,7 +3062,7 @@ Preprocessor.prototype.accessors = function(tokens)
         if (token == TOKEN_CLOSE_PARENTHESIS)
             break;
         if (token != TOKEN_COMMA)
-            throw new SyntaxError(this.error_message("*** Expected ',' or ')' in @property attribute list."));
+            throw new SyntaxError(this.error_message("*** Expected ',' or ')' in @accessors attribute list."));
     }
     return attributes;
 }
@@ -4130,7 +4130,7 @@ objj_registerClassPair.displayName = "objj_registerClassPair";
 class_createInstance = function( aClass)
 {
     if (!aClass)
-        objj_exception_throw(new objj_exception(OBJJNilClassException, "*** Attempting to create object with Nil class."));
+        throw new Error("*** Attempting to create object with Nil class.");
     var object = new aClass.allocator();
     object.isa = aClass;
     object._UID = objj_generateObjectUID();

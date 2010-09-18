@@ -277,7 +277,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("_haveQuickTime"), funct
 },["void","var"])]);
 }
 
-p;15;AppController.jt;25104;@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;23;gui/UserProfileWindow.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;24720;objj_executeFile("Foundation/CPObject.j", NO);
+p;15;AppController.jt;24251;@STATIC;1.0;I;21;Foundation/CPObject.ji;12;gui/DJList.ji;17;gui/MainBrowser.ji;27;controllers/PlayerControl.ji;23;gui/PreferencesWindow.ji;15;model/XYZSong.ji;17;gui/UsersWindow.ji;30;controllers/DCFormController.ji;14;gui/UserCell.ji;15;model/XYZUser.ji;34;controllers/EventListenerManager.ji;27;gui/MainUserProfileWindow.ji;19;gui/AddSongWindow.jt;23895;objj_executeFile("Foundation/CPObject.j", NO);
 objj_executeFile("gui/DJList.j", YES);
 objj_executeFile("gui/MainBrowser.j", YES);
 objj_executeFile("controllers/PlayerControl.j", YES);
@@ -286,7 +286,6 @@ objj_executeFile("model/XYZSong.j", YES);
 objj_executeFile("gui/UsersWindow.j", YES);
 objj_executeFile("controllers/DCFormController.j", YES);
 objj_executeFile("gui/UserCell.j", YES);
-objj_executeFile("gui/UserProfileWindow.j", YES);
 objj_executeFile("model/XYZUser.j", YES);
 objj_executeFile("controllers/EventListenerManager.j", YES);
 objj_executeFile("gui/MainUserProfileWindow.j", YES);
@@ -300,7 +299,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     ProfileItemIdentifier = "ProfileItemIdentifier",
     LogoutIdentifier = "LogoutIdentifier";
 {var the_class = objj_allocateClassPair(CPObject, "AppController"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("userProfileWindow"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
+meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("librarySongs"), new objj_ivar("toolbar"), new objj_ivar("djList"), new objj_ivar("musicBrowser"), new objj_ivar("playerControl"), new objj_ivar("preferencesWindow"), new objj_ivar("bgImage"), new objj_ivar("theWindow"), new objj_ivar("contentView"), new objj_ivar("usersWindow"), new objj_ivar("mainUserProfileWindow"), new objj_ivar("listCollectionView"), new objj_ivar("contentUsers"), new objj_ivar("bounds"), new objj_ivar("xyzradioConnectionForLogin"), new objj_ivar("serverIP"), new objj_ivar("userLoggedin"), new objj_ivar("userLoggingTimer"), new objj_ivar("eventListenerManager"), new objj_ivar("addSongWindow"), new objj_ivar("globalSongList")]);
 objj_registerClassPair(the_class);
 class_addMethods(the_class, [new objj_method(sel_getUid("globalSongList"), function $AppController__globalSongList(self, _cmd)
 { with(self)
@@ -429,19 +428,6 @@ globalSongList = newValue;
     }
     else
     objj_msgSend(preferencesWindow, "orderFront:", self);
-}
-},["void"]), new objj_method(sel_getUid("openUserProfileWindow"), function $AppController__openUserProfileWindow(self, _cmd)
-{ with(self)
-{
-    if(!userProfileWindow)
-        userProfileWindow = objj_msgSend(objj_msgSend(UserProfileWindow, "alloc"), "initWithContentRect:styleMask:contentViewOfWindow:", CGRectMake(500, 50, 400, 500),  CPHUDBackgroundWindowMask|CPClosableWindowMask, contentView);
-  objj_msgSend(userProfileWindow, "setFrameOrigin:", (CPPointMake(500, 50)));
-    if(objj_msgSend(userProfileWindow, "isVisible")){
-        objj_msgSend(userProfileWindow, "setFrameOrigin:", (CPPointMake(500, 50)));
-        objj_msgSend(userProfileWindow, "close");
-    }
-    else
-    objj_msgSend(userProfileWindow, "orderFront:", self);
 }
 },["void"]), new objj_method(sel_getUid("openAddSongForm"), function $AppController__openAddSongForm(self, _cmd)
 { with(self)
@@ -3656,93 +3642,6 @@ class_addMethods(the_class, [new objj_method(sel_getUid("setRepresentedObject:")
  }
 }
 },["void","BOOL"])]);
-}
-
-p;23;gui/UserProfileWindow.jt;5711;@STATIC;1.0;t;5692;{var the_class = objj_allocateClassPair(CPWindow, "UserProfileWindow"),
-meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("loginButton"), new objj_ivar("userid"), new objj_ivar("password"), new objj_ivar("parentWindow"), new objj_ivar("useridReq"), new objj_ivar("userPassReq")]);
-objj_registerClassPair(the_class);
-class_addMethods(the_class, [new objj_method(sel_getUid("initWithContentRect:styleMask:"), function $UserProfileWindow__initWithContentRect_styleMask_(self, _cmd, aRectangle, aStyle)
-{ with(self)
-{
-    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("UserProfileWindow").super_class }, "initWithContentRect:styleMask:",  aRectangle,  aStyle);
-    if (self)
-    {
-  var contentView = objj_msgSend(self, "contentView");
-     var usuarioLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(568, 252, 100, 30));
-        objj_msgSend(usuarioLabel, "setStringValue:", "User:");
-        objj_msgSend(usuarioLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-        objj_msgSend(usuarioLabel, "setBackgroundColor:", NULL);
-  objj_msgSend(usuarioLabel, "sizeToFit");
-  objj_msgSend(contentView, "addSubview:", usuarioLabel);
-  userid = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(610, 248, 170, 30));
-        objj_msgSend(userid, "setEditable:", YES);
-        objj_msgSend(userid, "setBezeled:", YES);
-        objj_msgSend(userid, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-        objj_msgSend(userid, "setBackgroundColor:", objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-  objj_msgSend(contentView, "addSubview:", userid);
-  var passLabel = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(540, 314, 100, 30));
-        objj_msgSend(passLabel, "setStringValue:", "Password:");
-        objj_msgSend(passLabel, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-        objj_msgSend(passLabel, "setBackgroundColor:", NULL);
-  objj_msgSend(passLabel, "sizeToFit");
-  objj_msgSend(contentView, "addSubview:", passLabel);
-  password = objj_msgSend(objj_msgSend(CPTextField, "alloc"), "initWithFrame:",  CGRectMake(610, 308, 170, 30));
-        objj_msgSend(password, "setEditable:", YES);
-        objj_msgSend(password, "setBezeled:", YES);
-  objj_msgSend(password, "setSecure:",  YES);
-        objj_msgSend(password, "setTextColor:",  objj_msgSend(CPColor, "colorWithHexString:", "000000"));
-        objj_msgSend(password, "setBackgroundColor:", objj_msgSend(CPColor, "colorWithHexString:", "FFFFFF"));
-  objj_msgSend(contentView, "addSubview:", password);
-        loginButton = objj_msgSend(objj_msgSend(CPButton, "alloc"), "initWithFrame:", CGRectMake(730, 360, 50, 18));
-        objj_msgSend(loginButton, "setTitle:", "Login");
-  objj_msgSend(loginButton, "setTheme:", objj_msgSend(CPTheme, "themeNamed:", "Aristo-HUD"));
-        objj_msgSend(loginButton, "setTarget:", self);
-        objj_msgSend(loginButton, "setAction:", sel_getUid("loginActionPerformed"));
-  objj_msgSend(contentView, "addSubview:", loginButton);
-  var poweredByGoogleImage = objj_msgSend(objj_msgSend(CPImage, "alloc"), "initWithContentsOfFile:size:", "Resources/appengine-silver-120x30.gif", CPSizeMake(127, 30));
-  var poweredByGoogleImageView = objj_msgSend(objj_msgSend(CPImageView, "alloc"), "initWithFrame:", CGRectMake(840, 750, 127, 30));
-  objj_msgSend(poweredByGoogleImageView, "setImage:",  poweredByGoogleImage);
-  objj_msgSend(contentView, "addSubview:",  poweredByGoogleImageView);
-  objj_msgSend(self, "makeFirstResponder:", userid);
-    }
-    return self;
-}
-},["id","CGRect","unsignedint"]), new objj_method(sel_getUid("loginActionPerformed"), function $UserProfileWindow__loginActionPerformed(self, _cmd)
-{ with(self)
-{
- var useridReq = objj_msgSend(userid, "objectValue");
- var userPassReq = objj_msgSend(password, "objectValue");
- objj_msgSend(self, "loguser:password:",  useridReq,  userPassReq);
-}
-},["void"]), new objj_method(sel_getUid("loguser:password:"), function $UserProfileWindow__loguser_password_(self, _cmd, aUser, aPassword)
-{ with(self)
-{
- var url = "https://www.google.com/accounts/ClientLogin?Email=alosii@gmail.com&Passwd=20lonestar01&accountType=HOSTED_OR_GOOGLE&source=alos-xyzradio-1&service=ah";
- var request = objj_msgSend(CPURLRequest, "requestWithURL:",  url);
- var xyzradioConnectionForLogin = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
-}
-},["void","CPString","CPString"]), new objj_method(sel_getUid("connection:didReceiveData:"), function $UserProfileWindow__connection_didReceiveData_(self, _cmd, connection, data)
-{ with(self)
-{
- var authValue = objj_msgSend(data, "componentsSeparatedByString:", "=");
- var urlWithToken = "http://xyzradioengine.appspot.com/_ah/login?auth="+authValue[3];
- var googleAuthentification = objj_msgSend(objj_msgSend(GoogleAuthentification, "alloc"), "initWithURL:", urlWithToken);
-}
-},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("connectionDidFinishLoading:"), function $UserProfileWindow__connectionDidFinishLoading_(self, _cmd, connection)
-{ with(self)
-{
-}
-},["void","CPURLConnection"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $UserProfileWindow__connection_didFailWithError_(self, _cmd, connection, error)
-{ with(self)
-{
-}
-},["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("clearConnection:"), function $UserProfileWindow__clearConnection_(self, _cmd, connection)
-{ with(self)
-{
-    if (connection == louhiConnection)
-        louhiConnection = nil;
-}
-},["void","CPURLConnection"])]);
 }
 
 p;17;gui/UsersWindow.jt;6419;@STATIC;1.0;i;10;UserCell.ji;18;../model/XYZUser.ji;39;../dataStore/UserListCollectionViewDS.jt;6318;objj_executeFile("UserCell.j", YES);

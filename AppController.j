@@ -22,7 +22,6 @@ This file is part of XYZRadio.
 @import "gui/UsersWindow.j"
 @import "controllers/DCFormController.j"
 @import "gui/UserCell.j"
-@import "gui/UserProfileWindow.j"
 @import "model/XYZUser.j"
 @import "controllers/EventListenerManager.j"
 @import "gui/MainUserProfileWindow.j"
@@ -58,7 +57,6 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     CPURLConnection xyzradioConnectionForLogin; //takes care of the loggin stuff
     CPString serverIP;
     //LoginWindow loginWindow; //the log window that is presented to the user at the start
-    UserProfileWindow userProfileWindow;
     XYZUser userLoggedin;//the full user
     CPTimer userLoggingTimer;
     EventListenerManager eventListenerManager; //handles the events that might happen on the server side
@@ -196,21 +194,6 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     [preferencesWindow orderFront:self];
 }
 
-
-//abre la ventana de las preferencias de los usuarios usuarios
--(void)openUserProfileWindow{
-    if(!userProfileWindow)
-        userProfileWindow = [[UserProfileWindow alloc] initWithContentRect:CGRectMake(500, 50, 400, 500) styleMask: CPHUDBackgroundWindowMask|CPClosableWindowMask contentViewOfWindow:contentView];
-		[userProfileWindow setFrameOrigin:(CPPointMake(500, 50))];
-    if([userProfileWindow isVisible]){
-        [userProfileWindow setFrameOrigin:(CPPointMake(500, 50))];
-        [userProfileWindow close];
-    }
-    else    
-    [userProfileWindow orderFront:self];
-}
-
-
 //abre el formulario para subir una cancion
 -(void)openAddSongForm{
  
@@ -316,33 +299,33 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     if (anItemIdentifier == BotonBrowserIdentifier)
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
-		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/biblioteca.png" size:CPSizeMake(27, 27)],
+
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/biblioteca.png" size:CPSizeMake(27, 27)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/bibliotecaOff.png" size:CPSizeMake(27, 27)];
-			
-		[toolbarItem setImage: image];
-		[toolbarItem setAlternateImage: highlighted];
-		
-		[toolbarItem setTarget:self];
+
+        [toolbarItem setImage: image];
+        [toolbarItem setAlternateImage: highlighted];
+
+        [toolbarItem setTarget:self];
         [toolbarItem setAction:@selector(openBrowser)]; 
-		[toolbarItem setLabel: "Music Browser"];
-		 
+        [toolbarItem setLabel: "Music Browser"];
+ 
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }
     else if (anItemIdentifier == BotonMiListaIdentifier)
     {   //TODO crear una view y luego ponerle 
         // setAutoresizingMask: CPViewMinYMargin | CPViewMaxYMargin
-		
-		var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/dj.png" size:CPSizeMake(27, 27)],
-		highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/djOff.png" size:CPSizeMake(27, 27)];
-		
-		[toolbarItem setImage: image];
-		[toolbarItem setAlternateImage: highlighted];
-		
+        
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/dj.png" size:CPSizeMake(27, 27)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/djOff.png" size:CPSizeMake(27, 27)];
+
+        [toolbarItem setImage: image];
+        [toolbarItem setAlternateImage: highlighted];
+        
         [toolbarItem setTarget:self];
         [toolbarItem setAction:@selector(openDJList)]; 
-		[toolbarItem setLabel:"DJList"];
+        [toolbarItem setLabel:"DJList"];
 
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
@@ -377,9 +360,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }
-    //ventana de usuarios	
+    //ventana de usuarios
     else if(anItemIdentifier == UsersItemIdentifier){
-	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuario.png" size:CPSizeMake(27, 27)],
+    var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuario.png" size:CPSizeMake(27, 27)],
         highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/usuariosOff.png" size:CPSizeMake(27, 27)];
             
         [toolbarItem setImage: image];
@@ -393,8 +376,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
 
     }else if(anItemIdentifier == ProfileItemIdentifier){
-	var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/miperfiloff.png" size:CPSizeMake(27, 27)],
-        highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/miperfilon.png" size:CPSizeMake(27, 27)];
+        var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/miperfiloff.png" size:CPSizeMake(27, 27)],
+            highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/miperfilon.png" size:CPSizeMake(27, 27)];
             
         [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
@@ -410,28 +393,28 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     {   
         var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/setup.png" size:CPSizeMake(27, 27)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/setupOff.png" size:CPSizeMake(27, 27)];
-		
-		[toolbarItem setImage: image];
+
+        [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
-		
-		[toolbarItem setTarget:self];
+
+        [toolbarItem setTarget:self];
         [toolbarItem setAction:@selector(openPreferences)]; 
         [toolbarItem setLabel:"Prefrences"];
-		
+        
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     }else if (anItemIdentifier == LogoutIdentifier)
     {   
         var image = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/logouton.png" size:CPSizeMake(27, 27)],
             highlighted = [[CPImage alloc] initWithContentsOfFile:"Resources/buttons/logoutOff.png" size:CPSizeMake(27, 27)];
-		
-		[toolbarItem setImage: image];
+
+        [toolbarItem setImage: image];
         [toolbarItem setAlternateImage: highlighted];
-		
-		[toolbarItem setTarget:self];
+        
+        [toolbarItem setTarget:self];
         [toolbarItem setAction:@selector(logoutUser)]; 
         [toolbarItem setLabel:"Logout"];
-		
+
         [toolbarItem setMinSize:CGSizeMake(32, 32)];
         [toolbarItem setMaxSize:CGSizeMake(32, 32)];
     } 
@@ -446,86 +429,86 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
 }
 
 -(void)logoutUser{
-		var url = serverIP+"/LogoutUser?email="+[userLoggedin email];
-		CPLog.info("Connecting to" + url);
-		var request = [CPURLRequest requestWithURL: url];
-		var connection = [CPURLConnection connectionWithRequest:request delegate:self];
-		[self openLoginWindow];
+        var url = serverIP+"/LogoutUser?email="+[userLoggedin email];
+        CPLog.info("Connecting to" + url);
+        var request = [CPURLRequest requestWithURL: url];
+        var connection = [CPURLConnection connectionWithRequest:request delegate:self];
+        [self openLoginWindow];
 }
 
 -(void)loginUser:(CPString)aUser{
-		var url = serverIP+"/LoginUser?email="+aUser;
-		CPLog.info("Connecting to" + url);
-		var request = [CPURLRequest requestWithURL: url];
-		var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
+        var url = serverIP+"/LoginUser?email="+aUser;
+        CPLog.info("Connecting to" + url);
+        var request = [CPURLRequest requestWithURL: url];
+        var xyzradioConnectionForLogin = [CPURLConnection connectionWithRequest:request delegate:self];
 }
 
 
-	- (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
-	{
-		CPLog.trace("La data en loging window: %s", data);
-		try{
-			var response = JSON.parse(data);
-			
-			if(response.error){
-				CPLog.error(response.error);
-			}
-			
-			if(response){
-				var userRecived = [[XYZUser alloc] init];
-				
-				[userRecived setEmail: response.email];
-				[userRecived setUsernick: response.usernick];
-				if(response.pathToAvatar)
-					[userRecived setPathToAvatar: response.pathToAvatar];
-				else
-					[userRecived setPathToAvatar:""];
-				[userRecived setLogged: response.logged];
-				if(response.dj)
-					[userRecived setDj:YES];
-				else
-					[userRecived setDj:NO];
-				[userRecived setSex: response.sex];
-				[userRecived setDjList1: response.djList1];
-				[userRecived setDjList2: response.djList2];
-				[userRecived setDjList3: response.djList3];
-				[userRecived setOwnedSongs: response.ownedSongs];
-				[userRecived setUserRating: response.userRating];
-				
-				var somePrefrences = [[XYZUserPrefrences alloc] init];
-				
-				[userRecived setPrefrences: somePrefrences];
-				
+    - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data
+    {
+        CPLog.trace("La data en loging window: %s", data);
+        try{
+            var response = JSON.parse(data);
+    
+            if(response.error){
+                CPLog.error(response.error);
+            }
+
+            if(response){
+                var userRecived = [[XYZUser alloc] init];
+
+                [userRecived setEmail: response.email];
+                [userRecived setUsernick: response.usernick];
+                if(response.pathToAvatar)
+                    [userRecived setPathToAvatar: response.pathToAvatar];
+                else
+                    [userRecived setPathToAvatar:""];
+                [userRecived setLogged: response.logged];
+                if(response.dj)
+                    [userRecived setDj:YES];
+                else
+                    [userRecived setDj:NO];
+                [userRecived setSex: response.sex];
+                [userRecived setDjList1: response.djList1];
+                [userRecived setDjList2: response.djList2];
+                [userRecived setDjList3: response.djList3];
+                [userRecived setOwnedSongs: response.ownedSongs];
+                [userRecived setUserRating: response.userRating];
+
+                var somePrefrences = [[XYZUserPrefrences alloc] init];
+
+                [userRecived setPrefrences: somePrefrences];
+
                 userLoggedin = userRecived;
-	            [djList getUserPlaylists]; 
-			}
-			
-		}catch(e){
-			var mensajeGuardar = [[CPAlert alloc] init];
-			[mensajeGuardar setTitle:"Server not available"];
-			[mensajeGuardar setWindowStyle:CPHUDBackgroundWindowMask];
-			[mensajeGuardar setMessageText:"Sorry, the server is not available. Please try again later."];
-			[mensajeGuardar addButtonWithTitle:"Ok"];
-			[mensajeGuardar runModal];
-		}
-		
+                [djList getUserPlaylists]; 
+            }
+
+        }catch(e){
+            var mensajeGuardar = [[CPAlert alloc] init];
+            [mensajeGuardar setTitle:"Server not available"];
+            [mensajeGuardar setWindowStyle:CPHUDBackgroundWindowMask];
+            [mensajeGuardar setMessageText:"Sorry, the server is not available. Please try again later."];
+            [mensajeGuardar addButtonWithTitle:"Ok"];
+            [mensajeGuardar runModal];
+        }
+
     }
 
 -(void)openLoginWindow{
-		loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(0, 0, 1000, 800) styleMask: CPHUDBackgroundWindowMask | CPBorderlessWindowMask];
-		[loginWindow setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
-		[CPLightbox setBackgroundColor:[CPColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.6]];
-		[CPLightbox runModalForWindow:loginWindow];
+        loginWindow = [[LoginWindow alloc] initWithContentRect:CGRectMake(0, 0, 1000, 800) styleMask: CPHUDBackgroundWindowMask | CPBorderlessWindowMask];
+        [loginWindow setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
+        [CPLightbox setBackgroundColor:[CPColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.6]];
+        [CPLightbox runModalForWindow:loginWindow];
 }
 
 
 -(void)closeLoginWindow:(CPNotification)aNotification{
-	var info = [aNotification userInfo];
-	var aux = [info objectForKey:"user"];
-	userLoggedin = aux;
-	[CPLightbox stopModal];
-	[loginWindow close];
-	[djList getUserPlaylists];
+    var info = [aNotification userInfo];
+    var aux = [info objectForKey:"user"];
+    userLoggedin = aux;
+    [CPLightbox stopModal];
+    [loginWindow close];
+    [djList getUserPlaylists];
 }
 
 @end
