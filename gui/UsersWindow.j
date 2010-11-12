@@ -34,13 +34,13 @@ This file is part of XYZRadio.
     self = [super initWithContentRect:aRect styleMask: aStyleMask];
     if (self)
     {
-		 list = [[CPArray alloc] init];
+        list = [[CPArray alloc] init];
          //titulo de la ventana
          [self setTitle:@"Users"];
          var contentView = [self contentView];
          var bounds = [contentView bounds];
         
-	 [self setBackgroundColor:nil];
+        [self setBackgroundColor:nil];
          //scrollView
 	 var listScrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0, 0, 246 , CGRectGetHeight(bounds))];
          [listScrollView setAutohidesScrollers:YES];

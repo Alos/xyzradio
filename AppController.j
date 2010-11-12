@@ -57,7 +57,7 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     CPURLConnection xyzradioConnectionForLogin; //takes care of the loggin stuff
     CPString serverIP;
     //LoginWindow loginWindow; //the log window that is presented to the user at the start
-    XYZUser userLoggedin;//the full user
+    XYZUser userLoggedin @accessors;//the full user
     CPTimer userLoggingTimer;
     EventListenerManager eventListenerManager; //handles the events that might happen on the server side
     AddSongWindow addSongWindow; //allows the user to upload new songs
@@ -72,9 +72,9 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
     contentView = [theWindow contentView];
     //bg
-    bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/xyzradiowallpaper.png" size:CPSizeMake(30, 25)];
-    [contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
-    //[contentView setBackgroundColor:[CPColor colorWithHexString:"666666"]];
+    //bgImage = [[CPImage alloc] initWithContentsOfFile:"Resources/wallpapers/xyzradiowallpaper.png" size:CPSizeMake(30, 25)];
+    //[contentView setBackgroundColor:[CPColor colorWithPatternImage:bgImage]];
+    [contentView setBackgroundColor:[CPColor colorWithHexString:"666666"]];
     //sizes
     bounds = [contentView bounds];
     librarySongs = [[CPArray alloc] init];    
@@ -83,21 +83,11 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
     [theWindow setToolbar: toolbar]; 
     [toolbar setDelegate:self];
    
-    serverIP = "http://localhost:8888"; 
-    //serverIP = "http://xyzradioengine.appspot.com";	
+    //serverIP = "http://localhost:8888"; 
+    serverIP = "http://xyzradioengine.appspot.com";	
     //[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(closeLoginWindow:) name:"LoginSuccessful" object:nil];
 
-    //getting arguements for google login
-   	var sharedApplication = [CPApplication sharedApplication];
-    var namedArguments  = [sharedApplication namedArguments];
-    var userAccount = [namedArguments objectForKey:"userEmail"];
-    CPLog.trace("The email: "+userAccount);
-    if(userAccount){
-        CPLog.trace("Logged olduser!");
-        [self loginUser:userAccount];
-    }else{
-        CPLog.trace("No account found deny access!");
-    }
+    
     /*console.log("Opening sound!"); 
     var sound = [[CPSound alloc] initWithResource:@"Resources/LocalMusic/Rewrite.mp3"]; 
     [sound setDelegate:self];
@@ -432,8 +422,8 @@ var BotonBrowserIdentifier = "BotonBrowserIdentifier",
         var url = serverIP+"/LogoutUser?email="+[userLoggedin email];
         CPLog.info("Connecting to" + url);
         var request = [CPURLRequest requestWithURL: url];
-        var connection = [CPURLConnection connectionWithRequest:request delegate:self];
-        [self openLoginWindow];
+        //[self openLoginWindow];
+        window.location="http://web.me.com/alos/XYZRadio/Home.html";
 }
 
 -(void)loginUser:(CPString)aUser{

@@ -55,7 +55,7 @@
             
             //getting data
             playlistsArray = [[CPArray alloc] init];
-
+            
             //the headder for the collectionview
             var headderLabel = [[CPTextField alloc] initWithFrame: CGRectMake(50, 32, 100, 18)];
             [headderLabel setStringValue:"Playlists"];
@@ -139,12 +139,13 @@
 
             [djListContentView addSubview: theTable];    
 
+
             //register with the NewPlaylistWindow
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewPlaylist:) name:"NewPlaylistAdded" object:nil];
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(playListsRecived:) name:"PlayListsRecived" object:nil];
             [[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(addSongToPlaylist:) name:"NewSongAddedToPlaylist" object:nil];
            
-
+            [self getUserPlaylists];
         }    
         return self;
     }

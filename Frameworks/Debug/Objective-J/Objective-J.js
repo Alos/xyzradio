@@ -202,8 +202,8 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         };
     }
 }());
-var formatRegex = new RegExp("([^%]+|%[\\+\\-\\ \\#0]*[0-9\\*]*(.[0-9\\*]+)?[hlL]?[cbBdieEfgGosuxXpn%@])", "g");
-var tagRegex = new RegExp("(%)([\\+\\-\\ \\#0]*)([0-9\\*]*)((.[0-9\\*]+)?)([hlL]?)([cbBdieEfgGosuxXpn%@])");
+var formatRegex = new RegExp("([^%]+|%(?:\\d+\\$)?[\\+\\-\\ \\#0]*[0-9\\*]*(.[0-9\\*]+)?[hlL]?[cbBdieEfgGosuxXpn%@])", "g");
+var tagRegex = new RegExp("(%)(?:(\\d+)\\$)?([\\+\\-\\ \\#0]*)([0-9\\*]*)((?:.[0-9\\*]+)?)([hlL]?)([cbBdieEfgGosuxXpn%@])");
 exports.sprintf = function(format)
 {
     var format = arguments[0],
@@ -231,19 +231,24 @@ exports.sprintf = function(format)
                 return result;
             }
             var percentSign = subtokens[1],
-                flags = subtokens[2],
-                widthString = subtokens[3],
-                precisionString = subtokens[4],
+                argIndex = subtokens[2],
+                flags = subtokens[3],
+                widthString = subtokens[4],
+                precisionString = subtokens[5],
                 length = subtokens[6],
                 specifier = subtokens[7];
+            if (argIndex === undefined || argIndex === null || argIndex === "")
+                argIndex = arg++;
+            else
+                argIndex = Number(argIndex);
             var width = null;
             if (widthString == "*")
-                width = arguments[arg++];
+                width = arguments[argIndex];
             else if (widthString != "")
                 width = Number(widthString);
             var precision = null;
             if (precisionString == ".*")
-                precision = arguments[arg++];
+                precision = arguments[argIndex];
             else if (precisionString != "")
                 precision = Number(precisionString.substring(1));
             var leftJustify = (flags.indexOf("-") >= 0);
@@ -251,7 +256,7 @@ exports.sprintf = function(format)
             var subresult = "";
             if (RegExp("[bBdiufeExXo]").test(specifier))
             {
-                var num = Number(arguments[arg++]);
+                var num = Number(arguments[argIndex]);
                 var sign = "";
                 if (num < 0)
                 {
@@ -310,12 +315,11 @@ exports.sprintf = function(format)
                 if (specifier == "%")
                     subresult = "%";
                 else if (specifier == "c")
-                    subresult = String(arguments[arg++]).charAt(0);
+                    subresult = String(arguments[argIndex]).charAt(0);
                 else if (specifier == "s" || specifier == "@")
-                    subresult = String(arguments[arg++]);
+                    subresult = String(arguments[argIndex]);
                 else if (specifier == "p" || specifier == "n")
                 {
-                    arg++;
                     subresult = "";
                 }
                 subresult = justify("", "", subresult, "", width, leftJustify, false);
@@ -352,31 +356,34 @@ var _CPLogLevelsInverted = {};
 for (var i = 0; i < CPLogLevels.length; i++)
     _CPLogLevelsInverted[CPLogLevels[i]] = i;
 var _CPLogRegistrations = {};
-CPLogRegister = function(aProvider, aMaxLevel)
+CPLogRegister = function(aProvider, aMaxLevel, aFormatter)
 {
-    CPLogRegisterRange(aProvider, CPLogLevels[0], aMaxLevel || CPLogLevels[CPLogLevels.length-1]);
+    CPLogRegisterRange(aProvider, CPLogLevels[0], aMaxLevel || CPLogLevels[CPLogLevels.length-1], aFormatter);
 }
-CPLogRegisterRange = function(aProvider, aMinLevel, aMaxLevel)
+CPLogRegisterRange = function(aProvider, aMinLevel, aMaxLevel, aFormatter)
 {
     var min = _CPLogLevelsInverted[aMinLevel];
     var max = _CPLogLevelsInverted[aMaxLevel];
-    if (min !== undefined && max !== undefined)
-        for (var i = 0; i <= max; i++)
-            CPLogRegisterSingle(aProvider, CPLogLevels[i]);
+    if (min !== undefined && max !== undefined && min <= max)
+        for (var i = min; i <= max; i++)
+            CPLogRegisterSingle(aProvider, CPLogLevels[i], aFormatter);
 }
-CPLogRegisterSingle = function(aProvider, aLevel)
+CPLogRegisterSingle = function(aProvider, aLevel, aFormatter)
 {
     if (!_CPLogRegistrations[aLevel])
         _CPLogRegistrations[aLevel] = [];
     for (var i = 0; i < _CPLogRegistrations[aLevel].length; i++)
-        if (_CPLogRegistrations[aLevel][i] === aProvider)
+        if (_CPLogRegistrations[aLevel][i][0] === aProvider)
+        {
+            _CPLogRegistrations[aLevel][i][1] = aFormatter;
             return;
-    _CPLogRegistrations[aLevel].push(aProvider);
+        }
+    _CPLogRegistrations[aLevel].push([aProvider, aFormatter]);
 }
 CPLogUnregister = function(aProvider) {
     for (var aLevel in _CPLogRegistrations)
         for (var i = 0; i < _CPLogRegistrations[aLevel].length; i++)
-            if (_CPLogRegistrations[aLevel][i] === aProvider)
+            if (_CPLogRegistrations[aLevel][i][0] === aProvider)
                 _CPLogRegistrations[aLevel].splice(i--, 1);
 }
 function _CPLogDispatch(parameters, aLevel, aTitle)
@@ -388,7 +395,10 @@ function _CPLogDispatch(parameters, aLevel, aTitle)
     var message = (typeof parameters[0] == "string" && parameters.length > 1) ? exports.sprintf.apply(null, parameters) : String(parameters[0]);
     if (_CPLogRegistrations[aLevel])
         for (var i = 0; i < _CPLogRegistrations[aLevel].length; i++)
-             _CPLogRegistrations[aLevel][i](message, aLevel, aTitle);
+        {
+            var logger = _CPLogRegistrations[aLevel][i];
+            logger[0](message, aLevel, aTitle, logger[1]);
+        }
 }
 CPLog = function() { _CPLogDispatch(arguments); }
 for (var i = 0; i < CPLogLevels.length; i++)
@@ -396,7 +406,7 @@ for (var i = 0; i < CPLogLevels.length; i++)
 var _CPFormatLogMessage = function(aString, aLevel, aTitle)
 {
     var now = new Date();
-    aLevel = ( aLevel == null ? '' : ' [' + aLevel + ']' );
+    aLevel = ( aLevel == null ? '' : ' [' + CPLogColorize(aLevel, aLevel) + ']' );
     if (typeof exports.sprintf == "function")
         return exports.sprintf("%4d-%02d-%02d %02d:%02d:%02d.%03d %s%s: %s",
             now.getFullYear(), now.getMonth() + 1, now.getDate(),
@@ -405,11 +415,11 @@ var _CPFormatLogMessage = function(aString, aLevel, aTitle)
     else
         return now + " " + aTitle + aLevel + ": " + aString;
 }
-CPLogConsole = function(aString, aLevel, aTitle)
+CPLogConsole = function(aString, aLevel, aTitle, aFormatter)
 {
     if (typeof console != "undefined")
     {
-        var message = _CPFormatLogMessage(aString, aLevel, aTitle);
+        var message = (aFormatter || _CPFormatLogMessage)(aString, aLevel, aTitle);
         var logger = {
             "fatal": "error",
             "error": "error",
@@ -424,16 +434,20 @@ CPLogConsole = function(aString, aLevel, aTitle)
             console.log(message);
     }
 }
-CPLogAlert = function(aString, aLevel, aTitle)
+CPLogColorize = function(aString, aLevel)
+{
+    return aString;
+}
+CPLogAlert = function(aString, aLevel, aTitle, aFormatter)
 {
     if (typeof alert != "undefined" && !CPLogDisable)
     {
-        var message = _CPFormatLogMessage(aString, aLevel, aTitle);
+        var message = (aFormatter || _CPFormatLogMessage)(aString, aLevel, aTitle);
         CPLogDisable = !confirm(message + "\n\n(Click cancel to stop log alerts)");
     }
 }
 var CPLogWindow = null;
-CPLogPopup = function(aString, aLevel, aTitle)
+CPLogPopup = function(aString, aLevel, aTitle, aFormatter)
 {
     try {
         if (CPLogDisable || window.open == undefined)
@@ -449,7 +463,7 @@ CPLogPopup = function(aString, aLevel, aTitle)
         }
         var logDiv = CPLogWindow.document.createElement("div");
         logDiv.setAttribute("class", aLevel || "fatal");
-        var message = _CPFormatLogMessage(aString, null, aTitle);
+        var message = (aFormatter || _CPFormatLogMessage)(aString, aFormatter ? aLevel : null, aTitle);
         logDiv.appendChild(CPLogWindow.document.createTextNode(message));
         CPLogWindow.log.appendChild(logDiv);
         if (CPLogWindow.focusEnabled.checked)
@@ -2395,7 +2409,7 @@ function loadExecutableAndResources( aBundle, shouldExecute)
         if ((typeof CPApp === "undefined" || !CPApp || !CPApp._finishedLaunching) &&
              typeof OBJJ_PROGRESS_CALLBACK === "function" && CPApplicationSizeInBytes)
         {
-            OBJJ_PROGRESS_CALLBACK(MAX(MIN(1.0, CFTotalBytesLoaded / CPApplicationSizeInBytes), 0.0), CPApplicationSizeInBytes, aBundle.path())
+            OBJJ_PROGRESS_CALLBACK(MAX(MIN(1.0, CFTotalBytesLoaded / CPApplicationSizeInBytes), 0.0), CPApplicationSizeInBytes, aBundle.bundlePath())
         }
         if (aBundle._loadStatus === CFBundleLoading)
             aBundle._loadStatus = CFBundleLoaded;
@@ -2956,7 +2970,7 @@ Lexer.prototype.pop = function()
 {
     this._index = this._context.pop();
 }
-Lexer.prototype.peak = function(shouldSkipWhitespace)
+Lexer.prototype.peek = function(shouldSkipWhitespace)
 {
     if (shouldSkipWhitespace)
     {
@@ -2981,13 +2995,13 @@ Lexer.prototype.last = function()
         return NULL;
     return this._tokens[this._index - 1];
 }
-Lexer.prototype.skip_whitespace= function(shouldMoveBackwards)
+Lexer.prototype.skip_whitespace = function(shouldMoveBackwards)
 {
     var token;
     if (shouldMoveBackwards)
-        while((token = this.previous()) && TOKEN_WHITESPACE.test(token)) ;
+        while ((token = this.previous()) && TOKEN_WHITESPACE.test(token)) ;
     else
-        while((token = this.next()) && TOKEN_WHITESPACE.test(token)) ;
+        while ((token = this.next()) && TOKEN_WHITESPACE.test(token)) ;
     return token;
 }
 exports.Lexer = Lexer;
@@ -3031,7 +3045,7 @@ var Preprocessor = function( aString, aURL, flags)
 }
 Preprocessor.prototype.setClassInfo = function(className, superClassName, ivars)
 {
-    this._classLookupTable[className] = {superClassName:superClassName, ivars:ivars};
+    this._classLookupTable[className] = { superClassName:superClassName, ivars:ivars };
 }
 Preprocessor.prototype.getClassInfo = function(className)
 {
@@ -3125,7 +3139,7 @@ Preprocessor.prototype.brackets = function( tokens, aStringBuffer)
         for(; index < count; ++index)
         {
             var pair = tuples[index];
-            selector.atoms[selector.atoms.length] = pair[1]
+            selector.atoms[selector.atoms.length] = pair[1];
             marg_list.atoms[marg_list.atoms.length] = ", " + pair[0];
         }
         aStringBuffer.atoms[aStringBuffer.atoms.length] = ", \"";
@@ -3185,7 +3199,7 @@ Preprocessor.prototype.implementation = function(tokens, aStringBuffer)
     this._currentSuperMetaClass = "objj_getMetaClass(\"" + class_name + "\").super_class";
     this._currentClass = class_name;
     this._currentSelector = "";
-    if((token = tokens.skip_whitespace()) == TOKEN_OPEN_PARENTHESIS)
+    if ((token = tokens.skip_whitespace()) == TOKEN_OPEN_PARENTHESIS)
     {
         token = tokens.skip_whitespace();
         if (token == TOKEN_CLOSE_PARENTHESIS)
@@ -3334,9 +3348,9 @@ Preprocessor.prototype._import = function(tokens)
         isQuoted = (token !== TOKEN_LESS_THAN);
     if (token === TOKEN_LESS_THAN)
     {
-        while((token = tokens.next()) && token !== TOKEN_GREATER_THAN)
+        while ((token = tokens.next()) && token !== TOKEN_GREATER_THAN)
             URLString += token;
-        if(!token)
+        if (!token)
             throw new SyntaxError(this.error_message("*** Unterminated import statement."));
     }
     else if (token.charAt(0) === TOKEN_DOUBLE_QUOTE)
@@ -3356,7 +3370,7 @@ Preprocessor.prototype.method = function( tokens, ivar_names)
         parameters = [],
         types = [null];
     ivar_names = ivar_names || {};
-    while((token = tokens.skip_whitespace()) && token !== TOKEN_OPEN_BRACE && token !== TOKEN_SEMICOLON)
+    while ((token = tokens.skip_whitespace()) && token !== TOKEN_OPEN_BRACE && token !== TOKEN_SEMICOLON)
     {
         if (token == TOKEN_COLON)
         {
@@ -3365,11 +3379,11 @@ Preprocessor.prototype.method = function( tokens, ivar_names)
             token = tokens.skip_whitespace();
             if (token == TOKEN_OPEN_PARENTHESIS)
             {
-                while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS)
+                while ((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS)
                     type += token;
                 token = tokens.skip_whitespace();
             }
-            types[parameters.length+1] = type || null;
+            types[parameters.length + 1] = type || null;
             parameters[parameters.length] = token;
             if (token in ivar_names)
                 throw new SyntaxError(this.error_message("*** Method ( "+selector+" ) uses a parameter name that is already in use ( "+token+" )"));
@@ -3377,7 +3391,7 @@ Preprocessor.prototype.method = function( tokens, ivar_names)
         else if (token == TOKEN_OPEN_PARENTHESIS)
         {
             var type = "";
-            while((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS)
+            while ((token = tokens.skip_whitespace()) && token != TOKEN_CLOSE_PARENTHESIS)
                 type += token;
             types[0] = type || null;
         }
@@ -3407,7 +3421,7 @@ Preprocessor.prototype.method = function( tokens, ivar_names)
     if (this._flags & Preprocessor.Flags.IncludeDebugSymbols)
         buffer.atoms[buffer.atoms.length] = " $" + this._currentClass + "__" + selector.replace(/:/g, "_");
     buffer.atoms[buffer.atoms.length] = "(self, _cmd";
-    for(; index < count; ++index)
+    for (; index < count; ++index)
     {
         buffer.atoms[buffer.atoms.length] = ", ";
         buffer.atoms[buffer.atoms.length] = parameters[index];
@@ -3508,7 +3522,7 @@ Preprocessor.prototype.preprocess = function(tokens, aStringBuffer, terminator, 
         if (token === TOKEN_FUNCTION)
         {
             var accumulator = "";
-            while((token = tokens.next()) && token !== TOKEN_OPEN_PARENTHESIS && !(/^\w/).test(token))
+            while ((token = tokens.next()) && token !== TOKEN_OPEN_PARENTHESIS && !(/^\w/).test(token))
                 accumulator += token;
             if (token === TOKEN_OPEN_PARENTHESIS)
             {
@@ -4075,6 +4089,11 @@ class_getClassMethod = function( aClass, aSelector)
     return method ? method : NULL;
 }
 class_getClassMethod.displayName = "class_getClassMethod";
+class_respondsToSelector = function( aClass, aSelector)
+{
+    return class_getClassMethod(aClass, aSelector) != NULL;
+}
+class_respondsToSelector.displayName = "class_respondsToSelector";
 class_copyMethodList = function( aClass)
 {
     return aClass.method_list.slice(0);
@@ -4182,7 +4201,7 @@ class_createInstance = function( aClass)
             actualClass = theClass;
         while (theClass)
         {
-            var ivars = theClass.ivars;
+            var ivars = theClass.ivars,
                 count = ivars.length;
             while (count--)
                 object[ivars[count].name] = NULL;

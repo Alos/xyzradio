@@ -1,10 +1,10 @@
 //
 //  SoundDS.j
-//  Louhi
+//  XYZRadio
 //
 //  Created by Alos on 21/3/2010.
 /*
-This file is part of Louhi.
+This file is part of XYZRadio.
 
     Louhi is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by

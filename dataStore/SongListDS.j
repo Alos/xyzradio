@@ -75,7 +75,7 @@ This file is part of Louhi.
 -(void)getUserPlaylists{
     answerArray = [[CPArray alloc] init];
     var app = [CPApp delegate];
-    var aURL = [app serverIP] + "/GetUserPlaylist?userID=" + [[app userLoggedin] email];
+    var aURL = [app serverIP] + "/GetUserPlaylist";
     CPLog.info("Getting user playlists at: %s", aURL);
     var request = [CPURLRequest requestWithURL:aURL];
     xyzConnection = [CPURLConnection connectionWithRequest:request delegate:self];
@@ -121,6 +121,7 @@ This file is part of Louhi.
 
 - (void)connection:(CPURLConnection) connection didFailWithError:(CPString)error
 {
+    CPLog.error(error);
 }
 
 - (void)clearConnection:(CPURLConnection)connection

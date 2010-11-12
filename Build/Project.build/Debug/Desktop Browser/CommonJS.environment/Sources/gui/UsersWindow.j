@@ -1,4 +1,4 @@
-@STATIC;1.0;i;10;UserCell.ji;18;../model/XYZUser.ji;39;../dataStore/UserListCollectionViewDS.jt;6318;objj_executeFile("UserCell.j", YES);
+@STATIC;1.0;i;10;UserCell.ji;18;../model/XYZUser.ji;39;../dataStore/UserListCollectionViewDS.jt;6329;objj_executeFile("UserCell.j", YES);
 objj_executeFile("../model/XYZUser.j", YES);
 objj_executeFile("../dataStore/UserListCollectionViewDS.j", YES);
 {var the_class = objj_allocateClassPair(CPWindow, "UsersWindow"),
@@ -10,11 +10,11 @@ class_addMethods(the_class, [new objj_method(sel_getUid("contentRect:styleMask:"
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("UsersWindow").super_class }, "initWithContentRect:styleMask:", aRect,  aStyleMask);
     if (self)
     {
-   list = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
+        list = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
          objj_msgSend(self, "setTitle:", "Users");
          var contentView = objj_msgSend(self, "contentView");
          var bounds = objj_msgSend(contentView, "bounds");
-  objj_msgSend(self, "setBackgroundColor:", nil);
+        objj_msgSend(self, "setBackgroundColor:", nil);
   var listScrollView = objj_msgSend(objj_msgSend(CPScrollView, "alloc"), "initWithFrame:", CGRectMake(0, 0, 246 , CGRectGetHeight(bounds)));
          objj_msgSend(listScrollView, "setAutohidesScrollers:", YES);
   objj_msgSend(listScrollView, "setAutoresizingMask:", CPViewHeightSizable);

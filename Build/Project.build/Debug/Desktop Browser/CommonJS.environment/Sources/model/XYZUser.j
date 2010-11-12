@@ -1,4 +1,4 @@
-@STATIC;1.0;I;21;Foundation/CPObject.jt;8239;objj_executeFile("Foundation/CPObject.j", NO);
+@STATIC;1.0;I;21;Foundation/CPObject.jt;8413;objj_executeFile("Foundation/CPObject.j", NO);
 {var the_class = objj_allocateClassPair(CPObject, "XYZUser"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("email"), new objj_ivar("usernick"), new objj_ivar("pathToAvatar"), new objj_ivar("logged"), new objj_ivar("dj"), new objj_ivar("sex"), new objj_ivar("djList1"), new objj_ivar("djList2"), new objj_ivar("djList3"), new objj_ivar("ownedSongs"), new objj_ivar("userRating"), new objj_ivar("prefrences")]);
 objj_registerClassPair(the_class);
@@ -149,18 +149,18 @@ prefrences = newValue;
 { with(self)
 {
     if(self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZUser").super_class }, "init")){
-  email = anEmail;
+        email = anEmail;
         usernick = aName;
-  pathToAvatar = aPath;
-  logged = state;
-  dj = isDJ;
-  sex = aSex;
-  djList1 = aDJList;
-  djList2 = aDJList2;
-  djList3 = aDJList3;
-  ownedSongs = aList;
+        pathToAvatar = aPath;
+        logged = state;
+        dj = isDJ;
+        sex = aSex;
+        djList1 = aDJList;
+        djList2 = aDJList2;
+        djList3 = aDJList3;
+        ownedSongs = aList;
         userRating = aRating;
-  prefrences = somePrefs;
+        prefrences = somePrefs;
     }
     return self;
 }
@@ -176,7 +176,7 @@ prefrences = newValue;
 },["id","CPString","CPString"]), new objj_method(sel_getUid("init"), function $XYZUser__init(self, _cmd)
 { with(self)
 {
- self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZUser").super_class }, "init");
+    self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZUser").super_class }, "init");
     if(self){
     }
     return self;
@@ -184,7 +184,7 @@ prefrences = newValue;
 },["id"]), new objj_method(sel_getUid("isEqual:"), function $XYZUser__isEqual_(self, _cmd, anObject)
 { with(self)
 {
- if(objj_msgSend(objj_msgSend(anObject, "class"), "instancesRespondToSelector:",  sel_getUid("email")))
+    if(objj_msgSend(objj_msgSend(anObject, "class"), "instancesRespondToSelector:",  sel_getUid("email")))
     if(objj_msgSend(anObject, "email")==objj_msgSend(self, "email"))
         return YES;
     else
@@ -193,16 +193,16 @@ prefrences = newValue;
 },["BOOL","id"]), new objj_method(sel_getUid("encodeWithCoder:"), function $XYZUser__encodeWithCoder_(self, _cmd, aCoder)
 { with(self)
 {
- objj_msgSend(aCoder, "encodeObject:forKey:", email, "Email");
- objj_msgSend(aCoder, "encodeObject:forKey:", usernick, "UserNick");
+    objj_msgSend(aCoder, "encodeObject:forKey:", email, "Email");
+    objj_msgSend(aCoder, "encodeObject:forKey:", usernick, "UserNick");
     objj_msgSend(aCoder, "encodeObject:forKey:", logged, "Logged");
- objj_msgSend(aCoder, "encodeObject:forKey:", sex, "Sex");
- objj_msgSend(aCoder, "encodeObject:forKey:", status, "Status");
- objj_msgSend(aCoder, "encodeObject:forKey:", djList1, "DJList1");
- objj_msgSend(aCoder, "encodeObject:forKey:", djList2, "DJList2");
- objj_msgSend(aCoder, "encodeObject:forKey:", djList3, "DJList3");
- objj_msgSend(aCoder, "encodeObject:forKey:", ownedSongs, "OwnedSongs");
- objj_msgSend(aCoder, "encodeObject:forKey:", userRating, "UserRating");
+    objj_msgSend(aCoder, "encodeObject:forKey:", sex, "Sex");
+    objj_msgSend(aCoder, "encodeObject:forKey:", status, "Status");
+    objj_msgSend(aCoder, "encodeObject:forKey:", djList1, "DJList1");
+    objj_msgSend(aCoder, "encodeObject:forKey:", djList2, "DJList2");
+    objj_msgSend(aCoder, "encodeObject:forKey:", djList3, "DJList3");
+    objj_msgSend(aCoder, "encodeObject:forKey:", ownedSongs, "OwnedSongs");
+    objj_msgSend(aCoder, "encodeObject:forKey:", userRating, "UserRating");
 }
 },["void","CPCoder"]), new objj_method(sel_getUid("initWithCoder:"), function $XYZUser__initWithCoder_(self, _cmd, aCoder)
 { with(self)
@@ -210,32 +210,32 @@ prefrences = newValue;
     self = objj_msgSendSuper({ receiver:self, super_class:objj_getClass("XYZUser").super_class }, "init");
     if (self)
     {
-  email = objj_msgSend(aCoder, "decodeObjectForKey:", "Email");
-  usernick =objj_msgSend(aCoder, "decodeObjectForKey:", "UserNick");
-  logged = objj_msgSend(aCoder, "decodeObjectForKey:", "Logged");
-  sex = objj_msgSend(aCoder, "decodeObjectForKey:", "Sex");
-  status = objj_msgSend(aCoder, "decodeObjectForKey:", "Status");
-  djList1 = objj_msgSend(aCoder, "decodeObjectForKey:", "DJList1");
-  djList2 = objj_msgSend(aCoder, "decodeObjectForKey:", "DJList2");
-  djList3 = objj_msgSend(aCoder, "decodeObjectForKey:", "DJList3");
-  ownedSongs = objj_msgSend(aCoder, "decodeObjectForKey:", "OwnedSongs");
-  userRating = objj_msgSend(aCoder, "decodeObjectForKey:", "UserRating");
+        email = objj_msgSend(aCoder, "decodeObjectForKey:", "Email");
+        usernick =objj_msgSend(aCoder, "decodeObjectForKey:", "UserNick");
+        logged = objj_msgSend(aCoder, "decodeObjectForKey:", "Logged");
+        sex = objj_msgSend(aCoder, "decodeObjectForKey:", "Sex");
+        status = objj_msgSend(aCoder, "decodeObjectForKey:", "Status");
+        djList1 = objj_msgSend(aCoder, "decodeObjectForKey:", "DJList1");
+        djList2 = objj_msgSend(aCoder, "decodeObjectForKey:", "DJList2");
+        djList3 = objj_msgSend(aCoder, "decodeObjectForKey:", "DJList3");
+        ownedSongs = objj_msgSend(aCoder, "decodeObjectForKey:", "OwnedSongs");
+        userRating = objj_msgSend(aCoder, "decodeObjectForKey:", "UserRating");
     }
     return self;
 }
 },["id","CPCoder"]), new objj_method(sel_getUid("starRatingForUserChanged:"), function $XYZUser__starRatingForUserChanged_(self, _cmd, aNotification)
 { with(self)
 {
- console.log("notified!!");
- var info = objj_msgSend(aNotification, "userInfo");
- var aux = objj_msgSend(info, "objectForKey:", "rating");
- objj_msgSend(self, "setUserRating:",  aux);
- console.log(objj_msgSend(self, "rating"));
+    console.log("notified!!");
+    var info = objj_msgSend(aNotification, "userInfo");
+    var aux = objj_msgSend(info, "objectForKey:", "rating");
+    objj_msgSend(self, "setUserRating:",  aux);
+    console.log(objj_msgSend(self, "rating"));
 }
 },["void","CPNotification"]), new objj_method(sel_getUid("setStarRater:"), function $XYZUser__setStarRater_(self, _cmd, aRater)
 { with(self)
 {
-  objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("starRatingForUserChanged:"), "StarRatingForUserChanged", aRater);
+        objj_msgSend(objj_msgSend(CPNotificationCenter, "defaultCenter"), "addObserver:selector:name:object:", self, sel_getUid("starRatingForUserChanged:"), "StarRatingForUserChanged", aRater);
 }
 },["void","StarRatingView"])]);
 }

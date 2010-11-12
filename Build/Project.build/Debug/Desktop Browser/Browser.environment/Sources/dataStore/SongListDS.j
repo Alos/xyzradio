@@ -1,4 +1,4 @@
-@STATIC;1.0;i;23;../model/XYZMusicList.ji;18;../model/XYZSong.jt;5668;objj_executeFile("../model/XYZMusicList.j", YES);
+@STATIC;1.0;i;23;../model/XYZMusicList.ji;18;../model/XYZSong.jt;5625;objj_executeFile("../model/XYZMusicList.j", YES);
 objj_executeFile("../model/XYZSong.j", YES);
 {var the_class = objj_allocateClassPair(CPObject, "SongListDS"),
 meta_class = the_class.isa;class_addIvars(the_class, [new objj_ivar("answerArray"), new objj_ivar("xyzConnection")]);
@@ -43,7 +43,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongL
 {
     answerArray = objj_msgSend(objj_msgSend(CPArray, "alloc"), "init");
     var app = objj_msgSend(CPApp, "delegate");
-    var aURL = objj_msgSend(app, "serverIP") + "/GetUserPlaylist?userID=" + objj_msgSend(objj_msgSend(app, "userLoggedin"), "email");
+    var aURL = objj_msgSend(app, "serverIP") + "/GetUserPlaylist";
     CPLog.info("Getting user playlists at: %s", aURL);
     var request = objj_msgSend(CPURLRequest, "requestWithURL:", aURL);
     xyzConnection = objj_msgSend(CPURLConnection, "connectionWithRequest:delegate:", request, self);
@@ -85,6 +85,7 @@ class_addMethods(the_class, [new objj_method(sel_getUid("init"), function $SongL
 },["void","CPURLConnection"]), new objj_method(sel_getUid("connection:didFailWithError:"), function $SongListDS__connection_didFailWithError_(self, _cmd, connection, error)
 { with(self)
 {
+    CPLog.error(error);
 }
 },["void","CPURLConnection","CPString"]), new objj_method(sel_getUid("clearConnection:"), function $SongListDS__clearConnection_(self, _cmd, connection)
 { with(self)
